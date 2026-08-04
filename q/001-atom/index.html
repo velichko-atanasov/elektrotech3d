@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#040814">
+<title>QR-001 · Живият атом</title>
+<style>
+:root{
+  --bg:#040814;--panel:#111c36;--panel2:#0a1226;--text:#eef7ff;--muted:#9fb3d4;
+  --cyan:#50d7ff;--violet:#8b5cf6;--red:#e74632;--gray:#aeb4bf;--border:#ffffff22
+}
+*{box-sizing:border-box}
+body{
+  margin:0;font-family:Segoe UI,Arial,sans-serif;color:var(--text);
+  background:radial-gradient(circle at 82% 0,#17345f 0,transparent 34%),var(--bg);
+  min-height:100vh
+}
+button,input{font:inherit}
+main{max-width:1180px;margin:auto;padding:14px}
+header{
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+  padding:8px 0 16px;border-bottom:1px solid #50d7ff44
+}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{
+  width:52px;height:52px;border-radius:17px;display:grid;place-items:center;font-size:30px;
+  background:linear-gradient(135deg,var(--cyan),var(--violet));color:#03111c
+}
+h1,p{margin:0}.muted{color:var(--muted);line-height:1.5}
+.grid{display:grid;grid-template-columns:1.08fr .92fr;gap:18px;align-items:center;margin-top:18px}
+.card{
+  background:linear-gradient(180deg,var(--panel),var(--panel2));
+  border:1px solid var(--border);border-radius:24px;padding:20px;box-shadow:0 16px 44px #0008
+}
+.stage{min-height:660px;display:grid;place-items:center;overflow:hidden}
+.atom{position:relative;width:570px;height:570px;transition:scale .2s ease}
+.orbit{
+  position:absolute;left:50%;top:50%;border:2px solid #70e1ffcc;border-radius:50%;
+  transform:translate(-50%,-50%) rotate(var(--rotation));box-shadow:0 0 12px #50d7ff55
+}
+.shell1{width:245px;height:108px}.shell2{width:455px;height:184px}.shell3{width:535px;height:232px}
+.electron{
+  position:absolute;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;
+  background:radial-gradient(circle at 35% 25%,#c8f8ff 0 5%,#1d84e8 30%,#063b96 76%);
+  border:1px solid #fff;box-shadow:0 0 16px 4px var(--cyan);color:#fff;font-size:24px;font-weight:900;
+  animation:travel var(--duration) linear infinite
+}
+.electron::before{content:"−";transform:translateY(-2px)}
+.shell1 .electron{offset-path:ellipse(122px 54px at 50% 50%)}
+.shell2 .electron{offset-path:ellipse(227px 92px at 50% 50%)}
+.shell3 .electron{offset-path:ellipse(267px 116px at 50% 50%)}
+@keyframes travel{to{offset-distance:100%}}
+
+.nucleus{
+  position:absolute;left:50%;top:50%;width:230px;height:230px;transform:translate(-50%,-50%);
+  filter:drop-shadow(0 0 22px #ffc76699)
+}
+.nucleon{
+  position:absolute;width:43px;height:43px;border-radius:50%;display:grid;place-items:center;
+  color:#fff;font-size:22px;font-weight:800;border:1px solid #ffffffbb;
+  box-shadow:inset -7px -8px 11px #0007,inset 6px 6px 9px #fff4;
+  transition:left .25s ease,top .25s ease,opacity .2s ease
+}
+.proton{background:radial-gradient(circle at 35% 25%,#ffae91,#e74632 38%,#88140c 78%)}
+.neutron{background:radial-gradient(circle at 35% 25%,#fff,#b4bac4 36%,#555c68 78%)}
+
+.element{
+  display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;
+  padding:14px;border:1px solid #50d7ff44;border-radius:18px;background:#50d7ff0d;margin:16px 0
+}
+.symbol{
+  width:88px;height:88px;border-radius:20px;display:grid;place-items:center;
+  background:#ffffff08;border:1px solid #ffffff22;text-align:center
+}
+.symbol b{font-size:2.35rem}.symbol small{display:block;color:var(--muted);font-size:.72rem}
+.element h2{margin:0}.element p{margin:5px 0 0}
+.counters{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.counter{border:1px solid var(--border);border-radius:17px;padding:12px;background:#ffffff07}
+.counter-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}
+.value{font-size:1.55rem;font-weight:800}
+.buttons{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+button{
+  border:1px solid var(--border);background:#ffffff08;color:var(--text);
+  padding:9px 10px;border-radius:11px;cursor:pointer
+}
+button:hover{border-color:#50d7ff88}
+.primary{background:linear-gradient(135deg,var(--cyan),var(--violet));color:#03111c;font-weight:800}
+.controls{margin-top:14px}.control{margin:13px 0}
+.control label{display:flex;justify-content:space-between;margin-bottom:7px}
+input[type=range]{width:100%;accent-color:var(--cyan)}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}
+.metric{border:1px solid var(--border);border-radius:14px;padding:10px;background:#ffffff07}
+.metric span{display:block;color:var(--muted);font-size:.76rem}.metric b{display:block;font-size:1.15rem;margin-top:3px}
+.note{margin-top:14px;padding:13px;border-left:4px solid var(--cyan);background:#50d7ff0d;border-radius:10px}
+@media(max-width:940px){
+  .grid{grid-template-columns:1fr}.stage{min-height:520px}.atom{scale:.76}
+  .counters{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}
+}
+@media(max-width:520px){
+  main{padding:8px}.card{padding:13px}.stage{min-height:430px}.atom{scale:.60}
+}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <div class="brand">
+    <div class="logo">⚛</div>
+    <div><h1>ElectroTech 3D</h1><p class="muted">QR-001 · Живият атом</p></div>
+  </div>
+  <button id="resetBtn">Начално състояние</button>
+</header>
+
+<div class="grid">
+  <section class="card stage">
+    <div class="atom" id="atom">
+      <div id="orbits"></div>
+      <div class="nucleus" id="nucleus"></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2 style="margin:0">Интерактивен атом</h2>
+    <p class="muted">Всяка промяна се отразява веднага и визуално: сфера се добавя или премахва от ядрото, а електрон се добавя или премахва от обвивките.</p>
+
+    <div class="element">
+      <div class="symbol"><div><b id="symbol">O</b><small id="atomicNumber">Z = 8</small></div></div>
+      <div><h2 id="elementName">Кислород</h2><p class="muted" id="atomState">Неутрален атом</p></div>
+    </div>
+
+    <div class="counters">
+      <div class="counter">
+        <div class="counter-head"><b>Протони</b><span class="value" id="protonValue">8</span></div>
+        <div class="buttons"><button id="removeProton">−</button><button class="primary" id="addProton">+</button></div>
+      </div>
+      <div class="counter">
+        <div class="counter-head"><b>Неутрони</b><span class="value" id="neutronValue">8</span></div>
+        <div class="buttons"><button id="removeNeutron">−</button><button class="primary" id="addNeutron">+</button></div>
+      </div>
+      <div class="counter">
+        <div class="counter-head"><b>Електрони</b><span class="value" id="electronValue">8</span></div>
+        <div class="buttons"><button id="removeElectron">−</button><button class="primary" id="addElectron">+</button></div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <div class="control"><label>Скорост <b id="speedValue">1.00×</b></label><input id="speed" type="range" min=".25" max="2.5" step=".05" value="1"></div>
+      <div class="control"><label>Размер <b id="zoomValue">100%</b></label><input id="zoom" type="range" min="65" max="125" value="100"></div>
+      <div class="actions"><button id="pauseBtn">Пауза</button><button id="neutralBtn">Направи неутрален</button></div>
+    </div>
+
+    <div class="metrics">
+      <div class="metric"><span>Протони</span><b id="metricP">8</b></div>
+      <div class="metric"><span>Неутрони</span><b id="metricN">8</b></div>
+      <div class="metric"><span>Електрони</span><b id="metricE">8</b></div>
+      <div class="metric"><span>Заряд</span><b id="metricQ">0e</b></div>
+    </div>
+
+    <div class="note" id="note">Кислород-16: 8 протона, 8 неутрона и 8 електрона.</div>
+  </section>
+</div>
+</main>
+
+<script>
+const ELEMENTS = [
+  null,
+  ["H","Водород"],["He","Хелий"],["Li","Литий"],["Be","Берилий"],["B","Бор"],
+  ["C","Въглерод"],["N","Азот"],["O","Кислород"],["F","Флуор"],["Ne","Неон"],
+  ["Na","Натрий"],["Mg","Магнезий"],["Al","Алуминий"],["Si","Силиций"],
+  ["P","Фосфор"],["S","Сяра"],["Cl","Хлор"],["Ar","Аргон"]
+];
+
+let protonCount = 8;
+let neutronCount = 8;
+let electronCount = 8;
+let paused = false;
+
+const atom = document.getElementById("atom");
+const nucleus = document.getElementById("nucleus");
+const orbits = document.getElementById("orbits");
+const speed = document.getElementById("speed");
+const zoom = document.getElementById("zoom");
+
+function createNucleonPositions(count) {
+  const positions = [];
+  const center = 115;
+  if (count === 1) return [[center - 21.5, center - 21.5]];
+
+  const goldenAngle = Math.PI * (3 - Math.sqrt(5));
+  for (let i = 0; i < count; i++) {
+    const radius = 10 + 8.2 * Math.sqrt(i);
+    const angle = i * goldenAngle;
+    positions.push([
+      center + Math.cos(angle) * radius - 21.5,
+      center + Math.sin(angle) * radius - 21.5
+    ]);
+  }
+  return positions;
+}
+
+function renderNucleus() {
+  nucleus.innerHTML = "";
+
+  const particles = [];
+  for (let i = 0; i < protonCount; i++) particles.push("proton");
+  for (let i = 0; i < neutronCount; i++) particles.push("neutron");
+
+  // Interleave protons and neutrons for a balanced visual cluster.
+  particles.sort((a, b) => {
+    const ai = a === "proton" ? 0 : 1;
+    const bi = b === "proton" ? 0 : 1;
+    return ai - bi;
+  });
+
+  const mixed = [];
+  let pIndex = 0, nIndex = protonCount;
+  while (pIndex < protonCount || nIndex < particles.length) {
+    if (pIndex < protonCount) mixed.push("proton"), pIndex++;
+    if (nIndex < particles.length) mixed.push("neutron"), nIndex++;
+  }
+
+  const positions = createNucleonPositions(mixed.length);
+  mixed.forEach((type, index) => {
+    const particle = document.createElement("div");
+    particle.className = "nucleon " + type;
+    particle.style.left = positions[index][0] + "px";
+    particle.style.top = positions[index][1] + "px";
+    particle.style.zIndex = String(index + 1);
+    if (type === "proton") particle.textContent = "+";
+    nucleus.appendChild(particle);
+  });
+}
+
+function electronDistribution(count) {
+  const capacities = [2, 8, 8];
+  const distribution = [0, 0, 0];
+  let remaining = Math.min(count, 18);
+  for (let i = 0; i < capacities.length; i++) {
+    distribution[i] = Math.min(remaining, capacities[i]);
+    remaining -= distribution[i];
+  }
+  return distribution;
+}
+
+function renderElectrons() {
+  orbits.innerHTML = "";
+  const distribution = electronDistribution(electronCount);
+  const shellClasses = ["shell1", "shell2", "shell3"];
+  const rotations = [[18], [0,60,120], [30,90,150]];
+
+  distribution.forEach((count, shellIndex) => {
+    if (!count) return;
+    let created = 0;
+    const pathCount = Math.min(rotations[shellIndex].length, count);
+    const perPath = Math.ceil(count / pathCount);
+
+    for (let pathIndex = 0; pathIndex < pathCount; pathIndex++) {
+      const orbit = document.createElement("div");
+      orbit.className = "orbit " + shellClasses[shellIndex];
+      orbit.style.setProperty("--rotation", rotations[shellIndex][pathIndex] + "deg");
+
+      for (let j = 0; j < perPath && created < count; j++, created++) {
+        const electron = document.createElement("div");
+        const baseDuration = 4.2 + shellIndex * 1.4 + pathIndex * 0.3;
+        electron.className = "electron";
+        electron.dataset.base = baseDuration;
+        electron.style.setProperty("--duration", (baseDuration / Number(speed.value)) + "s");
+        electron.style.animationDelay = (-(created * baseDuration / count)) + "s";
+        if (paused) electron.style.animationPlayState = "paused";
+        orbit.appendChild(electron);
+      }
+      orbits.appendChild(orbit);
+    }
+  });
+}
+
+function updateInformation() {
+  const element = ELEMENTS[protonCount];
+  const charge = protonCount - electronCount;
+  const massNumber = protonCount + neutronCount;
+
+  document.getElementById("symbol").textContent = element ? element[0] : "?";
+  document.getElementById("elementName").textContent = element ? element[1] : "Елемент извън диапазона";
+  document.getElementById("atomicNumber").textContent = "Z = " + protonCount;
+  document.getElementById("atomState").textContent =
+    charge === 0 ? "Неутрален атом" : charge > 0 ? "Положителен йон" : "Отрицателен йон";
+
+  document.getElementById("protonValue").textContent = protonCount;
+  document.getElementById("neutronValue").textContent = neutronCount;
+  document.getElementById("electronValue").textContent = electronCount;
+  document.getElementById("metricP").textContent = protonCount;
+  document.getElementById("metricN").textContent = neutronCount;
+  document.getElementById("metricE").textContent = electronCount;
+  document.getElementById("metricQ").textContent = (charge > 0 ? "+" : "") + charge + "e";
+
+  const elementName = element ? element[1] : "Елементът";
+  document.getElementById("note").textContent =
+    elementName + "-" + massNumber + ": " +
+    protonCount + " протона, " + neutronCount + " неутрона и " +
+    electronCount + " електрона.";
+}
+
+function updateControls() {
+  document.getElementById("speedValue").textContent = Number(speed.value).toFixed(2) + "×";
+  document.getElementById("zoomValue").textContent = zoom.value + "%";
+  atom.style.scale = Number(zoom.value) / 100;
+
+  document.querySelectorAll(".electron").forEach(el => {
+    el.style.animationDuration = (Number(el.dataset.base) / Number(speed.value)) + "s";
+  });
+}
+
+function renderAll() {
+  renderNucleus();
+  renderElectrons();
+  updateInformation();
+  updateControls();
+}
+
+document.getElementById("addProton").addEventListener("click", () => {
+  if (protonCount < 18) { protonCount++; renderAll(); }
+});
+document.getElementById("removeProton").addEventListener("click", () => {
+  if (protonCount > 1) { protonCount--; renderAll(); }
+});
+document.getElementById("addNeutron").addEventListener("click", () => {
+  if (neutronCount < 18) { neutronCount++; renderAll(); }
+});
+document.getElementById("removeNeutron").addEventListener("click", () => {
+  if (neutronCount > 0) { neutronCount--; renderAll(); }
+});
+document.getElementById("addElectron").addEventListener("click", () => {
+  if (electronCount < 18) { electronCount++; renderAll(); }
+});
+document.getElementById("removeElectron").addEventListener("click", () => {
+  if (electronCount > 0) { electronCount--; renderAll(); }
+});
+
+document.getElementById("neutralBtn").addEventListener("click", () => {
+  electronCount = protonCount;
+  renderAll();
+});
+
+document.getElementById("pauseBtn").addEventListener("click", () => {
+  paused = !paused;
+  document.querySelectorAll(".electron").forEach(el => {
+    el.style.animationPlayState = paused ? "paused" : "running";
+  });
+  document.getElementById("pauseBtn").textContent = paused ? "Продължи" : "Пауза";
+});
+
+document.getElementById("resetBtn").addEventListener("click", () => {
+  protonCount = 8;
+  neutronCount = 8;
+  electronCount = 8;
+  paused = false;
+  speed.value = 1;
+  zoom.value = 100;
+  document.getElementById("pauseBtn").textContent = "Пауза";
+  renderAll();
+});
+
+speed.addEventListener("input", updateControls);
+zoom.addEventListener("input", updateControls);
+
+renderAll();
+</script>
+</body>
+</html>

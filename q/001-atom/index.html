@@ -8,7 +8,8 @@
 <style>
 :root{
   --bg:#040814;--panel:#111c36;--panel2:#0a1226;--text:#eef7ff;--muted:#9fb3d4;
-  --cyan:#50d7ff;--violet:#8b5cf6;--red:#e74632;--gray:#aeb4bf;--border:#ffffff22
+  --cyan:#50d7ff;--violet:#8b5cf6;--red:#e74632;--gray:#aeb4bf;--border:#ffffff22;
+  --gold:#ffc766;
 }
 *{box-sizing:border-box}
 body{
@@ -37,30 +38,39 @@ h1,p{margin:0}.muted{color:var(--muted);line-height:1.5}
 .atom{position:relative;width:570px;height:570px;transition:scale .2s ease}
 .orbit{
   position:absolute;left:50%;top:50%;border:2px solid #70e1ffcc;border-radius:50%;
-  transform:translate(-50%,-50%) rotate(var(--rotation));box-shadow:0 0 12px #50d7ff55
+  transform:translate(-50%,-50%) rotate(var(--rotation));box-shadow:0 0 12px #50d7ff55;
+  animation:orbitFade .45s ease both
 }
 .shell1{width:245px;height:108px}.shell2{width:455px;height:184px}.shell3{width:535px;height:232px}
 .electron{
   position:absolute;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;
   background:radial-gradient(circle at 35% 25%,#c8f8ff 0 5%,#1d84e8 30%,#063b96 76%);
   border:1px solid #fff;box-shadow:0 0 16px 4px var(--cyan);color:#fff;font-size:24px;font-weight:900;
-  animation:travel var(--duration) linear infinite
+  animation:travel var(--duration) linear infinite, particleIn .35s ease both
 }
 .electron::before{content:"−";transform:translateY(-2px)}
 .shell1 .electron{offset-path:ellipse(122px 54px at 50% 50%)}
 .shell2 .electron{offset-path:ellipse(227px 92px at 50% 50%)}
 .shell3 .electron{offset-path:ellipse(267px 116px at 50% 50%)}
 @keyframes travel{to{offset-distance:100%}}
+@keyframes particleIn{from{opacity:0;scale:.2}to{opacity:1;scale:1}}
+@keyframes orbitFade{from{opacity:0}to{opacity:1}}
 
 .nucleus{
   position:absolute;left:50%;top:50%;width:230px;height:230px;transform:translate(-50%,-50%);
-  filter:drop-shadow(0 0 22px #ffc76699)
+  filter:drop-shadow(0 0 22px #ffc76699);
+  animation:nucleusPulse 2.8s ease-in-out infinite
+}
+@keyframes nucleusPulse{
+  0%,100%{filter:drop-shadow(0 0 18px #ffc76688)}
+  50%{filter:drop-shadow(0 0 34px #ffc766cc)}
 }
 .nucleon{
   position:absolute;width:43px;height:43px;border-radius:50%;display:grid;place-items:center;
   color:#fff;font-size:22px;font-weight:800;border:1px solid #ffffffbb;
   box-shadow:inset -7px -8px 11px #0007,inset 6px 6px 9px #fff4;
-  transition:left .25s ease,top .25s ease,opacity .2s ease
+  transition:left .25s ease,top .25s ease,opacity .2s ease;
+  animation:particleIn .35s ease both
 }
 .proton{background:radial-gradient(circle at 35% 25%,#ffae91,#e74632 38%,#88140c 78%)}
 .neutron{background:radial-gradient(circle at 35% 25%,#fff,#b4bac4 36%,#555c68 78%)}
@@ -89,14 +99,32 @@ button:hover{border-color:#50d7ff88}
 .controls{margin-top:14px}.control{margin:13px 0}
 .control label{display:flex;justify-content:space-between;margin-bottom:7px}
 input[type=range]{width:100%;accent-color:var(--cyan)}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}
 .metric{border:1px solid var(--border);border-radius:14px;padding:10px;background:#ffffff07}
 .metric span{display:block;color:var(--muted);font-size:.76rem}.metric b{display:block;font-size:1.15rem;margin-top:3px}
 .note{margin-top:14px;padding:13px;border-left:4px solid var(--cyan);background:#50d7ff0d;border-radius:10px}
+.config{margin-top:10px;padding:12px;border:1px solid #ffffff22;border-radius:14px;background:#ffffff06}
+.config b{font-size:1.1rem}
+.hologram-screen{
+  position:fixed;inset:0;background:#000;z-index:1000;display:none;place-items:center;
+}
+.hologram-screen.active{display:grid}
+.holo-wrap{position:relative;width:min(92vw,760px);aspect-ratio:1}
+.holo-atom{position:absolute;width:170px;height:170px}
+.holo-core{position:absolute;inset:55px;border-radius:50%;background:var(--gold);box-shadow:0 0 35px var(--gold)}
+.holo-orbit{position:absolute;inset:36px 6px;border:2px solid var(--cyan);border-radius:50%;animation:holoSpin 4s linear infinite}
+.holo-orbit:nth-child(2){transform:rotate(60deg)}
+.holo-orbit:nth-child(3){transform:rotate(120deg)}
+@keyframes holoSpin{to{rotate:360deg}}
+.htop{left:50%;top:3%;transform:translateX(-50%)}
+.hbottom{left:50%;bottom:3%;transform:translateX(-50%) rotate(180deg)}
+.hleft{left:3%;top:50%;transform:translateY(-50%) rotate(-90deg)}
+.hright{right:3%;top:50%;transform:translateY(-50%) rotate(90deg)}
+.holo-close{position:absolute;right:16px;top:16px;z-index:2}
 @media(max-width:940px){
   .grid{grid-template-columns:1fr}.stage{min-height:520px}.atom{scale:.76}
-  .counters{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}
+  .counters{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}.actions{grid-template-columns:1fr}
 }
 @media(max-width:520px){
   main{padding:8px}.card{padding:13px}.stage{min-height:430px}.atom{scale:.60}
@@ -123,7 +151,7 @@ input[type=range]{width:100%;accent-color:var(--cyan)}
 
   <section class="card">
     <h2 style="margin:0">Интерактивен атом</h2>
-    <p class="muted">Всяка промяна се отразява веднага и визуално: сфера се добавя или премахва от ядрото, а електрон се добавя или премахва от обвивките.</p>
+    <p class="muted">Всяка промяна се отразява веднага и визуално в ядрото и електронните обвивки.</p>
 
     <div class="element">
       <div class="symbol"><div><b id="symbol">O</b><small id="atomicNumber">Z = 8</small></div></div>
@@ -148,7 +176,11 @@ input[type=range]{width:100%;accent-color:var(--cyan)}
     <div class="controls">
       <div class="control"><label>Скорост <b id="speedValue">1.00×</b></label><input id="speed" type="range" min=".25" max="2.5" step=".05" value="1"></div>
       <div class="control"><label>Размер <b id="zoomValue">100%</b></label><input id="zoom" type="range" min="65" max="125" value="100"></div>
-      <div class="actions"><button id="pauseBtn">Пауза</button><button id="neutralBtn">Направи неутрален</button></div>
+      <div class="actions">
+        <button id="pauseBtn">Пауза</button>
+        <button id="neutralBtn">Направи неутрален</button>
+        <button class="primary" id="hologramBtn">Холограма</button>
+      </div>
     </div>
 
     <div class="metrics">
@@ -158,10 +190,25 @@ input[type=range]{width:100%;accent-color:var(--cyan)}
       <div class="metric"><span>Заряд</span><b id="metricQ">0e</b></div>
     </div>
 
+    <div class="config">
+      <span class="muted">Електронна конфигурация по обвивки</span><br>
+      <b id="electronConfig">2, 6</b>
+    </div>
+
     <div class="note" id="note">Кислород-16: 8 протона, 8 неутрона и 8 електрона.</div>
   </section>
 </div>
 </main>
+
+<div class="hologram-screen" id="hologramScreen">
+  <button class="holo-close" id="closeHologram">Затвори</button>
+  <div class="holo-wrap">
+    <div class="holo-atom htop"><div class="holo-orbit"></div><div class="holo-orbit"></div><div class="holo-orbit"></div><div class="holo-core"></div></div>
+    <div class="holo-atom hbottom"><div class="holo-orbit"></div><div class="holo-orbit"></div><div class="holo-orbit"></div><div class="holo-core"></div></div>
+    <div class="holo-atom hleft"><div class="holo-orbit"></div><div class="holo-orbit"></div><div class="holo-orbit"></div><div class="holo-core"></div></div>
+    <div class="holo-atom hright"><div class="holo-orbit"></div><div class="holo-orbit"></div><div class="holo-orbit"></div><div class="holo-core"></div></div>
+  </div>
+</div>
 
 <script>
 const ELEMENTS = [
@@ -187,7 +234,6 @@ function createNucleonPositions(count) {
   const positions = [];
   const center = 115;
   if (count === 1) return [[center - 21.5, center - 21.5]];
-
   const goldenAngle = Math.PI * (3 - Math.sqrt(5));
   for (let i = 0; i < count; i++) {
     const radius = 10 + 8.2 * Math.sqrt(i);
@@ -202,25 +248,12 @@ function createNucleonPositions(count) {
 
 function renderNucleus() {
   nucleus.innerHTML = "";
-
-  const particles = [];
-  for (let i = 0; i < protonCount; i++) particles.push("proton");
-  for (let i = 0; i < neutronCount; i++) particles.push("neutron");
-
-  // Interleave protons and neutrons for a balanced visual cluster.
-  particles.sort((a, b) => {
-    const ai = a === "proton" ? 0 : 1;
-    const bi = b === "proton" ? 0 : 1;
-    return ai - bi;
-  });
-
   const mixed = [];
-  let pIndex = 0, nIndex = protonCount;
-  while (pIndex < protonCount || nIndex < particles.length) {
-    if (pIndex < protonCount) mixed.push("proton"), pIndex++;
-    if (nIndex < particles.length) mixed.push("neutron"), nIndex++;
+  let p = protonCount, n = neutronCount;
+  while (p > 0 || n > 0) {
+    if (p-- > 0) mixed.push("proton");
+    if (n-- > 0) mixed.push("neutron");
   }
-
   const positions = createNucleonPositions(mixed.length);
   mixed.forEach((type, index) => {
     const particle = document.createElement("div");
@@ -235,13 +268,13 @@ function renderNucleus() {
 
 function electronDistribution(count) {
   const capacities = [2, 8, 8];
-  const distribution = [0, 0, 0];
+  const result = [0, 0, 0];
   let remaining = Math.min(count, 18);
   for (let i = 0; i < capacities.length; i++) {
-    distribution[i] = Math.min(remaining, capacities[i]);
-    remaining -= distribution[i];
+    result[i] = Math.min(remaining, capacities[i]);
+    remaining -= result[i];
   }
-  return distribution;
+  return result;
 }
 
 function renderElectrons() {
@@ -280,6 +313,7 @@ function updateInformation() {
   const element = ELEMENTS[protonCount];
   const charge = protonCount - electronCount;
   const massNumber = protonCount + neutronCount;
+  const distribution = electronDistribution(electronCount);
 
   document.getElementById("symbol").textContent = element ? element[0] : "?";
   document.getElementById("elementName").textContent = element ? element[1] : "Елемент извън диапазона";
@@ -294,19 +328,24 @@ function updateInformation() {
   document.getElementById("metricN").textContent = neutronCount;
   document.getElementById("metricE").textContent = electronCount;
   document.getElementById("metricQ").textContent = (charge > 0 ? "+" : "") + charge + "e";
+  document.getElementById("electronConfig").textContent = distribution.filter(x => x > 0).join(", ");
 
   const elementName = element ? element[1] : "Елементът";
+  let ionText = "";
+  if (charge > 0) ionText = " Получен е положителен йон, защото протоните са повече.";
+  if (charge < 0) ionText = " Получен е отрицателен йон, защото електроните са повече.";
+  if (charge === 0) ionText = " Атомът е електрически неутрален.";
+
   document.getElementById("note").textContent =
     elementName + "-" + massNumber + ": " +
     protonCount + " протона, " + neutronCount + " неутрона и " +
-    electronCount + " електрона.";
+    electronCount + " електрона." + ionText;
 }
 
 function updateControls() {
   document.getElementById("speedValue").textContent = Number(speed.value).toFixed(2) + "×";
   document.getElementById("zoomValue").textContent = zoom.value + "%";
   atom.style.scale = Number(zoom.value) / 100;
-
   document.querySelectorAll(".electron").forEach(el => {
     el.style.animationDuration = (Number(el.dataset.base) / Number(speed.value)) + "s";
   });
@@ -319,52 +358,40 @@ function renderAll() {
   updateControls();
 }
 
-document.getElementById("addProton").addEventListener("click", () => {
-  if (protonCount < 18) { protonCount++; renderAll(); }
-});
-document.getElementById("removeProton").addEventListener("click", () => {
-  if (protonCount > 1) { protonCount--; renderAll(); }
-});
-document.getElementById("addNeutron").addEventListener("click", () => {
-  if (neutronCount < 18) { neutronCount++; renderAll(); }
-});
-document.getElementById("removeNeutron").addEventListener("click", () => {
-  if (neutronCount > 0) { neutronCount--; renderAll(); }
-});
-document.getElementById("addElectron").addEventListener("click", () => {
-  if (electronCount < 18) { electronCount++; renderAll(); }
-});
-document.getElementById("removeElectron").addEventListener("click", () => {
-  if (electronCount > 0) { electronCount--; renderAll(); }
-});
+document.getElementById("addProton").onclick = () => { if (protonCount < 18) { protonCount++; renderAll(); } };
+document.getElementById("removeProton").onclick = () => { if (protonCount > 1) { protonCount--; renderAll(); } };
+document.getElementById("addNeutron").onclick = () => { if (neutronCount < 18) { neutronCount++; renderAll(); } };
+document.getElementById("removeNeutron").onclick = () => { if (neutronCount > 0) { neutronCount--; renderAll(); } };
+document.getElementById("addElectron").onclick = () => { if (electronCount < 18) { electronCount++; renderAll(); } };
+document.getElementById("removeElectron").onclick = () => { if (electronCount > 0) { electronCount--; renderAll(); } };
 
-document.getElementById("neutralBtn").addEventListener("click", () => {
-  electronCount = protonCount;
-  renderAll();
-});
-
-document.getElementById("pauseBtn").addEventListener("click", () => {
+document.getElementById("neutralBtn").onclick = () => { electronCount = protonCount; renderAll(); };
+document.getElementById("pauseBtn").onclick = () => {
   paused = !paused;
   document.querySelectorAll(".electron").forEach(el => {
     el.style.animationPlayState = paused ? "paused" : "running";
   });
   document.getElementById("pauseBtn").textContent = paused ? "Продължи" : "Пауза";
-});
+};
 
-document.getElementById("resetBtn").addEventListener("click", () => {
-  protonCount = 8;
-  neutronCount = 8;
-  electronCount = 8;
-  paused = false;
-  speed.value = 1;
-  zoom.value = 100;
+document.getElementById("resetBtn").onclick = () => {
+  protonCount = 8; neutronCount = 8; electronCount = 8; paused = false;
+  speed.value = 1; zoom.value = 100;
   document.getElementById("pauseBtn").textContent = "Пауза";
   renderAll();
-});
+};
+
+document.getElementById("hologramBtn").onclick = () => {
+  document.getElementById("hologramScreen").classList.add("active");
+  document.documentElement.requestFullscreen?.();
+};
+document.getElementById("closeHologram").onclick = () => {
+  document.getElementById("hologramScreen").classList.remove("active");
+  document.exitFullscreen?.();
+};
 
 speed.addEventListener("input", updateControls);
 zoom.addEventListener("input", updateControls);
-
 renderAll();
 </script>
 </body>

@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QR-002 · Предаване на електричен заряд</title>
+<style>
+:root{--bg:#040814;--panel:#111c36;--text:#eef7ff;--muted:#9fb3d4;--cyan:#50d7ff;--violet:#8b5cf6;--red:#ff5d57;--blue:#2f8cff;--gold:#ffc766}
+*{box-sizing:border-box}body{margin:0;font-family:Segoe UI,Arial,sans-serif;background:radial-gradient(circle at 80% 0,#17345f 0,transparent 35%),var(--bg);color:var(--text)}
+main{max-width:1150px;margin:auto;padding:14px}header{display:flex;justify-content:space-between;align-items:center;padding:8px 0 16px;border-bottom:1px solid #50d7ff44}
+.brand{display:flex;align-items:center;gap:12px}.logo{width:52px;height:52px;border-radius:17px;display:grid;place-items:center;font-size:28px;background:linear-gradient(135deg,var(--cyan),var(--violet));color:#03111c}
+h1,p{margin:0}.muted{color:var(--muted);line-height:1.5}.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:18px}
+button{border:1px solid #ffffff22;background:#ffffff08;color:var(--text);padding:11px;border-radius:12px;cursor:pointer}
+button.active{background:linear-gradient(135deg,var(--cyan),var(--violet));color:#03111c;font-weight:800}
+.grid{display:grid;grid-template-columns:1.15fr .85fr;gap:18px;margin-top:18px}.card{background:linear-gradient(180deg,#111c36,#0a1226);border:1px solid #ffffff22;border-radius:24px;padding:20px;box-shadow:0 16px 44px #0008}
+.stage{min-height:570px;position:relative;overflow:hidden}.scene{position:absolute;inset:20px;display:none}.scene.active{display:block}
+.control{margin:16px 0}.control label{display:flex;justify-content:space-between;margin-bottom:7px}input{width:100%;accent-color:var(--cyan)}
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px}.metric{border:1px solid #ffffff22;border-radius:14px;padding:12px;background:#ffffff07}.metric span{display:block;color:var(--muted);font-size:.78rem}.metric b{display:block;margin-top:4px}
+.note{margin-top:14px;padding:13px;border-left:4px solid var(--cyan);background:#50d7ff0d;border-radius:10px}
+.conductor{position:absolute;left:8%;right:8%;top:42%;height:120px;border-radius:22px;background:linear-gradient(#d99a58,#8d4f1d);box-shadow:inset 0 0 25px #0008}
+.fixed{position:absolute;width:34px;height:34px;border-radius:50%;background:#f6c37b;color:#6f3c10;display:grid;place-items:center;font-weight:800}
+.particle{position:absolute;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:800}
+.electron{background:var(--blue);box-shadow:0 0 12px var(--blue)}.positive{background:var(--red)}.negative{background:var(--cyan);color:#03111c}.hole{border:3px solid var(--gold);color:var(--gold)}
+.beaker{position:absolute;left:20%;right:20%;top:14%;bottom:10%;border:5px solid #bdeeff;border-top:none;border-radius:0 0 32px 32px;overflow:hidden}.water{position:absolute;inset:22% 0 0;background:linear-gradient(#50d7ff22,#167cc4aa)}
+.electrode{position:absolute;top:5%;bottom:8%;width:24px;background:#b9c1cf}.left{left:18%}.right{right:18%}
+.air{position:absolute;left:15%;right:15%;top:22%;bottom:22%}.rod{position:absolute;top:0;bottom:0;width:55px;border-radius:20px;background:linear-gradient(#d1d6de,#7f8793)}.rod.r{right:0}.spark{position:absolute;left:20%;right:20%;top:50%;height:7px;background:var(--gold);box-shadow:0 0 25px 8px var(--gold);opacity:0}.spark.on{opacity:1;animation:f .2s infinite alternate}@keyframes f{to{filter:brightness(1.5);transform:rotate(-5deg) scaleX(1.04)}}
+.semi{position:absolute;left:12%;right:12%;top:30%;height:190px;display:grid;grid-template-columns:1fr 1fr;overflow:hidden;border-radius:20px}.preg{background:#9b3159}.nreg{background:#1f6cb4}.label{position:absolute;top:12px;width:50%;text-align:center;font-weight:800}.label.p{left:0}.label.n{right:0}
+table{width:100%;border-collapse:collapse;margin-top:18px}th,td{padding:10px;border-bottom:1px solid #ffffff18;text-align:left}th{color:var(--cyan)}
+@media(max-width:900px){.grid{grid-template-columns:1fr}.tabs{grid-template-columns:1fr 1fr}.stage{min-height:500px}}
+</style>
+</head>
+<body>
+<main>
+<header><div class="brand"><div class="logo">⚡</div><div><h1>ElectroTech 3D</h1><p class="muted">QR-002 · Предаване на електричен заряд в различни среди</p></div></div><button id="reset">Начално състояние</button></header>
+
+<div class="tabs">
+<button class="active" data-mode="metal">⚙ Метал</button>
+<button data-mode="water">💧 Вода</button>
+<button data-mode="air">🌩 Въздух</button>
+<button data-mode="semi">💻 Полупроводник</button>
+</div>
+
+<div class="grid">
+<section class="card stage">
+<div class="scene active" id="metal"><div class="conductor" id="conductor"></div></div>
+<div class="scene" id="water"><div class="beaker"><div class="water"></div><div class="electrode left"></div><div class="electrode right"></div><div id="ions"></div></div></div>
+<div class="scene" id="air"><div class="air"><div class="rod"></div><div class="rod r"></div><div class="spark" id="spark"></div><div id="airParticles"></div></div></div>
+<div class="scene" id="semi"><div class="semi"><div class="preg"></div><div class="nreg"></div><div class="label p">p-област</div><div class="label n">n-област</div><div id="carriers"></div></div></div>
+</section>
+
+<section class="card">
+<h2 id="title">Метален проводник</h2>
+<p class="muted" id="text">Свободните електрони се преместват между неподвижните положителни йони на кристалната решетка.</p>
+<div class="control"><label><span id="sliderLabel">Напрежение</span><b id="value">50%</b></label><input id="slider" type="range" min="0" max="100" value="50"></div>
+<div class="metrics"><div class="metric"><span>Основни носители</span><b id="mainCarriers">Свободни електрони</b></div><div class="metric"><span>Състояние</span><b id="state">Провеждане</b></div></div>
+<div class="note" id="note">Електроните се движат противоположно на условната посока на тока.</div>
+</section>
+</div>
+
+<section class="card">
+<table><thead><tr><th>Среда</th><th>Носители</th><th>Механизъм</th></tr></thead>
+<tbody>
+<tr><td>Метал</td><td>Свободни електрони</td><td>Дрейф в кристална решетка</td></tr>
+<tr><td>Вода / електролит</td><td>Положителни и отрицателни йони</td><td>Йонна проводимост</td></tr>
+<tr><td>Въздух / газ</td><td>Електрони и йони</td><td>Йонизация и разряд</td></tr>
+<tr><td>Полупроводник</td><td>Електрони и дупки</td><td>Движение на носители</td></tr>
+</tbody></table>
+</section>
+</main>
+
+<script>
+let mode="metal";
+const data={
+metal:["Метален проводник","Свободните електрони се преместват между неподвижните положителни йони на кристалната решетка.","Напрежение","Свободни електрони","Провеждане","Електроните се движат противоположно на условната посока на тока."],
+water:["Вода с разтворена сол","Положителните и отрицателните йони се движат към противоположно заредените електроди.","Концентрация на сол","Положителни и отрицателни йони","Йонна проводимост","Чистата вода провежда слабо, а разтворените соли създават подвижни йони."],
+air:["Въздух","При достатъчно високо напрежение въздухът се йонизира и възниква електрически разряд.","Напрежение","Електрони и йони","Изолатор","При критично електрично поле се образува проводящ плазмен канал."],
+semi:["Полупроводник","Зарядът се предава чрез електрони и дупки, които се движат в противоположни посоки.","Приложено напрежение","Електрони и дупки","Полупроводимост","Дупката е ефективен положителен носител, свързан с липса на електрон."]
+};
+function particle(cls,txt,x,y,parent){
+ const el=document.createElement("div");el.className="particle "+cls;el.textContent=txt;el.style.left=x+"%";el.style.top=y+"%";parent.appendChild(el);return el;
+}
+function renderMetal(){
+ conductor.innerHTML="";
+ for(let i=0;i<20;i++){const a=document.createElement("div");a.className="fixed";a.textContent="+";a.style.left=(5+(i%7)*14)+"%";a.style.top=(12+Math.floor(i/7)*36)+"px";conductor.appendChild(a)}
+ for(let i=0;i<12;i++){const e=particle("electron","−",8+(i*7)%85,18+(i%3)*30,conductor);e.animate([{transform:"translateX(0)"},{transform:"translateX(-90px)"}],{duration:1000+(100-slider.value)*18,iterations:Infinity,delay:i*100})}
+}
+function renderWater(){
+ ions.innerHTML="";let count=4+Math.round(slider.value/10);
+ for(let i=0;i<count;i++){let pos=i%2===0;let el=particle(pos?"positive":"negative",pos?"Na⁺":"Cl⁻",12+(i*8)%72,28+(i*11)%58,ions);el.animate([{transform:"translateX(0)"},{transform:"translateX("+(pos?-110:110)+"px)"}],{duration:2200,iterations:Infinity,direction:"alternate",delay:i*90})}
+}
+function renderAir(){
+ airParticles.innerHTML="";let on=slider.value>=70;spark.classList.toggle("on",on);state.textContent=on?"Йонизиран газ":"Изолатор";
+ let count=on?16:4;for(let i=0;i<count;i++){let pos=i%2;let el=particle(pos?"positive":"electron",pos?"+":"−",15+(i*5)%68,18+(i*13)%64,airParticles);if(on)el.animate([{transform:"translateX(0)"},{transform:"translateX("+(pos?80:-80)+"px)"}],{duration:900+i*35,iterations:Infinity,direction:"alternate"})}
+}
+function renderSemi(){
+ carriers.innerHTML="";let count=6+Math.round(slider.value/10);
+ for(let i=0;i<count;i++){let elc=i%2===0;let el=particle(elc?"electron":"hole",elc?"−":"+",8+(i*7)%80,28+(i*11)%50,carriers);el.animate([{transform:"translateX(0)"},{transform:"translateX("+(elc?-90:90)+"px)"}],{duration:2100,iterations:Infinity,direction:"alternate",delay:i*80})}
+}
+function render(){value.textContent=slider.value+"%";if(mode==="metal")renderMetal();if(mode==="water")renderWater();if(mode==="air")renderAir();if(mode==="semi")renderSemi()}
+function setMode(m){mode=m;document.querySelectorAll("[data-mode]").forEach(b=>b.classList.toggle("active",b.dataset.mode===m));document.querySelectorAll(".scene").forEach(s=>s.classList.remove("active"));document.getElementById(m).classList.add("active");slider.value=50;const d=data[m];title.textContent=d[0];text.textContent=d[1];sliderLabel.textContent=d[2];mainCarriers.textContent=d[3];state.textContent=d[4];note.textContent=d[5];render()}
+document.querySelectorAll("[data-mode]").forEach(b=>b.onclick=()=>setMode(b.dataset.mode));slider.oninput=render;reset.onclick=()=>setMode("metal");setMode("metal");
+</script>
+</body></html>

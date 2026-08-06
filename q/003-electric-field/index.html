@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#050b18">
+<title>QR-003 · Електрично поле</title>
+<style>
+:root{
+  --bg:#050b18;--panel:#0f1b34;--panel2:#091326;--text:#eef7ff;--muted:#9eb2d1;
+  --cyan:#52d8ff;--violet:#8b5cf6;--red:#ff5e57;--blue:#438cff;--green:#59e39c;
+  --gold:#ffc866;--border:#ffffff22
+}
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;font-family:Segoe UI,Arial,sans-serif;color:var(--text);
+  background:radial-gradient(circle at 82% 0,#173862 0,transparent 34%),var(--bg)
+}
+button,input{font:inherit}
+main{max-width:1240px;margin:auto;padding:14px}
+header{
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+  padding:8px 0 16px;border-bottom:1px solid #52d8ff44
+}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{
+  width:54px;height:54px;border-radius:18px;display:grid;place-items:center;font-size:30px;
+  background:linear-gradient(135deg,var(--cyan),var(--violet));color:#03111c
+}
+h1,h2,p{margin:0}.muted{color:var(--muted);line-height:1.5}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:18px}
+button{
+  border:1px solid var(--border);background:#ffffff08;color:var(--text);
+  padding:11px;border-radius:12px;cursor:pointer
+}
+button:hover{border-color:#52d8ff88}
+button.active,.primary{
+  background:linear-gradient(135deg,var(--cyan),var(--violet));color:#03111c;font-weight:800
+}
+.grid{display:grid;grid-template-columns:1.18fr .82fr;gap:18px;margin-top:18px}
+.card{
+  background:linear-gradient(180deg,var(--panel),var(--panel2));
+  border:1px solid var(--border);border-radius:24px;padding:18px;box-shadow:0 18px 48px #0008
+}
+.stage{min-height:650px;position:relative;overflow:hidden}
+canvas{display:block;width:100%;height:100%;min-height:614px;border-radius:18px;background:#07101f;touch-action:none}
+.hint{
+  position:absolute;left:30px;top:28px;padding:8px 11px;border-radius:10px;
+  background:#07111ddd;border:1px solid #ffffff25;color:#dcecff;font-size:.88rem;pointer-events:none
+}
+.legend{
+  position:absolute;left:30px;bottom:27px;display:flex;gap:12px;flex-wrap:wrap;
+  padding:8px 11px;border-radius:10px;background:#07111ddd;border:1px solid #ffffff25;font-size:.82rem
+}
+.legend span{display:flex;align-items:center;gap:6px}.swatch{width:18px;height:9px;border-radius:6px}
+.panel h2{margin-bottom:7px}
+.control{margin:16px 0}.control label{display:flex;justify-content:space-between;margin-bottom:7px}
+input[type=range]{width:100%;accent-color:var(--cyan)}
+.toggles{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.status{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.metric{border:1px solid var(--border);border-radius:14px;padding:12px;background:#ffffff07}
+.metric span{display:block;color:var(--muted);font-size:.76rem}.metric b{display:block;margin-top:4px;font-size:1.05rem}
+.note{margin-top:14px;padding:13px;border-left:4px solid var(--cyan);background:#52d8ff0d;border-radius:10px;line-height:1.5}
+.steps{display:grid;gap:8px;margin-top:14px}.step{display:grid;grid-template-columns:29px 1fr;gap:9px;align-items:start}
+.num{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:#1c7044;font-weight:800}
+.formula{margin-top:14px;border:1px solid var(--border);border-radius:14px;padding:13px;background:#ffffff06;text-align:center;font-size:1.15rem}
+@media(max-width:940px){.grid{grid-template-columns:1fr}.stage{min-height:570px}canvas{min-height:535px}}
+@media(max-width:600px){main{padding:8px}.tabs{grid-template-columns:1fr}.card{padding:11px}.stage{min-height:510px}canvas{min-height:485px}.toggles{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <div class="brand">
+    <div class="logo">E</div>
+    <div><h1>ElectroTech 3D</h1><p class="muted">QR-003 · Електрично поле</p></div>
+  </div>
+  <button id="resetBtn">Начално състояние</button>
+</header>
+
+<div class="tabs">
+  <button class="active" data-mode="single">Един заряд</button>
+  <button data-mode="dipole">Електричен дипол</button>
+  <button data-mode="same">Еднакви заряди</button>
+</div>
+
+<div class="grid">
+<section class="card stage">
+  <canvas id="fieldCanvas"></canvas>
+  <div class="hint">Премествайте зарядите и жълтата сонда с мишка или пръст.</div>
+  <div class="legend">
+    <span><i class="swatch" style="background:#ff5e57"></i> положителен потенциал</span>
+    <span><i class="swatch" style="background:#438cff"></i> отрицателен потенциал</span>
+    <span><i class="swatch" style="background:#f5f8ff"></i> близо до нулев потенциал</span>
+  </div>
+</section>
+
+<section class="card panel">
+  <h2 id="modeTitle">Поле на положителен точков заряд</h2>
+  <p class="muted" id="modeText">Силовите линии излизат радиално от положителния заряд. Посоката на вектора E съвпада с посоката на силата върху положителен пробен заряд.</p>
+
+  <div class="control">
+    <label>Големина на заряда <b id="chargeValue">5 μC</b></label>
+    <input id="chargeSlider" type="range" min="1" max="10" value="5">
+  </div>
+
+  <div class="toggles">
+    <button class="active" id="potentialBtn">Карта на потенциала</button>
+    <button class="active" id="linesBtn">Силови линии</button>
+    <button class="active" id="vectorsBtn">Векторно поле</button>
+    <button class="active" id="probeBtn">Сонда E</button>
+  </div>
+
+  <div class="status">
+    <div class="metric"><span>Разстояние до заряд 1</span><b id="distanceReadout">—</b></div>
+    <div class="metric"><span>Потенциал V</span><b id="potentialReadout">—</b></div>
+    <div class="metric"><span>Интензитет |E|</span><b id="fieldReadout">—</b></div>
+    <div class="metric"><span>Посока на E</span><b id="angleReadout">—</b></div>
+  </div>
+
+  <div class="formula">E = k · |q| / r²</div>
+
+  <div class="steps">
+    <div class="step"><div class="num">1</div><div>Изберете конфигурация на зарядите.</div></div>
+    <div class="step"><div class="num">2</div><div>Премествайте зарядите и наблюдавайте промяната на полето.</div></div>
+    <div class="step"><div class="num">3</div><div>Преместете жълтата сонда и проследете вектора E.</div></div>
+  </div>
+
+  <div class="note" id="note">Около положителния заряд електричното поле е насочено навън. С увеличаване на разстоянието интензитетът намалява пропорционално на 1/r².</div>
+</section>
+</div>
+</main>
+
+<script>
+const canvas=document.getElementById("fieldCanvas");
+const ctx=canvas.getContext("2d");
+let mode="single";
+let showPotential=true,showLines=true,showVectors=true,showProbe=true;
+let dragTarget=null;
+let qMagnitude=5;
+let charges=[];
+let probe={x:.72,y:.34};
+
+const data={
+ single:{
+  title:"Поле на положителен точков заряд",
+  text:"Силовите линии излизат радиално от положителния заряд. Посоката на вектора E съвпада с посоката на силата върху положителен пробен заряд.",
+  note:"Около положителния заряд електричното поле е насочено навън. С увеличаване на разстоянието интензитетът намалява пропорционално на 1/r²."
+ },
+ dipole:{
+  title:"Електрично поле на дипол",
+  text:"Силовите линии започват от положителния заряд и завършват върху отрицателния. Полето във всяка точка е векторна сума от полетата на двата заряда.",
+  note:"При електричен дипол линиите са най-плътни между зарядите, където полето обикновено е най-силно."
+ },
+ same:{
+  title:"Поле на два еднакви положителни заряда",
+  text:"Силовите линии излизат от двата заряда и се отклоняват една от друга. В средата между равни заряди се получава точка с нулев резултантен интензитет.",
+  note:"При еднакви положителни заряди векторите на полето между тях са противоположно насочени и в средната точка се компенсират."
+ }
+};
+
+function setupMode(){
+ if(mode==="single"){
+   charges=[{x:.44,y:.50,s:1}];
+   probe={x:.72,y:.34};
+ }else if(mode==="dipole"){
+   charges=[{x:.34,y:.50,s:1},{x:.66,y:.50,s:-1}];
+   probe={x:.50,y:.30};
+ }else{
+   charges=[{x:.34,y:.50,s:1},{x:.66,y:.50,s:1}];
+   probe={x:.50,y:.30};
+ }
+ const d=data[mode];
+ modeTitle.textContent=d.title;modeText.textContent=d.text;note.textContent=d.note;
+ draw();
+}
+
+function resize(){
+ const r=canvas.getBoundingClientRect();
+ const dpr=Math.min(window.devicePixelRatio||1,2);
+ canvas.width=Math.round(r.width*dpr);
+ canvas.height=Math.round(r.height*dpr);
+ ctx.setTransform(dpr,0,0,dpr,0,0);
+ draw();
+}
+
+function dims(){return {w:canvas.clientWidth,h:canvas.clientHeight}}
+function pixel(p){const {w,h}=dims();return {x:p.x*w,y:p.y*h}}
+function norm(x,y){const {w,h}=dims();return {x:x/w,y:y/h}}
+
+function fieldAt(nx,ny){
+ let ex=0,ey=0,v=0;
+ for(const c of charges){
+   const dx=nx-c.x,dy=ny-c.y;
+   const r2=Math.max(dx*dx+dy*dy,.0012);
+   const r=Math.sqrt(r2);
+   const q=c.s*qMagnitude;
+   ex+=q*dx/(r2*r);
+   ey+=q*dy/(r2*r);
+   v+=q/r;
+ }
+ return {ex,ey,v,e:Math.hypot(ex,ey)};
+}
+
+function colorForPotential(v){
+ const t=Math.tanh(v/22);
+ if(t>=0){
+   const a=Math.abs(t);
+   return `rgb(${Math.round(245+10*a)},${Math.round(248-165*a)},${Math.round(255-180*a)})`;
+ }else{
+   const a=Math.abs(t);
+   return `rgb(${Math.round(245-185*a)},${Math.round(248-135*a)},${Math.round(255-25*a)})`;
+ }
+}
+
+function drawPotential(){
+ const {w,h}=dims();
+ const step=8;
+ for(let y=0;y<h;y+=step){
+   for(let x=0;x<w;x+=step){
+     const f=fieldAt(x/w,y/h);
+     ctx.fillStyle=colorForPotential(f.v);
+     ctx.fillRect(x,y,step+1,step+1);
+   }
+ }
+}
+
+function drawGrid(){
+ const {w,h}=dims();
+ ctx.save();ctx.strokeStyle="rgba(255,255,255,.10)";ctx.lineWidth=1;
+ const step=40;
+ for(let x=0;x<=w;x+=step){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,h);ctx.stroke()}
+ for(let y=0;y<=h;y+=step){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke()}
+ ctx.restore();
+}
+
+function arrow(x,y,dx,dy,len,color,width=1.5){
+ const mag=Math.hypot(dx,dy)||1;const ux=dx/mag,uy=dy/mag;
+ const x2=x+ux*len,y2=y+uy*len;
+ ctx.strokeStyle=color;ctx.fillStyle=color;ctx.lineWidth=width;
+ ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x2,y2);ctx.stroke();
+ ctx.beginPath();
+ ctx.moveTo(x2,y2);
+ ctx.lineTo(x2-ux*7-uy*4,y2-uy*7+ux*4);
+ ctx.lineTo(x2-ux*7+uy*4,y2-uy*7-ux*4);
+ ctx.closePath();ctx.fill();
+}
+
+function drawVectors(){
+ const {w,h}=dims();
+ const sx=46,sy=46;
+ for(let y=sy/2;y<h;y+=sy){
+   for(let x=sx/2;x<w;x+=sx){
+     const f=fieldAt(x/w,y/h);
+     const len=8+18*Math.tanh(f.e/28);
+     arrow(x,y,f.ex,f.ey,len,"rgba(235,247,255,.68)",1.1);
+   }
+ }
+}
+
+function traceLine(startX,startY,dir){
+ const {w,h}=dims();
+ let x=startX,y=startY;
+ ctx.beginPath();ctx.moveTo(x*w,y*h);
+ for(let i=0;i<650;i++){
+   const f=fieldAt(x,y);if(f.e<.0001)break;
+   x+=dir*(f.ex/f.e)*.0045;
+   y+=dir*(f.ey/f.e)*.0045;
+   if(x<0||x>1||y<0||y>1)break;
+   ctx.lineTo(x*w,y*h);
+   for(const c of charges){
+     if(Math.hypot(x-c.x,y-c.y)<.026){i=999;break}
+   }
+ }
+ ctx.stroke();
+}
+
+function drawFieldLines(){
+ ctx.save();ctx.lineWidth=1.8;ctx.strokeStyle="rgba(255,255,255,.88)";
+ for(const c of charges){
+   if(c.s<0 && mode==="dipole")continue;
+   const n=mode==="single"?20:18;
+   for(let i=0;i<n;i++){
+     const a=i/n*Math.PI*2;
+     const sx=c.x+Math.cos(a)*.032,sy=c.y+Math.sin(a)*.032;
+     traceLine(sx,sy,c.s>0?1:-1);
+   }
+ }
+ if(mode==="dipole"){
+   const neg=charges.find(c=>c.s<0);
+   for(let i=0;i<10;i++){
+     const a=i/10*Math.PI*2;
+     traceLine(neg.x+Math.cos(a)*.032,neg.y+Math.sin(a)*.032,-1);
+   }
+ }
+ ctx.restore();
+}
+
+function drawCharge(c,index){
+ const p=pixel(c);
+ const r=27;
+ const grd=ctx.createRadialGradient(p.x-8,p.y-9,4,p.x,p.y,r);
+ if(c.s>0){grd.addColorStop(0,"#ffd2c6");grd.addColorStop(.32,"#ff6a5f");grd.addColorStop(1,"#9f1715")}
+ else{grd.addColorStop(0,"#d6edff");grd.addColorStop(.32,"#438cff");grd.addColorStop(1,"#0c378e")}
+ ctx.fillStyle=grd;ctx.shadowColor=c.s>0?"#ff5e57":"#438cff";ctx.shadowBlur=22;
+ ctx.beginPath();ctx.arc(p.x,p.y,r,0,Math.PI*2);ctx.fill();
+ ctx.shadowBlur=0;ctx.strokeStyle="#fff";ctx.lineWidth=2;ctx.stroke();
+ ctx.fillStyle="#fff";ctx.font="bold 31px Segoe UI";ctx.textAlign="center";ctx.textBaseline="middle";
+ ctx.fillText(c.s>0?"+":"−",p.x,p.y-1);
+ ctx.font="12px Segoe UI";ctx.fillText("q"+(index+1),p.x,p.y+43);
+}
+
+function drawProbe(){
+ const p=pixel(probe),f=fieldAt(probe.x,probe.y);
+ ctx.save();
+ ctx.fillStyle="#ffc866";ctx.shadowColor="#ffc866";ctx.shadowBlur=16;
+ ctx.beginPath();ctx.arc(p.x,p.y,10,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
+ arrow(p.x,p.y,f.ex,f.ey,42,"#ffc866",3);
+ ctx.fillStyle="#ffc866";ctx.font="bold 14px Segoe UI";ctx.textAlign="left";
+ ctx.fillText("E",p.x+12,p.y-13);
+ ctx.restore();
+
+ const c1=charges[0];
+ const r=Math.hypot(probe.x-c1.x,probe.y-c1.y);
+ distanceReadout.textContent=(r*100).toFixed(1)+" cm";
+ potentialReadout.textContent=(f.v*1.8).toFixed(1)+" V";
+ fieldReadout.textContent=(f.e*4.2).toFixed(1)+" V/m";
+ let ang=Math.atan2(-f.ey,f.ex)*180/Math.PI;if(ang<0)ang+=360;
+ angleReadout.textContent=ang.toFixed(0)+"°";
+}
+
+function draw(){
+ if(!canvas.clientWidth)return;
+ const {w,h}=dims();
+ ctx.clearRect(0,0,w,h);
+ if(showPotential)drawPotential();else{ctx.fillStyle="#07101f";ctx.fillRect(0,0,w,h)}
+ drawGrid();
+ if(showVectors)drawVectors();
+ if(showLines)drawFieldLines();
+ charges.forEach(drawCharge);
+ if(showProbe)drawProbe();
+ else{
+  distanceReadout.textContent="—";potentialReadout.textContent="—";fieldReadout.textContent="—";angleReadout.textContent="—";
+ }
+}
+
+function pointerPos(e){
+ const r=canvas.getBoundingClientRect();
+ const clientX=e.touches?e.touches[0].clientX:e.clientX;
+ const clientY=e.touches?e.touches[0].clientY:e.clientY;
+ return norm(clientX-r.left,clientY-r.top);
+}
+function down(e){
+ e.preventDefault();const p=pointerPos(e);
+ let best={d:.06,target:null};
+ charges.forEach((c,i)=>{const d=Math.hypot(p.x-c.x,p.y-c.y);if(d<best.d)best={d,target:{type:"charge",i}}});
+ const dp=Math.hypot(p.x-probe.x,p.y-probe.y);if(dp<best.d)best={d:dp,target:{type:"probe"}};
+ dragTarget=best.target;
+}
+function move(e){
+ if(!dragTarget)return;e.preventDefault();const p=pointerPos(e);
+ p.x=Math.max(.04,Math.min(.96,p.x));p.y=Math.max(.06,Math.min(.94,p.y));
+ if(dragTarget.type==="probe")probe=p;else{charges[dragTarget.i].x=p.x;charges[dragTarget.i].y=p.y}
+ draw();
+}
+function up(){dragTarget=null}
+
+canvas.addEventListener("mousedown",down);window.addEventListener("mousemove",move);window.addEventListener("mouseup",up);
+canvas.addEventListener("touchstart",down,{passive:false});canvas.addEventListener("touchmove",move,{passive:false});window.addEventListener("touchend",up);
+
+document.querySelectorAll("[data-mode]").forEach(b=>b.onclick=()=>{
+ mode=b.dataset.mode;document.querySelectorAll("[data-mode]").forEach(x=>x.classList.toggle("active",x===b));setupMode();
+});
+chargeSlider.oninput=()=>{qMagnitude=Number(chargeSlider.value);chargeValue.textContent=qMagnitude+" μC";draw()};
+function toggle(btn,key){
+ window[key]=!window[key];btn.classList.toggle("active",window[key]);draw();
+}
+potentialBtn.onclick=()=>{showPotential=!showPotential;potentialBtn.classList.toggle("active",showPotential);draw()};
+linesBtn.onclick=()=>{showLines=!showLines;linesBtn.classList.toggle("active",showLines);draw()};
+vectorsBtn.onclick=()=>{showVectors=!showVectors;vectorsBtn.classList.toggle("active",showVectors);draw()};
+probeBtn.onclick=()=>{showProbe=!showProbe;probeBtn.classList.toggle("active",showProbe);draw()};
+resetBtn.onclick=()=>{qMagnitude=5;chargeSlider.value=5;chargeValue.textContent="5 μC";showPotential=showLines=showVectors=showProbe=true;[potentialBtn,linesBtn,vectorsBtn,probeBtn].forEach(b=>b.classList.add("active"));setupMode()};
+window.addEventListener("resize",resize);
+setupMode();resize();
+</script>
+</body>
+</html>

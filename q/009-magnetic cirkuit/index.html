@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="bg">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QR-009 · Магнитна верига</title>
+<style>
+:root{--bg:#07111f;--p:#0d1b2e;--t:#eef7ff;--m:#9fb4cf;--c:#4fd8ff;--g:#63e59a;--y:#ffd15c;--r:#ff625f;--bd:#ffffff22}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% 0,#17395f 0,transparent 35%),var(--bg);color:var(--t);font-family:Segoe UI,Arial,sans-serif}
+main{max-width:1320px;margin:auto;padding:14px}header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #4fd8ff44;padding:8px 0 14px}
+.brand{display:flex;gap:12px;align-items:center}.logo{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;font-size:25px;font-weight:900;color:#03111c;background:linear-gradient(135deg,var(--c),#a16cff)}
+h1,h2,p{margin:0}.muted{color:var(--m);line-height:1.45}.badge{border:1px solid var(--bd);padding:6px 10px;border-radius:999px}
+.grid{display:grid;grid-template-columns:1.25fr .75fr;gap:18px;margin-top:18px}.card{background:linear-gradient(180deg,#0d1b2e,#091523);border:1px solid var(--bd);border-radius:24px;padding:17px;box-shadow:0 18px 50px #0008}
+svg{width:100%;display:block}.controls{display:grid;gap:12px}.control,.metric,.formula,.note{border:1px solid var(--bd);border-radius:13px;background:#ffffff07;padding:11px}
+.control label{display:flex;justify-content:space-between;margin-bottom:7px}input[type=range]{width:100%;accent-color:var(--c)}
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:9px}.metric span{display:block;color:var(--m);font-size:.78rem}.metric b{display:block;margin-top:4px;font-size:1.05rem}
+.formula{text-align:center;border-color:#4fd8ff55}.formula b{font-size:1.12rem}.note{border-left:4px solid var(--y);line-height:1.45}
+@media(max-width:960px){.grid{grid-template-columns:1fr}}
+</style></head>
+<body><main>
+<header><div class="brand"><div class="logo">Φ</div><div><h1>QR-009 · Магнитна верига</h1><p class="muted">Влияние на тока, броя навивки и въздушната междина върху магнитния поток</p></div></div><span class="badge">ElectroTech 3D</span></header>
+<div class="grid">
+<section class="card">
+<svg viewBox="0 0 900 650">
+<defs>
+ <linearGradient id="iron" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d8dde2"/><stop offset=".22" stop-color="#6d7780"/><stop offset=".5" stop-color="#bcc3c9"/><stop offset=".78" stop-color="#555f68"/><stop offset="1" stop-color="#e0e4e7"/></linearGradient>
+ <linearGradient id="cu"><stop stop-color="#6e2b09"/><stop offset=".35" stop-color="#ff9a3c"/><stop offset=".6" stop-color="#8b390c"/><stop offset="1" stop-color="#ffc078"/></linearGradient>
+ <filter id="sh"><feDropShadow dx="0" dy="7" stdDeviation="7" flood-opacity=".55"/></filter>
+ <marker id="ga" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#63e59a"/></marker>
+ <marker id="ra" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#ff625f"/></marker>
+</defs>
+
+<!-- core -->
+<g filter="url(#sh)">
+ <path d="M215 100 H690 Q720 100 720 130 V270 H650 V175 H295 V485 H650 V380 H720 V530 Q720 560 690 560 H215 Q185 560 185 530 V130 Q185 100 215 100Z" fill="url(#iron)" stroke="#e8edf0" stroke-width="3"/>
+ <path d="M235 116 H680" stroke="#fff" stroke-opacity=".28" stroke-width="8"/>
+ <path d="M192 128 L208 112 M192 525 L208 542 M705 115 L716 130 M705 545 L716 530" stroke="#2d343b" stroke-opacity=".45" stroke-width="3"/>
+ <path d="M295 175 H650 M295 485 H650" stroke="#ffffff" stroke-opacity=".13" stroke-width="4"/>
+</g>
+<text x="455" y="72" text-anchor="middle" fill="#eef7ff" font-size="20" font-weight="800">Феромагнитен магнитопровод</text>
+
+<!-- gap -->
+<rect id="gapBg" x="648" y="270" width="75" height="110" rx="4" fill="#07111f"/>
+<line x1="648" y1="270" x2="723" y2="270" stroke="#dbe3e9" stroke-width="3"/>
+<line x1="648" y1="380" x2="723" y2="380" stroke="#dbe3e9" stroke-width="3"/>
+<text id="gapLabel" x="758" y="330" fill="#4fd8ff" font-size="18" font-weight="800">δ</text>
+
+<!-- coil -->
+<g id="coil"></g>
+<line x1="115" y1="170" x2="190" y2="170" stroke="#ff9a3c" stroke-width="7"/>
+<line x1="115" y1="455" x2="190" y2="455" stroke="#ff9a3c" stroke-width="7"/>
+<circle cx="110" cy="170" r="7" fill="#eef7ff"/><circle cx="110" cy="455" r="7" fill="#eef7ff"/>
+<text x="86" y="176" fill="#ff625f" font-size="24" font-weight="900">+</text><text x="88" y="463" fill="#4fd8ff" font-size="27" font-weight="900">−</text>
+<line x1="120" y1="140" x2="175" y2="140" stroke="#ff625f" stroke-width="5" marker-end="url(#ra)"/>
+<text x="145" y="120" text-anchor="middle" fill="#ff625f" font-size="18" font-weight="800">I</text>
+<text id="nText" x="125" y="320" text-anchor="middle" fill="#eef7ff" font-size="18" font-weight="800">N = 300</text>
+
+<!-- magnetic flux -->
+<path id="fluxPath" d="M260 520 H680 Q685 520 685 510 V390 M685 260 V150 Q685 140 675 140 H260 Q225 140 225 175 V485 Q225 520 260 520" fill="none" stroke="#63e59a" stroke-width="7" stroke-dasharray="14 10" marker-end="url(#ga)"/>
+<g id="flowParticles"></g>
+<text x="445" y="132" text-anchor="middle" fill="#63e59a" font-size="21" font-weight="900">Магнитен поток Φ</text>
+
+<!-- fringing -->
+<g id="fringe" fill="none" stroke="#63e59a" stroke-width="3" stroke-dasharray="8 7" opacity=".8">
+ <path d="M665 267 C625 290 625 360 665 383"/>
+ <path d="M705 267 C745 290 745 360 705 383"/>
+ <path d="M675 267 C650 295 650 355 675 383"/>
+ <path d="M695 267 C720 295 720 355 695 383"/>
+</g>
+
+<!-- dimension -->
+<line id="dim" x1="785" y1="274" x2="785" y2="376" stroke="#4fd8ff" stroke-width="3"/>
+<line x1="773" y1="274" x2="797" y2="274" stroke="#4fd8ff" stroke-width="3"/><line x1="773" y1="376" x2="797" y2="376" stroke="#4fd8ff" stroke-width="3"/>
+<text x="805" y="320" fill="#9fb4cf" font-size="15">въздушна</text><text x="805" y="340" fill="#9fb4cf" font-size="15">междина</text>
+
+<text x="450" y="610" text-anchor="middle" fill="#9fb4cf" font-size="16">Зелената линия показва условно средния път и относителната величина на магнитния поток.</text>
+</svg>
+</section>
+
+<section class="card controls">
+<div><h2>Променете параметрите</h2><p class="muted">Наблюдавайте как магнитодвижещото напрежение, магнитното съпротивление и потокът се изменят.</p></div>
+<div class="control"><label>Ток I <b id="ival">2.0 A</b></label><input id="I" type="range" min="0" max="5" value="2" step=".1"></div>
+<div class="control"><label>Брой навивки N <b id="nval">300</b></label><input id="N" type="range" min="50" max="800" value="300" step="10"></div>
+<div class="control"><label>Въздушна междина δ <b id="dval">1.0 mm</b></label><input id="D" type="range" min="0" max="5" value="1" step=".1"></div>
+
+<div class="metrics">
+ <div class="metric"><span>Магнитодвижещо напрежение</span><b id="theta">Θ = 600 A·нав.</b></div>
+ <div class="metric"><span>Магнитно съпротивление</span><b id="rel">ℜ = —</b></div>
+ <div class="metric"><span>Магнитен поток</span><b id="phi">Φ = — mWb</b></div>
+ <div class="metric"><span>Магнитна индукция</span><b id="bval">B = — T</b></div>
+</div>
+
+<div class="formula"><b>Θ = N · I</b></div>
+<div class="formula"><b>ℜ = l/(μS)</b></div>
+<div class="formula"><b>Φ = Θ/ℜ &nbsp;&nbsp;&nbsp; B = Φ/S</b></div>
+<div class="note" id="note">Въздушната междина има много по-голямо магнитно съпротивление от феромагнитното ядро. Затова дори малко увеличение на δ може значително да намали магнитния поток.</div>
+</section>
+</div></main>
+<script>
+const NS="http://www.w3.org/2000/svg",$=x=>document.getElementById(x);
+const coil=$("coil");
+for(let k=0;k<11;k++){
+ let y=190+k*25;
+ let p=document.createElementNS(NS,"path");
+ p.setAttribute("d",`M175 ${y} C145 ${y} 145 ${y+18} 175 ${y+18} H225 C255 ${y+18} 255 ${y} 225 ${y}`);
+ p.setAttribute("fill","none");p.setAttribute("stroke","url(#cu)");p.setAttribute("stroke-width","8");p.setAttribute("stroke-linecap","round");
+ coil.appendChild(p);
+}
+const I=$("I"),N=$("N"),D=$("D");
+const flowParticles=$("flowParticles");
+const flowPts=[
+ [260,520],[360,520],[470,520],[580,520],[670,520],
+ [685,490],[685,430],[685,390],[685,260],[685,210],[685,155],
+ [610,140],[500,140],[390,140],[285,140],[235,160],
+ [225,230],[225,320],[225,410],[225,485]
+];
+let phase=0;
+function interpPath(t){
+  const n=flowPts.length;
+  const seg=t*(n-1);
+  const i=Math.floor(seg)% (n-1);
+  const f=seg-Math.floor(seg);
+  const a=flowPts[i],b=flowPts[i+1];
+  return [a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f];
+}
+function drawParticles(norm){
+  flowParticles.innerHTML="";
+  if(norm<0.01) return;
+  const count=14;
+  for(let k=0;k<count;k++){
+    const t=(phase+k/count)%1;
+    const [x,y]=interpPath(t);
+    const c=document.createElementNS(NS,"circle");
+    c.setAttribute("cx",x);c.setAttribute("cy",y);
+    c.setAttribute("r",(3.5+4*norm).toFixed(1));
+    c.setAttribute("fill","#9cffba");
+    c.setAttribute("stroke","#2bdc72");
+    c.setAttribute("stroke-width","1.5");
+    c.setAttribute("opacity",(0.35+0.65*norm).toFixed(2));
+    flowParticles.appendChild(c);
+  }
+}
+function animateFlow(){
+  const i=+I.value,n=+N.value,dmm=+D.value,d=dmm/1000;
+  const lcore=.90,S=0.0025,mur=1800,mu0=4*Math.PI*1e-7;
+  const R=lcore/(mu0*mur*S)+d/(mu0*S);
+  const phi=R?(n*i)/R:0;
+  const norm=Math.min(1,phi/0.0018);
+  phase=(phase+0.0018+0.0045*norm)%1;
+  drawParticles(norm);
+  requestAnimationFrame(animateFlow);
+}
+
+function update(){
+ let i=+I.value,n=+N.value,dmm=+D.value,d=dmm/1000;
+ // pedagogical representative geometry
+ let lcore=.90,S=0.0025,mur=1800,mu0=4*Math.PI*1e-7;
+ let Rcore=lcore/(mu0*mur*S);
+ let Rgap=d/(mu0*S);
+ let R=Rcore+Rgap;
+ let theta=n*i, phi=R?theta/R:0, B=phi/S;
+ $("ival").textContent=i.toFixed(1)+" A";$("nval").textContent=n;$("dval").textContent=dmm.toFixed(1)+" mm";
+ $("theta").textContent="Θ = "+theta.toFixed(0)+" A·нав.";
+ $("rel").textContent="ℜ = "+(R/1e5).toFixed(2)+"×10⁵ A/Wb";
+ $("phi").textContent="Φ = "+(phi*1000).toFixed(3)+" mWb";
+ $("bval").textContent="B = "+B.toFixed(3)+" T";
+ $("nText").textContent="N = "+n;
+ let norm=Math.min(1,phi/0.0018);
+ $("fluxPath").setAttribute("stroke-width",(2+8*norm).toFixed(1));
+ $("fluxPath").setAttribute("opacity",(0.20+.65*norm).toFixed(2));
+ $("fluxPath").setAttribute("stroke-dasharray", norm>0.02 ? "12 10" : "6 14");
+ $("fringe").setAttribute("opacity",(dmm===0?0:Math.min(.95,.25+dmm*.14)));
+ let gap=8+dmm*18;
+ $("gapBg").setAttribute("y",325-gap/2);$("gapBg").setAttribute("height",gap);
+ $("gapLabel").textContent="δ = "+dmm.toFixed(1)+" mm";
+ $("note").textContent=dmm===0
+ ?"При δ = 0 магнитната верига е затворена без въздушна междина и магнитното съпротивление е най-малко."
+ :"При увеличаване на δ магнитното съпротивление нараства, магнитният поток Φ намалява и разсейването около междината става по-изразено.";
+}
+[I,N,D].forEach(x=>x.addEventListener("input",update));update();animateFlow();
+</script></body></html>

@@ -84,15 +84,17 @@ svg{width:100%;display:block}.controls{display:grid;gap:12px}.control,.metric,.f
 
 <div class="metrics">
  <div class="metric"><span>Магнитодвижещо напрежение</span><b id="theta">Θ = 600 A·нав.</b></div>
- <div class="metric"><span>Магнитно съпротивление</span><b id="rel">ℜ = —</b></div>
+ <div class="metric"><span>Общо магнитно съпротивление</span><b id="rel">ℜобщо = —</b></div>
  <div class="metric"><span>Магнитен поток</span><b id="phi">Φ = — mWb</b></div>
  <div class="metric"><span>Магнитна индукция</span><b id="bval">B = — T</b></div>
 </div>
 
 <div class="formula"><b>Θ = N · I</b></div>
-<div class="formula"><b>ℜ = l/(μS)</b></div>
-<div class="formula"><b>Φ = Θ/ℜ &nbsp;&nbsp;&nbsp; B = Φ/S</b></div>
-<div class="note" id="note">Въздушната междина има много по-голямо магнитно съпротивление от феромагнитното ядро. Затова дори малко увеличение на δ може значително да намали магнитния поток.</div>
+<div class="formula"><b>ℜ<sub>Fe</sub> = l<sub>Fe</sub>/(μ₀ μᵣ S)</b></div>
+<div class="formula"><b>ℜ<sub>δ</sub> = δ/(μ₀ S)</b></div>
+<div class="formula"><b>ℜ<sub>общо</sub> = ℜ<sub>Fe</sub> + ℜ<sub>δ</sub></b></div>
+<div class="formula"><b>Φ = Θ/ℜ<sub>общо</sub> &nbsp;&nbsp;&nbsp; B = Φ/S</b></div>
+<div class="note" id="note">Общото магнитно съпротивление е сума от съпротивлението на феромагнитното ядро и въздушната междина. Поради малката магнитна проницаемост на въздуха дори малка междина δ може значително да намали магнитния поток.</div>
 </section>
 </div></main>
 <script>
@@ -160,7 +162,7 @@ function update(){
  let theta=n*i, phi=R?theta/R:0, B=phi/S;
  $("ival").textContent=i.toFixed(1)+" A";$("nval").textContent=n;$("dval").textContent=dmm.toFixed(1)+" mm";
  $("theta").textContent="Θ = "+theta.toFixed(0)+" A·нав.";
- $("rel").textContent="ℜ = "+(R/1e5).toFixed(2)+"×10⁵ A/Wb";
+ $("rel").textContent="ℜобщо = "+(R/1e5).toFixed(2)+"×10⁵ A/Wb";
  $("phi").textContent="Φ = "+(phi*1000).toFixed(3)+" mWb";
  $("bval").textContent="B = "+B.toFixed(3)+" T";
  $("nText").textContent="N = "+n;

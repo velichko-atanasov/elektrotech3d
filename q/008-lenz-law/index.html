@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="bg">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#07111f">
+<title>QR-008 · Закон на Ленц</title>
+<style>
+:root{--bg:#07111f;--p:#0d1b2e;--p2:#091523;--t:#eef7ff;--m:#9fb4cf;--c:#4fd8ff;--r:#ff5f62;--b:#438cff;--y:#ffd15c;--g:#62dfa0;--bd:#ffffff22}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 82% 0,#17395f 0,transparent 35%),var(--bg);color:var(--t);font-family:Segoe UI,Arial,sans-serif}
+main{max-width:1300px;margin:auto;padding:14px}header{display:flex;justify-content:space-between;align-items:center;padding:8px 0 15px;border-bottom:1px solid #4fd8ff44}
+.brand{display:flex;align-items:center;gap:12px}.logo{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;font-weight:900;font-size:25px;color:#03111c;background:linear-gradient(135deg,var(--c),#a16cff)}
+h1,h2,p{margin:0}.muted{color:var(--m);line-height:1.45}.badge{padding:6px 10px;border:1px solid var(--bd);border-radius:999px;background:#ffffff0b}
+.grid{display:grid;grid-template-columns:1.18fr .82fr;gap:18px;margin-top:18px}.card{background:linear-gradient(180deg,var(--p),var(--p2));border:1px solid var(--bd);border-radius:24px;padding:18px;box-shadow:0 18px 50px #0008}
+svg{width:100%;display:block}.controls{display:grid;gap:13px}.control{padding:11px;border:1px solid var(--bd);border-radius:14px;background:#ffffff07}.control label{display:flex;justify-content:space-between;margin-bottom:8px}
+input[type=range]{width:100%;accent-color:var(--c)}.buttons{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.btn{padding:11px;border:1px solid var(--bd);border-radius:11px;background:#ffffff0b;color:var(--t);font-weight:800;cursor:pointer}.btn.active{background:linear-gradient(135deg,var(--g),var(--c));color:#03111c}
+.poles{display:grid;grid-template-columns:1fr 1fr;gap:8px}.pole{padding:10px;border:1px solid var(--bd);border-radius:11px;background:#ffffff0b;color:var(--t);font-weight:800;cursor:pointer}.pole.active{background:linear-gradient(135deg,var(--c),#7b8cff);color:#03111c}
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px}.metric{border:1px solid var(--bd);border-radius:13px;padding:11px;background:#ffffff07}.metric span{display:block;color:var(--m);font-size:.78rem}.metric b{display:block;margin-top:4px}
+.formula{border:1px solid #4fd8ff55;border-radius:13px;padding:11px;background:#4fd8ff0a;text-align:center;font-size:1.15rem}.formula small{display:block;color:var(--m);font-size:.75rem;margin-top:4px}
+.note{padding:12px;border-left:4px solid var(--y);background:#ffd15c0d;border-radius:10px;line-height:1.45}
+@media(max-width:960px){.grid{grid-template-columns:1fr}.buttons{grid-template-columns:1fr}}
+</style></head>
+<body><main>
+<header><div class="brand"><div class="logo">Φ</div><div><h1>QR-008 · Закон на Ленц</h1><p class="muted">Електромагнитна индукция: движение на магнит спрямо намотка</p></div></div><span class="badge">ElectroTech 3D</span></header>
+<div class="grid">
+<section class="card">
+<svg id="scene" viewBox="0 0 920 610">
+<defs>
+ <linearGradient id="N"><stop stop-color="#8b0b12"/><stop offset=".5" stop-color="#ff5f62"/><stop offset="1" stop-color="#6e0810"/></linearGradient>
+ <linearGradient id="S"><stop stop-color="#062d6b"/><stop offset=".5" stop-color="#438cff"/><stop offset="1" stop-color="#041d49"/></linearGradient>
+ <linearGradient id="metal" x1="0" y1="0" x2="0" y2="1">
+ <stop offset="0" stop-color="#fafcfd"/><stop offset=".18" stop-color="#cbd3da"/><stop offset=".45" stop-color="#66727d"/><stop offset=".68" stop-color="#e5eaee"/><stop offset="1" stop-color="#46505a"/>
+ </linearGradient>
+ <linearGradient id="steelEdge" x1="0" y1="0" x2="1" y2="0">
+ <stop offset="0" stop-color="#ffffff"/><stop offset=".5" stop-color="#929ca6"/><stop offset="1" stop-color="#f1f4f6"/>
+ </linearGradient>
+ <filter id="shadow"><feDropShadow dx="0" dy="6" stdDeviation="6" flood-opacity=".5"/></filter>
+ <marker id="greenArrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#62dfa0"/></marker>
+ <marker id="yellowArrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#ffd15c"/></marker>
+</defs>
+
+<!-- flux lines -->
+<g id="flux"></g>
+
+<!-- magnet -->
+<g id="magnet" filter="url(#shadow)">
+ <rect x="88" y="228" width="284" height="144" rx="34" fill="url(#metal)" stroke="#f3f6f8" stroke-width="3"/>
+ <ellipse cx="98" cy="300" rx="18" ry="61" fill="url(#steelEdge)" opacity=".8"/>
+ <ellipse cx="362" cy="300" rx="18" ry="61" fill="url(#steelEdge)" opacity=".75"/>
+ <rect id="leftPole" x="102" y="238" width="124" height="124" rx="26" fill="url(#S)"/>
+ <rect id="rightPole" x="234" y="238" width="124" height="124" rx="26" fill="url(#N)"/>
+ <rect x="225" y="238" width="12" height="124" rx="4" fill="#d8dde2" opacity=".6"/>
+ <text id="leftLetter" x="164" y="319" text-anchor="middle" fill="white" font-size="56" font-weight="900">S</text>
+ <text id="rightLetter" x="296" y="319" text-anchor="middle" fill="white" font-size="56" font-weight="900">N</text>
+ <path d="M122 252 Q230 218 344 252" fill="none" stroke="#fff" stroke-opacity=".30" stroke-width="8"/>
+ <path d="M120 348 Q230 375 346 346" fill="none" stroke="#111" stroke-opacity=".18" stroke-width="6"/>
+</g>
+
+<!-- movement arrow -->
+<line id="moveLine" x1="380" y1="190" x2="500" y2="190" stroke="#62dfa0" stroke-width="6" marker-end="url(#greenArrow)"/>
+<text id="moveText" x="440" y="165" text-anchor="middle" fill="#62dfa0" font-size="20" font-weight="800">магнитът се приближава</text>
+
+<!-- coil -->
+<g filter="url(#shadow)">
+ <ellipse cx="675" cy="300" rx="105" ry="150" fill="#ffffff05" stroke="#6f7b88" stroke-width="4"/>
+ <g id="coil"></g>
+</g>
+<text x="675" y="485" text-anchor="middle" fill="#eef7ff" font-size="20" font-weight="800">Намотка · N навивки</text>
+
+<!-- induced field -->
+<line id="bindLine" x1="600" y1="105" x2="735" y2="105" stroke="#ffd15c" stroke-width="6" marker-end="url(#yellowArrow)"/>
+<text id="bindText" x="668" y="82" text-anchor="middle" fill="#ffd15c" font-size="19" font-weight="800">Bᵢₙd</text>
+
+<!-- galvanometer -->
+<g transform="translate(675 548)">
+ <path d="M-88 0 A88 88 0 0 1 88 0" fill="#edf2f5" stroke="#87939e" stroke-width="3"/>
+ <path d="M-72 -10 A73 73 0 0 1 72 -10" fill="none" stroke="#3a4652" stroke-width="2"/>
+ <g stroke="#222" stroke-width="2">
+   <line x1="-66" y1="-18" x2="-60" y2="-29"/><line x1="-38" y1="-48" x2="-33" y2="-59"/>
+   <line x1="0" y1="-66" x2="0" y2="-53"/><line x1="38" y1="-48" x2="33" y2="-59"/>
+   <line x1="66" y1="-18" x2="60" y2="-29"/>
+ </g>
+ <text x="-65" y="-3" text-anchor="middle" fill="#222" font-size="11">−1</text>
+ <text x="0" y="-72" text-anchor="middle" fill="#222" font-size="11">0</text>
+ <text x="65" y="-3" text-anchor="middle" fill="#222" font-size="11">+1</text>
+ <line id="needle" x1="0" y1="0" x2="0" y2="-61" stroke="#e63c3c" stroke-width="5" stroke-linecap="round"/>
+ <circle r="7" fill="#222"/>
+ <rect x="-62" y="10" width="124" height="31" rx="7" fill="#101820" stroke="#52606c"/>
+ <text id="galvValue" x="0" y="32" text-anchor="middle" fill="#62dfa0" font-size="17" font-weight="800">0.00 mA</text>
+ <text x="0" y="60" text-anchor="middle" fill="#eef7ff" font-size="15">галванометър</text>
+</g>
+
+<text id="currentText" x="450" y="535" text-anchor="middle" fill="#4fd8ff" font-size="20" font-weight="800">Индуциран ток i</text>
+</svg>
+</section>
+
+<section class="card controls">
+<div><h2>Експеримент</h2><p class="muted">Изберете кой полюс е към намотката и движете магнита. Наблюдавайте посоката на индуцирания ток и полето, което се противопоставя на промяната на магнитния поток.</p></div>
+
+<div class="control"><label>Полюс към намотката</label><div class="poles"><button id="north" class="pole active">N към намотката</button><button id="south" class="pole">S към намотката</button></div></div>
+
+<div class="control"><label>Разстояние магнит–намотка <b id="dval">55%</b></label><input id="distance" type="range" min="0" max="100" value="55"></div>
+
+<div class="buttons"><button id="approach" class="btn active">Приближаване</button><button id="stop" class="btn">Спри магнита</button><button id="away" class="btn">Отдалечаване</button></div>
+
+<div class="metrics">
+ <div class="metric"><span>Промяна на потока</span><b id="fluxRead">dΦ/dt &gt; 0</b></div>
+ <div class="metric"><span>Индуцирана ЕДС</span><b id="emfRead">e &lt; 0</b></div>
+ <div class="metric"><span>Индуциран ток</span><b id="iRead">има ток</b></div>
+ <div class="metric"><span>Реакция на намотката</span><b id="reaction">противодейства на увеличението</b></div>
+</div>
+
+<div class="formula"><b>e = − dΦ/dt</b><small>за един затворен контур</small></div>
+<div class="formula"><b>e = −N · dΦ/dt</b><small>за намотка с N навивки</small></div>
+
+<div class="note" id="note">При приближаване на северния полюс магнитният поток през намотката се увеличава. Индуцираният ток създава поле, което противодейства на това увеличение.</div>
+</section>
+</div></main>
+
+<script>
+const NS="http://www.w3.org/2000/svg";
+const $=id=>document.getElementById(id);
+const coil=$("coil"),flux=$("flux"),distance=$("distance");
+let pole="N",motion="approach";
+
+for(let i=0;i<12;i++){
+ const x=620+i*10;
+ const e=document.createElementNS(NS,"ellipse");
+ e.setAttribute("cx",x);e.setAttribute("cy",300);e.setAttribute("rx",62);e.setAttribute("ry",145);
+ e.setAttribute("fill","none");e.setAttribute("stroke","#c8752e");e.setAttribute("stroke-width","7");e.setAttribute("opacity",.9);
+ coil.appendChild(e);
+}
+function drawFlux(strength){
+ flux.innerHTML="";
+ [-90,-60,-30,0,30,60,90].forEach(off=>{
+  const p=document.createElementNS(NS,"path");
+  p.setAttribute("d",`M350 ${300+off*.55} C450 ${300+off} 535 ${300+off} 610 ${300+off*.55}`);
+  p.setAttribute("fill","none");p.setAttribute("stroke","#4fd8ff");
+  p.setAttribute("stroke-width",(1.5+3*strength).toFixed(1));p.setAttribute("opacity",(.25+.65*strength).toFixed(2));
+  flux.appendChild(p);
+ });
+}
+function setMotion(m){
+ motion=m;
+ ["approach","stop","away"].forEach(x=>$(x).classList.toggle("active",x===m));
+ update();
+}
+$("approach").onclick=()=>setMotion("approach");$("stop").onclick=()=>setMotion("stop");$("away").onclick=()=>setMotion("away");
+$("north").onclick=()=>{pole="N";$("north").classList.add("active");$("south").classList.remove("active");update()};
+$("south").onclick=()=>{pole="S";$("south").classList.add("active");$("north").classList.remove("active");update()};
+distance.addEventListener("input",update);
+
+function update(){
+ const d=+distance.value,strength=(100-d)/100;
+ const tx=25+d*1.7;
+ $("magnet").setAttribute("transform",`translate(${tx-95} 0)`);
+ $("dval").textContent=d+"%";
+ drawFlux(strength);
+
+ const nRight=pole==="N";
+ $("rightPole").setAttribute("fill",nRight?"url(#N)":"url(#S)");
+ $("leftPole").setAttribute("fill",nRight?"url(#S)":"url(#N)");
+ $("rightLetter").textContent=nRight?"N":"S";$("leftLetter").textContent=nRight?"S":"N";
+
+ let dir=motion==="approach"?1:motion==="away"?-1:0;
+ const fluxSign=dir;
+ if(dir===0){
+  $("fluxRead").textContent="dΦ/dt = 0";$("emfRead").textContent="e = 0";$("iRead").textContent="i = 0";
+  $("reaction").textContent="няма индуцирана реакция";$("needle").setAttribute("transform","rotate(0)");
+  $("galvValue").textContent="0.00 mA";
+  $("moveLine").setAttribute("opacity","0");$("moveText").textContent="магнитът е неподвижен";
+  $("bindLine").setAttribute("opacity","0");$("bindText").textContent="Bᵢₙd = 0";
+  $("currentText").textContent="Няма индуциран ток";
+  $("note").textContent="Магнитът може да е близо до намотката, но ако магнитният поток не се изменя, dΦ/dt = 0 и индуцирана ЕДС не възниква.";
+ }else{
+  $("moveLine").setAttribute("opacity","1");$("bindLine").setAttribute("opacity","1");
+  if(dir>0){$("moveLine").setAttribute("x1","380");$("moveLine").setAttribute("x2","500");$("moveText").textContent="магнитът се приближава";$("fluxRead").textContent="|Φ| се увеличава";$("reaction").textContent="противодейства на увеличението";}
+  else{$("moveLine").setAttribute("x1","500");$("moveLine").setAttribute("x2","380");$("moveText").textContent="магнитът се отдалечава";$("fluxRead").textContent="|Φ| намалява";$("reaction").textContent="противодейства на намалението";}
+  const sense=(nRight?1:-1)*dir;
+  const currentMagnitude = Math.max(0.02, strength*0.95);
+  const needleAngle = sense * Math.min(58, 12 + currentMagnitude*48);
+  $("needle").setAttribute("transform",`rotate(${needleAngle})`);
+  $("galvValue").textContent=(sense*currentMagnitude).toFixed(2)+" mA";
+  $("emfRead").textContent=sense>0?"условна посока e₁":"противоположна посока e₂";
+  $("iRead").textContent=sense>0?"посока i₁":"посока i₂";
+  $("currentText").textContent=sense>0?"Индуциран ток i₁":"Индуциран ток i₂";
+  if(sense>0){$("bindLine").setAttribute("x1","600");$("bindLine").setAttribute("x2","735");}
+  else{$("bindLine").setAttribute("x1","735");$("bindLine").setAttribute("x2","600");}
+  $("bindText").textContent="Bᵢₙd — противопоставя се на промяната";
+  const action=dir>0?"се увеличава":"намалява";
+  $("note").textContent=`Към намотката е полюс ${pole}. При ${dir>0?"приближаване":"отдалечаване"} магнитният поток ${action}. Индуцираният ток създава собствено магнитно поле, което се противопоставя на тази промяна.`;
+ }
+}
+update();
+</script></body></html>

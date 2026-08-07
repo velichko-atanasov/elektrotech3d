@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QR-004 — Постоянно и променливо напрежение</title>
+<style>
+:root{--bg:#07111f;--panel:#0d1b2e;--line:#263a55;--text:#eef6ff;--muted:#a9bad0;--cyan:#46d9ff;--gold:#ffd45a;--red:#ff6262;--green:#68e0a0}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 70% 0,#132c4a 0,transparent 38%),var(--bg);color:var(--text);font-family:Segoe UI,Arial,sans-serif}
+main{max-width:1250px;margin:auto;padding:16px}
+header{text-align:center;margin-bottom:12px}
+h1{font-size:clamp(24px,4vw,42px);margin:5px 0}.sub{color:var(--muted)}
+.grid{display:grid;grid-template-columns:1fr 1.25fr;gap:14px}
+.card{background:linear-gradient(180deg,#10223a,#0a1728);border:1px solid #29415e;border-radius:18px;padding:14px;box-shadow:0 12px 30px #0006}
+h2{margin:0 0 8px;font-size:19px;color:#dff7ff}
+canvas{width:100%;display:block;border-radius:12px;background:#07101c}
+.controls{margin-top:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.control{background:#0c1a2d;border:1px solid #29415e;border-radius:12px;padding:10px}
+label{display:block;font-size:13px;color:var(--muted);margin-bottom:5px}
+input[type=range]{width:100%}
+button{border:0;border-radius:11px;padding:10px 14px;font-weight:700;cursor:pointer;background:linear-gradient(90deg,#36c8ff,#6d7cff);color:#06111e}
+.mode{display:flex;gap:8px;justify-content:center;margin:12px 0}
+.mode button.active{outline:2px solid white}
+.formulas{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.f{background:#081522;border:1px solid #29415e;border-radius:11px;padding:10px;text-align:center}
+.f b{display:block;color:var(--gold);font-size:18px}.f small{color:var(--muted)}
+.note{margin-top:10px;color:var(--muted);font-size:13px;text-align:center}
+@media(max-width:850px){.grid{grid-template-columns:1fr}.controls,.formulas{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<main>
+<header>
+<h1>QR-004 · Постоянно и променливо напрежение</h1>
+<div class="sub">Въртене на намотка в магнитно поле: AC алтернатор и DC динамо с комутатор</div>
+</header>
+
+<div class="mode">
+<button id="acBtn" class="active">AC · променливо</button>
+<button id="dcBtn">DC · постоянно</button>
+<button id="playBtn">⏸ Пауза</button>
+</div>
+
+<div class="grid">
+<section class="card">
+<h2>1. Генериране на променливо напрежение</h2>
+<canvas id="gen" width="560" height="430"></canvas>
+<div class="note" id="machineNote">Намотката се върти между полюсите N и S. Положението ѝ е синхронизирано с точката върху синусоидата.</div>
+</section>
+
+<section class="card">
+<h2>2. Напрежение във времето</h2>
+<canvas id="graph" width="700" height="430"></canvas>
+</section>
+</div>
+
+<div class="controls">
+<div class="control"><label>Амплитуда Uₘ: <b id="ampVal">325 V</b></label><input id="amp" type="range" min="50" max="400" value="325"></div>
+<div class="control"><label>Честота f: <b id="freqVal">50 Hz</b></label><input id="freq" type="range" min="10" max="100" value="50"></div>
+<div class="control"><label>Фаза φ: <b id="phaseVal">0°</b></label><input id="phase" type="range" min="-180" max="180" value="0"></div>
+</div>
+
+<div class="formulas">
+<div class="f"><small>Моментна стойност</small><b>u(t)=Uₘ·sin(ωt+φ)</b></div>
+<div class="f"><small>Ефективна стойност</small><b id="rms">Uеф = 230 V</b></div>
+<div class="f"><small>Период</small><b id="period">T = 20 ms</b></div>
+<div class="f"><small>Ъглова честота</small><b id="omega">ω = 314 rad/s</b></div>
+</div>
+</main>
+
+<script>
+const gen=document.getElementById('gen'), gc=gen.getContext('2d');
+const graph=document.getElementById('graph'), ctx=graph.getContext('2d');
+const amp=document.getElementById('amp'), freq=document.getElementById('freq'), phase=document.getElementById('phase');
+let mode='AC', playing=true, theta=0, last=performance.now();
+
+function val(){return {A:+amp.value,f:+freq.value,p:+phase.value*Math.PI/180}}
+function updateLabels(){
+ const {A,f}=val();
+ ampVal.textContent=A+' V'; freqVal.textContent=f+' Hz'; phaseVal.textContent=phase.value+'°';
+ if(mode==='AC'){
+   rms.textContent='Uеф = '+(A/Math.sqrt(2)).toFixed(1)+' V';
+   period.textContent='T = '+(1000/f).toFixed(1)+' ms';
+   omega.textContent='ω = '+(2*Math.PI*f).toFixed(0)+' rad/s';
+ }else{
+   rms.textContent='U = '+(A*.65).toFixed(0)+' V';
+   period.textContent='T = —';
+   omega.textContent='ω = механично въртене';
+ }
+}
+[amp,freq,phase].forEach(x=>x.oninput=updateLabels);
+
+function line(c,x1,y1,x2,y2,color,w=2,dash=[]){c.beginPath();c.setLineDash(dash);c.moveTo(x1,y1);c.lineTo(x2,y2);c.strokeStyle=color;c.lineWidth=w;c.stroke();c.setLineDash([])}
+function text(c,s,x,y,color='#eef6ff',size=16,align='left'){c.fillStyle=color;c.font=`${size}px Segoe UI`;c.textAlign=align;c.fillText(s,x,y)}
+
+function drawGenerator(){
+ gc.clearRect(0,0,gen.width,gen.height);
+ const cx=280,cy=215;
+ // magnetic poles
+ gc.fillStyle='#164f9d';gc.fillRect(28,95,105,240); gc.fillStyle='#9d2630';gc.fillRect(427,95,105,240);
+ text(gc,'N',80,225,'white',54,'center'); text(gc,'S',480,225,'white',54,'center');
+ // field arrows
+ for(let y=125;y<=305;y+=45){line(gc,145,y,410,y,'#68b8ff',2); gc.fillStyle='#68b8ff';gc.beginPath();gc.moveTo(410,y);gc.lineTo(398,y-6);gc.lineTo(398,y+6);gc.fill()}
+ text(gc,'B',280,75,'#68b8ff',22,'center');
+ // rotating coil shown in perspective — rotates in both AC alternator and DC dynamo modes
+ gc.save();gc.translate(cx,cy);gc.rotate(theta);
+ const squash=.34+Math.abs(Math.cos(theta))*.66;
+ gc.strokeStyle='#ffd45a';gc.lineWidth=7;gc.beginPath();gc.ellipse(0,0,95*squash,72,0,0,Math.PI*2);gc.stroke();
+ // axis
+ line(gc,-125,0,125,0,'#eef6ff',3);
+ gc.restore();
+ // rotation arrow
+ gc.strokeStyle='#68e0a0';gc.lineWidth=3;gc.beginPath();gc.arc(cx,cy,125,-2.4,-.45);gc.stroke();
+ gc.fillStyle='#68e0a0';gc.beginPath();gc.moveTo(393,160);gc.lineTo(381,159);gc.lineTo(389,171);gc.fill();
+ text(gc,'ω',390,145,'#68e0a0',23,'center');
+ text(gc, mode==='AC' ? 'Въртяща се намотка — алтернатор' : 'Въртяща се намотка — динамо с комутатор',280,375,'#ffd45a',18,'center');
+ if(mode==='DC'){
+   // simplified split-ring commutator indication
+   gc.strokeStyle='#ff9d54';gc.lineWidth=5;
+   gc.beginPath();gc.arc(cx-18,cy+105,14,.25,Math.PI-.25);gc.stroke();
+   gc.beginPath();gc.arc(cx+18,cy+105,14,Math.PI+.25,2*Math.PI-.25);gc.stroke();
+   text(gc,'комутатор',280,410,'#ffb576',15,'center');
+ }
+}
+
+function drawGraph(){
+ ctx.clearRect(0,0,graph.width,graph.height);
+ const L=62,R=25,Tp=32,B=52,W=graph.width-L-R,H=graph.height-Tp-B,mid=Tp+H/2;
+ // grid
+ for(let i=0;i<=10;i++){let x=L+W*i/10;line(ctx,x,Tp,x,Tp+H,'#18304a',1)}
+ for(let i=0;i<=8;i++){let y=Tp+H*i/8;line(ctx,L,y,L+W,y,'#18304a',1)}
+ line(ctx,L,mid,L+W,mid,'#91a5bb',2); line(ctx,L,Tp,L,Tp+H,'#91a5bb',2);
+ text(ctx,'u(t), V',18,24,'#eef6ff',15); text(ctx,'t',L+W+10,mid+20,'#eef6ff',15);
+ const {A,f,p}=val(), scale=(H*.42)/Math.max(A,50);
+ // ± amplitude guides
+ let yP=mid-A*scale,yM=mid+A*scale;
+ line(ctx,L,yP,L+W,yP,'#ff6262',1,[6,5]); line(ctx,L,yM,L+W,yM,'#ff6262',1,[6,5]);
+ text(ctx,'+Uₘ',L+7,yP-7,'#ff8585',14); text(ctx,'−Uₘ',L+7,yM-7,'#ff8585',14);
+ ctx.beginPath();
+ for(let px=0;px<=W;px++){
+   let cycles=2.5, ang=px/W*cycles*2*Math.PI+p;
+   let u=mode==='AC'?A*Math.sin(ang):A*.65;
+   let y=mid-u*scale, x=L+px;
+   px?ctx.lineTo(x,y):ctx.moveTo(x,y);
+ }
+ ctx.strokeStyle='#46d9ff';ctx.lineWidth=4;ctx.stroke();
+ // moving synchronized point
+ let a=theta+p;
+ let cycles=2.5, normalized=((a%(2*Math.PI))+2*Math.PI)%(2*Math.PI);
+ let px=W*(normalized/(cycles*2*Math.PI));
+ let u=mode==='AC'?A*Math.sin(a):A*.65;
+ let x=L+px,y=mid-u*scale;
+ ctx.fillStyle='#ffd45a';ctx.beginPath();ctx.arc(x,y,8,0,Math.PI*2);ctx.fill();
+ text(ctx,mode==='AC'?'u(t)=Uₘ·sin(ωt+φ)':'U(t)=U=const.  — изгладено постоянно напрежение',L+W/2,Tp+24,'#ffd45a',20,'center');
+ // one period bracket
+ if(mode==='AC'){
+   let pw=W/cycles; let bx=L+20, by=Tp+H+25;
+   line(ctx,bx,by,bx+pw,by,'#68e0a0',2);line(ctx,bx,by-7,bx,by+7,'#68e0a0',2);line(ctx,bx+pw,by-7,bx+pw,by+7,'#68e0a0',2);
+   text(ctx,'T',bx+pw/2,by-7,'#68e0a0',16,'center');
+ }
+}
+
+function frame(now){
+ let dt=(now-last)/1000; last=now;
+ if(playing){ const f=+freq.value; theta += dt*(0.65+f/50*1.25); }
+ drawGenerator();drawGraph();requestAnimationFrame(frame);
+}
+playBtn.onclick=()=>{playing=!playing;playBtn.textContent=playing?'⏸ Пауза':'▶ Старт'}
+acBtn.onclick=()=>{mode='AC';acBtn.classList.add('active');dcBtn.classList.remove('active');machineNote.textContent='Намотката се върти между полюсите N и S. Положението ѝ е синхронизирано с точката върху синусоидата.';updateLabels()}
+dcBtn.onclick=()=>{mode='DC';dcBtn.classList.add('active');acBtn.classList.remove('active');machineNote.textContent='При динамото намотката продължава да се върти. Комутаторът осигурява еднопосочен изход, а след изглаждане постоянното напрежение се представя с хоризонтална линия U = const.';updateLabels()}
+updateLabels();requestAnimationFrame(frame);
+</script>
+</body>
+</html>

@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#07111f">
+<title>QR-006 · Магнитно поле и магнитни материали</title>
+<style>
+:root{
+ --bg:#07111f;--panel:#0d1b2e;--panel2:#091523;--text:#eef7ff;--muted:#9fb4cf;
+ --cyan:#4fd8ff;--blue:#3b8fff;--red:#ff5f62;--gold:#ffd15c;--green:#62dfa0;
+ --violet:#a16cff;--border:#ffffff22
+}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:Segoe UI,Arial,sans-serif;color:var(--text);
+background:radial-gradient(circle at 82% 0,#17395f 0,transparent 35%),var(--bg)}
+main{max-width:1290px;margin:auto;padding:14px}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0 15px;border-bottom:1px solid #4fd8ff44}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;font-weight:900;font-size:24px;color:#03111c;background:linear-gradient(135deg,var(--cyan),var(--violet))}
+h1,h2,h3,p{margin:0}.muted{color:var(--muted);line-height:1.45}
+.badge{padding:5px 9px;border:1px solid var(--border);border-radius:999px;background:#ffffff0b;font-size:.82rem}
+.grid{display:grid;grid-template-columns:1.18fr .82fr;gap:18px;margin-top:18px}
+.card{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--border);border-radius:24px;padding:18px;box-shadow:0 18px 50px #0008}
+svg{width:100%;display:block}
+.controls{display:grid;gap:13px}
+.control{padding:11px;border:1px solid var(--border);border-radius:14px;background:#ffffff07}
+.control label{display:flex;justify-content:space-between;margin-bottom:8px}
+input[type=range]{width:100%;accent-color:var(--cyan)}
+select{width:100%;padding:10px;border-radius:11px;background:#0a1728;color:var(--text);border:1px solid #ffffff33}
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.metric{border:1px solid var(--border);border-radius:14px;padding:11px;background:#ffffff07}
+.metric span{display:block;color:var(--muted);font-size:.78rem}.metric b{display:block;margin-top:4px}
+.formula{border:1px solid #4fd8ff55;border-radius:13px;padding:11px;background:#4fd8ff0a;text-align:center;font-size:1.05rem}
+.formula small{display:block;color:var(--muted);font-size:.75rem;margin-top:4px}
+.note{padding:12px;border-left:4px solid var(--gold);background:#ffd15c0d;border-radius:10px;line-height:1.45}
+.legend{display:grid;gap:8px;margin-top:10px}.legendRow{display:flex;align-items:center;gap:9px}.line{width:34px;height:4px}.dot{width:14px;height:14px;border-radius:50%}
+.modebar{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.modebtn{padding:10px;border-radius:11px;border:1px solid var(--border);background:#ffffff0b;color:var(--text);font-weight:800;cursor:pointer}
+.modebtn.active{background:linear-gradient(135deg,var(--cyan),#7b8cff);color:#03111c}
+@media(max-width:960px){.grid{grid-template-columns:1fr}.modebar{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+<header>
+<div class="brand"><div class="logo">B</div><div>
+<h1>QR-006 · Магнитно поле и магнитни материали</h1>
+<p class="muted">Диамагнетизъм, парамагнетизъм и феромагнетизъм</p>
+</div></div>
+<span class="badge">ElectroTech 3D</span>
+</header>
+
+<div class="grid">
+<section class="card">
+<svg id="scene" viewBox="0 0 900 620">
+<defs>
+  <linearGradient id="magBody" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#f7f7f7"/>
+    <stop offset=".25" stop-color="#b8c2cc"/>
+    <stop offset=".55" stop-color="#5e6975"/>
+    <stop offset=".8" stop-color="#cdd4da"/>
+    <stop offset="1" stop-color="#4a535d"/>
+  </linearGradient>
+  <linearGradient id="north" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#9a1010"/><stop offset=".45" stop-color="#f05252"/><stop offset="1" stop-color="#6d0808"/>
+  </linearGradient>
+  <linearGradient id="south" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#063377"/><stop offset=".45" stop-color="#3b8fff"/><stop offset="1" stop-color="#05245a"/>
+  </linearGradient>
+  <linearGradient id="sampleMetal" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#6b7580"/><stop offset=".35" stop-color="#d7dde2"/><stop offset=".65" stop-color="#747e89"/><stop offset="1" stop-color="#363d45"/>
+  </linearGradient>
+  <filter id="shadow"><feDropShadow dx="0" dy="7" stdDeviation="6" flood-opacity=".55"/></filter>
+</defs>
+
+<!-- field -->
+<g id="fieldLayer"></g>
+
+<!-- realistic bar magnet -->
+<g id="magnet" filter="url(#shadow)">
+  <rect x="105" y="225" width="300" height="160" rx="28" fill="url(#magBody)" stroke="#e9eef2" stroke-width="2"/>
+  <rect x="110" y="230" width="145" height="150" rx="24" fill="url(#north)"/>
+  <rect x="255" y="230" width="145" height="150" rx="24" fill="url(#south)"/>
+  <rect x="244" y="230" width="22" height="150" fill="#d6dbe0" opacity=".45"/>
+  <text x="182" y="325" text-anchor="middle" font-size="66" font-weight="900" fill="#fff">N</text>
+  <text x="327" y="325" text-anchor="middle" font-size="66" font-weight="900" fill="#fff">S</text>
+  <path d="M130 250 Q252 210 375 250" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="8"/>
+</g>
+
+<!-- sample -->
+<g id="sample" filter="url(#shadow)">
+  <rect x="615" y="205" width="220" height="240" rx="20" fill="url(#sampleMetal)" stroke="#e8edf1" stroke-width="2"/>
+  <rect x="628" y="218" width="194" height="214" rx="14" fill="#252c35" stroke="#ffffff22"/>
+  <text id="sampleTitle" x="725" y="185" text-anchor="middle" fill="#eef7ff" font-size="22" font-weight="800">Феромагнетик</text>
+  <g id="moments"></g>
+  <text id="materialTag" x="725" y="470" text-anchor="middle" fill="#ffd15c" font-size="19" font-weight="800">силно намагнитване</text>
+</g>
+
+<!-- qualitative arrows -->
+<g id="externalArrow">
+  <line x1="455" y1="505" x2="570" y2="505" stroke="#62dfa0" stroke-width="6"/>
+  <polygon points="570,505 550,493 550,517" fill="#62dfa0"/>
+  <text x="512" y="485" text-anchor="middle" fill="#62dfa0" font-size="19" font-weight="800">външно поле H</text>
+</g>
+<g id="mArrow">
+  <line id="mArrowLine" x1="665" y1="515" x2="780" y2="515" stroke="#ffd15c" stroke-width="6"/>
+  <polygon id="mArrowHead" points="780,515 760,503 760,527" fill="#ffd15c"/>
+  <text id="mArrowText" x="723" y="555" text-anchor="middle" fill="#ffd15c" font-size="18">намагнитеност M</text>
+</g>
+</svg>
+
+<div class="legend">
+ <div class="legendRow"><span class="line" style="background:#4fd8ff"></span>магнитни силови линии</div>
+ <div class="legendRow"><span class="line" style="background:#62dfa0"></span>външно магнитно поле H</div>
+ <div class="legendRow"><span class="line" style="background:#ffd15c"></span>магнитни моменти / домени</div>
+</div>
+</section>
+
+<section class="card controls">
+<div>
+  <h2>Тип магнитен материал</h2>
+  <p class="muted">Сравнете как различните материали реагират на едно и също външно магнитно поле.</p>
+</div>
+
+<div class="modebar">
+  <button class="modebtn" data-mode="dia">Диамагнетик</button>
+  <button class="modebtn" data-mode="para">Парамагнетик</button>
+  <button class="modebtn active" data-mode="ferro">Феромагнетик</button>
+</div>
+
+<div class="control">
+<label>Разстояние магнит–материал <b id="distVal">55%</b></label>
+<input id="dist" type="range" min="0" max="100" step="1" value="55">
+</div>
+
+<div class="metrics">
+<div class="metric"><span>Относителна сила на H</span><b id="hRead">0.45</b></div>
+<div class="metric"><span>Относителна намагнитеност M</span><b id="mRead">0.41</b></div>
+<div class="metric"><span>Знак на χₘ</span><b id="chiRead">χₘ ≫ 0</b></div>
+<div class="metric"><span>Поведение на силовите линии</span><b id="fieldRead">силно се концентрират</b></div>
+</div>
+
+<div class="formula"><b>B = μ₀(H + M)</b><small>Обща връзка за магнитната индукция</small></div>
+<div class="formula"><b>M = χₘH</b><small>За линейни магнитни материали</small></div>
+<div class="formula"><b>μᵣ = 1 + χₘ</b><small>Относителна магнитна проницаемост</small></div>
+
+<div class="note" id="note">
+Феромагнитните материали имат доменна структура. При външно поле домените се ориентират силно по неговата посока и материалът се намагнитва значително.
+</div>
+</section>
+</div>
+</main>
+
+<script>
+const NS="http://www.w3.org/2000/svg";
+const fieldLayer=document.getElementById("fieldLayer");
+const moments=document.getElementById("moments");
+const magnet=document.getElementById("magnet");
+const dist=document.getElementById("dist");
+const btns=[...document.querySelectorAll(".modebtn")];
+const sampleTitle=document.getElementById("sampleTitle");
+const materialTag=document.getElementById("materialTag");
+const hRead=document.getElementById("hRead");
+const mRead=document.getElementById("mRead");
+const chiRead=document.getElementById("chiRead");
+const fieldRead=document.getElementById("fieldRead");
+const note=document.getElementById("note");
+const distVal=document.getElementById("distVal");
+const mArrowLine=document.getElementById("mArrowLine");
+const mArrowHead=document.getElementById("mArrowHead");
+const mArrowText=document.getElementById("mArrowText");
+
+let mode="ferro";
+const baseAngles=[];
+for(let i=0;i<24;i++) baseAngles.push(((i*73)%180)-90);
+
+function el(tag,attrs){
+ const e=document.createElementNS(NS,tag);
+ for(const [k,v] of Object.entries(attrs)) e.setAttribute(k,v);
+ return e;
+}
+
+function drawMoments(strength){
+ moments.innerHTML="";
+ let align, response;
+ if(mode==="dia"){ align = Math.min(.8, .18 + strength*.45); response=-1; }
+ else if(mode==="para"){ align = Math.min(.65, .08 + strength*.38); response=1; }
+ else { align = Math.min(.98, .12 + strength*.95); response=1; }
+
+ for(let r=0;r<6;r++){
+  for(let c=0;c<4;c++){
+   const i=r*4+c, x=660+c*44, y=250+r*31;
+   const randomPart=baseAngles[i]*(1-align);
+   const target=response===1?0:180;
+   const angle=response===1?randomPart:(180-randomPart);
+   const g=el("g",{transform:`translate(${x} ${y}) rotate(${angle})`});
+   g.appendChild(el("line",{x1:-13,y1:0,x2:13,y2:0,stroke:"#ffd15c","stroke-width":4,"stroke-linecap":"round"}));
+   g.appendChild(el("polygon",{points:"13,0 5,-5 5,5",fill:"#ffd15c"}));
+   moments.appendChild(g);
+  }
+ }
+}
+
+function drawField(strength){
+ fieldLayer.innerHTML="";
+ const color="#4fd8ff";
+ const magRight = 405 + (dist.value*1.45); // only for visual relation
+ // families of curves
+ const ys=[235,260,285,325,350,375];
+ ys.forEach((yy,idx)=>{
+   let bend=0;
+   if(mode==="dia") bend= 35*strength*(idx<3?-1:1);
+   if(mode==="para") bend= -10*strength*(idx<3?-1:1);
+   if(mode==="ferro") bend= -28*strength*(idx<3?-1:1);
+   const p=el("path",{
+    d:`M400 ${yy} C500 ${yy+bend} 550 ${yy+bend} 620 ${yy}`,
+    fill:"none",stroke:color,
+    "stroke-width": mode==="ferro" ? (2.2+3.0*strength) : (1.8+1.2*strength),
+    opacity: mode==="dia" ? .5+.25*(1-strength) : .45+.45*strength
+   });
+   fieldLayer.appendChild(p);
+ });
+ // outer closed-like lines
+ [0,1].forEach(k=>{
+   const top=170-k*35, bot=440+k*35;
+   fieldLayer.appendChild(el("path",{d:`M170 225 C330 ${top} 520 ${top} 650 225`,fill:"none",stroke:color,"stroke-width":2,opacity:.45}));
+   fieldLayer.appendChild(el("path",{d:`M170 385 C330 ${bot} 520 ${bot} 650 385`,fill:"none",stroke:color,"stroke-width":2,opacity:.45}));
+ });
+}
+
+function updateArrow(sign,mag){
+ const cx1=665, cx2=665 + sign*(50+70*mag);
+ mArrowLine.setAttribute("x1",cx1);mArrowLine.setAttribute("x2",cx2);
+ const pts=sign>0?`${cx2},515 ${cx2-20},503 ${cx2-20},527`:`${cx2},515 ${cx2+20},503 ${cx2+20},527`;
+ mArrowHead.setAttribute("points",pts);
+ mArrowText.textContent= sign>0 ? "M по посока на H" : "M срещу H";
+}
+
+function update(){
+ const d=+dist.value;
+ const strength=(100-d)/100;
+ const tx=10+d*1.7;
+ magnet.setAttribute("transform",`translate(${tx-105} 0)`);
+ distVal.textContent=d+"%";
+ hRead.textContent=strength.toFixed(2);
+
+ let m, chi, field, title, tag, desc, sign=1;
+ if(mode==="dia"){
+   m=0.08*strength; chi="χₘ < 0"; field="леко се изтласкват"; title="Диамагнетик"; tag="слабо противоположно намагнитване"; sign=-1;
+   desc="При диамагнетиците външното поле индуцира много слаба намагнитеност, насочена противоположно на H. Затова χₘ е отрицателна и силовите линии леко се изтласкват от материала.";
+ }else if(mode==="para"){
+   m=0.18*strength; chi="χₘ > 0, малка"; field="леко се концентрират"; title="Парамагнетик"; tag="слабо намагнитване по H";
+   desc="При парамагнетиците част от магнитните моменти се ориентират по посока на H. Ефектът е слаб, χₘ е положителна, но малка, и силовите линии леко се концентрират в материала.";
+ }else{
+   m=Math.min(.98, .15+0.85*strength); chi="χₘ ≫ 0"; field="силно се концентрират"; title="Феромагнетик"; tag="силно доменно намагнитване";
+   desc="Феромагнитните материали имат доменна структура. При външно поле домените се ориентират силно по неговата посока и материалът се намагнитва значително.";
+ }
+ mRead.textContent=m.toFixed(2);
+ chiRead.textContent=chi;
+ fieldRead.textContent=field;
+ sampleTitle.textContent=title;
+ materialTag.textContent=tag;
+ note.textContent=desc;
+
+ drawMoments(strength);
+ drawField(strength);
+ updateArrow(sign,m);
+}
+
+btns.forEach(b=>b.onclick=()=>{
+ mode=b.dataset.mode;
+ btns.forEach(x=>x.classList.toggle("active",x===b));
+ update();
+});
+dist.addEventListener("input",update);
+update();
+</script>
+</body>
+</html>

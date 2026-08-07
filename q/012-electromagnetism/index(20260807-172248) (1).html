@@ -84,31 +84,6 @@ h1,h2,h3,p{margin:0}.sub{margin-top:4px;color:#c3d2e3}.badge{padding:7px 11px;bo
  vector-effect:non-scaling-stroke;
 }
 
-
-/* Final fullscreen correction: keep the complete Earth field visible */
-:fullscreen .hero,
-:-webkit-full-screen .hero{
-    min-height:100vh;
-}
-:fullscreen #scene-earth .visualCard,
-:-webkit-full-screen #scene-earth .visualCard{
-    width:min(86vw,900px);
-    height:min(78vh,560px);
-    top:53%;
-    transform:translate(-50%,-50%);
-}
-:fullscreen #scene-earth .visualCard.float,
-:-webkit-full-screen #scene-earth .visualCard.float{
-    animation:none;
-}
-@media (max-height:760px){
-    #scene-earth .visualCard{
-        height:min(76vh,520px);
-        width:min(88%,840px);
-        top:54%;
-    }
-}
-
 </style>
 </head>
 <body>

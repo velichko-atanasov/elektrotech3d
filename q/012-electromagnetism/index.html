@@ -84,6 +84,42 @@ h1,h2,h3,p{margin:0}.sub{margin-top:4px;color:#c3d2e3}.badge{padding:7px 11px;bo
  vector-effect:non-scaling-stroke;
 }
 
+
+/* Responsive lock: Earth image + animated field use the same geometry on phones */
+@media (max-width:600px){
+  .hero{min-height:470px}
+
+  #scene-earth .visualCard{
+    width:96%;
+    height:auto;
+    aspect-ratio:900 / 560;
+    top:55%;
+    transform:translate(-50%,-50%);
+    animation:none;
+  }
+
+  #scene-earth .visualCard > img{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center;
+  }
+
+  #scene-earth .visualOverlay{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+  }
+
+  #scene-earth .fieldCompass{
+    transform:scale(.78);
+    transform-origin:center;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -114,16 +150,14 @@ h1,h2,h3,p{margin:0}.sub{margin-top:4px;color:#c3d2e3}.badge{padding:7px 11px;bo
      <filter id="glowE"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
     </defs>
     <g id="earthFieldOverlay" fill="none" stroke="#63e59a" stroke-linecap="round" filter="url(#glowE)">
-      <path class="efline" d="M450 72 C80 55 35 505 450 505" />
-      <path class="efline" d="M450 72 C145 60 105 495 450 505" />
-      <path class="efline" d="M450 72 C215 72 195 482 450 505" />
-      <path class="efline" d="M450 72 C290 88 280 462 450 505" />
-      <path class="efline" d="M450 72 C375 108 365 435 450 505" />
-      <path class="efline" d="M450 72 C820 55 865 505 450 505" />
-      <path class="efline" d="M450 72 C755 60 795 495 450 505" />
-      <path class="efline" d="M450 72 C685 72 705 482 450 505" />
-      <path class="efline" d="M450 72 C610 88 620 462 450 505" />
-      <path class="efline" d="M450 72 C525 108 535 435 450 505" />
+      <path class="efline" d="M450 125 C245 115 220 430 450 440" />
+      <path class="efline" d="M450 125 C285 120 275 420 450 440" />
+      <path class="efline" d="M450 125 C330 128 330 402 450 440" />
+      <path class="efline" d="M450 125 C380 138 382 380 450 440" />
+      <path class="efline" d="M450 125 C655 115 680 430 450 440" />
+      <path class="efline" d="M450 125 C615 120 625 420 450 440" />
+      <path class="efline" d="M450 125 C570 128 570 402 450 440" />
+      <path class="efline" d="M450 125 C520 138 518 380 450 440" />
     </g>
     <g id="earthDots" filter="url(#glowE)"></g>
     <circle id="northGlow" cx="450" cy="113" r="12" fill="#8cffad" opacity=".55" class="pulse"/>
@@ -236,16 +270,14 @@ $("qRange").oninput=drawE;$("qPlus").onclick=()=>{chargeSign=1;$("qPlus").classL
 // animated overlay dots for Earth and magnet - these make the static polished visuals feel alive
 const earthDots=$("earthDots"),magDots=$("magDots");
 const earthCurves=[
- t=>[450-385*Math.sin(Math.PI*t),289-217*Math.cos(Math.PI*t)],
- t=>[450-315*Math.sin(Math.PI*t),289-210*Math.cos(Math.PI*t)],
- t=>[450-250*Math.sin(Math.PI*t),289-198*Math.cos(Math.PI*t)],
- t=>[450-180*Math.sin(Math.PI*t),289-180*Math.cos(Math.PI*t)],
- t=>[450-105*Math.sin(Math.PI*t),289-160*Math.cos(Math.PI*t)],
- t=>[450+385*Math.sin(Math.PI*t),289-217*Math.cos(Math.PI*t)],
- t=>[450+315*Math.sin(Math.PI*t),289-210*Math.cos(Math.PI*t)],
- t=>[450+250*Math.sin(Math.PI*t),289-198*Math.cos(Math.PI*t)],
- t=>[450+180*Math.sin(Math.PI*t),289-180*Math.cos(Math.PI*t)],
- t=>[450+105*Math.sin(Math.PI*t),289-160*Math.cos(Math.PI*t)]
+ t=>[450-205*Math.sin(Math.PI*t),282-157*Math.cos(Math.PI*t)],
+ t=>[450-165*Math.sin(Math.PI*t),282-152*Math.cos(Math.PI*t)],
+ t=>[450-120*Math.sin(Math.PI*t),282-140*Math.cos(Math.PI*t)],
+ t=>[450-70*Math.sin(Math.PI*t),282-122*Math.cos(Math.PI*t)],
+ t=>[450+205*Math.sin(Math.PI*t),282-157*Math.cos(Math.PI*t)],
+ t=>[450+165*Math.sin(Math.PI*t),282-152*Math.cos(Math.PI*t)],
+ t=>[450+120*Math.sin(Math.PI*t),282-140*Math.cos(Math.PI*t)],
+ t=>[450+70*Math.sin(Math.PI*t),282-122*Math.cos(Math.PI*t)]
 ];
 const magCurves=[
  t=>[450-310+620*t,280-165*Math.sin(Math.PI*t)],
@@ -275,9 +307,9 @@ function updateEarthStrength(){
   const n=(b-25)/(65-25);
   const lines=[...document.querySelectorAll(".efline")];
   lines.forEach((p,i)=>{
-    const center=1-Math.abs(i-4.5)/5;
-    p.setAttribute("stroke-width",(1.4 + 3.8*n + .7*center).toFixed(2));
-    p.setAttribute("opacity",(0.10 + 0.72*n + .08*center).toFixed(2));
+    const center=1-Math.abs(i-3.5)/4;
+    p.setAttribute("stroke-width",(1.8 + 3.4*n + .7*center).toFixed(2));
+    p.setAttribute("opacity",(0.24 + 0.62*n + .08*center).toFixed(2));
   });
   $("northGlow").setAttribute("opacity",(0.18+0.72*n).toFixed(2));
   $("southGlow").setAttribute("opacity",(0.18+0.72*n).toFixed(2));

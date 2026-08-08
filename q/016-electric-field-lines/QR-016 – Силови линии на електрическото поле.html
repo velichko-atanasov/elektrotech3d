@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<!-- saved from url=(0063)file:///C:/Users/velichko.atanasov/Downloads/preview%20(8).html -->
+<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>QR-016 – Силови линии на електрическото поле</title>
+<style>
+*{box-sizing:border-box}
+:root{
+ --bg:#050b13;--panel:#0a1724;--line:#29445d;--txt:#eef7ff;--muted:#9eb5ca;
+ --cyan:#56d7ff;--gold:#ffd76a;--red:#ff5e69;--blue:#5a9dff;--green:#72e6a3;
+}
+body{
+ margin:0;background:radial-gradient(circle at 50% 5%,#173653,#050b13 52%,#020509);
+ color:var(--txt);font-family:Segoe UI,Arial,sans-serif
+}
+.wrap{max-width:1100px;margin:auto;padding:14px}
+h1{text-align:center;margin:4px 0 5px;font-size:clamp(23px,4vw,36px)}
+.sub{text-align:center;color:var(--muted);margin:0 0 12px}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:10px}
+.tab{
+ border:1px solid #345974;background:#10263a;color:#fff;border-radius:13px;
+ padding:11px 8px;font-weight:850;cursor:pointer
+}
+.tab.active{background:var(--gold);color:#14202b;border-color:var(--gold)}
+.main{display:grid;grid-template-columns:1.35fr .65fr;gap:12px}
+.stage{
+ position:relative;border:1px solid var(--line);border-radius:20px;overflow:hidden;
+ background:
+ radial-gradient(circle at 50% 50%,rgba(18,66,102,.24),transparent 42%),
+ linear-gradient(180deg,#081724,#050d16);
+ min-height:650px;box-shadow:0 18px 50px #0008
+}
+svg{width:100%;height:100%;display:block;position:absolute;inset:0}
+.side{border:1px solid var(--line);border-radius:20px;background:#091725;padding:13px}
+.block{border:1px solid #28445d;border-radius:14px;background:#ffffff06;padding:11px;margin-bottom:10px}
+.block h3{margin:0 0 6px;font-size:16px}.muted{color:var(--muted);line-height:1.45;font-size:14px}
+.eq{text-align:center;font-family:Cambria Math,Georgia,serif;font-size:21px;font-weight:800;color:var(--gold)}
+.value{font-size:20px;font-weight:900;color:var(--green);text-align:center;margin-top:6px}
+.row{display:flex;justify-content:space-between;gap:10px;margin-top:6px;font-size:14px}
+button.ctrl{width:100%;border:1px solid #3c617d;background:#102940;color:#fff;border-radius:12px;padding:10px;font-weight:850;cursor:pointer}
+button.ctrl.on{background:#173c2b;border-color:#3f8b62}
+.legend{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px}
+.key{border:1px solid #2d4860;border-radius:10px;padding:8px;background:#ffffff05}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
+.infoBar{
+ position:absolute;left:14px;bottom:12px;right:14px;border:1px solid #31516c;
+ background:#071522dc;border-radius:13px;padding:9px 12px;color:#d7e7f4;font-size:14px
+}
+.fieldLine{fill:none;stroke:#ffd96a;stroke-width:2;opacity:.67}
+.fieldLineStrong{fill:none;stroke:#ffd96a;stroke-width:2.6;opacity:.82;filter:drop-shadow(0 0 3px #ffd85c)}
+.arrowE{stroke:#5bd8ff;stroke-width:5;fill:none;marker-end:url(#arrowE)}
+.arrowF{stroke:#72e6a3;stroke-width:4;fill:none;marker-end:url(#arrowF)}
+.guide{stroke:#ffffff40;stroke-width:1.5;stroke-dasharray:5 5}
+.label{fill:#eef7ff;font-size:18px;font-weight:800}
+.small{fill:#b9cde0;font-size:15px}
+.chargeText{fill:#fff;font-size:46px;font-weight:900;text-anchor:middle;dominant-baseline:middle}
+.testText{fill:#08131d;font-size:18px;font-weight:900;text-anchor:middle;dominant-baseline:middle}
+.probe{cursor:grab;touch-action:none}
+.probe:active{cursor:grabbing}
+@media(max-width:800px){
+ .wrap{padding:8px}
+ .main{grid-template-columns:1fr}
+ .stage{min-height:540px}
+ .side{border-radius:15px}
+ .tabs{grid-template-columns:1fr}
+ .label{font-size:21px}.small{font-size:18px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Силови линии на електрическото поле</h1>
+<p class="sub">Интерактивна демонстрация на посоката на \(\vec E\), силата върху положителен пробен заряд и гъстотата на силовите линии</p>
+
+<div class="tabs">
+ <button class="tab active" data-mode="plus">Положителен заряд +Q</button>
+ <button class="tab" data-mode="minus">Отрицателен заряд −Q</button>
+ <button class="tab" data-mode="dipole">Електричен дипол +Q / −Q</button>
+</div>
+
+<div class="main">
+<section class="stage">
+<svg id="svg" viewBox="0 0 760 650">
+<defs>
+ <radialgradient id="plusG" cx="35%" cy="30%">
+   <stop offset="0" stop-color="#ffb3b9"></stop><stop offset=".38" stop-color="#ff707b"></stop><stop offset="1" stop-color="#a8202a"></stop>
+ </radialgradient>
+ <radialgradient id="minusG" cx="35%" cy="30%">
+   <stop offset="0" stop-color="#b9d7ff"></stop><stop offset=".38" stop-color="#6ba9ff"></stop><stop offset="1" stop-color="#1e4f9a"></stop>
+ </radialgradient>
+ <marker id="arrowE" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+   <path d="M0,0 L0,6 L9,3 z" fill="#5bd8ff"></path>
+ </marker>
+ <marker id="arrowF" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+   <path d="M0,0 L0,6 L9,3 z" fill="#72e6a3"></path>
+ </marker>
+ <filter id="glow"><fegaussianblur stdDeviation="4" result="b"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+</defs>
+
+<g id="fieldLines"><path d="M432 325 L665 325" class="fieldLineStrong"></path><path d="M428.86401628086725 342.78504745293475 L647.8123969239839 422.4757408478156" class="fieldLine"></path><path d="M419.83431104218687 358.42495570370005 L598.3226662889087 508.19446876066365" class="fieldLineStrong"></path><path d="M406 370.0333209967908 L522.5 571.817240078565" class="fieldLine"></path><path d="M389.0297052386804 376.2100031566348 L429.48973063507515 605.6702096084794" class="fieldLineStrong"></path><path d="M370.9702947613196 376.2100031566348 L330.51026936492485 605.6702096084794" class="fieldLine"></path><path d="M354 370.0333209967908 L237.50000000000006 571.817240078565" class="fieldLineStrong"></path><path d="M340.16568895781313 358.42495570370005 L161.6773337110913 508.19446876066377" class="fieldLine"></path><path d="M331.13598371913275 342.7850474529348 L112.1876030760161 422.47574084781564" class="fieldLineStrong"></path><path d="M328 325 L95 325.00000000000006" class="fieldLine"></path><path d="M331.13598371913275 307.21495254706525 L112.1876030760161 227.5242591521844" class="fieldLineStrong"></path><path d="M340.16568895781313 291.57504429629995 L161.67733371109128 141.80553123933632" class="fieldLine"></path><path d="M354 279.9666790032092 L237.4999999999999 78.18275992143506" class="fieldLineStrong"></path><path d="M370.9702947613196 273.7899968433652 L330.51026936492485 44.3297903915207" class="fieldLine"></path><path d="M389.0297052386804 273.7899968433652 L429.48973063507503 44.3297903915207" class="fieldLineStrong"></path><path d="M406 279.9666790032092 L522.5 78.18275992143501" class="fieldLine"></path><path d="M419.83431104218687 291.57504429629995 L598.3226662889086 141.8055312393362" class="fieldLineStrong"></path><path d="M428.86401628086725 307.21495254706525 L647.8123969239839 227.52425915218444" class="fieldLine"></path></g>
+<g id="charges"><circle cx="380" cy="325" r="42" fill="url(#plusG)" stroke="#fff" stroke-width="2" filter="url(#glow)"></circle><text x="380" y="326" class="chargeText">+</text><text x="380" y="395" class="label">+Q</text></g>
+
+<!-- tangent guide -->
+<line id="tangent" class="guide" x1="515" y1="325" x2="625" y2="325"></line>
+<text id="tangentLabel" class="small" x="588" y="290">тангента към силовата линия</text>
+
+<!-- vectors -->
+<line id="eArrow" class="arrowE" x1="570" y1="325" x2="594.5" y2="325"></line>
+<line id="fArrow" class="arrowF" x1="570" y1="325" x2="590.09" y2="325"></line>
+<text id="eLabel" class="label" x="602.5" y="321">E</text>
+<text id="fLabel" class="label" x="598.09" y="341">F</text>
+
+<!-- draggable positive test charge -->
+<g id="probe" class="probe">
+ <circle id="probeCircle" cx="570" cy="325" r="24" fill="#ffd76a" stroke="#fff3b0" stroke-width="2" filter="url(#glow)"></circle>
+ <text id="probeText" class="testText" x="570" y="326">+q₀</text>
+</g>
+
+<text x="24" y="34" class="small">Преместете пробния заряд с мишката или пръст.</text>
+</svg>
+
+<div class="infoBar" id="infoBar">
+Векторът \(\vec E\) е допирателен към силовата линия, а за положителен пробен заряд \(\vec F=q_0\vec E\) има същата посока.
+</div>
+</section>
+
+<aside class="side">
+ <div class="block">
+  <h3>Физичен смисъл</h3>
+  <div class="muted" id="desc">При положителен източник силовите линии излизат радиално навън. Векторът E и силата върху положителния пробен заряд сочат от +Q навън.</div>
+ </div>
+
+ <div class="block">
+  <div class="eq">\(\vec E=\vec F/q_0\)</div>
+  <div class="eq" style="margin-top:7px">\(\vec F=q_0\vec E\)</div>
+  <div class="value" id="strength">Относителна сила на полето: 139%</div>
+ </div>
+
+ <div class="block">
+  <div class="row"><span>Разстояние до най-близкия заряд</span><b id="distanceVal">190 усл. ед.</b></div>
+  <div class="row"><span>Посока на \(\vec E\)</span><b id="angleVal">0°</b></div>
+ </div>
+
+ <div class="block">
+  <button class="ctrl on" id="showVectors">Вектори E и F: ВКЛ.</button>
+  <button class="ctrl on" id="showTangent" style="margin-top:8px">Тангента: ВКЛ.</button>
+ </div>
+
+ <div class="block">
+  <div class="legend">
+    <div class="key"><span class="dot" style="background:#ffd96a"></span>силови линии</div>
+    <div class="key"><span class="dot" style="background:#5bd8ff"></span>вектор E</div>
+    <div class="key"><span class="dot" style="background:#72e6a3"></span>вектор F</div>
+    <div class="key"><span class="dot" style="background:#ffd76a"></span>пробен заряд +q₀</div>
+  </div>
+ </div>
+
+ <div class="block">
+  <div class="muted">
+   Силовите линии не са траектории на движение на зарядите. Те са геометричен начин за представяне на посоката и относителната големина на електричното поле.
+  </div>
+ </div>
+</aside>
+</div>
+</div>
+
+<script>
+const NS="http://www.w3.org/2000/svg";
+const $=id=>document.getElementById(id);
+let mode="plus", showVectors=true, showTangent=true;
+let probe={x:570,y:325}, dragging=false, dragOff={x:0,y:0};
+
+const chargesByMode={
+ plus:[{x:380,y:325,q:1}],
+ minus:[{x:380,y:325,q:-1}],
+ dipole:[{x:270,y:325,q:1},{x:490,y:325,q:-1}]
+};
+
+function addText(g,x,y,text,cls){
+ const t=document.createElementNS(NS,"text"); t.setAttribute("x",x);t.setAttribute("y",y);t.setAttribute("class",cls);t.textContent=text;g.appendChild(t)
+}
+function addCircle(g,x,y,r,fill,stroke="#fff"){
+ const c=document.createElementNS(NS,"circle");c.setAttribute("cx",x);c.setAttribute("cy",y);c.setAttribute("r",r);c.setAttribute("fill",fill);c.setAttribute("stroke",stroke);c.setAttribute("stroke-width","2");c.setAttribute("filter","url(#glow)");g.appendChild(c)
+}
+function drawCharges(){
+ const g=$("charges");g.innerHTML="";
+ chargesByMode[mode].forEach(c=>{
+   addCircle(g,c.x,c.y,42,c.q>0?"url(#plusG)":"url(#minusG)");
+   addText(g,c.x,c.y+1,c.q>0?"+":"−","chargeText");
+   addText(g,c.x,c.y+70,c.q>0?"+Q":"−Q","label");
+ });
+}
+function line(g,d,cls){
+ const p=document.createElementNS(NS,"path");p.setAttribute("d",d);p.setAttribute("class",cls);g.appendChild(p)
+}
+function drawFieldLines(){
+ const g=$("fieldLines");g.innerHTML="";
+ if(mode==="plus" || mode==="minus"){
+   const c=chargesByMode[mode][0];
+   for(let a=0;a<360;a+=20){
+     const th=a*Math.PI/180;
+     const r1=52,r2=285;
+     const x1=c.x+Math.cos(th)*r1,y1=c.y+Math.sin(th)*r1;
+     const x2=c.x+Math.cos(th)*r2,y2=c.y+Math.sin(th)*r2;
+     const d=mode==="plus"?`M${x1} ${y1} L${x2} ${y2}`:`M${x2} ${y2} L${x1} ${y1}`;
+     line(g,d,(a%40===0)?"fieldLineStrong":"fieldLine");
+   }
+ }else{
+   // Dipole lines: analytic-looking Bezier families, symmetric upper/lower.
+   const p=chargesByMode.dipole[0], n=chargesByMode.dipole[1];
+   const offsets=[55,90,125,165,205,245];
+   offsets.forEach((o,i)=>{
+      line(g,`M${p.x+42} ${p.y-18} C${p.x+95} ${p.y-o} ${n.x-95} ${n.y-o} ${n.x-42} ${n.y-18}`,i<2?"fieldLineStrong":"fieldLine");
+      line(g,`M${p.x+42} ${p.y+18} C${p.x+95} ${p.y+o} ${n.x-95} ${n.y+o} ${n.x-42} ${n.y+18}`,i<2?"fieldLineStrong":"fieldLine");
+   });
+   // outer loops
+   line(g,`M${p.x+22} ${p.y-38} C${p.x-40} ${p.y-210} ${n.x+40} ${n.y-210} ${n.x-22} ${n.y-38}`,"fieldLine");
+   line(g,`M${p.x+22} ${p.y+38} C${p.x-40} ${p.y+210} ${n.x+40} ${n.y+210} ${n.x-22} ${n.y+38}`,"fieldLine");
+ }
+}
+function fieldAt(x,y){
+ let Ex=0,Ey=0;
+ for(const c of chargesByMode[mode]){
+   const dx=x-c.x,dy=y-c.y;
+   let r2=dx*dx+dy*dy;
+   r2=Math.max(r2,35*35);
+   const r=Math.sqrt(r2);
+   const k=c.q/(r2*r);
+   Ex+=k*dx; Ey+=k*dy;
+ }
+ return {Ex,Ey,mag:Math.hypot(Ex,Ey)};
+}
+function nearestDistance(x,y){
+ return Math.min(...chargesByMode[mode].map(c=>Math.hypot(x-c.x,y-c.y)));
+}
+function updateProbe(){
+ const f=fieldAt(probe.x,probe.y);
+ const mag=Math.max(f.mag,1e-8);
+ const ux=f.Ex/mag,uy=f.Ey/mag;
+ const d=nearestDistance(probe.x,probe.y);
+
+ // Vector length depends on field magnitude but is clamped for readability.
+ const relative=Math.min(1.25, Math.max(.35, 9000*mag));
+ const L=70*relative;
+
+ $("probeCircle").setAttribute("cx",probe.x); $("probeCircle").setAttribute("cy",probe.y);
+ $("probeText").setAttribute("x",probe.x); $("probeText").setAttribute("y",probe.y+1);
+
+ $("eArrow").setAttribute("x1",probe.x);$("eArrow").setAttribute("y1",probe.y);
+ $("eArrow").setAttribute("x2",probe.x+ux*L);$("eArrow").setAttribute("y2",probe.y+uy*L);
+ $("fArrow").setAttribute("x1",probe.x);$("fArrow").setAttribute("y1",probe.y);
+ $("fArrow").setAttribute("x2",probe.x+ux*(L*.82));$("fArrow").setAttribute("y2",probe.y+uy*(L*.82));
+
+ $("eLabel").setAttribute("x",probe.x+ux*L+8);$("eLabel").setAttribute("y",probe.y+uy*L-4);
+ $("fLabel").setAttribute("x",probe.x+ux*(L*.82)+8);$("fLabel").setAttribute("y",probe.y+uy*(L*.82)+16);
+
+ // Tangent line has the same local direction as E.
+ const TL=110;
+ $("tangent").setAttribute("x1",probe.x-ux*TL/2);$("tangent").setAttribute("y1",probe.y-uy*TL/2);
+ $("tangent").setAttribute("x2",probe.x+ux*TL/2);$("tangent").setAttribute("y2",probe.y+uy*TL/2);
+ $("tangentLabel").setAttribute("x",probe.x+18);$("tangentLabel").setAttribute("y",probe.y-35);
+
+ $("eArrow").style.display=showVectors?"":"none";$("fArrow").style.display=showVectors?"":"none";
+ $("eLabel").style.display=showVectors?"":"none";$("fLabel").style.display=showVectors?"":"none";
+ $("tangent").style.display=showTangent?"":"none";$("tangentLabel").style.display=showTangent?"":"none";
+
+ $("distanceVal").textContent=Math.round(d)+" усл. ед.";
+ const angle=Math.atan2(-uy,ux)*180/Math.PI;
+ $("angleVal").textContent=((angle+360)%360).toFixed(0)+"°";
+
+ // Relative field strength to nearest practical distance reference.
+ const ref=mode==="dipole"?0.000025:0.000020;
+ const pct=Math.min(250,Math.max(5,(mag/ref)*100));
+ $("strength").textContent="Относителна сила на полето: "+pct.toFixed(0)+"%";
+}
+function setMode(m){
+ mode=m;
+ document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.mode===m));
+ drawCharges();drawFieldLines();
+ if(m==="plus"){
+   $("desc").textContent="При положителен източник силовите линии излизат радиално навън. Векторът E и силата върху положителния пробен заряд сочат от +Q навън.";
+   probe={x:570,y:325};
+ }else if(m==="minus"){
+   $("desc").textContent="При отрицателен източник силовите линии са насочени към заряда. Векторът E и силата върху положителния пробен заряд сочат към −Q.";
+   probe={x:570,y:325};
+ }else{
+   $("desc").textContent="При електричен дипол силовите линии излизат от +Q и влизат в −Q. Посоката на E във всяка точка е допирателна към локалната силова линия.";
+   probe={x:380,y:190};
+ }
+ updateProbe();
+}
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>setMode(b.dataset.mode));
+
+$("showVectors").onclick=()=>{
+ showVectors=!showVectors;$("showVectors").classList.toggle("on",showVectors);
+ $("showVectors").textContent="Вектори E и F: "+(showVectors?"ВКЛ.":"ИЗКЛ.");updateProbe()
+};
+$("showTangent").onclick=()=>{
+ showTangent=!showTangent;$("showTangent").classList.toggle("on",showTangent);
+ $("showTangent").textContent="Тангента: "+(showTangent?"ВКЛ.":"ИЗКЛ.");updateProbe()
+};
+
+const probeG=$("probe"),svg=$("svg");
+function svgPoint(clientX,clientY){
+ const pt=svg.createSVGPoint();pt.x=clientX;pt.y=clientY;
+ return pt.matrixTransform(svg.getScreenCTM().inverse());
+}
+probeG.addEventListener("pointerdown",e=>{
+ dragging=true;probeG.setPointerCapture(e.pointerId);
+ const p=svgPoint(e.clientX,e.clientY);
+ dragOff.x=probe.x-p.x;dragOff.y=probe.y-p.y;
+});
+probeG.addEventListener("pointermove",e=>{
+ if(!dragging)return;
+ const p=svgPoint(e.clientX,e.clientY);
+ probe.x=Math.max(35,Math.min(725,p.x+dragOff.x));
+ probe.y=Math.max(55,Math.min(605,p.y+dragOff.y));
+ updateProbe();
+});
+probeG.addEventListener("pointerup",()=>dragging=false);
+probeG.addEventListener("pointercancel",()=>dragging=false);
+
+setMode("plus");
+</script>
+
+</body></html>

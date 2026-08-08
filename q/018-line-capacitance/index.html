@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<!-- saved from url=(0064)file:///C:/Users/velichko.atanasov/Downloads/preview%20(10).html -->
+<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>QR-018 – Капацитет на линии</title>
+<style>*{box-sizing:border-box}body{margin:0;background:#06101a;color:#eef7ff;font-family:Segoe UI,Arial}.w{max-width:1100px;margin:auto;padding:10px}h1{text-align:center}.sub{text-align:center;color:#abc0d3}.tabs{display:flex;gap:8px}.tabs button{flex:1;padding:12px;border-radius:12px;border:1px solid #456985;background:#102a42;color:white;font-weight:800}.tabs .on{background:#d9b84c;color:#10202b}.main{display:grid;grid-template-columns:1.2fr .8fr;gap:10px;margin-top:10px}.stage,.side,.card{border:1px solid #31536e;border-radius:16px;background:#0b1b2a}.stage{min-height:580px;position:relative;overflow:hidden}.side{padding:10px}.card{padding:10px;margin-bottom:9px;background:#ffffff05}svg{width:100%;height:100%;position:absolute}label{display:flex;justify-content:space-between;font-weight:700;margin:6px 0}input{width:100%}.eq{text-align:center;color:#ffe06a;font:800 20px Cambria Math}.res{color:#73e6a4;font-size:18px;font-weight:900;line-height:1.55}.note{color:#abc0d3;font-size:13px;line-height:1.4}.field{stroke:#ffe06a;stroke-width:2;opacity:.55;stroke-dasharray:7 6;animation:p 1.6s infinite}@keyframes p{50%{opacity:1}}.compare{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.cmp{text-align:center;padding:10px;border:1px solid #31536e;border-radius:13px;background:#0b1b2a}.cmp b{color:#ffe06a}@media(max-width:780px){.main{grid-template-columns:1fr}.stage{min-height:500px}.tabs{display:grid}}</style></head>
+<body><div class="w"><h1>Капацитет на въздушни и кабелни линии</h1><div class="sub">Инженерен модел за 20 kV разпределителна мрежа</div>
+<div class="tabs"><button id="bo" class="on">Въздушен електропровод</button><button id="bc">Кабелна линия</button></div>
+<div class="main"><div class="stage"><svg viewBox="0 0 700 580">
+<g id="ohl">
+<text x="350" y="35" text-anchor="middle" fill="white" font-size="20" font-weight="800">20 kV въздушен електропровод</text>
+
+<!-- Realistic concrete MV poles -->
+<g id="poleL">
+  <!-- tapered concrete pole -->
+  <path d="M118 500 L132 118 L154 118 L170 500 Z" fill="#a9a9a3" stroke="#737873" stroke-width="2"></path>
+  <path d="M132 118 L142 500" stroke="#d4d4cf" stroke-width="3" opacity=".7"></path>
+  <!-- upper steel crossarm -->
+  <rect x="88" y="138" width="110" height="10" rx="3" fill="#555d61" stroke="#838c91" stroke-width="2"></rect>
+  <!-- diagonal braces -->
+  <line x1="106" y1="148" x2="132" y2="182" stroke="#5b6368" stroke-width="5"></line>
+  <line x1="181" y1="148" x2="157" y2="182" stroke="#5b6368" stroke-width="5"></line>
+  <!-- three pin insulators -->
+  <g stroke="#2f3a40" stroke-width="3">
+    <line x1="105" y1="139" x2="105" y2="166"></line>
+    <line x1="143" y1="139" x2="143" y2="170"></line>
+    <line x1="181" y1="139" x2="181" y2="166"></line>
+  </g>
+  <g fill="#6a4b2d" stroke="#2d2118" stroke-width="1">
+    <ellipse cx="105" cy="151" rx="8" ry="4"></ellipse><ellipse cx="105" cy="158" rx="8" ry="4"></ellipse>
+    <ellipse cx="143" cy="153" rx="8" ry="4"></ellipse><ellipse cx="143" cy="161" rx="8" ry="4"></ellipse>
+    <ellipse cx="181" cy="151" rx="8" ry="4"></ellipse><ellipse cx="181" cy="158" rx="8" ry="4"></ellipse>
+  </g>
+  <rect x="108" y="494" width="72" height="9" rx="4" fill="#697066"></rect>
+</g>
+
+<g id="poleR">
+  <path d="M530 500 L546 118 L568 118 L582 500 Z" fill="#a9a9a3" stroke="#737873" stroke-width="2"></path>
+  <path d="M546 118 L556 500" stroke="#d4d4cf" stroke-width="3" opacity=".7"></path>
+  <rect x="500" y="138" width="110" height="10" rx="3" fill="#555d61" stroke="#838c91" stroke-width="2"></rect>
+  <line x1="518" y1="148" x2="546" y2="182" stroke="#5b6368" stroke-width="5"></line>
+  <line x1="593" y1="148" x2="568" y2="182" stroke="#5b6368" stroke-width="5"></line>
+  <g stroke="#2f3a40" stroke-width="3">
+    <line x1="517" y1="139" x2="517" y2="166"></line>
+    <line x1="555" y1="139" x2="555" y2="170"></line>
+    <line x1="593" y1="139" x2="593" y2="166"></line>
+  </g>
+  <g fill="#6a4b2d" stroke="#2d2118" stroke-width="1">
+    <ellipse cx="517" cy="151" rx="8" ry="4"></ellipse><ellipse cx="517" cy="158" rx="8" ry="4"></ellipse>
+    <ellipse cx="555" cy="153" rx="8" ry="4"></ellipse><ellipse cx="555" cy="161" rx="8" ry="4"></ellipse>
+    <ellipse cx="593" cy="151" rx="8" ry="4"></ellipse><ellipse cx="593" cy="158" rx="8" ry="4"></ellipse>
+  </g>
+  <rect x="520" y="494" width="72" height="9" rx="4" fill="#697066"></rect>
+</g>
+
+<!-- adjacent phase conductors for authentic appearance -->
+<path d="M105 166 Q350 218 517 166" fill="none" stroke="#465159" stroke-width="3" opacity=".65"></path>
+<path d="M181 166 Q350 205 593 166" fill="none" stroke="#465159" stroke-width="3" opacity=".65"></path>
+
+<!-- studied phase conductor -->
+<path id="wire" d="M143 170 Q350 290 555 170" fill="none" stroke="#aeb8bd" stroke-width="7"></path>
+<path id="wireHi" d="M143 167 Q350 286 555 167" fill="none" stroke="#eef3f5" stroke-width="2" opacity=".75"></path>
+<g id="of"><line x1="235" y1="260" x2="206.25" y2="500" class="field"></line><line x1="255.9090909090909" y1="260" x2="232.38636363636363" y2="500" class="field"></line><line x1="276.8181818181818" y1="260" x2="258.52272727272725" y2="500" class="field"></line><line x1="297.72727272727275" y1="260" x2="284.65909090909093" y2="500" class="field"></line><line x1="318.6363636363636" y1="260" x2="310.7954545454545" y2="500" class="field"></line><line x1="339.54545454545456" y1="260" x2="336.9318181818182" y2="500" class="field"></line><line x1="360.45454545454544" y1="260" x2="363.0681818181818" y2="500" class="field"></line><line x1="381.3636363636364" y1="260" x2="389.2045454545455" y2="500" class="field"></line><line x1="402.27272727272725" y1="260" x2="415.34090909090907" y2="500" class="field"></line><line x1="423.1818181818182" y1="260" x2="441.47727272727275" y2="500" class="field"></line><line x1="444.0909090909091" y1="260" x2="467.6136363636364" y2="500" class="field"></line><line x1="465" y1="260" x2="493.75" y2="500" class="field"></line></g>
+
+<line x1="25" y1="500" x2="675" y2="500" stroke="#d9e5cf" stroke-width="3"></line>
+<line id="hd" x1="350" y1="290" x2="350" y2="500" stroke="white" stroke-dasharray="6 6"></line>
+<text id="ht" x="365" y="380" fill="white">h=10.0 m</text>
+<text id="wl" x="350" y="285" text-anchor="middle" fill="white">AC 70 mm²</text>
+</g>
+
+<g id="cab" <g="" style="display:none"><text x="350" y="35" text-anchor="middle" fill="white" font-size="20" font-weight="800">20 kV едножилен XLPE кабел</text>
+<g transform="translate(350 285)"><circle r="205" fill="#121a20" stroke="#59636a" stroke-width="15"></circle><circle r="178" fill="#8b949a"></circle><circle r="158" fill="#222a30"></circle><circle r="132" fill="#d8cfad"></circle><circle r="57" fill="#303438"></circle><circle r="49" fill="#b76a37" stroke="#efbd91" stroke-width="3"></circle><g id="cf"><line x1="62" y1="0" x2="130" y2="0" class="field"></line><line x1="58.26094248872632" y1="21.20524888619146" x2="122.16004070216809" y2="44.462618632336934" class="field"></line><line x1="47.494755473376635" y1="39.85283180056543" x2="99.58577760546714" y2="83.5623892592501" class="field"></line><line x1="31.000000000000007" y1="53.693575034635195" x2="65.00000000000001" y2="112.58330249197702" class="field"></line><line x1="10.766187015349686" y1="61.058080686756895" x2="22.574263096700953" y2="128.02500789158705" class="field"></line><line x1="-10.76618701534968" y1="61.058080686756895" x2="-22.57426309670094" y2="128.02500789158705" class="field"></line><line x1="-30.999999999999986" y1="53.6935750346352" x2="-64.99999999999997" y2="112.58330249197704" class="field"></line><line x1="-47.49475547337663" y1="39.85283180056545" x2="-99.58577760546713" y2="83.56238925925012" class="field"></line><line x1="-58.260942488726315" y1="21.20524888619147" x2="-122.16004070216808" y2="44.462618632336955" class="field"></line><line x1="-62" y1="7.59281015471359e-15" x2="-130" y2="1.592040838891559e-14" class="field"></line><line x1="-58.26094248872632" y1="-21.205248886191455" x2="-122.16004070216809" y2="-44.46261863233693" class="field"></line><line x1="-47.494755473376635" y1="-39.85283180056543" x2="-99.58577760546714" y2="-83.5623892592501" class="field"></line><line x1="-31.00000000000003" y1="-53.69357503463518" x2="-65.00000000000006" y2="-112.583302491977" class="field"></line><line x1="-10.766187015349681" y1="-61.058080686756895" x2="-22.574263096700943" y2="-128.02500789158705" class="field"></line><line x1="10.766187015349658" y1="-61.0580806867569" x2="22.574263096700896" y2="-128.02500789158705" class="field"></line><line x1="31.000000000000007" y1="-53.693575034635195" x2="65.00000000000001" y2="-112.58330249197702" class="field"></line><line x1="47.49475547337662" y1="-39.852831800565454" x2="99.58577760546711" y2="-83.56238925925014" class="field"></line><line x1="58.26094248872632" y1="-21.205248886191452" x2="122.16004070216809" y2="-44.46261863233692" class="field"></line></g><text y="7" text-anchor="middle" fill="white" font-weight="800">жило</text></g>
+<text x="535" y="230" fill="white">XLPE изолация</text><text x="540" y="410" fill="white">метален екран</text><text x="350" y="550" text-anchor="middle" fill="#d5e5f0">Полето е ограничено основно между жилото и екрана.</text></g>
+</svg></div>
+<div class="side">
+<div id="oc"><div class="card eq">C′ = 2πε₀ / ln(2h/R)</div><div class="card"><label>Височина h <b id="ho">10.0 m</b></label><input id="h" type="range" min="5" max="20" step=".5" value="10"><label>Сечение S <b id="so">70 mm²</b></label><input id="s" type="range" min="35" max="240" step="5" value="70"><label>Дължина l <b id="lo">10 km</b></label><input id="l" type="range" min="1" max="50" value="10"></div><div class="card res" id="or">C′ = 6.80 pF/m<br>C = 68.0 nF/фаза<br>Iᶜ = 0.25 A<br>Qᶜ = 8.5 kVAr</div><div class="card note">За AC 70 mm² е приет R=5.6 mm. Моделът е опростен и не отчита взаимните капацитети между фазите.</div></div>
+<div id="cc" style="display:none"><div class="card eq">C′ = 2πε₀εᵣ / ln(R/r)</div><div class="card"><label>Сечение на жилото S <b id="sco">185 mm²</b></label><input id="sc" type="range" min="50" max="240" step="5" value="185"><label>Вътрешен радиус на екрана R <b id="Ro">16.0 mm</b></label><input id="R" type="range" min="12" max="30" step=".5" value="16"><label>εᵣ <b id="eo">2.3</b></label><input id="er" type="range" min="2" max="4" step=".1" value="2.3"><label>Дължина l <b id="lco">10 km</b></label><input id="lc" type="range" min="1" max="30" value="10"></div><div class="card res" id="cr">Еквивалентен радиус r = 7.67 mm<br>C′ = 0.174 μF/km<br>C = 1.741 μF/фаза<br>Iᶜ = 6.32 A<br>Qᶜ = 218.8 kVAr</div><div class="card note">Сечението S се задава директно. За геометричния модел еквивалентният радиус на жилото се определя като r = √(S/π). За реални кабели при инженерни изчисления се предпочита каталожният фазов капацитет.</div></div>
+</div></div>
+<div class="compare"><div class="cmp"><b>ВЪЗДУШНА ЛИНИЯ</b><div id="co">68.0 nF/фаза</div></div><div class="cmp"><b>КАБЕЛНА ЛИНИЯ</b><div id="ck">1.741 μF/фаза</div></div></div></div>
+<script>
+const $=x=>document.getElementById(x),e0=8.8541878128e-12,U=20000,f=50,NS="http://www.w3.org/2000/svg";
+function fields(g,a,b){g.innerHTML="";for(let k=0;k<12;k++){let x=a+k*(b-a)/11,p=document.createElementNS(NS,"line");p.setAttribute("x1",x);p.setAttribute("y1",260);p.setAttribute("x2",x+(x-350)*.25);p.setAttribute("y2",500);p.setAttribute("class","field");g.appendChild(p)}}
+function oh(){let h=+$("h").value,S=+$("s").value,l=+$("l").value,Rm=5.6*Math.sqrt(S/70),R=Rm/1000,Cp=2*Math.PI*e0/Math.log(2*h/R),C=Cp*l*1000,I=2*Math.PI*f*C*U/Math.sqrt(3),Q=2*Math.PI*f*C*U*U;$("ho").textContent=h.toFixed(1)+" m";$("so").textContent=S+" mm²";$("lo").textContent=l+" km";$("or").innerHTML="C′ = "+(Cp*1e12).toFixed(2)+" pF/m<br>C = "+(C*1e9).toFixed(1)+" nF/фаза<br>Iᶜ = "+I.toFixed(2)+" A<br>Qᶜ = "+(Q/1000).toFixed(1)+" kVAr";$("co").textContent=(C*1e9).toFixed(1)+" nF/фаза";$("ht").textContent="h="+h.toFixed(1)+" m";$("wl").textContent="AC "+S+" mm²";let y=320-(h-5)*6;$("wire").setAttribute("d",`M143 170 Q350 ${y} 555 170`);$("wireHi").setAttribute("d",`M143 167 Q350 ${y-4} 555 167`);$("hd").setAttribute("y1",y);fields($("of"),235,465)}
+function ca(){
+ let S=+$("sc").value,Rmm=+$("R").value,er=+$("er").value,l=+$("lc").value;
+ // Equivalent radius based on conductor cross-sectional area:
+ // S = pi*r^2  =>  r = sqrt(S/pi)
+ let rmm=Math.sqrt(S/Math.PI);
+ if(Rmm<=rmm+1){Rmm=rmm+1;$("R").value=Rmm}
+ let r=rmm/1000,R=Rmm/1000;
+ let Cp=2*Math.PI*e0*er/Math.log(R/r);
+ let C=Cp*l*1000;
+ let I=2*Math.PI*f*C*U/Math.sqrt(3);
+ let Q=2*Math.PI*f*C*U*U;
+
+ $("sco").textContent=Math.round(S)+" mm²";
+ $("Ro").textContent=Rmm.toFixed(1)+" mm";
+ $("eo").textContent=er.toFixed(1);
+ $("lco").textContent=l+" km";
+
+ $("cr").innerHTML=
+   "Еквивалентен радиус r = "+rmm.toFixed(2)+" mm<br>"+
+   "C′ = "+(Cp*1e9).toFixed(3)+" μF/km<br>"+
+   "C = "+(C*1e6).toFixed(3)+" μF/фаза<br>"+
+   "Iᶜ = "+I.toFixed(2)+" A<br>"+
+   "Qᶜ = "+(Q/1000).toFixed(1)+" kVAr";
+
+ $("ck").textContent=(C*1e6).toFixed(3)+" μF/фаза";
+
+ // Cable field visualization
+ let g=$("cf");g.innerHTML="";
+ for(let a=0;a<360;a+=20){
+   let t=a*Math.PI/180,p=document.createElementNS(NS,"line");
+   p.setAttribute("x1",Math.cos(t)*62);
+   p.setAttribute("y1",Math.sin(t)*62);
+   p.setAttribute("x2",Math.cos(t)*130);
+   p.setAttribute("y2",Math.sin(t)*130);
+   p.setAttribute("class","field");
+   g.appendChild(p)
+ }
+}
+function mode(m){$("ohl").style.display=m=="o"?"":"none";$("cab").style.display=m=="c"?"":"none";$("oc").style.display=m=="o"?"":"none";$("cc").style.display=m=="c"?"":"none";$("bo").classList.toggle("on",m=="o");$("bc").classList.toggle("on",m=="c")}
+["h","s","l"].forEach(x=>$(x).oninput=oh);["sc","R","er","lc"].forEach(x=>$(x).oninput=ca);$("bo").onclick=()=>mode("o");$("bc").onclick=()=>mode("c");oh();ca();mode("o");
+</script></body></html>

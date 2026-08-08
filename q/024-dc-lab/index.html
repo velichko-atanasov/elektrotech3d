@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<!-- saved from url=(0064)file:///C:/Users/velichko.atanasov/Downloads/preview%20(18).html -->
+<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>QR-024 – Виртуално лабораторно упражнение</title>
+<style>
+*{box-sizing:border-box}
+:root{
+ --bg:#071423;--panel:#0d2235;--line:#355b78;--txt:#f2f8fd;--muted:#b8cbda;
+ --blue:#57b7ff;--green:#70e49a;--gold:#ffe06a;--red:#ff6b6b;--orange:#ff9e4a;--cyan:#5ce2e6;
+}
+body{margin:0;background:radial-gradient(circle at 50% 0,#194b70,#071423 60%,#030810);color:var(--txt);font-family:Segoe UI,Arial,sans-serif}
+.wrap{max-width:1220px;margin:auto;padding:12px}
+h1{text-align:center;margin:3px 0;font-size:clamp(24px,4vw,38px)}
+.sub{text-align:center;color:var(--muted);margin:5px 0 12px}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px}
+.step{padding:11px;border:1px solid #416684;background:#112a40;color:white;border-radius:12px;font-weight:850;cursor:pointer}
+.step.on{background:#2465a0;border-color:#6bbcff}
+.main{display:grid;grid-template-columns:1.38fr .62fr;gap:12px}
+.stage{position:relative;min-height:660px;border:1px solid var(--line);border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#102a42,#081726)}
+svg{position:absolute;inset:0;width:100%;height:100%}
+.side{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:11px}
+.card{background:#ffffff07;border:1px solid #3b607d;border-radius:14px;padding:10px;margin-bottom:9px}
+.title{font-size:16px;font-weight:900;color:#ffe06a;margin-bottom:6px}
+.eq{font-family:Cambria Math,Georgia,serif;font-size:20px;font-weight:800;line-height:1.55;text-align:center;color:var(--gold)}
+.result{font-size:15px;line-height:1.55;font-weight:750}
+.ok{color:var(--green);font-weight:900}.bad{color:var(--red);font-weight:900}
+.note{color:var(--muted);font-size:13px;line-height:1.45}
+button.ctrl{width:100%;padding:9px;margin:4px 0;border:1px solid #456b88;background:#14314a;color:white;border-radius:10px;font-weight:800;cursor:pointer}
+button.ctrl.on{background:#23679f}
+input[type=number]{width:100%;padding:8px;border-radius:8px;border:1px solid #51718a;background:#071a2b;color:white}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th,td{padding:6px;border-bottom:1px solid #34546c;text-align:center}
+th{color:#dcecf7}
+.wire{stroke:#dce8ef;stroke-width:6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.activeWire{stroke:#59d5ff;stroke-width:7;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.resistor{fill:#d8c19b;stroke:#5f4931;stroke-width:2}
+.node{fill:#ff6363;stroke:white;stroke-width:2}
+.lab{fill:white;font-size:17px;font-weight:850}
+.small{fill:#cbdce9;font-size:13px;font-weight:700}
+.meter{fill:#edf3f6;stroke:#658296;stroke-width:3}
+.mtxt{fill:#102332;font-size:14px;font-weight:900;text-anchor:middle}
+.hint{fill:#ffe06a;font-size:14px;font-weight:850}
+.measure{stroke:#ffe06a;stroke-width:4;fill:none;stroke-dasharray:7 5}
+@media(max-width:850px){.main{grid-template-columns:1fr}.steps{grid-template-columns:1fr 1fr}.stage{min-height:580px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>QR-024 – Виртуално лабораторно упражнение</h1>
+<div class="sub">Изследване на постояннотокова електрическа верига – Кирхоф и баланс на мощностите</div>
+
+<div class="steps">
+<button class="step on" data-step="calc">1. Изчисли</button>
+<button class="step" data-step="connect">2. Свържи</button>
+<button class="step" data-step="measure">3. Измери</button>
+<button class="step" data-step="verify">4. Провери</button>
+</div>
+
+<div class="main">
+<section class="stage">
+<svg viewBox="0 0 850 660">
+<!-- source HY1803D stylized -->
+<rect x="55" y="215" width="145" height="190" rx="16" fill="#d7dee3" stroke="#657b89" stroke-width="3"></rect>
+<rect x="75" y="245" width="105" height="62" rx="6" fill="#25313a"></rect>
+<text x="127" y="275" class="lab" text-anchor="middle">HY1803D</text>
+<text x="127" y="298" class="small" text-anchor="middle">15.0 V</text>
+<circle cx="92" cy="345" r="10" fill="#df4a43"></circle><circle cx="162" cy="345" r="10" fill="#2e3438"></circle>
+<text x="92" y="375" class="lab" text-anchor="middle">+</text><text x="162" y="375" class="lab" text-anchor="middle">−</text>
+
+<!-- circuit: R1 + (R2 || R3) -->
+<path id="w1" class="wire" d="M92 345 V135 H260"></path>
+<rect x="260" y="118" width="120" height="34" rx="5" class="resistor"></rect>
+<text id="R1label" x="320" y="105" class="lab" text-anchor="middle">R₁ = 62 Ω</text>
+<path id="w2" class="wire" d="M380 135 H455"></path>
+<circle cx="455" cy="135" r="8" class="node"></circle>
+<text x="455" y="108" class="lab" text-anchor="middle">A</text>
+
+<path id="w3" class="wire" d="M455 135 H535"></path>
+<rect x="535" y="118" width="120" height="34" rx="5" class="resistor"></rect>
+<text id="R2label" x="595" y="105" class="lab" text-anchor="middle">R₂ = 100 Ω</text>
+<path id="w4" class="wire" d="M655 135 H735 V330"></path>
+
+<path id="w5" class="wire" d="M455 135 V330 H535"></path>
+<rect x="535" y="313" width="120" height="34" rx="5" class="resistor"></rect>
+<text id="R3label" x="595" y="300" class="lab" text-anchor="middle">R₃ = 470 Ω</text>
+<path id="w6" class="wire" d="M655 330 H735"></path>
+
+<path id="w7" class="wire" d="M735 330 V500 H162 V345"></path>
+
+<!-- current labels -->
+<text x="225" y="165" class="lab">I</text>
+<text x="600" y="165" class="lab">I₂</text>
+<text x="600" y="365" class="lab">I₃</text>
+
+<!-- meters (shown per mode) -->
+<g id="amm" style="display:none">
+<circle cx="0" cy="0" r="38" class="meter"></circle>
+<text x="0" y="-5" class="mtxt">A</text>
+<text id="ammval" x="0" y="16" class="mtxt">0.000 A</text>
+</g>
+<g id="volt" style="display:none">
+<circle cx="595" cy="230" r="38" class="meter"></circle>
+<text x="595" y="225" class="mtxt">V</text><text id="voltval" x="595" y="246" class="mtxt">0.00 V</text>
+<path id="voltLeads" class="measure" d="M557 230 H505 V135 M633 230 H690 V135"></path>
+<circle id="vDotL" cx="535" cy="135" r="6" fill="#ffe06a" stroke="#fff" stroke-width="1.5"></circle>
+<circle id="vDotR" cx="655" cy="135" r="6" fill="#ffe06a" stroke="#fff" stroke-width="1.5"></circle>
+</g>
+<g id="watt" style="display:none">
+<rect x="315" y="505" width="170" height="95" rx="12" fill="#f1eadf" stroke="#7d6c54" stroke-width="3"></rect>
+<text x="400" y="535" class="mtxt">Ватметър Д5065</text>
+<text id="wattval" x="400" y="570" class="mtxt">0.000 W</text>
+</g>
+
+<text id="stageHint" x="425" y="635" class="hint" text-anchor="middle">Първо изчислете очакваните токове, напрежения и мощности.</text>
+</svg>
+</section>
+
+<aside class="side">
+
+<div class="card" id="resistorControls">
+<div class="title">Настройка на резисторите</div>
+<label>R₁ <b id="R1out">62 Ω</b></label>
+<input id="R1s" type="range" min="20" max="200" step="1" value="62">
+<label>R₂ <b id="R2out">100 Ω</b></label>
+<input id="R2s" type="range" min="20" max="500" step="5" value="100">
+<label>R₃ <b id="R3out">470 Ω</b></label>
+<input id="R3s" type="range" min="50" max="1000" step="10" value="470">
+<button class="ctrl" id="resetR">Върни 62 Ω / 100 Ω / 470 Ω</button>
+</div>
+<div id="calcPanel">
+<div class="card"><div class="title">Изходни данни</div>
+<div class="result">U = 15 V<br>R₁ = 62 Ω<br>R₂ = 100 Ω<br>R₃ = 470 Ω</div></div>
+<div class="card eq" id="calcEq">R₂₃ = R₂R₃/(R₂+R₃)<br>Rₑ = R₁ + R₂₃<br>I = U/Rₑ</div>
+<div class="card result" id="calcRes">R₂₃ = 82.46 Ω<br>Rₑ = 144.46 Ω<br>
+ I = 0.1038 A<br>I₂ = 0.0856 A<br>I₃ = 0.0182 A<br>
+ U_R1 = 6.44 V<br>U_R2 = U_R3 = 8.56 V<br>
+ Pизт = 1.558 W</div>
+</div>
+
+<div id="connectPanel" style="display:none">
+<div class="card"><div class="title">Свързване</div>
+<button class="ctrl" id="showCurrent">Покажи токовите пътища</button>
+<button class="ctrl" id="showNodes">Покажи възела</button>
+<div class="note">R₁ е последователен на паралелния клон R₂ ∥ R₃.</div></div>
+</div>
+
+<div id="measurePanel" style="display:none">
+<div class="card"><div class="title">Измерване</div>
+<button class="ctrl on" data-meas="I">Общ ток I</button>
+<button class="ctrl" data-meas="I2">Ток I₂ през 100 Ω</button>
+<button class="ctrl" data-meas="I3">Ток I₃ през 470 Ω</button>
+<button class="ctrl" data-meas="U1">Напрежение U_R1</button>
+<button class="ctrl" data-meas="U2">Напрежение U_R2 = U_R3</button>
+<button class="ctrl" data-meas="P">Активна мощност</button>
+</div>
+</div>
+
+<div id="verifyPanel" style="display:none">
+<div class="card"><div class="title">Въведете измерени стойности</div>
+<label>I [A]</label><input id="mI" type="number" step="0.001" value="0.208">
+<label>I₂ [A]</label><input id="mI2" type="number" step="0.001" value="0.171">
+<label>I₃ [A]</label><input id="mI3" type="number" step="0.001" value="0.036">
+<label>U_R1 [V]</label><input id="mU1" type="number" step="0.01" value="12.91">
+<label>U_R2=U_R3 [V]</label><input id="mU2" type="number" step="0.01" value="2.09">
+<button class="ctrl" id="loadTheory">Зареди виртуалните измервания</button><button class="ctrl" id="check">Провери резултатите</button>
+</div>
+<div class="card result" id="verifyRes"></div>
+</div>
+</aside>
+</div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const U=15;
+let R1=62,R2=100,R3=470,Rp,Req,I,Up,I2,I3,U1,Psrc,P1,P2,P3,Psum,currentMeasure="I";
+
+function recalc(){
+ R1=+$("R1s").value; R2=+$("R2s").value; R3=+$("R3s").value;
+ Rp=1/(1/R2+1/R3);
+ Req=R1+Rp;
+ I=U/Req;
+ Up=I*Rp;
+ I2=Up/R2;
+ I3=Up/R3;
+ U1=I*R1;
+ Psrc=U*I;
+ P1=I*I*R1;
+ P2=I2*I2*R2;
+ P3=I3*I3*R3;
+ Psum=P1+P2+P3;
+
+ $("R1out").textContent=R1+" Ω";
+ $("R2out").textContent=R2+" Ω";
+ $("R3out").textContent=R3+" Ω";
+ $("R1label").textContent="R₁ = "+R1+" Ω";
+ $("R2label").textContent="R₂ = "+R2+" Ω";
+ $("R3label").textContent="R₃ = "+R3+" Ω";
+
+ $("calcEq").innerHTML="R₂₃ = R₂R₃/(R₂+R₃)<br>Rₑ = R₁ + R₂₃<br>I = U/Rₑ";
+ $("calcRes").innerHTML=
+ `R₂₃ = ${Rp.toFixed(2)} Ω<br>Rₑ = ${Req.toFixed(2)} Ω<br>
+ I = ${I.toFixed(4)} A<br>I₂ = ${I2.toFixed(4)} A<br>I₃ = ${I3.toFixed(4)} A<br>
+ U_R1 = ${U1.toFixed(2)} V<br>U_R2 = U_R3 = ${Up.toFixed(2)} V<br>
+ Pизт = ${Psrc.toFixed(3)} W`;
+
+ if($("measurePanel").style.display!=="none") setMeasure(currentMeasure);
+}
+
+["R1s","R2s","R3s"].forEach(id=>$(id).addEventListener("input",recalc));
+$("resetR").onclick=()=>{
+ $("R1s").value=62; $("R2s").value=100; $("R3s").value=470; recalc();
+};
+
+function setStep(s){
+ document.querySelectorAll(".step").forEach(b=>b.classList.toggle("on",b.dataset.step===s));
+ ["calc","connect","measure","verify"].forEach(x=>$(x+"Panel").style.display=x===s?"":"none");
+ $("amm").style.display="none";$("volt").style.display="none";$("watt").style.display="none";
+ if(s==="calc") $("stageHint").textContent="Първо изчислете очакваните токове, напрежения и мощности.";
+ if(s==="connect") $("stageHint").textContent="Свържете R₁ последователно на паралелния клон R₂ ∥ R₃.";
+ if(s==="measure"){ $("stageHint").textContent="Изберете величина и вижте къде се включва измервателният прибор."; setMeasure("I"); }
+ if(s==="verify") $("stageHint").textContent="Сравнете измерените резултати с теоретичните и проверете законите.";
+}
+document.querySelectorAll(".step").forEach(b=>b.onclick=()=>setStep(b.dataset.step));
+
+$("showCurrent").onclick=()=>{
+ ["w1","w2","w3","w4","w5","w6","w7"].forEach(id=>$(id).setAttribute("class","activeWire"));
+ setTimeout(()=>["w1","w2","w3","w4","w5","w6","w7"].forEach(id=>$(id).setAttribute("class","wire")),1700);
+};
+$("showNodes").onclick=()=>{ $("stageHint").textContent="Във възел A: I = I₂ + I₃"; };
+
+function setMeasure(m){
+ currentMeasure=m;
+ document.querySelectorAll("[data-meas]").forEach(b=>b.classList.toggle("on",b.dataset.meas===m));
+ $("amm").style.display="none"; $("volt").style.display="none"; $("watt").style.display="none";
+
+ if(m==="I"){
+   $("amm").style.display="";
+   $("amm").setAttribute("transform","translate(225 135)");
+   $("ammval").textContent=I.toFixed(3)+" A";
+   $("stageHint").textContent="Общ ток I: амперметърът е последователно преди R₁.";
+ }
+ if(m==="I2"){
+   $("amm").style.display="";
+   $("amm").setAttribute("transform","translate(495 135)");
+   $("ammval").textContent=I2.toFixed(3)+" A";
+   $("stageHint").textContent="Ток I₂: амперметърът е последователно в горния клон на R₂ = "+R2+" Ω.";
+ }
+ if(m==="I3"){
+   $("amm").style.display="";
+   $("amm").setAttribute("transform","translate(495 330)");
+   $("ammval").textContent=I3.toFixed(3)+" A";
+   $("stageHint").textContent="Ток I₃: амперметърът е последователно в долния клон на R₃ = "+R3+" Ω.";
+ }
+ if(m==="U1"){
+   $("volt").style.display="";
+   $("voltval").textContent=U1.toFixed(2)+" V";
+   $("voltLeads").setAttribute("d","M260 135 V230 H557 M380 135 V230 H633");
+   $("vDotL").setAttribute("cx","260"); $("vDotL").setAttribute("cy","135");
+   $("vDotR").setAttribute("cx","380"); $("vDotR").setAttribute("cy","135");
+   $("stageHint").textContent="U_R1: волтметърът е свързан успоредно на R₁ – към двата му извода.";
+ }
+ if(m==="U2"){
+   $("volt").style.display="";
+   $("voltval").textContent=Up.toFixed(2)+" V";
+   $("voltLeads").setAttribute("d","M535 135 V230 H557 M655 135 V230 H633");
+   $("vDotL").setAttribute("cx","535"); $("vDotL").setAttribute("cy","135");
+   $("vDotR").setAttribute("cx","655"); $("vDotR").setAttribute("cy","135");
+   $("stageHint").textContent="U_R2: волтметърът е свързан успоредно на R₂ – директно към двата му извода.";
+ }
+ if(m==="P"){
+   $("watt").style.display="";
+   $("wattval").textContent=Psrc.toFixed(3)+" W";
+   $("stageHint").textContent="Ватметърът показва общата активна мощност на веригата.";
+ }
+}
+document.querySelectorAll("[data-meas]").forEach(b=>b.onclick=()=>setMeasure(b.dataset.meas));
+
+function dev(meas,theory){return Math.abs((meas-theory)/theory)*100}
+$("loadTheory").onclick=()=>{
+ $("mI").value=I.toFixed(3);
+ $("mI2").value=I2.toFixed(3);
+ $("mI3").value=I3.toFixed(3);
+ $("mU1").value=U1.toFixed(2);
+ $("mU2").value=Up.toFixed(2);
+};
+$("check").onclick=()=>{
+ let mI=+$("mI").value,mI2=+$("mI2").value,mI3=+$("mI3").value,mU1=+$("mU1").value,mU2=+$("mU2").value;
+ let kcl=mI-(mI2+mI3), kvl=15-(mU1+mU2);
+ let pm=mU1*mI + mU2*mI2 + mU2*mI3;
+ $("verifyRes").innerHTML=
+ `<span class="${Math.abs(kcl)<0.01?'ok':'bad'}">I − I₂ − I₃ = ${kcl.toFixed(4)} A</span><br>
+ <span class="${Math.abs(kvl)<0.15?'ok':'bad'}">U − U_R1 − U_R2 = ${kvl.toFixed(3)} V</span><br>
+ Теоретична мощност: ${Psrc.toFixed(3)} W<br>
+ Изчислена от измерванията: ${pm.toFixed(3)} W<br>
+ Отклонение на мощността: ${dev(pm,Psrc).toFixed(2)} %<br><br>
+ <span class="ok">Теоретичен баланс:</span><br>
+ P_R1 + P_R2 + P_R3 = ${Psum.toFixed(3)} W ≈ Pизт = ${Psrc.toFixed(3)} W`;
+};
+recalc();
+setStep("calc");
+</script>
+
+</body></html>

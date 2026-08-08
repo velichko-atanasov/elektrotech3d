@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<!-- saved from url=(0061)file:///C:/Users/velichko.atanasov/Downloads/index%20(5).html -->
+<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>QR-014 – Електризиране чрез електростатична индукция</title>
+<style>
+*{box-sizing:border-box}
+:root{
+ --bg:#050b13;--panel:#0a1522;--line:#27425c;--txt:#eef7ff;--muted:#9fb5ca;
+ --cyan:#5dd7ff;--blue:#4a8fff;--red:#ff5f68;--gold:#ffd36a;--green:#6be6a1;
+}
+body{
+ margin:0;
+ background:radial-gradient(circle at 50% 8%,#16324f,#050b13 52%,#02050a);
+ color:var(--txt);
+ font-family:Segoe UI,Arial,sans-serif;
+}
+.wrap{max-width:1050px;margin:auto;padding:16px}
+h1{margin:3px 0 6px;text-align:center;font-size:clamp(23px,4vw,36px)}
+.sub{text-align:center;color:var(--muted);margin-bottom:14px}
+.stage{
+ border:1px solid var(--line);
+ border-radius:22px;
+ overflow:hidden;
+ background:linear-gradient(180deg,#0d1d2c,#07111b);
+ box-shadow:0 18px 50px #0008;
+}
+svg{width:100%;height:auto;display:block}
+.controls{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:13px}
+button{
+ border:1px solid #355a78;background:#10283e;color:#fff;
+ border-radius:14px;padding:12px 8px;font-weight:850;cursor:pointer
+}
+button.active{background:var(--gold);color:#13202b;border-color:var(--gold)}
+.info{
+ margin-top:12px;border:1px solid var(--line);background:#081522;border-radius:18px;padding:14px
+}
+.eq{text-align:center;font-size:clamp(20px,3.6vw,29px);font-weight:900;color:var(--gold)}
+.status{text-align:center;font-weight:800;margin-top:7px}
+.note{text-align:center;color:var(--muted);line-height:1.45;margin-top:8px}
+.legend{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin-top:8px;color:#d8e7f3;font-size:14px}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
+.label{fill:#eef7ff;font-size:19px;font-weight:800;text-anchor:middle}
+.small{fill:#b8cbe0;font-size:16px}
+.charge{font-size:23px;font-weight:900;text-anchor:middle;dominant-baseline:middle}
+.neg{fill:var(--blue)} .pos{fill:var(--red)}
+.electron{fill:var(--cyan);filter:drop-shadow(0 0 5px #5dd7ff)}
+.etxt{fill:#fff;font-size:13px;font-weight:900;text-anchor:middle;dominant-baseline:middle}
+@media(max-width:700px){
+ .wrap{padding:9px}
+ .controls{grid-template-columns:1fr 1fr}
+ button{font-size:14px}
+ .label{font-size:22px}.small{font-size:18px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Електризиране чрез електростатична индукция</h1>
+<p class="sub">Две метални сфери върху изолиращи стойки и отрицателно заредена пръчка</p>
+
+<div class="stage">
+<svg viewBox="0 0 980 560" aria-label="Електростатична индукция с две метални сфери">
+<defs>
+ <radialgradient id="metal1" cx="35%" cy="28%">
+   <stop offset="0" stop-color="#f8fdff"></stop><stop offset=".20" stop-color="#d9e6ef"></stop>
+   <stop offset=".48" stop-color="#8197a7"></stop><stop offset=".74" stop-color="#405361"></stop>
+   <stop offset="1" stop-color="#1c2b35"></stop>
+ </radialgradient>
+ <radialgradient id="metal2" cx="35%" cy="28%">
+   <stop offset="0" stop-color="#ffffff"></stop><stop offset=".20" stop-color="#dfe8ef"></stop>
+   <stop offset=".50" stop-color="#8a9cab"></stop><stop offset=".76" stop-color="#425461"></stop>
+   <stop offset="1" stop-color="#1c2b35"></stop>
+ </radialgradient>
+ <lineargradient id="rodG" x1="0" y1="0" x2="1" y2="0">
+   <stop offset="0" stop-color="#45505d"></stop><stop offset=".35" stop-color="#232a32"></stop>
+   <stop offset=".7" stop-color="#0f1318"></stop><stop offset="1" stop-color="#3b4652"></stop>
+ </lineargradient>
+ <filter id="glow"><fegaussianblur stdDeviation="4" result="b"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+</defs>
+
+<!-- bench -->
+<rect x="70" y="455" width="840" height="18" rx="9" fill="#344452"></rect>
+<rect x="150" y="472" width="18" height="52" rx="6" fill="#26333d"></rect>
+<rect x="810" y="472" width="18" height="52" rx="6" fill="#26333d"></rect>
+
+<!-- insulating stands -->
+<rect x="335" y="345" width="24" height="108" rx="10" fill="#c8a55a"></rect>
+<rect x="621" y="345" width="24" height="108" rx="10" fill="#c8a55a"></rect>
+<rect x="305" y="440" width="85" height="15" rx="7" fill="#705b2d"></rect>
+<rect x="590" y="440" width="85" height="15" rx="7" fill="#705b2d"></rect>
+
+<!-- spheres -->
+<circle id="sphere1" cx="347" cy="280" r="92" fill="url(#metal1)" stroke="#d8ecf7" stroke-width="3"></circle>
+<circle id="sphere2" cx="633" cy="280" r="92" fill="url(#metal2)" stroke="#d8ecf7" stroke-width="3"></circle>
+<rect id="contactBridge" x="438" y="268" width="104" height="24" rx="12" fill="#96a9b8" style="opacity: 1;"></rect>
+
+<!-- charged rod -->
+<g id="rod" transform="translate(90 210)">
+ <rect x="0" y="0" width="155" height="36" rx="18" fill="url(#rodG)" stroke="#697886" stroke-width="2"></rect>
+ <text x="78" y="22" class="small" text-anchor="middle" fill="#fff">заредена пръчка</text>
+ <g id="rodCharges"><circle cx="20" cy="18" r="5" class="electron"></circle><text x="20" y="18.5" class="etxt">−</text><circle cx="42" cy="18" r="5" class="electron"></circle><text x="42" y="18.5" class="etxt">−</text><circle cx="64" cy="18" r="5" class="electron"></circle><text x="64" y="18.5" class="etxt">−</text><circle cx="86" cy="18" r="5" class="electron"></circle><text x="86" y="18.5" class="etxt">−</text><circle cx="108" cy="18" r="5" class="electron"></circle><text x="108" y="18.5" class="etxt">−</text><circle cx="130" cy="18" r="5" class="electron"></circle><text x="130" y="18.5" class="etxt">−</text></g>
+</g>
+
+<!-- labels -->
+<text x="347" y="120" class="label">Метална сфера 1</text>
+<text x="633" y="120" class="label">Метална сфера 2</text>
+<text x="347" y="520" class="small" text-anchor="middle">изолираща стойка</text>
+<text x="633" y="520" class="small" text-anchor="middle">изолираща стойка</text>
+
+<g id="charges1"><circle cx="300" cy="240" r="6" class="electron"></circle><text x="300" y="240.5" class="etxt">−</text><circle cx="332" cy="218" r="6" class="electron"></circle><text x="332" y="218.5" class="etxt">−</text><circle cx="365" cy="235" r="6" class="electron"></circle><text x="365" y="235.5" class="etxt">−</text><circle cx="314" cy="292" r="6" class="electron"></circle><text x="314" y="292.5" class="etxt">−</text><circle cx="350" cy="315" r="6" class="electron"></circle><text x="350" y="315.5" class="etxt">−</text><circle cx="382" cy="282" r="6" class="electron"></circle><text x="382" y="282.5" class="etxt">−</text></g>
+<g id="charges2"><circle cx="590" cy="235" r="6" class="electron"></circle><text x="590" y="235.5" class="etxt">−</text><circle cx="625" cy="218" r="6" class="electron"></circle><text x="625" y="218.5" class="etxt">−</text><circle cx="662" cy="238" r="6" class="electron"></circle><text x="662" y="238.5" class="etxt">−</text><circle cx="600" cy="295" r="6" class="electron"></circle><text x="600" y="295.5" class="etxt">−</text><circle cx="638" cy="315" r="6" class="electron"></circle><text x="638" y="315.5" class="etxt">−</text><circle cx="675" cy="282" r="6" class="electron"></circle><text x="675" y="282.5" class="etxt">−</text></g>
+<g id="moving"></g>
+
+<text id="phaseTitle" x="490" y="52" class="label">1. Неутрални сфери</text>
+<text id="phaseText" x="490" y="82" class="small" text-anchor="middle">В двете сфери положителните и отрицателните заряди са балансирани.</text>
+</svg>
+</div>
+
+<div class="controls">
+<button id="b1" class="active">1. Неутрално състояние</button>
+<button id="b2">2. Приближи пръчката</button>
+<button id="b3">3. Раздели сферите</button>
+<button id="b4">4. Отдалечи пръчката</button>
+</div>
+
+<div class="info">
+ <div class="eq" id="eq">Q₁ = 0,   Q₂ = 0</div>
+ <div class="status" id="status">Сферите са в контакт и системата е неутрална.</div>
+ <div class="legend">
+   <span><i class="dot" style="background:#4a8fff"></i>електрони e⁻</span>
+   <span><i class="dot" style="background:#ff5f68"></i>недостиг на електрони</span>
+ </div>
+ <div class="note" id="note">При началното състояние няма разделяне на зарядите.</div>
+</div>
+</div>
+
+<script>
+const NS="http://www.w3.org/2000/svg", $=id=>document.getElementById(id);
+let timer=null;
+
+function clear(id){$(id).innerHTML=""}
+function electron(g,x,y,r=7){
+ const c=document.createElementNS(NS,"circle");
+ c.setAttribute("cx",x);c.setAttribute("cy",y);c.setAttribute("r",r);c.setAttribute("class","electron");
+ g.appendChild(c);
+ const t=document.createElementNS(NS,"text");
+ t.setAttribute("x",x);t.setAttribute("y",y+.5);t.setAttribute("class","etxt");t.textContent="−";
+ g.appendChild(t);
+}
+function plus(g,x,y){
+ const t=document.createElementNS(NS,"text");
+ t.setAttribute("x",x);t.setAttribute("y",y);t.setAttribute("class","charge pos");t.textContent="+";
+ g.appendChild(t);
+}
+function minus(g,x,y){
+ const t=document.createElementNS(NS,"text");
+ t.setAttribute("x",x);t.setAttribute("y",y);t.setAttribute("class","charge neg");t.textContent="−";
+ g.appendChild(t);
+}
+function buttons(n){[1,2,3,4].forEach(i=>$("b"+i).classList.toggle("active",i===n))}
+function neutralCharges(){
+ clearInterval(timer);["charges1","charges2","moving","rodCharges"].forEach(clear);
+ [[300,240],[332,218],[365,235],[314,292],[350,315],[382,282]].forEach(p=>electron($("charges1"),...p,6));
+ [[590,235],[625,218],[662,238],[600,295],[638,315],[675,282]].forEach(p=>electron($("charges2"),...p,6));
+ for(let i=0;i<6;i++) electron($("rodCharges"),20+i*22,18,5);
+}
+function scene1(){
+ buttons(1);neutralCharges();
+ $("rod").setAttribute("transform","translate(90 210)");
+ $("contactBridge").style.opacity=1;
+ $("phaseTitle").textContent="1. Неутрални сфери";
+ $("phaseText").textContent="В двете сфери положителните и отрицателните заряди са балансирани.";
+ $("eq").textContent="Q₁ = 0,   Q₂ = 0";
+ $("status").textContent="Сферите са в контакт и системата е неутрална.";
+ $("note").textContent="При началното състояние няма разделяне на зарядите.";
+}
+function scene2(){
+ buttons(2);neutralCharges();
+ $("rod").setAttribute("transform","translate(145 210)");
+ $("contactBridge").style.opacity=1;
+ clear("charges1");clear("charges2");
+ // left sphere positive side near rod, electrons pushed to right sphere
+ [[302,232],[308,270],[318,308],[338,216]].forEach(p=>plus($("charges1"),...p));
+ [[590,230],[620,214],[655,226],[675,258],[646,300],[610,315],[684,292],[600,270]].forEach(p=>minus($("charges2"),...p));
+ $("phaseTitle").textContent="2. Приближаване на отрицателно заредена пръчка";
+ $("phaseText").textContent="Електроните се отблъскват към по-отдалечената сфера.";
+ $("eq").textContent="Q₁ + Q₂ = 0";
+ $("status").textContent="Зарядите се разделят, но общият заряд остава нула.";
+ $("note").textContent="Това е преразпределение на свободните електрони, а не създаване на нов заряд.";
+ let k=0; clearInterval(timer);
+ timer=setInterval(()=>{
+   clear("moving");
+   for(let i=0;i<4;i++){
+     const p=(k*.018+i*.2)%1;
+     electron($("moving"),410+160*p,280,6);
+   }
+   k++;
+ },35);
+}
+function scene3(){
+ buttons(3);scene2();
+ $("contactBridge").style.opacity=0;
+ clearInterval(timer);clear("moving");
+ $("phaseTitle").textContent="3. Сферите се разделят";
+ $("phaseText").textContent="Докато пръчката е близо, сферите се отделят една от друга.";
+ $("eq").textContent="Q₁ > 0,   Q₂ < 0";
+ $("status").textContent="След разделянето всяка сфера запазва своя нетен заряд.";
+ $("note").textContent="Сферите трябва да се разделят преди отдалечаването на пръчката, за да останат електризирани.";
+}
+function scene4(){
+ buttons(4);scene3();
+ $("rod").setAttribute("transform","translate(40 210)");
+ $("phaseTitle").textContent="4. Пръчката се отдалечава";
+ $("phaseText").textContent="Зарядите се разпределят по повърхността на отделените сфери.";
+ clear("charges1");clear("charges2");
+ [[295,235],[310,285],[340,205],[365,240],[390,285],[350,330]].forEach(p=>plus($("charges1"),...p));
+ [[585,235],[600,290],[630,205],[660,240],[685,285],[640,330]].forEach(p=>minus($("charges2"),...p));
+ $("eq").textContent="Q₁ = +Q,   Q₂ = −Q";
+ $("status").textContent="Двете сфери остават електризирани с противоположни заряди.";
+ $("note").textContent="Общият заряд на системата остава нула: Q₁ + Q₂ = 0.";
+}
+$("b1").onclick=scene1;$("b2").onclick=scene2;$("b3").onclick=scene3;$("b4").onclick=scene4;
+scene1();
+</script>
+
+</body></html>

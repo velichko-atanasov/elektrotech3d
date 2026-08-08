@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<!-- saved from url=(0064)file:///C:/Users/velichko.atanasov/Downloads/preview%20(12).html -->
+<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>QR-022 – Закони на Кирхоф</title>
+<style>
+*{box-sizing:border-box}
+:root{
+ --bg:#071427;--panel:#0d1d33;--txt:#eef7ff;--muted:#b6c8da;--line:#35577a;
+ --green:#45d06d;--blue:#3f8cff;--purple:#9a53db;--red:#ff5b5b;--orange:#ff9b42;--cyan:#43d7dd;--yellow:#f4d64b;
+}
+body{margin:0;background:radial-gradient(circle at 50% 0,#143b6b,#071427 60%,#030810);color:var(--txt);font-family:Segoe UI,Arial,sans-serif}
+.wrap{max-width:1220px;margin:auto;padding:12px}
+h1{text-align:center;margin:4px 0;font-size:clamp(24px,4vw,38px)}
+.sub{text-align:center;color:var(--muted);margin:4px 0 12px}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+.tab{padding:12px;border:1px solid #456990;border-radius:12px;background:#15304d;color:#fff;font-weight:850;cursor:pointer}
+.tab.on.green{background:#198e37}.tab.on.blue{background:#1f63b6}.tab.on.purple{background:#7c36b7}
+.main{display:grid;grid-template-columns:1.35fr .65fr;gap:11px}
+.stage{position:relative;min-height:650px;border:1px solid var(--line);border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#10253c,#091626)}
+svg{position:absolute;inset:0;width:100%;height:100%}
+.side{border:1px solid var(--line);border-radius:20px;background:var(--panel);padding:11px}
+.card{border:1px solid #385975;border-radius:14px;padding:10px;margin-bottom:9px;background:#ffffff07}
+.eq{font-family:Cambria Math,Georgia,serif;font-size:20px;line-height:1.55;text-align:center;font-weight:800;color:#ffe778}
+.res{font-size:16px;line-height:1.5;font-weight:800;color:#8cf0a8}
+.note{font-size:13px;line-height:1.45;color:var(--muted)}
+label{display:flex;justify-content:space-between;gap:8px;font-weight:750;margin:6px 0}
+input[type=range]{width:100%}
+.wire{stroke:#d9e4ec;stroke-width:5;fill:none;stroke-linecap:square;stroke-linejoin:round}
+.resistor{stroke:#303d49;stroke-width:2}
+.source{fill:#f8fbff;stroke:#40617d;stroke-width:3}
+.node{fill:#ff424d;stroke:white;stroke-width:2}
+.lab{fill:white;font-size:17px;font-weight:850}
+.small{fill:#d0dfec;font-size:13px;font-weight:650}
+.arrBlue{stroke:#42a5ff;stroke-width:3;fill:none;marker-end:url(#ab)}
+.arrGreen{stroke:#3bd16f;stroke-width:3;fill:none;marker-end:url(#ag)}
+.arrRed{stroke:#ff4d4d;stroke-width:3;fill:none;marker-end:url(#ar)}
+.arrOrange{stroke:#ff9b42;stroke-width:3;fill:none;marker-end:url(#ao)}
+.arrPurple{stroke:#9e57e7;stroke-width:3;fill:none;marker-end:url(#ap)}
+.loop{stroke:#9a53db;stroke-width:4;fill:none;marker-end:url(#ap)}
+.choice{width:100%;padding:9px;border:1px solid #4a6a84;background:#15314a;color:white;border-radius:10px;font-weight:800;margin:4px 0;cursor:pointer}
+.choice.on{background:#245e9c}
+@media(max-width:840px){.main{grid-template-columns:1fr}.tabs{grid-template-columns:1fr}.stage{min-height:560px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>QR-022 – Първи и Втори закон на Кирхоф</h1>
+<div class="sub">Интерактивна анимация по схемите от учебника</div>
+
+<div class="tabs">
+<button class="tab green on" data-mode="kcl">1. Първи закон – възел</button>
+<button class="tab blue" data-mode="kvl">2. Втори закон – контури</button>
+<button class="tab purple" data-mode="combined">3. Общ пример</button>
+</div>
+
+<div class="main">
+<section class="stage">
+<svg viewBox="0 0 820 650">
+<defs>
+<marker id="ab" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L0 6L9 3z" fill="#42a5ff"></path></marker>
+<marker id="ag" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L0 6L9 3z" fill="#3bd16f"></path></marker>
+<marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L0 6L9 3z" fill="#ff4d4d"></path></marker>
+<marker id="ao" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L0 6L9 3z" fill="#ff9b42"></path></marker>
+<marker id="ap" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L0 6L9 3z" fill="#9e57e7"></path></marker>
+</defs>
+<g id="kcl"><circle cx="400" cy="305" r="20" class="node"></circle><text x="400" y="353" class="lab" text-anchor="middle">V</text><line x1="110" y1="165" x2="375" y2="290" class="arrGreen"></line><text x="242.5" y="217.5" class="lab" text-anchor="middle">I₁</text><line x1="400" y1="85" x2="400" y2="280" class="arrRed"></line><text x="400" y="172.5" class="lab" text-anchor="middle">I₂</text><line x1="650" y1="135" x2="425" y2="288" class="arrBlue"></line><text x="537.5" y="201.5" class="lab" text-anchor="middle">I₃</text><line x1="425" y1="305" x2="690" y2="305" class="arrOrange"></line><text x="557.5" y="295" class="lab" text-anchor="middle">I₄</text><line x1="425" y1="325" x2="610" y2="500" class="arrPurple"></line><text x="517.5" y="402.5" class="lab" text-anchor="middle">I₅</text><line x1="375" y1="325" x2="150" y2="500" class="arrOrange"></line><text x="262.5" y="402.5" class="lab" text-anchor="middle">I₆</text></g><g id="kvl" style="display:none"></g><g id="combined" style="display:none"></g>
+</svg>
+</section>
+
+<aside class="side">
+<div id="kclControls">
+<div class="card">
+<label>I₁ <b id="i1o">2.3 A</b></label><input id="I1" type="range" min="0.2" max="10" step="0.1" value="2.3">
+<label>I₂ <b id="i2o">1.8 A</b></label><input id="I2" type="range" min="0.2" max="10" step="0.1" value="1.8">
+<label>I₃ <b id="i3o">3.1 A</b></label><input id="I3" type="range" min="0.2" max="10" step="0.1" value="3.1">
+<label>I₄ <b id="i4o">2.4 A</b></label><input id="I4" type="range" min="0.2" max="10" step="0.1" value="2.4">
+<label>I₅ <b id="i5o">2.1 A</b></label><input id="I5" type="range" min="0.2" max="10" step="0.1" value="2.1">
+<div class="note">I₆ се изчислява автоматично.</div>
+</div>
+</div>
+
+<div id="kvlControls" style="display:none">
+<div class="card">
+<label>E₁ <b id="e1o">12 V</b></label><input id="E1" type="range" min="2" max="24" step="1" value="12">
+<label>E₂ <b id="e2o">9 V</b></label><input id="E2" type="range" min="2" max="24" step="1" value="9">
+<label>R₁ <b id="r1o">2 Ω</b></label><input id="R1" type="range" min="1" max="20" step="1" value="2">
+<label>R₂ <b id="r2o">4 Ω</b></label><input id="R2" type="range" min="1" max="20" step="1" value="4">
+<label>R₃ <b id="r3o">3 Ω</b></label><input id="R3" type="range" min="1" max="20" step="1" value="3">
+</div>
+<div class="card">
+<button class="choice on" id="leftLoop">Ляв контур</button>
+<button class="choice" id="rightLoop">Десен контур</button>
+</div>
+</div>
+
+<div id="combinedControls" style="display:none">
+<div class="card">
+<button class="choice on" id="nodeV1">Възел V₁</button>
+<button class="choice" id="nodeV2">Възел V₂</button>
+<button class="choice" id="centerLoop">Централен контур</button>
+</div>
+</div>
+
+<div class="card eq" id="formula">ΣI = 0<br>или<br>ΣI<sub>вх</sub> = ΣI<sub>изх</sub></div>
+<div class="card res" id="results">ΣI<sub>вх</sub> = 7.20 A<br>ΣI<sub>изх</sub> = 7.20 A<br>I₆ = 2.70 A<br><span style="color:#8cf0a8">Законът е изпълнен.</span></div>
+<div class="card note" id="explain">Във възела не се натрупва електрически заряд. Колкото ток влиза, толкова ток излиза.</div>
+</aside>
+</div>
+</div>
+
+<script>
+const NS="http://www.w3.org/2000/svg",$=id=>document.getElementById(id);
+let mode="kcl",loop="left",combinedSel="v1";
+function line(g,x1,y1,x2,y2,cls="wire"){let e=document.createElementNS(NS,"line");e.setAttribute("x1",x1);e.setAttribute("y1",y1);e.setAttribute("x2",x2);e.setAttribute("y2",y2);e.setAttribute("class",cls);g.appendChild(e);return e}
+function path(g,d,cls="wire"){let e=document.createElementNS(NS,"path");e.setAttribute("d",d);e.setAttribute("class",cls);g.appendChild(e);return e}
+function txt(g,x,y,s,cls="lab",a="middle"){let t=document.createElementNS(NS,"text");t.setAttribute("x",x);t.setAttribute("y",y);t.setAttribute("class",cls);t.setAttribute("text-anchor",a);t.textContent=s;g.appendChild(t);return t}
+function circle(g,x,y,r,cls){let c=document.createElementNS(NS,"circle");c.setAttribute("cx",x);c.setAttribute("cy",y);c.setAttribute("r",r);c.setAttribute("class",cls);g.appendChild(c);return c}
+function resistor(g,x,y,w,label,color="#8fc34a",vertical=false){
+ if(!vertical){line(g,x-20,y,x,y);let r=document.createElementNS(NS,"rect");r.setAttribute("x",x);r.setAttribute("y",y-15);r.setAttribute("width",w);r.setAttribute("height",30);r.setAttribute("rx",4);r.setAttribute("fill",color);r.setAttribute("class","resistor");g.appendChild(r);line(g,x+w,y,x+w+20,y);txt(g,x+w/2,y-26,label,"lab")}
+ else{line(g,x,y-20,x,y);let r=document.createElementNS(NS,"rect");r.setAttribute("x",x-15);r.setAttribute("y",y);r.setAttribute("width",30);r.setAttribute("height",w);r.setAttribute("rx",4);r.setAttribute("fill",color);r.setAttribute("class","resistor");g.appendChild(r);line(g,x,y+w,x,y+w+20);txt(g,x+32,y+w/2+5,label,"lab","start")}
+}
+function source(g,x,y,label,vertical=false){
+ circle(g,x,y,24,"source");
+ txt(g,x,y+6,"+","lab");
+ if(vertical){
+   txt(g,x+38,y+6,label,"lab","start");
+   txt(g,x,y+43,"−","lab");
+ }else{
+   txt(g,x,y-34,label,"lab");
+   txt(g,x,y+43,"−","lab");
+ }
+}
+function arrow(g,x1,y1,x2,y2,label,cls){line(g,x1,y1,x2,y2,cls);txt(g,(x1+x2)/2,(y1+y2)/2-10,label,"lab")}
+function drawKCL(){
+ let g=$("kcl");g.innerHTML="";
+ let I1=+$("I1").value,I2=+$("I2").value,I3=+$("I3").value,I4=+$("I4").value,I5=+$("I5").value;
+ let I6=I1+I2+I3-I4-I5;
+ let cx=400,cy=305; circle(g,cx,cy,20,"node");txt(g,cx,cy+48,"V","lab");
+ arrow(g,110,165,375,290,"I₁","arrGreen");
+ arrow(g,400,85,400,280,"I₂","arrRed");
+ arrow(g,650,135,425,288,"I₃","arrBlue");
+ arrow(g,425,305,690,305,"I₄","arrOrange");
+ arrow(g,425,325,610,500,"I₅","arrPurple");
+ arrow(g,375,325,150,500,"I₆","arrOrange");
+ $("formula").innerHTML="ΣI = 0<br>или<br>ΣI<sub>вх</sub> = ΣI<sub>изх</sub>";
+ $("results").innerHTML=`ΣI<sub>вх</sub> = ${(I1+I2+I3).toFixed(2)} A<br>ΣI<sub>изх</sub> = ${(I4+I5+I6).toFixed(2)} A<br>I₆ = ${I6.toFixed(2)} A<br><span style="color:#8cf0a8">Законът е изпълнен.</span>`;
+ $("explain").innerHTML="Във възела не се натрупва електрически заряд. Колкото ток влиза, толкова ток излиза.";
+}
+function solveTwoLoop(){
+ let E1=+$("E1").value,E2=+$("E2").value,R1=+$("R1").value,R2=+$("R2").value,R3=+$("R3").value;
+ let det=(R1+R3)*(R2+R3)-R3*R3;
+ let IL=(E1*(R2+R3)+R3*E2)/det;
+ let IR=((R1+R3)*E2+R3*E1)/det;
+ return {E1,E2,R1,R2,R3,IL,IR,I3:IL-IR};
+}
+function drawKVL(){
+ let g=$("kvl"); g.innerHTML="";
+ let s=solveTwoLoop();
+
+ // Geometry
+ const xL=105, xC=410, xR=700, yT=190, yB=470;
+
+ // LEFT OUTER BRANCH: V2 -> left -> E1 -> R1 -> V1
+ line(g,xC,yB,xL,yB);
+ line(g,xL,yB,xL,214);
+ source(g,xL,yT,"Е₁",true);
+ line(g,xL,166,xL,135);
+ line(g,xL,135,230,135);
+ resistor(g,250,135,100,"R₁","#55c97b");
+ line(g,370,135,xC,135);
+ 
+ // RIGHT OUTER BRANCH: V1 -> R2 -> E2 -> V2
+  line(g,xC,135,455,135);
+ resistor(g,475,135,100,"R₂","#ffad43");
+ line(g,595,135,xR,135);
+ line(g,xR,135,xR,166);
+ source(g,xR,yT,"Е₂",true);
+ line(g,xR,214,xR,yB);
+ line(g,xR,yB,xC,yB);
+
+ // COMMON CENTRAL BRANCH V1 -> R3 -> V2
+ circle(g,xC,yT,8,"node"); txt(g,xC,yT-26,"V₁","lab");
+ line(g,xC,135,xC,245);
+ resistor(g,xC,265,110,"R₃","#6f8ef6",true);
+ line(g,xC,395,xC,yB);
+ circle(g,xC,yB,8,"node"); txt(g,xC,yB+32,"V₂","lab");
+
+ // Currents
+ arrow(g,155,245,305,245,"I₁","arrGreen");
+ arrow(g,635,400,635,315,"I₂","arrOrange");
+ arrow(g,455,405,455,310,"I₃","arrBlue");
+
+ // Selected loop
+ if(loop==="left"){
+   path(g,"M160 270 C170 390 300 425 365 330 C390 290 350 250 305 260","loop");
+ }else{
+   path(g,"M470 260 C555 235 635 285 625 365 C615 430 535 442 480 400","loop");
+ }
+
+ let u1=s.IL*s.R1, u2=s.IR*s.R2, u3=s.I3*s.R3;
+ if(loop==="left"){
+   $("formula").innerHTML="Ляв контур:<br>E₁ − I₁R₁ − I₃R₃ = 0";
+   $("results").innerHTML=`I₁ = ${s.IL.toFixed(3)} A<br>I₃ = ${s.I3.toFixed(3)} A<br>Проверка: ${(s.E1-u1-u3).toFixed(3)} V`;
+ }else{
+   $("formula").innerHTML="Десен контур:<br>E₂ − I₂R₂ + I₃R₃ = 0";
+   $("results").innerHTML=`I₂ = ${s.IR.toFixed(3)} A<br>I₃ = ${s.I3.toFixed(3)} A<br>Проверка: ${(s.E2-u2+u3).toFixed(3)} V`;
+ }
+ $("explain").innerHTML="Алгебричната сума на ЕДН и падовете на напрежение по затворен контур е нула.";
+}
+function drawCombined(){
+ let g=$("combined"); g.innerHTML="";
+ const xL=105, xV=400, xR=710, yT=165, yB=475;
+
+ // TOP LEFT: left node -> E1 -> R1 -> V1
+ circle(g,xL,yT,8,"node");
+ line(g,xL,yT,145,yT);
+ source(g,175,yT,"Е₁");
+ line(g,199,yT,225,yT);
+ resistor(g,245,yT,85,"R₁","#8bc34a");
+ line(g,350,yT,xV,yT);
+ circle(g,xV,yT,8,"node"); txt(g,xV,yT-27,"V₁","lab");
+
+ // TOP RIGHT: V1 -> R2 -> right top node
+ line(g,xV,yT,430,yT);
+ resistor(g,450,yT,85,"R₂","#ffad43");
+ line(g,555,yT,xR,yT);
+ circle(g,xR,yT,8,"node");
+
+ // RIGHT VERTICAL: top node -> E3 -> R3 -> bottom node
+ line(g,xR,yT,xR,221);
+ source(g,xR,245,"Е₃",true);
+ line(g,xR,269,xR,285);
+ resistor(g,xR,305,85,"R₃","#7f8df5",true);
+ line(g,xR,410,xR,yB);
+ circle(g,xR,yB,8,"node");
+
+ // BOTTOM RIGHT: right node -> R4 -> E4 -> V2
+ line(g,xR,yB,655,yB);
+ resistor(g,555,yB,80,"R₄","#43d7dd");
+ line(g,535,yB,499,yB);
+ source(g,475,yB,"Е₄");
+ line(g,451,yB,xV,yB);
+ circle(g,xV,yB,8,"node"); txt(g,xV,yB+32,"V₂","lab");
+
+ // BOTTOM LEFT: V2 -> R5 -> E5 -> left bottom node
+ line(g,xV,yB,350,yB);
+ resistor(g,245,yB,85,"R₅","#f0d746");
+ line(g,225,yB,199,yB);
+ source(g,175,yB,"Е₅");
+ line(g,151,yB,xL,yB);
+ circle(g,xL,yB,8,"node");
+
+ // LEFT VERTICAL: bottom node -> R6 -> top node
+ line(g,xL,yB,xL,380);
+ resistor(g,xL,270,90,"R₆","#a66fe0",true);
+ line(g,xL,250,xL,yT);
+
+ // Current arrows
+ arrow(g,220,225,335,225,"I₁","arrBlue");
+ arrow(g,595,225,480,225,"I₂","arrBlue");
+ arrow(g,665,405,665,320,"I₃","arrBlue");
+ arrow(g,630,425,550,425,"I₄","arrBlue");
+ arrow(g,225,425,345,425,"I₅","arrBlue");
+ arrow(g,155,400,155,305,"I₆","arrBlue");
+
+ if(combinedSel==="v1"){
+   circle(g,xV,yT,18,"node");
+   $("formula").innerHTML="Възел V₁:<br>ΣI = 0";
+   $("results").innerHTML="Изберете посоките на токовете и съставете уравнение по Първия закон на Кирхоф.";
+ }else if(combinedSel==="v2"){
+   circle(g,xV,yB,18,"node");
+   $("formula").innerHTML="Възел V₂:<br>ΣI = 0";
+   $("results").innerHTML="За възел V₂ се прилага същият баланс на токовете.";
+ }else{
+   path(g,"M285 260 C340 220 500 220 555 300 C595 365 525 425 410 410 C310 400 270 330 285 260","loop");
+   $("formula").innerHTML="Избран контур:<br>ΣE − Σ(IR) = 0";
+   $("results").innerHTML="При обхождането се отчитат знаците на източниците и падовете на напрежение.";
+ }
+ $("explain").innerHTML="В общата схема Първият закон се прилага към възлите, а Вторият – към независимите контури.";
+}
+function redraw(){
+ ["kcl","kvl","combined"].forEach(x=>$(x).style.display=mode===x?"":"none");
+ $("kclControls").style.display=mode==="kcl"?"":"none";$("kvlControls").style.display=mode==="kvl"?"":"none";$("combinedControls").style.display=mode==="combined"?"":"none";
+ ["1","2","3","4","5"].forEach(n=>$("i"+n+"o").textContent=(+$("I"+n).value).toFixed(1)+" A");
+ $("e1o").textContent=$("E1").value+" V";$("e2o").textContent=$("E2").value+" V";
+ ["1","2","3"].forEach(n=>$("r"+n+"o").textContent=$("R"+n).value+" Ω");
+ if(mode==="kcl")drawKCL();if(mode==="kvl")drawKVL();if(mode==="combined")drawCombined();
+}
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{mode=b.dataset.mode;document.querySelectorAll(".tab").forEach(x=>x.classList.remove("on"));b.classList.add("on");redraw()});
+["I1","I2","I3","I4","I5","E1","E2","R1","R2","R3"].forEach(id=>$(id).oninput=redraw);
+$("leftLoop").onclick=()=>{loop="left";$("leftLoop").classList.add("on");$("rightLoop").classList.remove("on");redraw()};
+$("rightLoop").onclick=()=>{loop="right";$("rightLoop").classList.add("on");$("leftLoop").classList.remove("on");redraw()};
+[["nodeV1","v1"],["nodeV2","v2"],["centerLoop","loop"]].forEach(([id,v])=>$(id).onclick=()=>{combinedSel=v;["nodeV1","nodeV2","centerLoop"].forEach(x=>$(x).classList.toggle("on",x===id));redraw()});
+redraw();
+</script>
+
+</body></html>

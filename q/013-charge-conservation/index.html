@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<!-- saved from url=(0061)file:///C:/Users/velichko.atanasov/Downloads/index%20(3).html -->
+<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>QR-013 – Закон за запазване на електрическия заряд</title>
+<style>
+*{box-sizing:border-box}
+:root{--bg:#06101d;--panel:#0b1b2d;--line:#2d4862;--txt:#eef7ff;--muted:#a9c0d6;--plus:#ff5c68;--minus:#56a9ff;--gold:#ffd76a}
+body{margin:0;background:radial-gradient(circle at 50% 10%,#123458,#06101d 48%,#02060c);color:var(--txt);font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif}
+.wrap{max-width:980px;margin:auto;padding:18px}
+h1{font-size:clamp(22px,4vw,36px);margin:4px 0 6px;text-align:center}
+.sub{text-align:center;color:var(--muted);margin-bottom:14px}
+.stage{position:relative;min-height:430px;border:1px solid var(--line);border-radius:22px;overflow:hidden;background:linear-gradient(180deg,rgba(16,44,72,.92),rgba(5,14,25,.96));box-shadow:0 18px 50px #0008}
+svg{width:100%;height:auto;display:block}
+.sphere{filter:drop-shadow(0 0 18px #70c8ff55)}
+.wire{stroke:#c98b42;stroke-width:9;fill:none;stroke-linecap:round}
+.switch{stroke:#e8edf3;stroke-width:7;stroke-linecap:round}
+.charge{font-weight:900;font-size:22px;text-anchor:middle;dominant-baseline:middle}
+.plus{fill:var(--plus)} .minus{fill:var(--minus)}
+.label{font-size:22px;font-weight:800;fill:#fff;text-anchor:middle}
+.value{font-size:21px;font-weight:800;fill:var(--gold);text-anchor:middle}
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.card{background:#0b1b2de8;border:1px solid var(--line);border-radius:18px;padding:14px}
+.card label{display:flex;justify-content:space-between;font-weight:700;margin-bottom:8px}
+input[type=range]{width:100%}
+.buttons{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+button{flex:1;min-width:150px;border:0;border-radius:13px;padding:12px 14px;font-weight:850;font-size:16px;cursor:pointer}
+#connect{background:#ffd76a;color:#17202b}
+#reset{background:#17314c;color:#fff;border:1px solid #385b79}
+.equation{margin-top:14px;text-align:center;background:#071522;border:1px solid #27425b;border-radius:18px;padding:15px}
+.eq{font-size:clamp(22px,4vw,32px);font-weight:900}
+.const{color:#74efaa}
+.note{color:var(--muted);margin-top:7px;line-height:1.45}
+.status{margin-top:10px;text-align:center;font-weight:800;color:#d9eaff}
+@media(max-width:650px){
+ .wrap{padding:10px}
+ .stage{min-height:300px;border-radius:16px}
+ .controls{grid-template-columns:1fr}
+ .charge{font-size:27px}
+ .label{font-size:25px}
+ .value{font-size:23px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Закон за запазване на електрическия заряд</h1>
+<div class="sub">В затворена система зарядът може да се преразпределя, но общият заряд остава постоянен.</div>
+
+<div class="stage">
+<svg viewBox="0 0 900 470" aria-label="Две проводящи сфери и преразпределение на електрически заряд">
+<defs>
+ <radialgradient id="g1" cx="35%" cy="28%"><stop stop-color="#c8edff"></stop><stop offset=".35" stop-color="#5da7d2"></stop><stop offset="1" stop-color="#173b58"></stop></radialgradient>
+ <radialgradient id="g2" cx="35%" cy="28%"><stop stop-color="#e7f5ff"></stop><stop offset=".35" stop-color="#72a8cc"></stop><stop offset="1" stop-color="#213c53"></stop></radialgradient>
+</defs>
+<path class="wire" d="M285 250 C350 250 365 250 410 250 M490 250 C535 250 550 250 615 250"></path>
+<line id="blade" class="switch" x1="410" y1="250" x2="475" y2="205"></line>
+<circle cx="250" cy="250" r="104" fill="url(#g1)" class="sphere"></circle>
+<circle cx="650" cy="250" r="104" fill="url(#g2)" class="sphere"></circle>
+<text x="250" y="100" class="label">Тяло 1</text>
+<text x="650" y="100" class="label">Тяло 2</text>
+<text id="q1Text" x="250" y="390" class="value">Q₁ = +6q</text>
+<text id="q2Text" x="650" y="390" class="value">Q₂ = −2q</text>
+<g id="charges1"><text x="318" y="250" class="charge plus">+</text><text x="284" y="308.88972745734185" class="charge plus">+</text><text x="216" y="308.88972745734185" class="charge plus">+</text><text x="182" y="250" class="charge plus">+</text><text x="215.99999999999997" y="191.1102725426582" class="charge plus">+</text><text x="284" y="191.11027254265818" class="charge plus">+</text></g><g id="charges2"><text x="718" y="250" class="charge minus">−</text><text x="582" y="250" class="charge minus">−</text></g>
+<g id="moving"></g>
+</svg>
+</div>
+
+<div class="controls">
+ <div class="card">
+  <label>Начален заряд Q₁ <b id="q1Val">+6q</b></label>
+  <input id="q1" type="range" min="-8" max="8" value="6" step="1">
+ </div>
+ <div class="card">
+  <label>Начален заряд Q₂ <b id="q2Val">−2q</b></label>
+  <input id="q2" type="range" min="-8" max="8" value="-2" step="1">
+ </div>
+</div>
+
+<div class="buttons">
+ <button id="connect">Свържи проводника</button>
+ <button id="reset">Начално състояние</button>
+</div>
+
+<div class="equation">
+ <div class="eq"><span id="sumEq">QΣ = +6q − 2q = +4q</span> = <span class="const">const.</span></div>
+ <div class="status" id="status">Проводникът е прекъснат – зарядите са разделени.</div>
+ <div class="note">При свързване зарядът се преразпределя между еднаквите проводящи сфери. В тази идеализирана демонстрация крайният заряд на всяка сфера е половината от общия заряд.</div>
+</div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+let connected=false, anim=null;
+
+function fmt(v){
+ if(v>0)return "+"+v+"q";
+ if(v<0)return "−"+Math.abs(v)+"q";
+ return "0";
+}
+function chargePositions(cx,cy,n){
+ const pts=[];
+ const rings=[68,48,28];
+ let k=0;
+ for(let r of rings){
+  const count=Math.min(Math.max(n-k,0), r===68?8:r===48?6:4);
+  for(let i=0;i<count;i++){
+   const a=(i/count)*Math.PI*2+(r===48?.35:0);
+   pts.push([cx+r*Math.cos(a),cy+r*Math.sin(a)]);
+  }
+  k+=count;
+ }
+ return pts;
+}
+function drawCharges(group,cx,cy,val){
+ group.innerHTML="";
+ const n=Math.min(Math.abs(Math.round(val)),18);
+ const sign=val>=0?"+":"−";
+ const cls=val>=0?"plus":"minus";
+ chargePositions(cx,cy,n).forEach(([x,y])=>{
+  const t=document.createElementNS("http://www.w3.org/2000/svg","text");
+  t.setAttribute("x",x);t.setAttribute("y",y);
+  t.setAttribute("class","charge "+cls);t.textContent=sign;
+  group.appendChild(t);
+ });
+}
+function updateDisplays(a,b){
+ $("q1Text").textContent="Q₁ = "+fmt(a);
+ $("q2Text").textContent="Q₂ = "+fmt(b);
+ drawCharges($("charges1"),250,250,a);
+ drawCharges($("charges2"),650,250,b);
+ const s=a+b;
+ $("sumEq").textContent=`QΣ = ${fmt(a)} ${b>=0?"+":"−"} ${Math.abs(b)}q = ${fmt(s)}`;
+}
+function initial(){
+ connected=false;
+ clearInterval(anim);
+ $("moving").innerHTML="";
+ $("blade").setAttribute("x2",475);$("blade").setAttribute("y2",205);
+ const a=+$("q1").value,b=+$("q2").value;
+ updateDisplays(a,b);
+ $("status").textContent="Проводникът е прекъснат – зарядите са разделени.";
+ $("connect").textContent="Свържи проводника";
+}
+function sliderUpdate(){
+ if(connected) initial();
+ $("q1Val").textContent=fmt(+$("q1").value);
+ $("q2Val").textContent=fmt(+$("q2").value);
+ initial();
+}
+$("q1").oninput=sliderUpdate;$("q2").oninput=sliderUpdate;
+$("reset").onclick=initial;
+
+$("connect").onclick=()=>{
+ if(connected){initial();return}
+ connected=true;
+ $("blade").setAttribute("x2",490);$("blade").setAttribute("y2",250);
+ $("connect").textContent="Разкачи проводника";
+ const a0=+$("q1").value,b0=+$("q2").value,sum=a0+b0,target=sum/2;
+ $("status").textContent="Зарядът се преразпределя… общият заряд не се променя.";
+ let t=0;
+ clearInterval(anim);
+ anim=setInterval(()=>{
+   t=Math.min(1,t+.025);
+   const ease=1-Math.pow(1-t,3);
+   const a=a0+(target-a0)*ease;
+   const b=b0+(target-b0)*ease;
+   updateDisplays(a,b);
+
+   $("moving").innerHTML="";
+   if(t<1){
+    for(let i=0;i<4;i++){
+     const p=(t+i*.19)%1;
+     const x=300+300*p;
+     const dot=document.createElementNS("http://www.w3.org/2000/svg","circle");
+     dot.setAttribute("cx",x);dot.setAttribute("cy",250);
+     dot.setAttribute("r",5);dot.setAttribute("fill","#8dd8ff");
+     $("moving").appendChild(dot);
+    }
+   }
+   if(t>=1){
+    clearInterval(anim);
+    updateDisplays(target,target);
+    $("status").textContent=`Равновесие: Q₁ = Q₂ = ${fmt(target)}, а QΣ = ${fmt(sum)} остава постоянен.`;
+   }
+ },35);
+};
+sliderUpdate();
+</script>
+
+</body></html>

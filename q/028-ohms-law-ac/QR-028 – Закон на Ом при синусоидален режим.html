@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<!-- saved from url=(0078)file:///C:/Users/velichko.atanasov/Downloads/index(20260809-134249)%20(2).html -->
+<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QR-028 – Закон на Ом при синусоидален режим</title>
+<style>
+*{box-sizing:border-box}
+:root{--bg:#07131f;--panel:#0d2234;--line:#456981;--txt:#f4f9fc;--muted:#bed0dc;--gold:#ffe06a;--cyan:#58cfff;--green:#76e29a;--orange:#ff9d48;--violet:#b78cff}
+body{margin:0;background:radial-gradient(circle at top,#194d70,#07131f 63%,#03080d);color:var(--txt);font-family:Segoe UI,Arial,sans-serif}
+.wrap{max-width:1240px;margin:auto;padding:12px}
+h1{text-align:center;margin:4px 0;font-size:clamp(24px,4vw,38px)}
+.sub{text-align:center;color:var(--muted);margin:5px 0 12px}
+.main{display:grid;grid-template-columns:1.4fr .6fr;gap:12px}
+.stage{position:relative;min-height:700px;border:1px solid var(--line);border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#102a41,#081725)}
+svg{position:absolute;inset:0;width:100%;height:100%}
+.side{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:11px}
+.card{background:#ffffff08;border:1px solid #3c6079;border-radius:14px;padding:10px;margin-bottom:9px}
+.title{font-weight:900;color:var(--gold);margin-bottom:7px}
+label{display:flex;justify-content:space-between;gap:8px;font-weight:800;margin:7px 0}
+input[type=range]{width:100%;accent-color:#5ccaff}
+.eq{text-align:center;font:800 20px Cambria Math,Georgia,serif;color:var(--gold);line-height:1.55}
+.result{font-size:14px;font-weight:800;line-height:1.65}
+.note{font-size:13px;line-height:1.48;color:var(--muted)}
+button{width:100%;padding:9px;border:1px solid #4b7390;border-radius:10px;background:#15344e;color:white;font-weight:850;cursor:pointer}
+.wire{stroke:#e6eef2;stroke-width:5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.elem{fill:#d7c39b;stroke:#5e4b31;stroke-width:3}
+.coil{fill:none;stroke:#e0a044;stroke-width:8;stroke-linecap:round}
+.cap{stroke:#e1c159;stroke-width:7}
+.lab{fill:white;font-size:16px;font-weight:850}
+.small{fill:#c8dae5;font-size:13px;font-weight:700}
+.axis{stroke:#92aabc;stroke-width:2}
+.rvec{stroke:#ffe06a;stroke-width:6}
+.xvec{stroke:#ff9d48;stroke-width:6}
+.zvec{stroke:#58cfff;stroke-width:6}
+.arc{fill:none;stroke:#b78cff;stroke-width:3}
+.badge{fill:#ffffff10;stroke:#4f7087;stroke-width:2}
+@media(max-width:880px){.main{grid-template-columns:1fr}.stage{min-height:650px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>QR-028 – Закон на Ом при синусоидален режим</h1>
+<div class="sub">Последователна RLC верига – импеданс, ток и фазов ъгъл</div>
+
+<div class="main">
+<section class="stage">
+<svg viewBox="0 0 900 700">
+<defs>
+<marker id="arrC" markerWidth="6" markerHeight="6" refX="5.2" refY="2.2" orient="auto"><path d="M0 0L0 4.4L5.8 2.2z" fill="#58cfff"></path></marker>
+<marker id="arrR" markerWidth="6" markerHeight="6" refX="5.2" refY="2.2" orient="auto"><path d="M0 0L0 4.4L5.8 2.2z" fill="#ffe06a"></path></marker>
+<marker id="arrX" markerWidth="6" markerHeight="6" refX="5.2" refY="2.2" orient="auto"><path d="M0 0L0 4.4L5.8 2.2z" fill="#ff9d48"></path></marker>
+</defs>
+
+<text x="235" y="48" class="lab" text-anchor="middle">Последователна RLC верига</text>
+<circle cx="95" cy="165" r="38" fill="#edf4f7" stroke="#7892a2" stroke-width="3"></circle>
+<path d="M68 165 C80 140 92 190 104 165 C116 140 128 190 140 165" fill="none" stroke="#25668d" stroke-width="4"></path>
+<text x="95" y="220" class="small" text-anchor="middle">~ U</text>
+
+<path class="wire" d="M95 127 V90 H230"></path>
+<rect x="230" y="72" width="105" height="36" rx="5" class="elem"></rect>
+<text x="282" y="58" class="lab" text-anchor="middle">R</text>
+<path class="wire" d="M335 90 H365"></path>
+<path class="coil" d="M365 90 c13-28 26-28 39 0 c13-28 26-28 39 0 c13-28 26-28 39 0"></path>
+<text x="423" y="52" class="lab" text-anchor="middle">L</text>
+<path class="wire" d="M482 90 H525"></path>
+<line x1="525" y1="62" x2="525" y2="118" class="cap"></line>
+<line x1="555" y1="62" x2="555" y2="118" class="cap"></line>
+<path class="wire" d="M555 90 H650 V255 H95 V203"></path>
+<text x="540" y="48" class="lab" text-anchor="middle">C</text>
+<path d="M145 62 H205" stroke="#58cfff" stroke-width="4" fill="none" marker-end="url(#arrC)"></path>
+<text x="175" y="49" class="lab" text-anchor="middle">I</text>
+
+<rect x="110" y="270" width="470" height="120" rx="14" class="badge"></rect>
+<text x="345" y="300" class="lab" text-anchor="middle">Закон на Ом в синусоидален режим</text>
+<text x="345" y="342" fill="#ffe06a" font-size="28" font-weight="900" text-anchor="middle">I = U / Z</text>
+<text x="345" y="374" class="small" text-anchor="middle">Z = √(R² + (Xₗ − Xc)²)</text>
+
+<text x="705" y="48" class="lab" text-anchor="middle">Импедансна диаграма</text>
+<line x1="610" y1="210" x2="835" y2="210" class="axis"></line>
+<line x1="610" y1="95" x2="610" y2="325" class="axis"></line>
+<line id="rVec" x1="610" y1="210" x2="775" y2="210" class="rvec" marker-end="url(#arrR)"></line>
+<line id="xVec" x1="775" y1="210" x2="775" y2="210.321423467167" class="xvec" marker-end="url(#arrX)"></line>
+<line id="zVec" x1="610" y1="210" x2="775" y2="210.321423467167" class="zvec" marker-end="url(#arrC)"></line>
+<path id="phiArc" class="arc" d="M652 210 L651.9999998983542 210.0029220278212 L651.9999995934169 210.00584405562824 L651.9999990851878 210.00876608340698 L651.9999983736673 210.01168811114331 L651.9999974588552 210.0146101388231 L651.9999963407515 210.01753216643212 L651.9999950193562 210.02045419395628 L651.9999934946694 210.02337622138148 L651.9999917666911 210.0262982486935 L651.9999898354212 210.02922027587823 L651.9999877008597 210.03214230292153 L651.9999853630067 210.03506432980927 L651.9999828218622 210.03798635652726 L651.9999800774261 210.0409083830614 L651.9999771296987 210.04383040939754 L651.9999739786797 210.0467524355215 L651.9999706243693 210.0496744614192 L651.9999670667675 210.05259648707644 L651.9999633058741 210.0555185124791 L651.9999593416894 210.05844053761305 L651.9999551742134 210.06136256246413 L651.9999508034458 210.0642845870182 L651.9999462293871 210.0672066112611 L651.9999414520369 210.0701286351787 L651.9999364713955 210.07305065875687 L651.9999312874628 210.07597268198143 L651.9999259002387 210.0788947048383 L651.9999203097236 210.08181672731325 "></path>
+<text id="phiLabel" x="669.9999715391803" y="210.05844054723056" fill="#b78cff" font-size="18" font-weight="900">φ</text>
+<text id="rLabel" x="692.5" y="234" fill="#ffe06a" font-size="17" font-weight="900">R</text>
+<text id="xLabel" x="789" y="210.1607117335835" fill="#ff9d48" font-size="17" font-weight="900">X</text>
+<text id="zLabel" x="705.7" y="198.18642561095686" fill="#58cfff" font-size="17" font-weight="900">Z</text>
+
+<rect x="80" y="430" width="740" height="210" rx="16" class="badge"></rect>
+<text x="450" y="462" class="lab" text-anchor="middle">Характер на веригата</text>
+<text id="charText" x="450" y="505" fill="#ff9d48" font-size="24" font-weight="900" text-anchor="middle">КАПАЦИТИВЕН ХАРАКТЕР</text>
+<text id="charRule" x="450" y="538" class="small" text-anchor="middle">Xₗ &lt; Xc → токът изпреварва напрежението</text>
+<text id="charPhi" x="450" y="573" fill="#ffe06a" font-size="20" font-weight="900" text-anchor="middle">φ &lt; 0°</text>
+<text id="resText" x="450" y="610" class="small" text-anchor="middle"></text>
+</svg>
+</section>
+
+<aside class="side">
+<div class="card">
+<div class="title">Захранване</div>
+<label>Ефективно напрежение U <b id="uOut">230 V</b></label>
+<input id="U" type="range" min="100" max="250" step="1" value="230">
+<label>Честота f <b id="fOut">50 Hz</b></label>
+<input id="f" type="range" min="10" max="100" step="1" value="50">
+</div>
+
+<div class="card">
+<div class="title">Елементи на веригата</div>
+
+<div style="display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:center;margin-bottom:8px">
+<input id="useR" type="checkbox" checked="">
+<label for="useR" style="margin:0;justify-content:flex-start">R включен</label>
+</div>
+<label>R <b id="rOut">100 Ω</b></label>
+<input id="R" type="range" min="10" max="300" step="5" value="100">
+
+<div style="display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:center;margin:12px 0 8px">
+<input id="useL" type="checkbox" checked="">
+<label for="useL" style="margin:0;justify-content:flex-start">L включена</label>
+</div>
+<label>L <b id="lOut">0.318 H</b></label>
+<input id="L" type="range" min="0.01" max="1.0" step="0.002" value="0.318">
+
+<div style="display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:center;margin:12px 0 8px">
+<input id="useC" type="checkbox" checked="">
+<label for="useC" style="margin:0;justify-content:flex-start">C включен</label>
+</div>
+<label>C <b id="cOut">31.8 µF</b></label>
+<input id="C" type="range" min="1" max="200" step="0.2" value="31.8">
+</div>
+
+<div class="card eq">
+<div>X<sub>L</sub> = 2πfL</div>
+<div>X<sub>C</sub> = 1/(2πfC)</div>
+<div>Z = √(R² + (X<sub>L</sub> − X<sub>C</sub>)²)</div>
+<div>I = U/Z</div>
+</div>
+
+<div class="card result" id="results">Активни елементи: <b>R – L – C</b><br>X<sub>L</sub> = <b>99.90 Ω</b><br>X<sub>C</sub> = <b>100.10 Ω</b><br>X = X<sub>L</sub> − X<sub>C</sub> = <b>-0.19 Ω</b><br>Z = <b>100.00 Ω</b><br>I = <b>2.300 A</b><br>φ = <b>-0.1°</b></div>
+<div class="card note">Включвайте или изключвайте отделно R, L и C. Плъзгачите задават стойностите само на включените елементи. При изключени L и C веригата е чисто активна и Z = R, φ = 0°.</div>
+<div class="card"><button id="reset">Начални стойности</button></div>
+</aside>
+</div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+
+function calc(){
+ const U=+$("U").value;
+ const f=+$("f").value;
+ const Rset=+$("R").value;
+ const Lset=+$("L").value;
+ const Cset=+$("C").value*1e-6;
+
+ const useR=$("useR").checked;
+ const useL=$("useL").checked;
+ const useC=$("useC").checked;
+
+ const R=useR?Rset:0;
+ const L=useL?Lset:0;
+ const C=useC?Cset:null;
+
+ const XL=useL?2*Math.PI*f*Lset:0;
+ const XC=useC?1/(2*Math.PI*f*Cset):0;
+ const X=XL-XC;
+ const Z=Math.sqrt(R*R+X*X);
+ const I=(Z>0)?U/Z:0;
+ const phi=Math.atan2(X,R);
+ const phiDeg=phi*180/Math.PI;
+
+ $("uOut").textContent=U.toFixed(0)+" V";
+ $("fOut").textContent=f.toFixed(0)+" Hz";
+ $("rOut").textContent=useR?Rset.toFixed(0)+" Ω":"изключен";
+ $("lOut").textContent=useL?Lset.toFixed(3)+" H":"изключена";
+ $("cOut").textContent=useC?(Cset*1e6).toFixed(1)+" µF":"изключен";
+
+ $("R").disabled=!useR;
+ $("L").disabled=!useL;
+ $("C").disabled=!useC;
+
+ const active=[];
+ if(useR) active.push("R");
+ if(useL) active.push("L");
+ if(useC) active.push("C");
+
+ $("results").innerHTML=
+  `Активни елементи: <b>${active.length?active.join(" – "):"няма"}</b><br>`+
+  `X<sub>L</sub> = <b>${XL.toFixed(2)} Ω</b><br>`+
+  `X<sub>C</sub> = <b>${XC.toFixed(2)} Ω</b><br>`+
+  `X = X<sub>L</sub> − X<sub>C</sub> = <b>${X.toFixed(2)} Ω</b><br>`+
+  `Z = <b>${Z.toFixed(2)} Ω</b><br>`+
+  `I = <b>${I.toFixed(3)} A</b><br>`+
+  `φ = <b>${(Z>0?phiDeg:0).toFixed(1)}°</b>`;
+
+ drawTriangle(R,X,(Z>0?phi:0));
+
+ const eps=0.05;
+ if(!useR && !useL && !useC){
+   $("charText").textContent="НЯМА ВКЛЮЧЕНИ ЕЛЕМЕНТИ";
+   $("charText").setAttribute("fill","#c8dae5");
+   $("charRule").textContent="Изберете поне един елемент.";
+   $("charPhi").textContent="";
+   $("resText").textContent="";
+ }else if(useR && !useL && !useC){
+   $("charText").textContent="ЧИСТО АКТИВЕН ХАРАКТЕР";
+   $("charText").setAttribute("fill","#76e29a");
+   $("charRule").textContent="Само R е включен → Z = R; токът и напрежението са във фаза";
+   $("charPhi").textContent="φ = 0°";
+   $("resText").textContent="Няма реактивна съставка";
+ }else if(Math.abs(X)<eps && R>0){
+   $("charText").textContent="АКТИВЕН ХАРАКТЕР";
+   $("charText").setAttribute("fill","#76e29a");
+   $("charRule").textContent="Xₗ ≈ Xc → реактивните съставки се компенсират";
+   $("charPhi").textContent="φ = 0°";
+   $("resText").textContent="Условие, близко до последователен резонанс";
+ }else if(X>0){
+   $("charText").textContent="ИНДУКТИВЕН ХАРАКТЕР";
+   $("charText").setAttribute("fill","#58cfff");
+   $("charRule").textContent="Xₗ > Xc → токът изостава от напрежението";
+   $("charPhi").textContent="φ > 0°";
+   $("resText").textContent="";
+ }else{
+   $("charText").textContent="КАПАЦИТИВЕН ХАРАКТЕР";
+   $("charText").setAttribute("fill","#ff9d48");
+   $("charRule").textContent="Xₗ < Xc → токът изпреварва напрежението";
+   $("charPhi").textContent="φ < 0°";
+   $("resText").textContent="";
+ }
+}
+
+function drawTriangle(R,X,phi){
+ const ox=610, oy=210;
+
+ // Един общ мащаб за R и X, така че геометричният ъгъл
+ // на вектора Z да е точно atan(X/R).
+ const maxComponent=Math.max(R,Math.abs(X),1);
+ const scale=165/maxComponent;
+
+ const dx=R*scale;
+ const dy=X*scale;
+ const ex=ox+dx;
+ const ey=oy-dy;
+
+ const pureResistive=Math.abs(X)<0.05 && R>0;
+ const allZero=(Math.abs(X)<0.05 && R===0);
+
+ if(allZero){
+   $("rVec").style.display="none";
+   $("xVec").style.display="none";
+   $("zVec").style.display="none";
+   $("rLabel").style.display="none";
+   $("xLabel").style.display="none";
+   $("zLabel").style.display="none";
+   $("phiArc").setAttribute("d","");
+   $("phiLabel").style.display="none";
+   return;
+ }
+
+ $("rVec").style.display=R>0?"":"none";
+ $("zVec").style.display="";
+ $("rLabel").style.display=R>0?"":"none";
+ $("zLabel").style.display="";
+
+ // R
+ $("rVec").setAttribute("x1",ox);
+ $("rVec").setAttribute("y1",oy);
+ $("rVec").setAttribute("x2",ex);
+ $("rVec").setAttribute("y2",oy);
+
+ // X
+ $("xVec").setAttribute("x1",ex);
+ $("xVec").setAttribute("y1",oy);
+ $("xVec").setAttribute("x2",ex);
+ $("xVec").setAttribute("y2",ey);
+
+ // Z
+ $("zVec").setAttribute("x1",ox);
+ $("zVec").setAttribute("y1",oy);
+ $("zVec").setAttribute("x2",ex);
+ $("zVec").setAttribute("y2",ey);
+
+ $("rLabel").setAttribute("x",ox+dx/2);
+ $("rLabel").setAttribute("y",oy+24);
+
+ if(pureResistive){
+   // При чисто активен товар Z съвпада с R.
+   $("xVec").style.display="none";
+   $("xLabel").style.display="none";
+   $("phiArc").setAttribute("d","");
+   $("phiLabel").style.display="none";
+   $("zLabel").textContent="Z = R";
+   $("zLabel").setAttribute("x",ox+dx*0.62);
+   $("zLabel").setAttribute("y",oy-14);
+ }else{
+   $("xVec").style.display="";
+   $("xLabel").style.display="";
+   $("phiLabel").style.display="";
+   $("zLabel").textContent="Z";
+
+   $("xLabel").setAttribute("x",ex+14);
+   $("xLabel").setAttribute("y",(oy+ey)/2);
+   $("zLabel").setAttribute("x",ox+dx*0.58);
+   $("zLabel").setAttribute("y",oy-dy*0.58-12);
+
+   // Дъгата използва точно изчисления phi.
+   const rad=42, steps=28;
+   let d="";
+   for(let k=0;k<=steps;k++){
+     const t=phi*k/steps;
+     const px=ox+rad*Math.cos(t);
+     const py=oy-rad*Math.sin(t);
+     d+=(k===0?"M":"L")+px+" "+py+" ";
+   }
+   $("phiArc").setAttribute("d",d);
+   $("phiLabel").textContent="φ";
+   const mid=phi/2;
+   $("phiLabel").setAttribute("x",ox+(rad+18)*Math.cos(mid));
+   $("phiLabel").setAttribute("y",oy-(rad+18)*Math.sin(mid));
+ }
+}
+["U","f","R","L","C","useR","useL","useC"].forEach(id=>$(id).addEventListener("input",calc));
+$("reset").addEventListener("click",()=>{
+ $("U").value=230;$("f").value=50;$("R").value=100;$("L").value=0.318;$("C").value=31.8;$("useR").checked=true;$("useL").checked=true;$("useC").checked=true;calc();
+});
+calc();
+</script>
+
+
+</body></html>

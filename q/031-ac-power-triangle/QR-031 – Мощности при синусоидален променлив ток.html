@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<!-- saved from url=(0064)file:///C:/Users/velichko.atanasov/Downloads/preview%20(25).html -->
+<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QR-031 – Мощности при синусоидален променлив ток</title>
+<style>
+*{box-sizing:border-box}
+:root{--ink:#18364d;--blue:#1769aa;--orange:#d77b17;--green:#168451;--violet:#6a4aaa;--line:#bdccd7;--muted:#60798c}
+body{margin:0;background:#eef4f8;color:var(--ink);font-family:Segoe UI,Arial,sans-serif}
+.wrap{max-width:1240px;margin:auto;padding:14px}
+h1{text-align:center;color:#174f88;margin:4px 0;font-size:clamp(24px,4vw,37px)}
+.sub{text-align:center;color:var(--muted);margin:6px 0 14px}
+.main{display:grid;grid-template-columns:1.45fr .55fr;gap:14px}
+.stage{min-height:720px;background:#fff;border:1px solid var(--line);border-radius:18px;position:relative;overflow:hidden}
+svg{position:absolute;inset:0;width:100%;height:100%}
+.side{background:#fff;border:1px solid var(--line);border-radius:18px;padding:11px}
+.card{border:1px solid #c7d5e0;border-radius:13px;padding:10px;margin-bottom:10px;background:#fbfdff}
+.title{font-weight:900;color:#174f88;margin-bottom:8px}
+label{display:flex;justify-content:space-between;gap:8px;font-weight:750;margin:7px 0}
+input[type=range]{width:100%;accent-color:#1769aa}
+.result{line-height:1.62;font-size:14px}.note{font-size:13px;color:#536d80;line-height:1.45}
+button{width:100%;padding:9px;border:1px solid #8aaac1;border-radius:9px;background:#edf6fc;color:#174f88;font-weight:850;cursor:pointer}
+.lab{fill:#18364d;font-size:17px;font-weight:850}.small{fill:#5b7180;font-size:13px;font-weight:700}
+.box{fill:#f8fbfd;stroke:#bdccd7;stroke-width:2}.axis{stroke:#71828d;stroke-width:2}
+.pvec{stroke:#1769aa;stroke-width:4}.qvec{stroke:#d77b17;stroke-width:4}.svec{stroke:#6a4aaa;stroke-width:4}
+.waveU{fill:none;stroke:#1769aa;stroke-width:3}.waveI{fill:none;stroke:#d77b17;stroke-width:3}
+.arc{fill:none;stroke:#6a4aaa;stroke-width:2}
+@media(max-width:900px){.main{grid-template-columns:1fr}.stage{min-height:720px}}
+</style></head>
+<body><div class="wrap">
+<h1>QR-031 – Мощности при синусоидален променлив ток</h1>
+<div class="sub">Активна P, реактивна Q, привидна S и коефициент на мощността cos φ</div>
+<div class="main"><section class="stage"><svg viewBox="0 0 900 720">
+<defs>
+<!-- deliberately small arrowheads -->
+<marker id="aP" markerWidth="4" markerHeight="4" refX="3.5" refY="1.5" orient="auto"><path d="M0 0L0 3L3.8 1.5z" fill="#1769aa"></path></marker>
+<marker id="aQ" markerWidth="4" markerHeight="4" refX="3.5" refY="1.5" orient="auto"><path d="M0 0L0 3L3.8 1.5z" fill="#d77b17"></path></marker>
+<marker id="aS" markerWidth="4" markerHeight="4" refX="3.5" refY="1.5" orient="auto"><path d="M0 0L0 3L3.8 1.5z" fill="#6a4aaa"></path></marker>
+</defs>
+
+<!-- Waveforms -->
+<text x="255" y="38" class="lab" text-anchor="middle">Напрежение и ток</text>
+<rect x="45" y="58" width="430" height="250" rx="14" class="box"></rect>
+<line x1="70" y1="180" x2="450" y2="180" class="axis"></line>
+<path id="uWave" class="waveU" d="M70 180 L72.375 175.1355360648736 L74.75 170.30106316750567 L77.125 165.52638744093386 L79.5 160.84094634875325 L81.875 156.27362719336443 L84.25 151.8525890161481 L86.625 147.60508898761117 L89 143.55731435786666 L91.375 139.7342210035286 L93.75 136.15937956643404 L96.125 132.8548301327981 L98.5 129.84094634875325 L100.875 127.13630981004628 L103.25 124.7575955003212 L105.625 122.71946898430022 L108 121.03449598970047 L110.375 119.71306493534405 L112.75 118.76332288310147 L115.125 118.19112530854606 L117.5 118 L119.875 118.19112530854606 L122.25 118.76332288310147 L124.625 119.71306493534405 L127 121.03449598970047 L129.375 122.71946898430022 L131.75 124.75759550032119 L134.125 127.13630981004627 L136.5 129.84094634875325 L138.875 132.85483013279807 L141.25 136.15937956643404 L143.625 139.7342210035286 L146 143.55731435786666 L148.375 147.60508898761117 L150.75 151.8525890161481 L153.125 156.27362719336443 L155.5 160.84094634875325 L157.875 165.52638744093386 L160.25 170.30106316750567 L162.625 175.1355360648736 L165 180 L167.375 184.86446393512634 L169.75 189.6989368324943 L172.125 194.47361255906614 L174.5 199.15905365124672 L176.875 203.72637280663557 L179.25 208.1474109838519 L181.625 212.39491101238883 L184 216.4426856421333 L186.375 220.26577899647137 L188.75 223.84062043356596 L191.125 227.1451698672019 L193.5 230.15905365124672 L195.875 232.86369018995373 L198.25 235.2424044996788 L200.625 237.28053101569978 L203 238.96550401029953 L205.375 240.28693506465595 L207.75 241.23667711689853 L210.125 241.80887469145392 L212.5 242 L214.875 241.80887469145392 L217.25 241.23667711689853 L219.625 240.28693506465595 L222 238.96550401029953 L224.375 237.2805310156998 L226.75 235.2424044996788 L229.125 232.86369018995373 L231.5 230.15905365124675 L233.875 227.1451698672019 L236.25 223.84062043356596 L238.625 220.26577899647137 L241 216.44268564213334 L243.375 212.39491101238886 L245.75 208.1474109838519 L248.125 203.7263728066356 L250.5 199.15905365124675 L252.875 194.4736125590661 L255.25 189.69893683249433 L257.625 184.86446393512637 L260 180.00000000000003 L262.375 175.13553606487366 L264.75 170.30106316750576 L267.125 165.52638744093386 L269.5 160.84094634875328 L271.875 156.27362719336443 L274.25 151.8525890161481 L276.625 147.60508898761123 L279 143.55731435786674 L281.375 139.7342210035286 L283.75 136.15937956643407 L286.125 132.8548301327981 L288.5 129.84094634875328 L290.875 127.1363098100463 L293.25 124.75759550032117 L295.625 122.71946898430022 L298 121.03449598970047 L300.375 119.71306493534405 L302.75 118.76332288310147 L305.125 118.19112530854606 L307.5 118 L309.875 118.19112530854606 L312.25 118.76332288310145 L314.625 119.71306493534404 L317 121.03449598970047 L319.375 122.71946898430022 L321.75 124.7575955003212 L324.125 127.13630981004626 L326.5 129.84094634875325 L328.875 132.854830132798 L331.25 136.15937956643407 L333.625 139.73422100352857 L336 143.55731435786666 L338.375 147.60508898761117 L340.75 151.85258901614804 L343.125 156.2736271933645 L345.5 160.84094634875325 L347.875 165.52638744093386 L350.25 170.30106316750562 L352.625 175.13553606487358 L355 179.99999999999997 L357.375 184.8644639351264 L359.75 189.69893683249435 L362.125 194.47361255906608 L364.5 199.15905365124672 L366.875 203.72637280663548 L369.25 208.14741098385193 L371.625 212.39491101238877 L374 216.4426856421333 L376.375 220.2657789964714 L378.75 223.8406204335659 L381.125 227.14516986720196 L383.5 230.15905365124672 L385.875 232.86369018995373 L388.25 235.24240449967877 L390.625 237.28053101569975 L393 238.96550401029953 L395.375 240.28693506465595 L397.75 241.23667711689853 L400.125 241.80887469145392 L402.5 242 L404.875 241.80887469145392 L407.25 241.23667711689853 L409.625 240.28693506465595 L412 238.96550401029953 L414.375 237.28053101569978 L416.75 235.24240449967886 L419.125 232.86369018995367 L421.5 230.15905365124675 L423.875 227.1451698672019 L426.25 223.84062043356602 L428.625 220.26577899647143 L431 216.44268564213337 L433.375 212.39491101238883 L435.75 208.14741098385187 L438.125 203.72637280663562 L440.5 199.15905365124678 L442.875 194.47361255906625 L445.25 189.6989368324943 L447.625 184.86446393512645 L450 180.00000000000003 "></path>
+<path id="iWave" class="waveI" d="M70 211 L72.375 206.6916880021143 L74.75 202.2188128718086 L77.125 197.6089513716432 L79.5 192.89052483070105 L81.875 188.09262391764318 L84.25 183.24482928706252 L86.625 178.37702920491185 L89 173.51923527740547 L91.375 168.70139741948685 L93.75 163.9532192036437 L96.125 159.30397472750622 L98.5 154.78232812930037 L100.875 150.41615686390426 L103.25 146.23237982906832 L105.625 142.2567914014593 L108 138.5139024057508 L110.375 135.02678899723816 L112.75 131.8169503896678 L115.125 128.90417630543504 L117.5 126.3064249653648 L119.875 124.03971237030865 L122.25 122.1180135571735 L124.625 120.55317643817203 L127 119.35484875450405 L129.375 118.53041859482376 L131.75 118.08496884521642 L134.125 118.02124585151546 L136.5 118.33964248716705 L138.875 119.03819573103482 L141.25 120.11259877007777 L143.625 121.55622755228495 L146 123.36018162615875 L148.375 125.51333901495815 L150.75 128.00242478738372 L153.125 130.81209290194343 L155.5 133.92502082040156 L157.875 137.32201630698725 L160.25 140.98213575491008 L162.625 144.88281331066037 L165 149 L167.375 153.30831199788568 L169.75 157.7811871281914 L172.125 162.3910486283568 L174.5 167.1094751692989 L176.875 171.9073760823568 L179.25 176.75517071293748 L181.625 181.62297079508815 L184 186.48076472259453 L186.375 191.29860258051312 L188.75 196.0467807963563 L191.125 200.69602527249378 L193.5 205.2176718706996 L195.875 209.58384313609574 L198.25 213.76762017093168 L200.625 217.74320859854072 L203 221.4860975942492 L205.375 224.97321100276181 L207.75 228.18304961033218 L210.125 231.09582369456496 L212.5 233.69357503463522 L214.875 235.96028762969138 L217.25 237.8819864428265 L219.625 239.44682356182796 L222 240.64515124549595 L224.375 241.46958140517623 L226.75 241.91503115478358 L229.125 241.97875414848454 L231.5 241.66035751283295 L233.875 240.96180426896518 L236.25 239.88740122992223 L238.625 238.44377244771505 L241 236.63981837384125 L243.375 234.48666098504188 L245.75 231.9975752126163 L248.125 229.18790709805657 L250.5 226.07497917959842 L252.875 222.67798369301272 L255.25 219.01786424508995 L257.625 215.11718668933963 L260 210.99999999999997 L262.375 206.69168800211435 L264.75 202.21881287180864 L267.125 197.6089513716432 L269.5 192.89052483070105 L271.875 188.09262391764315 L274.25 183.24482928706254 L276.625 178.37702920491188 L279 173.51923527740558 L281.375 168.7013974194868 L283.75 163.95321920364376 L286.125 159.30397472750622 L288.5 154.78232812930037 L290.875 150.41615686390435 L293.25 146.23237982906826 L295.625 142.25679140145934 L298 138.51390240575077 L300.375 135.0267889972382 L302.75 131.81695038966782 L305.125 128.90417630543504 L307.5 126.30642496536478 L309.875 124.03971237030862 L312.25 122.1180135571735 L314.625 120.55317643817203 L317 119.35484875450405 L319.375 118.53041859482374 L321.75 118.08496884521642 L324.125 118.02124585151546 L326.5 118.33964248716705 L328.875 119.0381957310348 L331.25 120.1125987700778 L333.625 121.55622755228494 L336 123.36018162615875 L338.375 125.51333901495818 L340.75 128.0024247873837 L343.125 130.8120929019435 L345.5 133.92502082040158 L347.875 137.32201630698728 L350.25 140.98213575491005 L352.625 144.88281331066037 L355 149 L357.375 153.30831199788574 L359.75 157.78118712819145 L362.125 162.39104862835677 L364.5 167.10947516929895 L366.875 171.90737608235673 L369.25 176.75517071293754 L371.625 181.62297079508812 L374 186.48076472259453 L376.375 191.29860258051318 L378.75 196.04678079635624 L381.125 200.6960252724939 L383.5 205.21767187069963 L385.875 209.58384313609577 L388.25 213.76762017093165 L390.625 217.74320859854066 L393 221.4860975942492 L395.375 224.97321100276184 L397.75 228.18304961033223 L400.125 231.09582369456496 L402.5 233.69357503463522 L404.875 235.96028762969132 L407.25 237.88198644282653 L409.625 239.44682356182796 L412 240.64515124549595 L414.375 241.46958140517626 L416.75 241.91503115478358 L419.125 241.97875414848454 L421.5 241.66035751283295 L423.875 240.96180426896518 L426.25 239.88740122992223 L428.625 238.44377244771508 L431 236.63981837384125 L433.375 234.48666098504182 L435.75 231.99757521261625 L438.125 229.1879070980566 L440.5 226.07497917959844 L442.875 222.6779836930128 L445.25 219.01786424508987 L447.625 215.11718668933963 L450 211 "></path>
+<text x="78" y="88" fill="#1769aa" font-size="15" font-weight="900">u(t)</text>
+<text x="125" y="88" fill="#d77b17" font-size="15" font-weight="900">i(t)</text>
+<text id="phaseInfo" x="260" y="288" class="small" text-anchor="middle">Текущ фазов ъгъл след компенсация: φ = 30.0°</text>
+
+<!-- Power triangle -->
+<text x="690" y="38" class="lab" text-anchor="middle">Триъгълник на мощностите</text>
+<rect x="515" y="58" width="340" height="250" rx="14" class="box"></rect>
+<line x1="555" y1="185" x2="825" y2="185" class="axis"></line>
+<line x1="555" y1="80" x2="555" y2="290" class="axis"></line>
+<line id="pVec" x1="555" y1="185" x2="740" y2="185" class="pvec" marker-end="url(#aP)"></line>
+<line id="qVec" x1="740" y1="185" x2="740" y2="78.19020019991926" class="qvec" marker-end="url(#aQ)" style=""></line>
+<line id="sVec" x1="555" y1="185" x2="740" y2="78.19020019991926" class="svec" marker-end="url(#aS)"></line>
+<path id="phiArc" class="arc" d="M593 185 L592.9909570290365 184.1710343686867 L592.9638324201106 183.34246328011724 L592.918639083067 182.51468108925457 L592.8553985274864 181.68808177558898 L592.7741408524481 180.86305875562536 L592.6749047322048 180.04000469563803 L592.5577373977749 179.21931132478318 L592.4226946144639 178.40136924865664 L592.2698406553227 177.58656776338714 L592.0992482705575 176.77529467035208 L591.9109986529039 175.96793609160542 L591.7051813989846 175.1648762861042 L591.4818944666653 174.3664974668223 L591.2412441284326 173.57317961883763 L590.983344920814 172.78530031847987 L590.7083195898646 172.0032345536246 L590.4162990327463 171.22735454521933 L590.1074222354289 170.4580295701266 L589.781836206539 169.69562578536798 L589.4396959073927 168.94050605385343 L589.0811641782421 168.19302977167797 L588.7064116607725 167.45355269706872 L588.3156167168853 166.72242678106326 L587.9089653438086 166 "></path>
+<text id="phiLab" fill="#6a4aaa" font-size="15" font-weight="900" x="606.1940687933206" y="171.2825906095664" style="">φ</text>
+<text id="pLab" fill="#1769aa" font-size="15" font-weight="900" x="647.5" y="207">P</text>
+<text id="qLab" fill="#d77b17" font-size="15" font-weight="900" x="752" y="131.59510009995964" style="">Q</text>
+<text id="sLab" fill="#6a4aaa" font-size="15" font-weight="900" x="656.75" y="116.25461010995559">S</text>
+
+<!-- formulas -->
+<rect x="45" y="335" width="430" height="320" rx="14" class="box"></rect>
+<text x="260" y="370" class="lab" text-anchor="middle">Основни зависимости</text>
+<text x="75" y="415" class="lab">P = UI cos φ</text>
+<text x="75" y="455" class="lab">Q = UI sin φ</text>
+<text x="75" y="495" class="lab">S = UI</text>
+<text x="75" y="535" class="lab">S² = P² + Q²</text>
+<text x="75" y="575" class="lab">cos φ = P/S</text>
+<text x="75" y="615" fill="#6a4aaa" font-size="18" font-weight="900">S̲ = P + jQ</text>
+
+<!-- interpretation -->
+<rect x="515" y="335" width="340" height="320" rx="14" class="box"></rect>
+<text x="685" y="370" class="lab" text-anchor="middle">Енергиен характер</text>
+<text id="mode" x="685" y="420" font-size="21" font-weight="900" text-anchor="middle" fill="#d77b17">ИНДУКТИВЕН РЕЖИМ</text>
+<text id="rule" x="685" y="458" class="small" text-anchor="middle">Q &gt; 0 → токът изостава спрямо напрежението</text>
+<text id="pText" x="550" y="505" class="lab">P = 1992 W</text>
+<text id="qText" x="550" y="545" class="lab">Q = 1150 var</text>
+<text id="sText" x="550" y="585" class="lab">S = 2300 VA</text>
+<text id="cosText" x="550" y="625" fill="#6a4aaa" font-size="18" font-weight="900">cos φ = 0.866</text>
+</svg></section>
+
+<aside class="side">
+<div class="card"><div class="title">Електрически величини</div>
+<label>U <b id="uOut">230 V</b></label><input id="U" type="range" min="50" max="400" step="1" value="230">
+<label>I <b id="iOut">10.0 A</b></label><input id="I" type="range" min="1" max="30" step="0.1" value="10">
+<label>φ <b id="phiOut">30°</b></label><input id="PHI" type="range" min="-80" max="80" step="1" value="30">
+</div>
+<div class="card result" id="results">Преди компенсация:<br>P = <b>1992 W</b><br>Q = <b>1150 var</b><br>S = <b>2300 VA</b><br><br>Текущ режим:<br>P = <b>1992 W</b><br>Q = <b>1150 var</b><br>S = <b>2300 VA</b><br>I = <b>10.00 A</b><br>cos φ = <b>0.866</b></div>
+<div class="card"><div class="title">Компенсация</div>
+<label>Компенсация на Q <b id="compOut">0%</b></label>
+<input id="COMP" type="range" min="0" max="100" step="1" value="0">
+<div class="note">При компенсация активната мощност P се запазва. Реактивната мощност Q намалява, cos φ се повишава и необходимият ток от мрежата намалява.</div>
+</div>
+<div class="card"><button id="reset">Начални стойности</button></div>
+</aside></div></div>
+
+<script>
+const $=id=>document.getElementById(id);
+
+function calc(){
+ const U=+$("U").value, I0=+$("I").value, phi0=+$("PHI").value*Math.PI/180, comp=+$("COMP").value/100;
+ const P=U*I0*Math.cos(phi0);
+ const Q0=U*I0*Math.sin(phi0);
+ // Compensation reduces magnitude of reactive power toward zero, never reverses it.
+ const Q=Q0*(1-comp);
+ const S=Math.hypot(P,Q);
+ const I=S/U;
+ const phi=Math.atan2(Q,P);
+ const deg=phi*180/Math.PI;
+ const pf=S?P/S:1;
+
+ $("uOut").textContent=U.toFixed(0)+" V";
+ $("iOut").textContent=I0.toFixed(1)+" A";
+ $("phiOut").textContent=(+$("PHI").value).toFixed(0)+"°";
+ $("compOut").textContent=Math.round(comp*100)+"%";
+
+ $("results").innerHTML=
+ `Преди компенсация:<br>P = <b>${P.toFixed(0)} W</b><br>Q = <b>${Q0.toFixed(0)} var</b><br>S = <b>${(U*I0).toFixed(0)} VA</b><br><br>`+
+ `Текущ режим:<br>P = <b>${P.toFixed(0)} W</b><br>Q = <b>${Q.toFixed(0)} var</b><br>S = <b>${S.toFixed(0)} VA</b><br>I = <b>${I.toFixed(2)} A</b><br>cos φ = <b>${pf.toFixed(3)}</b>`;
+
+ $("pText").textContent=`P = ${P.toFixed(0)} W`;
+ $("qText").textContent=`Q = ${Q.toFixed(0)} var`;
+ $("sText").textContent=`S = ${S.toFixed(0)} VA`;
+ $("cosText").textContent=`cos φ = ${pf.toFixed(3)}`;
+ $("phaseInfo").textContent=`Текущ фазов ъгъл след компенсация: φ = ${deg.toFixed(1)}°`;
+
+ if(Math.abs(Q)<1){
+   $("mode").textContent="АКТИВЕН РЕЖИМ";$("mode").setAttribute("fill","#1769aa");
+   $("rule").textContent="Q = 0 → токът и напрежението са във фаза";
+ }else if(Q>0){
+   $("mode").textContent="ИНДУКТИВЕН РЕЖИМ";$("mode").setAttribute("fill","#d77b17");
+   $("rule").textContent="Q > 0 → токът изостава спрямо напрежението";
+ }else{
+   $("mode").textContent="КАПАЦИТИВЕН РЕЖИМ";$("mode").setAttribute("fill","#168451");
+   $("rule").textContent="Q < 0 → токът изпреварва напрежението";
+ }
+ drawTriangle(P,Q,phi);
+ drawWaves(phi);
+}
+
+function drawTriangle(P,Q,phi){
+ const ox=555,oy=185,m=Math.max(Math.abs(P),Math.abs(Q),1),s=185/m;
+ const dx=P*s,dy=Q*s,ex=ox+dx,ey=oy-dy;
+ $("pVec").setAttribute("x2",ex);
+ $("qVec").setAttribute("x1",ex);$("qVec").setAttribute("y1",oy);$("qVec").setAttribute("x2",ex);$("qVec").setAttribute("y2",ey);
+ $("sVec").setAttribute("x2",ex);$("sVec").setAttribute("y2",ey);
+ $("pLab").setAttribute("x",ox+dx/2);$("pLab").setAttribute("y",oy+22);
+ $("qLab").setAttribute("x",ex+12);$("qLab").setAttribute("y",(oy+ey)/2);
+ $("sLab").setAttribute("x",ox+dx*.55);$("sLab").setAttribute("y",oy-dy*.55-10);
+
+ if(Math.abs(Q)<1){
+   $("qVec").style.display="none";$("qLab").style.display="none";$("phiArc").setAttribute("d","");$("phiLab").style.display="none";
+   $("sLab").textContent="S = P";
+ }else{
+   $("qVec").style.display="";$("qLab").style.display="";$("phiLab").style.display="";$("sLab").textContent="S";
+   const r=38,n=24;let d="";
+   for(let k=0;k<=n;k++){let t=phi*k/n,x=ox+r*Math.cos(t),y=oy-r*Math.sin(t);d+=(k?"L":"M")+x+" "+y+" ";}
+   $("phiArc").setAttribute("d",d);
+   $("phiLab").setAttribute("x",ox+53*Math.cos(phi/2));$("phiLab").setAttribute("y",oy-53*Math.sin(phi/2));
+ }
+}
+function drawWaves(phi){
+ const x0=70,x1=450,mid=180,amp=62,n=160;
+ let du="",di="";
+ for(let k=0;k<=n;k++){
+   const x=x0+(x1-x0)*k/n,t=4*Math.PI*k/n;
+   const yu=mid-amp*Math.sin(t), yi=mid-amp*Math.sin(t-phi);
+   du+=(k?"L":"M")+x+" "+yu+" ";di+=(k?"L":"M")+x+" "+yi+" ";
+ }
+ $("uWave").setAttribute("d",du);$("iWave").setAttribute("d",di);
+}
+["U","I","PHI","COMP"].forEach(id=>$(id).addEventListener("input",calc));
+$("reset").onclick=()=>{$("U").value=230;$("I").value=10;$("PHI").value=30;$("COMP").value=0;calc()};
+calc();
+</script></body></html>

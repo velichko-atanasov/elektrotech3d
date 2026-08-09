@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<!-- saved from url=(0064)file:///C:/Users/velichko.atanasov/Downloads/preview%20(24).html -->
+<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QR-030 – Трансформатор на празен ход</title>
+<style>
+*{box-sizing:border-box} :root{--ink:#17324a;--blue:#1769aa;--orange:#d97b16;--green:#168451;--violet:#6b48ad;--red:#c74336;--line:#b9cad6}
+body{margin:0;background:#eef4f8;color:var(--ink);font-family:Segoe UI,Arial,sans-serif}
+.wrap{max-width:1250px;margin:auto;padding:14px} h1{text-align:center;color:#174f88;margin:4px 0;font-size:clamp(24px,4vw,38px)}
+.sub{text-align:center;color:#60798c;margin:6px 0 14px}.main{display:grid;grid-template-columns:1.45fr .55fr;gap:14px}
+.stage{min-height:730px;background:#fff;border:1px solid var(--line);border-radius:18px;position:relative;overflow:hidden}
+svg{position:absolute;inset:0;width:100%;height:100%}.side,.card{background:#fff;border:1px solid var(--line);border-radius:16px}
+.side{padding:11px}.card{padding:10px;margin-bottom:10px}.title{font-weight:900;color:#174f88;margin-bottom:7px}
+label{display:flex;justify-content:space-between;font-weight:750;margin:7px 0}input[type=range]{width:100%;accent-color:#1769aa}
+button{width:100%;padding:9px;border:1px solid #8aaac1;border-radius:9px;background:#edf6fc;color:#174f88;font-weight:850}
+.result{font-size:14px;line-height:1.62}.note{font-size:13px;color:#5a7182;line-height:1.45}
+.wire{stroke:#273c49;stroke-width:4;fill:none;stroke-linecap:round}.lab{fill:#17324a;font-size:16px;font-weight:850}.small{fill:#5b7180;font-size:13px;font-weight:700}
+.box{fill:#f8fbfd;stroke:#bdccd7;stroke-width:2}.axis{stroke:#6c7f8c;stroke-width:2}.pvec{stroke:#1769aa;stroke-width:4}.qvec{stroke:#d97b16;stroke-width:4}.svec{stroke:#6b48ad;stroke-width:4}
+@media(max-width:900px){.main{grid-template-columns:1fr}.stage{min-height:720px}}
+</style>
+</head>
+<body><div class="wrap">
+<h1>QR-030 – Трансформатор на празен ход</h1>
+<div class="sub">Адмитанс, ток на празен ход и мощности на намагнитващия клон</div>
+<div class="main"><section class="stage"><svg viewBox="0 0 900 730">
+<defs>
+<marker id="ab" markerWidth="4.5" markerHeight="4.5" refX="3.9" refY="1.7" orient="auto"><path d="M0 0L0 3.4L4.2 1.7z" fill="#1769aa"></path></marker>
+<marker id="ao" markerWidth="4.5" markerHeight="4.5" refX="3.9" refY="1.7" orient="auto"><path d="M0 0L0 3.4L4.2 1.7z" fill="#d97b16"></path></marker>
+<marker id="av" markerWidth="4.5" markerHeight="4.5" refX="3.9" refY="1.7" orient="auto"><path d="M0 0L0 3.4L4.2 1.7z" fill="#6b48ad"></path></marker>
+</defs>
+
+<text x="255" y="40" class="lab" text-anchor="middle">Еквивалентен намагнитващ клон – една фаза</text>
+<circle cx="82" cy="195" r="38" fill="#fff" stroke="#536f80" stroke-width="3"></circle>
+<path d="M61 195 C69 181 77 209 85 195 C93 181 101 209 109 195" fill="none" stroke="#1769aa" stroke-width="4"></path>
+<text x="82" y="247" class="lab" text-anchor="middle">Uφ</text>
+<path class="wire" d="M82 157 V90 H495"></path><path class="wire" d="M82 233 V355 H495"></path><path class="wire" d="M495 90 V355"></path>
+
+<!-- G branch -->
+<path class="wire" d="M190 90 V145"></path><rect x="166" y="145" width="48" height="80" rx="5" fill="#e7d7b8" stroke="#705b3d" stroke-width="2.5"></rect><path class="wire" d="M190 225 V355"></path>
+<text x="190" y="128" class="lab" text-anchor="middle">G</text><text x="190" y="250" class="small" text-anchor="middle">загуби в магнитопровода</text>
+
+<!-- BL branch -->
+<path class="wire" d="M320 90 V145"></path><path d="M320 145 c-24 10-24 20 0 30 c-24 10-24 20 0 30 c-24 10-24 20 0 30 c-24 10-24 20 0 30" fill="none" stroke="#d97b16" stroke-width="7" stroke-linecap="round"></path><path class="wire" d="M320 265 V355"></path>
+<text x="320" y="128" class="lab" text-anchor="middle">Bₗ</text><text x="320" y="285" class="small" text-anchor="middle">намагнитване</text>
+
+<!-- BC branch -->
+<path class="wire" d="M435 90 V175"></path><line x1="410" y1="175" x2="460" y2="175" stroke="#168451" stroke-width="7"></line><line x1="410" y1="205" x2="460" y2="205" stroke="#168451" stroke-width="7"></line><path class="wire" d="M435 205 V355"></path>
+<text x="435" y="128" class="lab" text-anchor="middle">Bc</text><text x="435" y="235" class="small" text-anchor="middle">капацитивен ефект</text>
+
+<rect x="55" y="400" width="450" height="270" rx="15" class="box"></rect>
+<text x="280" y="430" class="lab" text-anchor="middle">Изчислителна последователност</text>
+<text x="78" y="468" class="lab">Y̲₀ = G + j(Bc − Bₗ)</text>
+<text id="yEq" x="78" y="500" fill="#6b48ad" font-size="18" font-weight="900">Y̲₀ = 0.00625 − j0.02430 S</text>
+<text x="78" y="540" class="lab">I₀ = Uφ · Y₀</text>
+<text id="iEq" x="78" y="572" fill="#1769aa" font-size="18" font-weight="900">I₀ = 5.77 ∠ -75.6° A</text>
+<text x="78" y="612" class="lab">Pφ = Uφ²G</text>
+<text x="265" y="612" class="lab">Qφ = Uφ²(Bₗ − Bc)</text>
+<text id="powerEq" x="78" y="648" fill="#17324a" font-size="16" font-weight="850">Pφ = 331 W     Qφ = 1285 var     Sφ = 1327 VA</text>
+
+<!-- Power triangle -->
+<text x="700" y="40" class="lab" text-anchor="middle">Триъгълник на мощностите</text>
+<line x1="580" y1="235" x2="840" y2="235" class="axis"></line><line x1="580" y1="90" x2="580" y2="365" class="axis"></line>
+<line id="pVec" x1="580" y1="235" x2="623.7242798353909" y2="235" class="pvec" marker-end="url(#ab)"></line>
+<line id="qVec" x1="623.7242798353909" y1="235" x2="623.7242798353909" y2="65" class="qvec" marker-end="url(#ao)"></line>
+<line id="sVec" x1="580" y1="235" x2="623.7242798353909" y2="65" class="svec" marker-end="url(#av)"></line>
+<text id="pLab" x="601.8621399176955" y="258" fill="#1769aa" font-size="16" font-weight="900">P</text>
+<text id="qLab" x="637.7242798353909" y="150" fill="#d97b16" font-size="16" font-weight="900">Q</text>
+<text id="sLab" x="604.048353909465" y="131.5" fill="#6b48ad" font-size="16" font-weight="900">S</text>
+
+<rect x="545" y="400" width="315" height="270" rx="15" class="box"></rect>
+<text x="702" y="432" class="lab" text-anchor="middle">Резултат – трифазен трансформатор</text>
+<text id="threeP" x="575" y="480" class="lab">P₃φ = 0.992 kW</text>
+<text id="threeQ" x="575" y="520" class="lab">Q₃φ = 3.856 kvar</text>
+<text id="threeS" x="575" y="560" class="lab">S₃φ = 3.982 kVA</text>
+<text id="pf" x="575" y="600" fill="#6b48ad" font-size="18" font-weight="900">cos φ = 0.249</text>
+<text id="mode" x="702" y="642" fill="#d97b16" font-size="17" font-weight="900" text-anchor="middle">ИНДУКТИВЕН ХАРАКТЕР</text>
+</svg></section>
+
+<aside class="side">
+<div class="card"><div class="title">Фазово напрежение</div>
+<label>Uφ <b id="uOut">230 V</b></label><input id="U" type="range" min="100" max="400" value="230">
+</div>
+<div class="card"><div class="title">Проводимости на една фаза</div>
+<label>G <b id="gOut">0.00625 S</b></label><input id="G" type="range" min="0.001" max="0.020" step="0.00005" value="0.00625">
+<label>Bₗ <b id="blOut">0.02530 S</b></label><input id="BL" type="range" min="0.001" max="0.050" step="0.00005" value="0.02532">
+<label>Bc <b id="bcOut">0.00100 S</b></label><input id="BC" type="range" min="0" max="0.040" step="0.00005" value="0.001">
+</div>
+<div class="card result" id="results">Y₀ = <b>0.02509 S</b><br>φ = <b>-75.6°</b><br>I₀ = <b>5.77 A</b><br><br>Pφ = <b>331 W</b><br>Qφ = <b>1285 var</b><br>Sφ = <b>1327 VA</b><br>cos φ = <b>0.249</b></div>
+<div class="card note">Плъзгачите позволяват да се проследи как капацитивната проводимост частично компенсира индуктивната. За индуктивен режим \(B_L&gt;B_C\), а токът на празен ход изостава спрямо напрежението.</div>
+<div class="card"><button id="reset">Начални стойности на задачата</button></div>
+</aside></div></div>
+
+<script>
+const $=id=>document.getElementById(id);
+function calc(){
+ const U=+$("U").value,G=+$("G").value,BL=+$("BL").value,BC=+$("BC").value;
+ const B=BC-BL, Y=Math.hypot(G,B), phi=Math.atan2(B,G), deg=phi*180/Math.PI;
+ const I=U*Y, P=U*U*G, Q=U*U*(BL-BC), S=Math.hypot(P,Q), pf=S?P/S:0;
+ const P3=3*P,Q3=3*Q,S3=3*S;
+
+ $("uOut").textContent=U.toFixed(0)+" V";$("gOut").textContent=G.toFixed(5)+" S";
+ $("blOut").textContent=BL.toFixed(5)+" S";$("bcOut").textContent=BC.toFixed(5)+" S";
+ $("yEq").textContent=`Y̲₀ = ${G.toFixed(5)} ${B<0?"−":"+"} j${Math.abs(B).toFixed(5)} S`;
+ $("iEq").textContent=`I₀ = ${I.toFixed(2)} ∠ ${deg.toFixed(1)}° A`;
+ $("powerEq").textContent=`Pφ = ${P.toFixed(0)} W     Qφ = ${Q.toFixed(0)} var     Sφ = ${S.toFixed(0)} VA`;
+ $("threeP").textContent=`P₃φ = ${(P3/1000).toFixed(3)} kW`;
+ $("threeQ").textContent=`Q₃φ = ${(Q3/1000).toFixed(3)} kvar`;
+ $("threeS").textContent=`S₃φ = ${(S3/1000).toFixed(3)} kVA`;
+ $("pf").textContent=`cos φ = ${pf.toFixed(3)}`;
+ $("mode").textContent=B<-.00002?"ИНДУКТИВЕН ХАРАКТЕР":B>.00002?"КАПАЦИТИВЕН ХАРАКТЕР":"КОМПЕНСИРАН РЕЖИМ";
+ $("results").innerHTML=`Y₀ = <b>${Y.toFixed(5)} S</b><br>φ = <b>${deg.toFixed(1)}°</b><br>I₀ = <b>${I.toFixed(2)} A</b><br><br>Pφ = <b>${P.toFixed(0)} W</b><br>Qφ = <b>${Q.toFixed(0)} var</b><br>Sφ = <b>${S.toFixed(0)} VA</b><br>cos φ = <b>${pf.toFixed(3)}</b>`;
+ draw(P,Q);
+}
+function draw(P,Q){
+ const ox=580,oy=235,m=Math.max(P,Math.abs(Q),1),s=170/m,dx=P*s,dy=Q*s,ex=ox+dx,ey=oy-dy;
+ $("pVec").setAttribute("x2",ex);$("qVec").setAttribute("x1",ex);$("qVec").setAttribute("y1",oy);$("qVec").setAttribute("x2",ex);$("qVec").setAttribute("y2",ey);
+ $("sVec").setAttribute("x2",ex);$("sVec").setAttribute("y2",ey);
+ $("pLab").setAttribute("x",ox+dx/2);$("qLab").setAttribute("x",ex+14);$("qLab").setAttribute("y",(oy+ey)/2);
+ $("sLab").setAttribute("x",ox+dx*.55);$("sLab").setAttribute("y",oy-dy*.55-10);
+}
+["U","G","BL","BC"].forEach(id=>$(id).addEventListener("input",calc));
+$("reset").onclick=()=>{$("U").value=230;$("G").value=.00625;$("BL").value=.02532;$("BC").value=.001;calc()};
+calc();
+</script></body></html>

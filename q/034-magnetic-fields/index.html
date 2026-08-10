@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<!-- saved from url=(0078)file:///C:/Users/velichko.atanasov/Downloads/index(20260810-091514)%20(1).html -->
+<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QR-034 – Пулсиращо, бягащо и въртящо се магнитно поле</title>
+<style>
+*{box-sizing:border-box}
+:root{
+ --bg:#f4f7fa; --panel:#fff; --ink:#17324a; --muted:#607789; --line:#b8cad6;
+ --a:#c62828; --b:#19833f; --c:#1f5ab7; --field:#6f42c1;
+}
+body{margin:0;background:linear-gradient(#fafcfd,#eef4f8);font-family:Segoe UI,Arial,sans-serif;color:var(--ink)}
+.wrap{max-width:1320px;margin:auto;padding:12px}
+h1{text-align:center;margin:4px 0;color:#123f73;font-size:clamp(24px,3.6vw,38px)}
+.sub{text-align:center;color:var(--muted);margin:4px 0 12px}
+.toolbar{display:grid;grid-template-columns:1.25fr .75fr;gap:10px;margin-bottom:10px}
+.modebar,.controls{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px}
+.modebar{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+button{padding:9px 10px;border:1px solid #8ea6b6;background:#f2f6f9;color:#17324a;border-radius:8px;font-weight:800;cursor:pointer}
+button.active{background:#e4edf5;border-color:#4c7ba0}
+.controls{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;align-items:center}
+.controls label{font-size:13px;font-weight:700}
+.controls input{width:100%;accent-color:#356f9c}
+.main{display:grid;grid-template-columns:1fr 300px;gap:10px}
+.stage,.side{background:#fff;border:1px solid var(--line);border-radius:14px}
+.stage{position:relative;min-height:720px;overflow:hidden}
+svg{position:absolute;inset:0;width:100%;height:100%}
+.side{padding:10px}
+.card{border:1px solid #c9d7e0;border-radius:10px;padding:10px;margin-bottom:9px;background:#fbfdff}
+.card h3{font-size:15px;margin:0 0 8px;color:#124d82}
+.eq{font-family:Cambria Math,Georgia,serif;font-size:18px;text-align:center;line-height:1.5}
+.note{font-size:13px;line-height:1.5;color:#516878}
+.big{font-size:26px;font-weight:900;text-align:center}
+.legend{font-size:13px;line-height:1.7}
+.line{stroke:#17324a;stroke-width:2.2;fill:none;stroke-linecap:round}
+.coil{fill:none;stroke:#17324a;stroke-width:3}
+.phaseA{stroke:var(--a);fill:none}.phaseB{stroke:var(--b);fill:none}.phaseC{stroke:var(--c);fill:none}
+.field{stroke:var(--field);fill:none}
+.axis{stroke:#9bb0bf;stroke-width:1.2}
+.label{font-size:16px;font-weight:800;fill:#17324a}
+.small{font-size:12px;font-weight:700;fill:#5f7686}
+@media(max-width:900px){
+ .toolbar,.main{grid-template-columns:1fr}
+ .controls{grid-template-columns:1fr 1fr}
+ .stage{min-height:700px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>QR-034 – Пулсиращо, бягащо и въртящо се магнитно поле</h1>
+<div class="sub">Интерактивна демонстрация на трите основни вида движещи се магнитни полета</div>
+
+<div class="toolbar">
+  <div class="modebar">
+    <button id="mPulse" class="active">Пулсиращо поле</button>
+    <button id="mTravel" class="">Бягащо поле</button>
+    <button id="mRotate" class="">Въртящо се поле</button>
+  </div>
+  <div class="controls">
+    <label>Честота f
+      <input id="freq" type="range" min="10" max="100" value="50" step="1">
+    </label>
+    <label>Амплитуда
+      <input id="amp" type="range" min="0.4" max="1.4" value="1" step="0.05">
+    </label>
+    <button id="pause">Пауза</button>
+    <button id="reset">Начало</button>
+  </div>
+</div>
+
+<div class="main">
+<section class="stage">
+<svg viewBox="0 0 980 720">
+<defs>
+  <marker id="arrP" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto">
+    <path d="M0 0 L0 6 L7 3z" fill="#6f42c1"></path>
+  </marker>
+  <marker id="arrA" markerWidth="6" markerHeight="6" refX="5" refY="2.5" orient="auto">
+    <path d="M0 0 L0 5 L6 2.5z" fill="#c62828"></path>
+  </marker>
+  <marker id="arrB" markerWidth="6" markerHeight="6" refX="5" refY="2.5" orient="auto">
+    <path d="M0 0 L0 5 L6 2.5z" fill="#19833f"></path>
+  </marker>
+  <marker id="arrC" markerWidth="6" markerHeight="6" refX="5" refY="2.5" orient="auto">
+    <path d="M0 0 L0 5 L6 2.5z" fill="#1f5ab7"></path>
+  </marker>
+</defs>
+
+<!-- common title -->
+<text id="stageTitle" x="490" y="38" text-anchor="middle" class="label">Пулсиращо магнитно поле</text>
+
+<!-- PULSATING -->
+<g id="pulseGroup" style="">
+  <text x="490" y="78" text-anchor="middle" class="small">Една неподвижна намотка с променлив ток</text>
+
+  <path d="M410 230 q-30 -12 0 -24 q30 -12 0 -24 q-30 -12 0 -24 q30 -12 0 -24 q-30 -12 0 -24" class="coil phaseA"></path>
+  <line x1="410" y1="115" x2="410" y2="265" class="axis"></line>
+  <text x="365" y="110" class="label" fill="#c62828">Намотка</text>
+
+  <!-- field lines -->
+  <ellipse id="pE1" cx="410" cy="180" rx="115" ry="55" class="field" opacity="0.13953390901354806"></ellipse>
+  <ellipse id="pE2" cx="410" cy="180" rx="165" ry="85" class="field" opacity="0.06976695450677403"></ellipse>
+  <ellipse id="pE3" cx="410" cy="180" rx="215" ry="115" class="field" opacity="0.04651130300451602"></ellipse>
+
+  <!-- pulsating B vector -->
+  <line id="pulseVector" x1="410" y1="180" x2="365.34956823983896" y2="180" stroke="#6f42c1" stroke-width="6" marker-end="url(#arrP)" style="opacity: 0.370097;"></line>
+  <text id="pulseB" x="520" y="155" class="label" fill="#6f42c1">B(t)</text>
+
+  <line x1="180" y1="470" x2="800" y2="470" class="axis"></line>
+  <line x1="180" y1="350" x2="180" y2="590" class="axis"></line>
+  <path id="pulseWave" d="M180.0 470.0 L183.4 466.2 L186.9 462.3 L190.3 458.5 L193.8 454.7 L197.2 450.9 L200.7 447.1 L204.1 443.4 L207.6 439.7 L211.0 436.0 L214.4 432.4 L217.9 428.8 L221.3 425.3 L224.8 421.8 L228.2 418.4 L231.7 415.0 L235.1 411.7 L238.6 408.5 L242.0 405.3 L245.4 402.3 L248.9 399.3 L252.3 396.4 L255.8 393.6 L259.2 390.9 L262.7 388.3 L266.1 385.7 L269.6 383.3 L273.0 381.0 L276.4 378.8 L279.9 376.7 L283.3 374.7 L286.8 372.9 L290.2 371.1 L293.7 369.5 L297.1 368.0 L300.6 366.6 L304.0 365.4 L307.4 364.3 L310.9 363.3 L314.3 362.4 L317.8 361.7 L321.2 361.1 L324.7 360.6 L328.1 360.3 L331.6 360.1 L335.0 360.0 L338.4 360.1 L341.9 360.3 L345.3 360.6 L348.8 361.1 L352.2 361.7 L355.7 362.4 L359.1 363.3 L362.6 364.3 L366.0 365.4 L369.4 366.6 L372.9 368.0 L376.3 369.5 L379.8 371.1 L383.2 372.9 L386.7 374.7 L390.1 376.7 L393.6 378.8 L397.0 381.0 L400.4 383.3 L403.9 385.7 L407.3 388.3 L410.8 390.9 L414.2 393.6 L417.7 396.4 L421.1 399.3 L424.6 402.3 L428.0 405.3 L431.4 408.5 L434.9 411.7 L438.3 415.0 L441.8 418.4 L445.2 421.8 L448.7 425.3 L452.1 428.8 L455.6 432.4 L459.0 436.0 L462.4 439.7 L465.9 443.4 L469.3 447.1 L472.8 450.9 L476.2 454.7 L479.7 458.5 L483.1 462.3 L486.6 466.2 L490.0 470.0 L493.4 473.8 L496.9 477.7 L500.3 481.5 L503.8 485.3 L507.2 489.1 L510.7 492.9 L514.1 496.6 L517.6 500.3 L521.0 504.0 L524.4 507.6 L527.9 511.2 L531.3 514.7 L534.8 518.2 L538.2 521.6 L541.7 525.0 L545.1 528.3 L548.6 531.5 L552.0 534.7 L555.4 537.7 L558.9 540.7 L562.3 543.6 L565.8 546.4 L569.2 549.1 L572.7 551.7 L576.1 554.3 L579.6 556.7 L583.0 559.0 L586.4 561.2 L589.9 563.3 L593.3 565.3 L596.8 567.1 L600.2 568.9 L603.7 570.5 L607.1 572.0 L610.6 573.4 L614.0 574.6 L617.4 575.7 L620.9 576.7 L624.3 577.6 L627.8 578.3 L631.2 578.9 L634.7 579.4 L638.1 579.7 L641.6 579.9 L645.0 580.0 L648.4 579.9 L651.9 579.7 L655.3 579.4 L658.8 578.9 L662.2 578.3 L665.7 577.6 L669.1 576.7 L672.6 575.7 L676.0 574.6 L679.4 573.4 L682.9 572.0 L686.3 570.5 L689.8 568.9 L693.2 567.1 L696.7 565.3 L700.1 563.3 L703.6 561.2 L707.0 559.0 L710.4 556.7 L713.9 554.3 L717.3 551.7 L720.8 549.1 L724.2 546.4 L727.7 543.6 L731.1 540.7 L734.6 537.7 L738.0 534.7 L741.4 531.5 L744.9 528.3 L748.3 525.0 L751.8 521.6 L755.2 518.2 L758.7 514.7 L762.1 511.2 L765.6 507.6 L769.0 504.0 L772.4 500.3 L775.9 496.6 L779.3 492.9 L782.8 489.1 L786.2 485.3 L789.7 481.5 L793.1 477.7 L796.6 473.8 L800.0 470.0 " fill="none" stroke="#c62828" stroke-width="3"></path>
+  <circle id="pulseDot" r="6" fill="#c62828" cx="511.1419999914379" cy="493.3883213981796"></circle>
+  <text x="805" y="475" class="small">ωt</text>
+  <text x="155" y="352" class="small">i(t)</text>
+  <text x="490" y="635" text-anchor="middle" class="small">Посоката на оста е постоянна; изменят се големината и знакът на магнитното поле.</text>
+</g>
+
+<!-- TRAVELING -->
+<g id="travelGroup" style="display: none;">
+  <text x="490" y="78" text-anchor="middle" class="small">Последователно възбуждани намотки – максимумът на полето се премества линейно</text>
+
+  <line x1="120" y1="330" x2="860" y2="330" class="axis"></line>
+  <g id="travelCoils"><g><rect x="156" y="255" width="48" height="150" rx="7" fill="#fff" stroke="#17324a" stroke-width="2"></rect>
+  <path d="M163 270 q34 8 0 16 q-34 8 0 16 q34 8 0 16 q-34 8 0 16 q34 8 0 16 q-34 8 0 16" fill="none" stroke="#17324a" stroke-width="2"></path></g><g><rect x="256" y="255" width="48" height="150" rx="7" fill="#fff" stroke="#17324a" stroke-width="2"></rect>
+  <path d="M263 270 q34 8 0 16 q-34 8 0 16 q34 8 0 16 q-34 8 0 16 q34 8 0 16 q-34 8 0 16" fill="none" stroke="#17324a" stroke-width="2"></path></g><g><rect x="356" y="255" width="48" height="150" rx="7" fill="#fff" stroke="#17324a" stroke-width="2"></rect>
+  <path d="M363 270 q34 8 0 16 q-34 8 0 16 q34 8 0 16 q-34 8 0 16 q34 8 0 16 q-34 8 0 16" fill="none" stroke="#17324a" stroke-width="2"></path></g><g><rect x="456" y="255" width="48" height="150" rx="7" fill="#fff" stroke="#17324a" stroke-width="2"></rect>
+  <path d="M463 270 q34 8 0 16 q-34 8 0 16 q34 8 0 16 q-34 8 0 16 q34 8 0 16 q-34 8 0 16" fill="none" stroke="#17324a" stroke-width="2"></path></g><g><rect x="556" y="255" width="48" height="150" rx="7" fill="#fff" stroke="#17324a" stroke-width="2"></rect>
+  <path d="M563 270 q34 8 0 16 q-34 8 0 16 q34 8 0 16 q-34 8 0 16 q34 8 0 16 q-34 8 0 16" fill="none" stroke="#17324a" stroke-width="2"></path></g><g><rect x="656" y="255" width="48" height="150" rx="7" fill="#fff" stroke="#17324a" stroke-width="2"></rect>
+  <path d="M663 270 q34 8 0 16 q-34 8 0 16 q34 8 0 16 q-34 8 0 16 q34 8 0 16 q-34 8 0 16" fill="none" stroke="#17324a" stroke-width="2"></path></g><g><rect x="756" y="255" width="48" height="150" rx="7" fill="#fff" stroke="#17324a" stroke-width="2"></rect>
+  <path d="M763 270 q34 8 0 16 q-34 8 0 16 q34 8 0 16 q-34 8 0 16 q34 8 0 16 q-34 8 0 16" fill="none" stroke="#17324a" stroke-width="2"></path></g></g>
+  <g id="travelField"><circle r="4.000000000000011" fill="#6f42c1" opacity="0.1500000000000011" cx="150" cy="329.9999999999999"></circle><circle r="4.000000000000216" fill="#6f42c1" opacity="0.1500000000000229" cx="179.16666666666666" cy="329.99999999999744"></circle><circle r="4.000000000003894" fill="#6f42c1" opacity="0.15000000000041366" cx="208.33333333333334" cy="329.9999999999538"></circle><circle r="4.000000000061106" fill="#6f42c1" opacity="0.15000000000649252" cx="237.5" cy="329.99999999927434"></circle><circle r="4.000000000833254" fill="#6f42c1" opacity="0.1500000000885333" cx="266.6666666666667" cy="329.9999999901051"></circle><circle r="4.0000000098719735" fill="#6f42c1" opacity="0.15000000104889719" cx="295.83333333333337" cy="329.99999988277034"></circle><circle r="4.000000101616426" fill="#6f42c1" opacity="0.15000001079674527" cx="325" cy="329.99999879330494"></circle><circle r="4.0000009087771815" fill="#6f42c1" opacity="0.15000009655757554" cx="354.1666666666667" cy="329.99998920827096"></circle><circle r="4.000007061297039" fill="#6f42c1" opacity="0.15000075026281037" cx="383.33333333333337" cy="329.9999161470977"></circle><circle r="4.0000476699962295" fill="#6f42c1" opacity="0.15000506493709934" cx="412.5" cy="329.9994339187948"></circle><circle r="4.000279601388695" fill="#6f42c1" opacity="0.15002970764754883" cx="441.6666666666667" cy="329.99667973350927"></circle><circle r="4.001424843286184" fill="#6f42c1" opacity="0.15015138959915705" cx="470.83333333333337" cy="329.9830799859766"></circle><circle r="4.00630853397569" fill="#6f42c1" opacity="0.1506702817349171" cx="500" cy="329.9250861590387"></circle><circle r="4.024267406339742" fill="#6f42c1" opacity="0.1525784119235976" cx="529.1666666666667" cy="329.7118245497156"></circle><circle r="4.081105787911232" fill="#6f42c1" opacity="0.15861748996556838" cx="558.3333333333334" cy="329.03686876855414"></circle><circle r="4.235512467650025" fill="#6f42c1" opacity="0.1750231996878152" cx="587.5" cy="327.20328944665596"></circle><circle r="4.594168368797886" fill="#6f42c1" opacity="0.21313038918477545" cx="616.6666666666667" cy="322.9442506205251"></circle><circle r="5.302383011917323" fill="#6f42c1" opacity="0.28837819501621553" cx="645.8333333333334" cy="314.5342017334818"></circle><circle r="6.4802844313630255" fill="#6f42c1" opacity="0.4135302208323215" cx="675" cy="300.54662237756406"></circle><circle r="8.103909938642124" fill="#6f42c1" opacity="0.5860404309807257" cx="704.1666666666667" cy="281.2660694786248"></circle><circle r="9.899670076224918" fill="#6f42c1" opacity="0.7768399455988977" cx="733.3333333333334" cy="259.94141784482906"></circle><circle r="11.368705492871452" fill="#6f42c1" opacity="0.9329249586175917" cx="762.5" cy="242.4966222721515"></circle><circle r="11.99628459811223" fill="#6f42c1" opacity="0.9996052385494243" cx="791.6666666666667" cy="235.0441203974173"></circle><circle r="11.539088754338433" fill="#6f42c1" opacity="0.9510281801484586" cx="820.8333333333334" cy="240.47332104223108"></circle><circle r="10.17565518159851" fill="#6f42c1" opacity="0.8061633630448416" cx="850" cy="256.66409471851773"></circle></g>
+
+  <line x1="160" y1="535" x2="820" y2="535" class="axis"></line>
+  <path id="travelWave" d="M160 539.1212634985596 L163.66666666666666 541.7322604584765 L167.33333333333334 544.3350551960499 L171 546.926476606822 L174.66666666666666 549.5033674429816 L178.33333333333334 552.0625881599843 L182 554.6010207416002 L185.66666666666666 557.1155724987525 L189.33333333333334 559.6031798374577 L193 562.0608119913603 L196.66666666666666 564.48547471425 L200.33333333333334 566.8742139280896 L204 569.2241193221041 L207.66666666666666 571.532327898546 L211.33333333333334 573.7960274608172 L215 576.0124600396973 L218.66666666666666 578.1789252535042 L222.33333333333334 580.2927835980933 L226 582.3514596626832 L229.66666666666669 584.3524452676107 L233.33333333333331 586.2933025201411 L237 588.1716667846782 L240.66666666666669 589.9852495637056 L244.33333333333331 591.7318412859679 L248 593.4093139984934 L251.66666666666669 595.015623959177 L255.33333333333331 596.5488141267643 L259 598.0070165452063 L262.6666666666667 599.3884546194747 L266.3333333333333 600.6914452800684 L270 601.9144010335818 L273.6666666666667 603.0558318968092 L277.3333333333333 604.1143472120675 L281 605.088657341497 L284.6666666666667 605.9775752382858 L288.33333333333337 606.7800178929041 L292 607.4950076525839 L295.66666666666663 608.121673412439 L299.33333333333337 608.6592516767713 L303 609.1070874892733 L306.66666666666663 609.4646352309915 L310.33333333333337 609.7314592850779 L314 609.9072345675248 L317.66666666666663 609.9917469232261 L321.33333333333337 609.9848933868944 L325 609.8866823085083 L328.66666666666663 609.6972333431382 L332.33333333333337 609.4167773051663 L336 609.0456558870737 L339.66666666666663 608.5843212431417 L343.33333333333337 608.0333354385706 L347 607.3933697646905 L350.66666666666663 606.6652039210971 L354.33333333333337 605.8497250657032 L358 604.9479267338802 L361.66666666666663 603.9609076279839 L365.33333333333337 602.8898702787566 L369 601.7361195802274 L372.66666666666663 600.5010611999007 L376.33333333333337 599.186199866167 L380 597.7931375350225 L383.66666666666663 596.3235714383329 L387.33333333333337 594.7792920160177 L391 593.1621807346751 L394.66666666666663 591.474207795307 L398.33333333333337 589.7174297329226 L402 587.8939869109824 L405.66666666666663 586.0061009136854 L409.33333333333337 584.0560718393125 L413 582.0462754979119 L416.6666666666667 579.9791605167403 L420.3333333333333 577.8572453569877 L424 575.68311524542 L427.6666666666667 573.4594190246794 L431.3333333333333 571.1888659260765 L435 568.8742222688138 L438.6666666666667 566.5183080896369 L442.3333333333333 564.1239937070759 L446 561.6941962243901 L449.6666666666667 559.2318759755307 L453.3333333333333 556.7400329184293 L457 554.2217029800122 L460.6666666666667 551.6799543573903 L464.3333333333333 549.1178837797339 L468 546.5386127353852 L471.6666666666667 543.9452836688055 L475.3333333333333 541.3410561519906 L479 538.7291030350237 L482.6666666666667 536.1126065804286 L486.3333333333333 533.4947545860991 L490 530.8787365014413 L493.6666666666667 528.2677395415243 L497.3333333333333 525.6649448039509 L501 523.0735233931788 L504.6666666666667 520.4966325570192 L508.3333333333333 517.9374118400165 L512 515.3989792583965 L515.6666666666667 512.8844275012442 L519.3333333333333 510.39682016254307 L523 507.93918800864043 L526.6666666666667 505.51452528575066 L530.3333333333333 503.1257860719111 L534 500.7758806778966 L537.6666666666667 498.4676721014547 L541.3333333333333 496.2039725391835 L545 493.98753996030337 L548.6666666666667 491.82107474649644 L552.3333333333333 489.7072164019074 L556 487.6485403373141 L559.6666666666667 485.64755473238665 L563.3333333333333 483.7066974798595 L567 481.8283332153224 L570.6666666666667 480.014750436295 L574.3333333333333 478.26815871403267 L578 476.59068600150704 L581.6666666666667 474.9843760408235 L585.3333333333333 473.4511858732361 L589 471.99298345479417 L592.6666666666667 470.6115453805257 L596.3333333333333 469.30855471992993 L600 468.08559896641657 L603.6666666666667 466.94416810319115 L607.3333333333333 465.8856527879328 L611 464.9113426585033 L614.6666666666667 464.0224247617145 L618.3333333333333 463.21998210709614 L622 462.50499234741625 L625.6666666666667 461.87832658756116 L629.3333333333333 461.3407483232288 L633 460.8929125107268 L636.6666666666667 460.53536476900865 L640.3333333333333 460.2685407149218 L644 460.09276543247506 L647.6666666666667 460.00825307677394 L651.3333333333333 460.0151066131055 L655 460.1133176914917 L658.6666666666667 460.3027666568617 L662.3333333333333 460.58322269483364 L666 460.95434411292615 L669.6666666666667 461.41567875685814 L673.3333333333334 461.9666645614292 L677 462.60663023530924 L680.6666666666666 463.3347960789039 L684.3333333333334 464.15027493429795 L688 465.05207326612106 L691.6666666666666 466.03909237201566 L695.3333333333334 467.110129721243 L699 468.26388041977225 L702.6666666666666 469.49893880009887 L706.3333333333334 470.8138001338325 L710 472.206862464977 L713.6666666666666 473.6764285616666 L717.3333333333334 475.2207079839818 L721 476.83781926532447 L724.6666666666666 478.5257922046952 L728.3333333333334 480.2825702670798 L732 482.106013089017 L735.6666666666666 483.99389908631406 L739.3333333333334 485.94392816068694 L743 487.9537245020874 L746.6666666666666 490.020839483259 L750.3333333333334 492.1427546430117 L754 494.3168847545793 L757.6666666666666 496.5405809753199 L761.3333333333334 498.81113407392286 L765 501.12577773118926 L768.6666666666666 503.48169191036624 L772.3333333333334 505.8760062929273 L776 508.30580377560915 L779.6666666666666 510.76812402446865 L783.3333333333334 513.2599670815699 L787 515.778297019987 L790.6666666666666 518.3200456426089 L794.3333333333334 520.8821162202653 L798 523.4613872646139 L801.6666666666666 526.0547163311937 L805.3333333333334 528.6589438480086 L809 531.2708969649798 L812.6666666666666 533.8873934195749 L816.3333333333334 536.5052454139001 L820 539.1212634985579 " fill="none" stroke="#6f42c1" stroke-width="3"></path>
+  <circle id="travelPeak" r="8" fill="#6f42c1" cx="794.0374999988016" cy="235"></circle>
+  <text x="490" y="585" text-anchor="middle" class="small">Пикът на резултантното поле се премества по оста – това е бягащо магнитно поле.</text>
+</g>
+
+<!-- ROTATING -->
+<g id="rotateGroup" style="display: none;">
+  <text x="490" y="78" text-anchor="middle" class="small">Три намотки на 120° с трифазни токове</text>
+
+  <circle cx="420" cy="340" r="220" fill="none" stroke="#aebdc8" stroke-width="2"></circle>
+  <circle cx="420" cy="340" r="8" fill="#17324a"></circle>
+
+  <!-- coils -->
+  <g transform="translate(420 340)">
+    <g transform="rotate(-90)">
+      <rect x="-30" y="-218" width="60" height="88" rx="8" fill="#fff" stroke="#c62828" stroke-width="3"></rect>
+      <text x="0" y="-230" text-anchor="middle" class="label" fill="#c62828" transform="rotate(90 0 -230)">A</text>
+    </g>
+    <g transform="rotate(30)">
+      <rect x="-30" y="-218" width="60" height="88" rx="8" fill="#fff" stroke="#19833f" stroke-width="3"></rect>
+      <text x="0" y="-230" text-anchor="middle" class="label" fill="#19833f" transform="rotate(-30 0 -230)">B</text>
+    </g>
+    <g transform="rotate(150)">
+      <rect x="-30" y="-218" width="60" height="88" rx="8" fill="#fff" stroke="#1f5ab7" stroke-width="3"></rect>
+      <text x="0" y="-230" text-anchor="middle" class="label" fill="#1f5ab7" transform="rotate(-150 0 -230)">C</text>
+    </g>
+  </g>
+
+  <!-- phase field vectors -->
+  <line id="vA" x1="420" y1="340" x2="420" y2="190.22148601493998" stroke="#c62828" stroke-width="3" marker-end="url(#arrA)"></line>
+  <line id="vB" x1="420" y1="340" x2="361.255315970745" y2="306.0837408622501" stroke="#19833f" stroke-width="3" marker-end="url(#arrB)"></line>
+  <line id="vC" x1="420" y1="340" x2="490.96731402288833" y2="299.02700214522076" stroke="#1f5ab7" stroke-width="3" marker-end="url(#arrC)"></line>
+
+  <!-- resultant -->
+  <line id="vR" x1="420" y1="340" x2="432.22262999363335" y2="115.33222902241081" stroke="#6f42c1" stroke-width="6" marker-end="url(#arrP)"></line>
+  <text id="rotLabel" x="442.22262999363335" y="100.33222902241081" class="label" fill="#6f42c1">BΣ</text>
+
+  <!-- mini sine waves -->
+  <line x1="650" y1="250" x2="930" y2="250" class="axis"></line>
+  <line x1="650" y1="145" x2="650" y2="355" class="axis"></line>
+  <path id="wA" d="M650.0 250.0 L651.6 247.0 L653.1 244.1 L654.7 241.1 L656.2 238.2 L657.8 235.2 L659.3 232.3 L660.9 229.4 L662.4 226.6 L664.0 223.7 L665.6 220.9 L667.1 218.2 L668.7 215.4 L670.2 212.7 L671.8 210.1 L673.3 207.5 L674.9 205.0 L676.4 202.5 L678.0 200.0 L679.6 197.7 L681.1 195.4 L682.7 193.1 L684.2 191.0 L685.8 188.9 L687.3 186.8 L688.9 184.9 L690.4 183.0 L692.0 181.2 L693.6 179.5 L695.1 177.9 L696.7 176.4 L698.2 174.9 L699.8 173.6 L701.3 172.3 L702.9 171.2 L704.4 170.1 L706.0 169.2 L707.6 168.3 L709.1 167.5 L710.7 166.9 L712.2 166.3 L713.8 165.8 L715.3 165.5 L716.9 165.2 L718.4 165.1 L720.0 165.0 L721.6 165.1 L723.1 165.2 L724.7 165.5 L726.2 165.8 L727.8 166.3 L729.3 166.9 L730.9 167.5 L732.4 168.3 L734.0 169.2 L735.6 170.1 L737.1 171.2 L738.7 172.3 L740.2 173.6 L741.8 174.9 L743.3 176.4 L744.9 177.9 L746.4 179.5 L748.0 181.2 L749.6 183.0 L751.1 184.9 L752.7 186.8 L754.2 188.9 L755.8 191.0 L757.3 193.1 L758.9 195.4 L760.4 197.7 L762.0 200.0 L763.6 202.5 L765.1 205.0 L766.7 207.5 L768.2 210.1 L769.8 212.7 L771.3 215.4 L772.9 218.2 L774.4 220.9 L776.0 223.7 L777.6 226.6 L779.1 229.4 L780.7 232.3 L782.2 235.2 L783.8 238.2 L785.3 241.1 L786.9 244.1 L788.4 247.0 L790.0 250.0 L791.6 253.0 L793.1 255.9 L794.7 258.9 L796.2 261.8 L797.8 264.8 L799.3 267.7 L800.9 270.6 L802.4 273.4 L804.0 276.3 L805.6 279.1 L807.1 281.8 L808.7 284.6 L810.2 287.3 L811.8 289.9 L813.3 292.5 L814.9 295.0 L816.4 297.5 L818.0 300.0 L819.6 302.3 L821.1 304.6 L822.7 306.9 L824.2 309.0 L825.8 311.1 L827.3 313.2 L828.9 315.1 L830.4 317.0 L832.0 318.8 L833.6 320.5 L835.1 322.1 L836.7 323.6 L838.2 325.1 L839.8 326.4 L841.3 327.7 L842.9 328.8 L844.4 329.9 L846.0 330.8 L847.6 331.7 L849.1 332.5 L850.7 333.1 L852.2 333.7 L853.8 334.2 L855.3 334.5 L856.9 334.8 L858.4 334.9 L860.0 335.0 L861.6 334.9 L863.1 334.8 L864.7 334.5 L866.2 334.2 L867.8 333.7 L869.3 333.1 L870.9 332.5 L872.4 331.7 L874.0 330.8 L875.6 329.9 L877.1 328.8 L878.7 327.7 L880.2 326.4 L881.8 325.1 L883.3 323.6 L884.9 322.1 L886.4 320.5 L888.0 318.8 L889.6 317.0 L891.1 315.1 L892.7 313.2 L894.2 311.1 L895.8 309.0 L897.3 306.9 L898.9 304.6 L900.4 302.3 L902.0 300.0 L903.6 297.5 L905.1 295.0 L906.7 292.5 L908.2 289.9 L909.8 287.3 L911.3 284.6 L912.9 281.8 L914.4 279.1 L916.0 276.3 L917.6 273.4 L919.1 270.6 L920.7 267.7 L922.2 264.8 L923.8 261.8 L925.3 258.9 L926.9 255.9 L928.4 253.0 L930.0 250.0 " fill="none" stroke="#c62828" stroke-width="2.2"></path>
+  <path id="wB" d="M650.0 323.6 L651.6 325.1 L653.1 326.4 L654.7 327.7 L656.2 328.8 L657.8 329.9 L659.3 330.8 L660.9 331.7 L662.4 332.5 L664.0 333.1 L665.6 333.7 L667.1 334.2 L668.7 334.5 L670.2 334.8 L671.8 334.9 L673.3 335.0 L674.9 334.9 L676.4 334.8 L678.0 334.5 L679.6 334.2 L681.1 333.7 L682.7 333.1 L684.2 332.5 L685.8 331.7 L687.3 330.8 L688.9 329.9 L690.4 328.8 L692.0 327.7 L693.6 326.4 L695.1 325.1 L696.7 323.6 L698.2 322.1 L699.8 320.5 L701.3 318.8 L702.9 317.0 L704.4 315.1 L706.0 313.2 L707.6 311.1 L709.1 309.0 L710.7 306.9 L712.2 304.6 L713.8 302.3 L715.3 300.0 L716.9 297.5 L718.4 295.0 L720.0 292.5 L721.6 289.9 L723.1 287.3 L724.7 284.6 L726.2 281.8 L727.8 279.1 L729.3 276.3 L730.9 273.4 L732.4 270.6 L734.0 267.7 L735.6 264.8 L737.1 261.8 L738.7 258.9 L740.2 255.9 L741.8 253.0 L743.3 250.0 L744.9 247.0 L746.4 244.1 L748.0 241.1 L749.6 238.2 L751.1 235.2 L752.7 232.3 L754.2 229.4 L755.8 226.6 L757.3 223.7 L758.9 220.9 L760.4 218.2 L762.0 215.4 L763.6 212.7 L765.1 210.1 L766.7 207.5 L768.2 205.0 L769.8 202.5 L771.3 200.0 L772.9 197.7 L774.4 195.4 L776.0 193.1 L777.6 191.0 L779.1 188.9 L780.7 186.8 L782.2 184.9 L783.8 183.0 L785.3 181.2 L786.9 179.5 L788.4 177.9 L790.0 176.4 L791.6 174.9 L793.1 173.6 L794.7 172.3 L796.2 171.2 L797.8 170.1 L799.3 169.2 L800.9 168.3 L802.4 167.5 L804.0 166.9 L805.6 166.3 L807.1 165.8 L808.7 165.5 L810.2 165.2 L811.8 165.1 L813.3 165.0 L814.9 165.1 L816.4 165.2 L818.0 165.5 L819.6 165.8 L821.1 166.3 L822.7 166.9 L824.2 167.5 L825.8 168.3 L827.3 169.2 L828.9 170.1 L830.4 171.2 L832.0 172.3 L833.6 173.6 L835.1 174.9 L836.7 176.4 L838.2 177.9 L839.8 179.5 L841.3 181.2 L842.9 183.0 L844.4 184.9 L846.0 186.8 L847.6 188.9 L849.1 191.0 L850.7 193.1 L852.2 195.4 L853.8 197.7 L855.3 200.0 L856.9 202.5 L858.4 205.0 L860.0 207.5 L861.6 210.1 L863.1 212.7 L864.7 215.4 L866.2 218.2 L867.8 220.9 L869.3 223.7 L870.9 226.6 L872.4 229.4 L874.0 232.3 L875.6 235.2 L877.1 238.2 L878.7 241.1 L880.2 244.1 L881.8 247.0 L883.3 250.0 L884.9 253.0 L886.4 255.9 L888.0 258.9 L889.6 261.8 L891.1 264.8 L892.7 267.7 L894.2 270.6 L895.8 273.4 L897.3 276.3 L898.9 279.1 L900.4 281.8 L902.0 284.6 L903.6 287.3 L905.1 289.9 L906.7 292.5 L908.2 295.0 L909.8 297.5 L911.3 300.0 L912.9 302.3 L914.4 304.6 L916.0 306.9 L917.6 309.0 L919.1 311.1 L920.7 313.2 L922.2 315.1 L923.8 317.0 L925.3 318.8 L926.9 320.5 L928.4 322.1 L930.0 323.6 " fill="none" stroke="#19833f" stroke-width="2.2"></path>
+  <path id="wC" d="M650.0 176.4 L651.6 177.9 L653.1 179.5 L654.7 181.2 L656.2 183.0 L657.8 184.9 L659.3 186.8 L660.9 188.9 L662.4 191.0 L664.0 193.1 L665.6 195.4 L667.1 197.7 L668.7 200.0 L670.2 202.5 L671.8 205.0 L673.3 207.5 L674.9 210.1 L676.4 212.7 L678.0 215.4 L679.6 218.2 L681.1 220.9 L682.7 223.7 L684.2 226.6 L685.8 229.4 L687.3 232.3 L688.9 235.2 L690.4 238.2 L692.0 241.1 L693.6 244.1 L695.1 247.0 L696.7 250.0 L698.2 253.0 L699.8 255.9 L701.3 258.9 L702.9 261.8 L704.4 264.8 L706.0 267.7 L707.6 270.6 L709.1 273.4 L710.7 276.3 L712.2 279.1 L713.8 281.8 L715.3 284.6 L716.9 287.3 L718.4 289.9 L720.0 292.5 L721.6 295.0 L723.1 297.5 L724.7 300.0 L726.2 302.3 L727.8 304.6 L729.3 306.9 L730.9 309.0 L732.4 311.1 L734.0 313.2 L735.6 315.1 L737.1 317.0 L738.7 318.8 L740.2 320.5 L741.8 322.1 L743.3 323.6 L744.9 325.1 L746.4 326.4 L748.0 327.7 L749.6 328.8 L751.1 329.9 L752.7 330.8 L754.2 331.7 L755.8 332.5 L757.3 333.1 L758.9 333.7 L760.4 334.2 L762.0 334.5 L763.6 334.8 L765.1 334.9 L766.7 335.0 L768.2 334.9 L769.8 334.8 L771.3 334.5 L772.9 334.2 L774.4 333.7 L776.0 333.1 L777.6 332.5 L779.1 331.7 L780.7 330.8 L782.2 329.9 L783.8 328.8 L785.3 327.7 L786.9 326.4 L788.4 325.1 L790.0 323.6 L791.6 322.1 L793.1 320.5 L794.7 318.8 L796.2 317.0 L797.8 315.1 L799.3 313.2 L800.9 311.1 L802.4 309.0 L804.0 306.9 L805.6 304.6 L807.1 302.3 L808.7 300.0 L810.2 297.5 L811.8 295.0 L813.3 292.5 L814.9 289.9 L816.4 287.3 L818.0 284.6 L819.6 281.8 L821.1 279.1 L822.7 276.3 L824.2 273.4 L825.8 270.6 L827.3 267.7 L828.9 264.8 L830.4 261.8 L832.0 258.9 L833.6 255.9 L835.1 253.0 L836.7 250.0 L838.2 247.0 L839.8 244.1 L841.3 241.1 L842.9 238.2 L844.4 235.2 L846.0 232.3 L847.6 229.4 L849.1 226.6 L850.7 223.7 L852.2 220.9 L853.8 218.2 L855.3 215.4 L856.9 212.7 L858.4 210.1 L860.0 207.5 L861.6 205.0 L863.1 202.5 L864.7 200.0 L866.2 197.7 L867.8 195.4 L869.3 193.1 L870.9 191.0 L872.4 188.9 L874.0 186.8 L875.6 184.9 L877.1 183.0 L878.7 181.2 L880.2 179.5 L881.8 177.9 L883.3 176.4 L884.9 174.9 L886.4 173.6 L888.0 172.3 L889.6 171.2 L891.1 170.1 L892.7 169.2 L894.2 168.3 L895.8 167.5 L897.3 166.9 L898.9 166.3 L900.4 165.8 L902.0 165.5 L903.6 165.2 L905.1 165.1 L906.7 165.0 L908.2 165.1 L909.8 165.2 L911.3 165.5 L912.9 165.8 L914.4 166.3 L916.0 166.9 L917.6 167.5 L919.1 168.3 L920.7 169.2 L922.2 170.1 L923.8 171.2 L925.3 172.3 L926.9 173.6 L928.4 174.9 L930.0 176.4 " fill="none" stroke="#1f5ab7" stroke-width="2.2"></path>
+  <circle id="dA" r="5" fill="#c62828" cx="717.5779999969953" cy="165.1255087417993"></circle>
+  <circle id="dB" r="5" fill="#19833f" cx="717.5779999969953" cy="288.43842702278323"></circle>
+  <circle id="dC" r="5" fill="#1f5ab7" cx="717.5779999969953" cy="296.4360642354165"></circle>
+  <text x="790" y="390" text-anchor="middle" class="small">При симетрична система резултантното поле се върти с практически постоянна големина.</text>
+</g>
+</svg>
+</section>
+
+<aside class="side">
+  <div class="card">
+    <h3>Текущ режим</h3>
+    <div id="modeText" class="big">Пулсиращо</div>
+  </div>
+
+  <div class="card" id="pulseInfo" style="">
+    <h3>Основна идея</h3>
+    <div class="note">Полето е неподвижно в пространството, но неговата магнитна индукция се изменя периодично и сменя посоката си.</div>
+  </div>
+
+  <div class="card" id="travelInfo" style="display: none;">
+    <h3>Основна идея</h3>
+    <div class="note">Резултантното магнитно поле има максимум, който се премества линейно по оста на системата.</div>
+  </div>
+
+  <div class="card" id="rotateInfo" style="display: none;">
+    <h3>Управление</h3>
+    <button id="swapPhases">Върни A-B-C</button>
+    <label style="display:block;margin-top:8px;font-size:13px;font-weight:700">Двойки полюси p
+      <input id="poles" type="range" min="1" max="4" value="1" step="1" style="width:100%">
+    </label>
+    <div id="speedText" class="eq" style="margin-top:8px">nₛ = 3000 min⁻¹</div>
+    <div id="directionText" class="note" style="margin-top:6px;text-align:center">Последователност: A–C–B — обратна посока</div>
+  </div>
+
+  <div class="card eq" id="eqPulse" style="">
+    B(t)=B<sub>m</sub> sin(ωt)
+  </div>
+
+  <div class="card eq" id="eqTravel" style="display: none;">
+    B(x,t)=B<sub>m</sub> sin(ωt-kx)
+  </div>
+
+  <div class="card eq" id="eqRotate" style="display: none;">
+    n<sub>s</sub>=60f/p
+  </div>
+
+  <div class="card legend">
+    <b>Легенда</b><br>
+    <span style="color:#c62828">●</span> Фаза A<br>
+    <span style="color:#19833f">●</span> Фаза B<br>
+    <span style="color:#1f5ab7">●</span> Фаза C<br>
+    <span style="color:#6f42c1">●</span> Резултантно магнитно поле
+  </div>
+
+  <div class="card note">
+    Пулсиращото поле е основата, върху която при многофазни системи се формират бягащи и въртящи се магнитни полета.
+  </div>
+</aside>
+</div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+let mode="pulse", running=true, t=0, last=performance.now(), swapped=false;
+
+function setMode(m){
+  mode=m;
+  ["mPulse","mTravel","mRotate"].forEach(id=>$(id).classList.remove("active"));
+  $("m"+(m==="pulse"?"Pulse":m==="travel"?"Travel":"Rotate")).classList.add("active");
+  $("pulseGroup").style.display=m==="pulse"?"":"none";
+  $("travelGroup").style.display=m==="travel"?"":"none";
+  $("rotateGroup").style.display=m==="rotate"?"":"none";
+  $("pulseInfo").style.display=m==="pulse"?"":"none";
+  $("travelInfo").style.display=m==="travel"?"":"none";
+  $("rotateInfo").style.display=m==="rotate"?"":"none";
+  $("eqPulse").style.display=m==="pulse"?"":"none";
+  $("eqTravel").style.display=m==="travel"?"":"none";
+  $("eqRotate").style.display=m==="rotate"?"":"none";
+  const titles={pulse:"Пулсиращо магнитно поле",travel:"Бягащо магнитно поле",rotate:"Въртящо се магнитно поле"};
+  const modes={pulse:"Пулсиращо",travel:"Бягащо",rotate:"Въртящо се"};
+  $("stageTitle").textContent=titles[m];
+  $("modeText").textContent=modes[m];
+}
+$("mPulse").addEventListener("click",()=>setMode("pulse"));
+$("mTravel").addEventListener("click",()=>setMode("travel"));
+$("mRotate").addEventListener("click",()=>setMode("rotate"));
+
+$("pause").addEventListener("click",()=>{
+  running=!running;
+  $("pause").textContent=running?"Пауза":"Продължи";
+});
+$("reset").addEventListener("click",()=>{
+  t=0;running=true;swapped=false;
+  $("pause").textContent="Пауза";
+  $("freq").value=50;$("amp").value=1;$("poles").value=1;
+  $("directionText").textContent="Последователност: A–B–C — нормална посока";
+});
+$("swapPhases").addEventListener("click",()=>{
+  swapped=!swapped;
+  $("swapPhases").textContent=swapped?"Върни A-B-C":"Размени B и C";
+  $("directionText").textContent=swapped?"Последователност: A–C–B — обратна посока":"Последователност: A–B–C — нормална посока";
+});
+
+// Build travel coils
+const coilXs=[180,280,380,480,580,680,780];
+coilXs.forEach((x,i)=>{
+  const g=document.createElementNS("http://www.w3.org/2000/svg","g");
+  g.innerHTML=`<rect x="${x-24}" y="255" width="48" height="150" rx="7" fill="#fff" stroke="#17324a" stroke-width="2"/>
+  <path d="M${x-17} 270 q34 8 0 16 q-34 8 0 16 q34 8 0 16 q-34 8 0 16 q34 8 0 16 q-34 8 0 16" fill="none" stroke="#17324a" stroke-width="2"/>`;
+  $("travelCoils").appendChild(g);
+});
+for(let i=0;i<25;i++){
+  const c=document.createElementNS("http://www.w3.org/2000/svg","circle");
+  c.setAttribute("r","5");
+  c.setAttribute("fill","#6f42c1");
+  c.setAttribute("opacity","0.25");
+  $("travelField").appendChild(c);
+}
+
+function setLine(id,cx,cy,mag,angDeg){
+  const a=angDeg*Math.PI/180;
+  $(id).setAttribute("x1",cx);$(id).setAttribute("y1",cy);
+  $(id).setAttribute("x2",cx+mag*Math.cos(a));
+  $(id).setAttribute("y2",cy-mag*Math.sin(a));
+}
+function wavePath(x0,y0,w,h,phase,shift=0){
+  let d="";
+  for(let i=0;i<=180;i++){
+    const x=x0+w*i/180;
+    const y=y0-h*Math.sin(2*Math.PI*i/180+phase+shift);
+    d+=(i===0?"M":"L")+x.toFixed(1)+" "+y.toFixed(1)+" ";
+  }
+  return d;
+}
+
+function animate(now){
+  const dt=(now-last)/1000;last=now;
+  const f=+$("freq").value;
+  const amp=+$("amp").value;
+  if(running)t+=dt*(f/50)*1.5;
+  const ph=2*Math.PI*t;
+
+  if(mode==="pulse"){
+    const s=Math.sin(ph);
+    const len=210*amp*Math.abs(s);
+    const dir=s>=0?0:180;
+    setLine("pulseVector",410,180,len,dir);
+    $("pulseVector").style.opacity=0.2+0.8*Math.abs(s);
+    ["pE1","pE2","pE3"].forEach((id,k)=>{
+      $(id).setAttribute("opacity",(0.08+0.28*Math.abs(s))/(k+1));
+    });
+    $("pulseWave").setAttribute("d",wavePath(180,470,620,110,0,0));
+    const x=180+620*((ph%(2*Math.PI))/(2*Math.PI));
+    const y=470-110*Math.sin(ph);
+    $("pulseDot").setAttribute("cx",x);$("pulseDot").setAttribute("cy",y);
+  }
+
+  if(mode==="travel"){
+    const lambda=600;
+    const speed=110*(f/50);
+    const xPeak=150+((t*speed)%700);
+    const dots=[...$("travelField").children];
+    dots.forEach((c,i)=>{
+      const x=150+i*(700/(dots.length-1));
+      const val=Math.exp(-Math.pow((x-xPeak)/110,2));
+      c.setAttribute("cx",x);c.setAttribute("cy",330-95*val);
+      c.setAttribute("opacity",0.15+0.85*val);
+      c.setAttribute("r",4+8*val);
+    });
+    let d="";
+    for(let i=0;i<=180;i++){
+      const x=160+660*i/180;
+      const y=535-75*Math.sin(2*Math.PI*i/180-ph);
+      d+=(i===0?"M":"L")+x+" "+y+" ";
+    }
+    $("travelWave").setAttribute("d",d);
+    $("travelPeak").setAttribute("cx",xPeak);
+    $("travelPeak").setAttribute("cy",330-95);
+  }
+
+  if(mode==="rotate"){
+    const angA=ph;
+    // Normal sequence ABC:
+    // A = 0°, B = -120°, C = -240°.
+    // After swapping B and C -> ACB:
+    // A = 0°, B = -240°, C = -120°.
+    // This reverses the direction of the rotating resultant field.
+    const angB=ph-(swapped?4*Math.PI/3:2*Math.PI/3);
+    const angC=ph-(swapped?2*Math.PI/3:4*Math.PI/3);
+    const ia=Math.sin(angA), ib=Math.sin(angB), ic=Math.sin(angC);
+
+    const dirs=[90,-30,210];
+    setLine("vA",420,340,150*amp*Math.abs(ia), ia>=0?dirs[0]:dirs[0]+180);
+    setLine("vB",420,340,150*amp*Math.abs(ib), ib>=0?dirs[1]:dirs[1]+180);
+    setLine("vC",420,340,150*amp*Math.abs(ic), ic>=0?dirs[2]:dirs[2]+180);
+
+    // vector sum in Cartesian screen coordinates
+    function comp(mag,deg){const a=deg*Math.PI/180;return {x:mag*Math.cos(a),y:-mag*Math.sin(a)}}
+    const ca=comp(150*amp*ia,dirs[0]), cb=comp(150*amp*ib,dirs[1]), cc=comp(150*amp*ic,dirs[2]);
+    const sx=ca.x+cb.x+cc.x, sy=ca.y+cb.y+cc.y;
+    $("vR").setAttribute("x1",420);$("vR").setAttribute("y1",340);
+    $("vR").setAttribute("x2",420+sx);$("vR").setAttribute("y2",340+sy);
+    $("rotLabel").setAttribute("x",430+sx);$("rotLabel").setAttribute("y",325+sy);
+
+    $("wA").setAttribute("d",wavePath(650,250,280,85,0,0));
+    $("wB").setAttribute("d",wavePath(650,250,280,85,0,swapped?4*Math.PI/3:2*Math.PI/3));
+    $("wC").setAttribute("d",wavePath(650,250,280,85,0,swapped?2*Math.PI/3:4*Math.PI/3));
+
+    const u=(ph%(2*Math.PI))/(2*Math.PI);
+    const x=650+280*u;
+    $("dA").setAttribute("cx",x);$("dA").setAttribute("cy",250-85*ia);
+    $("dB").setAttribute("cx",x);$("dB").setAttribute("cy",250-85*ib);
+    $("dC").setAttribute("cx",x);$("dC").setAttribute("cy",250-85*ic);
+
+    const p=+$("poles").value;
+    const ns=60*f/p;
+    $("speedText").textContent=`nₛ = ${ns.toFixed(0)} min⁻¹`;
+  }
+  requestAnimationFrame(animate);
+}
+setMode("pulse");
+requestAnimationFrame(animate);
+</script>
+
+</body></html>

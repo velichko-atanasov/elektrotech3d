@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<!-- saved from url=(0064)file:///C:/Users/velichko.atanasov/Downloads/preview%20(31).html -->
+<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QR-033 – Несиметричен режим</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f4f5f6;font-family:Arial,sans-serif;color:#111}
+.page{max-width:1400px;margin:auto;padding:12px}
+h1{text-align:center;font-size:30px;margin:4px 0 2px;font-weight:700}
+.subtitle{text-align:center;color:#555;margin-bottom:12px}
+.layout{display:grid;grid-template-columns:1fr 320px;gap:12px}
+.figure,.controls{background:#fff;border:1px solid #aaa}
+.figure{position:relative;min-height:840px}
+svg{position:absolute;inset:0;width:100%;height:100%}
+.controls{padding:12px}
+.box{border:1px solid #bbb;padding:10px;margin-bottom:10px}
+.box h3{font-size:15px;margin:0 0 8px}
+label{display:flex;justify-content:space-between;margin:8px 0 3px;font-weight:600}
+input{width:100%}
+button{padding:8px 10px;border:1px solid #888;background:#f5f5f5;font-weight:600;cursor:pointer}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.values{font-family:"Cambria Math","Times New Roman",serif;line-height:1.7}
+.neutral{font-size:28px;text-align:center;font-family:"Cambria Math","Times New Roman",serif;font-weight:700}
+.note{font-size:13px;line-height:1.45}
+.s{fill:none;stroke:#111;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.thin{stroke-width:1.5}
+.red{stroke:#c51d22}.green{stroke:#18833b}.blue{stroke:#1557a6}.nline{stroke:#111}
+.node{fill:#111}.open{fill:#fff;stroke:#111;stroke-width:2}
+.imp{fill:#fff;stroke:#111;stroke-width:2}
+.t{font:18px "Times New Roman",serif;fill:#111}
+.ts{font:15px "Times New Roman",serif;fill:#111}
+.tr{fill:#c51d22}.tg{fill:#18833b}.tb{fill:#1557a6}
+.da{fill:#c51d22}.db{fill:#18833b}.dc{fill:#1557a6}.dn{fill:#111}
+@media(max-width:950px){.layout{grid-template-columns:1fr}.figure{min-height:760px}}
+</style>
+</head>
+<body>
+<div class="page">
+<h1>Несиметричен режим на трифазна четирипроводна система</h1>
+<div class="subtitle">Интерактивна схема по токовия път на фазите и нулевия проводник</div>
+<div class="layout">
+
+<div class="figure">
+<svg viewBox="0 0 1040 840">
+<defs>
+ <marker id="ar" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0 0L0 6L8 3z" fill="#c51d22"></path></marker>
+ <marker id="ag" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0 0L0 6L8 3z" fill="#18833b"></path></marker>
+ <marker id="ab" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0 0L0 6L8 3z" fill="#1557a6"></path></marker>
+ <marker id="an" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0 0L0 6L8 3z" fill="#111"></path></marker>
+</defs>
+
+<!-- SOURCE: clean star (Y), without windings -->
+<text x="95" y="45" class="t">Трифазен източник – Y</text>
+
+<!-- separate phase terminals -->
+<circle cx="145" cy="95" r="5" class="open"></circle>
+<circle cx="65" cy="425" r="5" class="open"></circle>
+<circle cx="225" cy="425" r="5" class="open"></circle>
+<text x="125" y="80" class="t tr">A</text>
+<text x="38" y="435" class="t tg">B</text>
+<text x="235" y="435" class="t tb">C</text>
+
+<!-- star centre -->
+<circle cx="145" cy="325" r="5" class="node"></circle>
+<text x="157" y="318" class="ts">Nₛ</text>
+
+<!-- three clean star arms; no coils -->
+<line x1="145" y1="95" x2="145" y2="325" class="s red"></line>
+<line x1="65" y1="425" x2="145" y2="325" class="s green"></line>
+<line x1="225" y1="425" x2="145" y2="325" class="s blue"></line>
+
+<!-- three conductors, as in supplied technical scheme -->
+<polyline points="145,95 260,95 260,110 955,110" class="s red"></polyline>
+<polyline points="65,425 235,425 235,285 955,285" class="s green"></polyline>
+<polyline points="225,425 290,425 290,460 955,460" class="s blue"></polyline>
+
+<!-- series line impedances -->
+<rect x="365" y="98" width="80" height="24" class="imp"></rect>
+<text x="360" y="88" class="ts">Za = Ra + jXa</text>
+<rect x="480" y="273" width="80" height="24" class="imp"></rect>
+<text x="475" y="263" class="ts">Zb = Rb + jXb</text>
+<rect x="595" y="448" width="80" height="24" class="imp"></rect>
+<text x="590" y="438" class="ts">Zc = Rc + jXc</text>
+
+<!-- loads in the same stepped topology -->
+<line x1="955" y1="110" x2="955" y2="155" class="s red"></line>
+<rect x="937" y="155" width="36" height="76" class="imp"></rect>
+<line x1="955" y1="231" x2="955" y2="610" class="s"></line>
+<text x="905" y="195" class="ts">Zcons,a</text>
+
+<line x1="835" y1="285" x2="835" y2="330" class="s green"></line>
+<rect x="817" y="330" width="36" height="76" class="imp"></rect>
+<line x1="835" y1="406" x2="835" y2="610" class="s"></line>
+<text x="860" y="370" class="ts">Zcons,b</text>
+
+<line x1="715" y1="460" x2="715" y2="505" class="s blue"></line>
+<rect x="697" y="505" width="36" height="76" class="imp"></rect>
+<line x1="715" y1="581" x2="715" y2="610" class="s"></line>
+<text x="740" y="545" class="ts">Zcons,c</text>
+
+<!-- neutral conductor, directly to source star point -->
+<polyline points="145,325 145,610 955,610" class="s"></polyline>
+<circle cx="390" cy="610" r="4" class="node"></circle>
+<circle cx="610" cy="610" r="4" class="node"></circle>
+<circle cx="955" cy="610" r="4" class="node"></circle>
+<text x="380" y="635" class="ts">n1</text>
+<text x="600" y="635" class="ts">n2</text>
+<text x="945" y="635" class="ts">n3</text>
+
+<!-- source star-point grounding: closes the earth-current path through Ns -->
+<line x1="145" y1="325" x2="145" y2="690" class="s thin"></line>
+<g stroke="#111" fill="none">
+  <line x1="129" y1="690" x2="161" y2="690" class="thin"></line>
+  <line x1="135" y1="700" x2="155" y2="700" class="thin"></line>
+  <line x1="139" y1="708" x2="151" y2="708" class="thin"></line>
+</g>
+<text id="iesText" x="55" y="735" class="ts">Rₛ = 4 Ω; Iearth,s = 0.000 A</text>
+<circle id="egs" r="4" class="dn" cx="145" cy="558.3585295995382" style="opacity: 2.15588e-15;"></circle>
+
+<!-- grounding points -->
+<g stroke="#111" fill="none">
+  <line x1="390" y1="620" x2="390" y2="690" class="thin"></line>
+  <line x1="610" y1="620" x2="610" y2="690" class="thin"></line>
+  <line x1="955" y1="620" x2="955" y2="690" class="thin"></line>
+
+  <line x1="374" y1="690" x2="406" y2="690" class="thin"></line>
+  <line x1="380" y1="700" x2="400" y2="700" class="thin"></line>
+  <line x1="384" y1="708" x2="396" y2="708" class="thin"></line>
+
+  <line x1="594" y1="690" x2="626" y2="690" class="thin"></line>
+  <line x1="600" y1="700" x2="620" y2="700" class="thin"></line>
+  <line x1="604" y1="708" x2="616" y2="708" class="thin"></line>
+
+  <line x1="939" y1="690" x2="971" y2="690" class="thin"></line>
+  <line x1="945" y1="700" x2="965" y2="700" class="thin"></line>
+  <line x1="949" y1="708" x2="961" y2="708" class="thin"></line>
+</g>
+
+<text id="ie1Text" x="350" y="735" class="ts">Iearth,1 = 0.000 A</text>
+<text id="ie2Text" x="570" y="735" class="ts">Iearth,2 = 0.000 A</text>
+<text id="ie3Text" x="900" y="735" class="ts">Iearth,3 = 0.000 A</text>
+
+<!-- qualitative current path through earth back to source grounding -->
+<path d="M955 708 H145" fill="none" stroke="#777" stroke-width="1.5" stroke-dasharray="7 7"></path>
+<path d="M610 708 H145" fill="none" stroke="#777" stroke-width="1.5" stroke-dasharray="7 7"></path>
+<path d="M390 708 H145" fill="none" stroke="#777" stroke-width="1.5" stroke-dasharray="7 7"></path>
+<circle id="er1" r="4" class="dn" cx="343.2763439997046" cy="708" style="opacity: 2.15588e-15;"></circle>
+<circle id="er2" r="4" class="dn" cx="367.8704079994393" cy="708" style="opacity: 2.15588e-15;"></circle>
+<circle id="er3" r="4" class="dn" cx="265.92587199902323" cy="708" style="opacity: 2.15588e-15;"></circle>
+
+<!-- small animated earth-current markers -->
+<circle id="eg1" r="4" class="dn" cx="390" cy="633.3496160000844" style="opacity: 2.15588e-15;"></circle>
+<circle id="eg2" r="4" class="dn" cx="610" cy="656.4496160000845" style="opacity: 2.15588e-15;"></circle>
+<circle id="eg3" r="4" class="dn" cx="955" cy="679.5496160000844" style="opacity: 2.15588e-15;"></circle>
+
+<!-- neutral current arrow -->
+<line id="neutralArrow" x1="900" y1="650" x2="230" y2="650" class="s thin" marker-end="url(#an)" style="opacity: 0.12;"></line>
+<text id="neutralText" x="510" y="682" class="t">IN = 0.000 A</text>
+
+<!-- current arrows -->
+<line x1="285" y1="78" x2="340" y2="78" class="s red thin" marker-end="url(#ar)"></line>
+<text x="300" y="67" class="ts tr">IA</text>
+<text x="520" y="102" class="ts tr">50 mm²</text>
+<line x1="285" y1="265" x2="340" y2="265" class="s green thin" marker-end="url(#ag)"></line>
+<text x="300" y="254" class="ts tg">IB</text>
+<text x="520" y="277" class="ts tg">50 mm²</text>
+<line x1="325" y1="440" x2="380" y2="440" class="s blue thin" marker-end="url(#ab)"></line>
+<text x="340" y="429" class="ts tb">IC</text>
+<text x="520" y="452" class="ts tb">50 mm²</text>
+
+<!-- animated markers -->
+<circle id="a1" r="5" class="da" cx="425.6782700010475" cy="110"></circle><circle id="a2" r="5" class="da" cx="773.1782700010475" cy="110"></circle>
+<circle id="b1" r="5" class="db" cx="468.03160000090435" cy="285"></circle><circle id="b2" r="5" class="db" cx="768.0316000009044" cy="285"></circle>
+<circle id="c1" r="5" class="dc" cx="518.8140500006406" cy="460"></circle><circle id="c2" r="5" class="dc" cx="306.3140500006406" cy="460"></circle>
+<circle id="nn1" r="6" class="dn" style="opacity: 3.45839e-15;"></circle><circle id="nn2" r="6" class="dn" style="opacity: 3.45839e-15;"></circle>
+
+<!-- explicit return segment from neutral to star point -->
+<path id="returnGlow" d="M955 610 H145 V325" fill="none" stroke="#111" stroke-width="5" opacity=".08" style="opacity: 0.03;"></path>
+
+<rect x="270" y="748" width="650" height="34" fill="#fafafa" stroke="#aaa"></rect>
+<text x="595" y="770" text-anchor="middle" class="ts">
+При несиметрия основният ток се връща по N, а малка част – през земята към заземения звезден център Nₛ.
+</text>
+</svg>
+</div>
+
+<div class="controls">
+<div class="box">
+<h3>Фазови токове</h3>
+
+<label>Фаза A – I<sub>A</sub> <b id="iao">75 A</b></label>
+<input id="ia" type="range" min="50" max="100" value="75" step="1">
+
+<label>Фаза B – I<sub>B</sub> <b id="ibo">75 A</b></label>
+<input id="ib" type="range" min="50" max="100" value="75" step="1">
+
+<label>Фаза C – I<sub>C</sub> <b id="ico">75 A</b></label>
+<input id="ic" type="range" min="50" max="100" value="75" step="1">
+</div>
+
+
+<div class="box">
+<h3>Съпротивления на заземяванията</h3>
+
+<label>R₁ – n₁ <b id="r1o">10 Ω</b></label>
+<input id="r1" type="range" min="1" max="50" value="10" step="1">
+
+<label>R₂ – n₂ <b id="r2o">10 Ω</b></label>
+<input id="r2" type="range" min="1" max="50" value="10" step="1">
+
+<label>R₃ – n₃ <b id="r3o">10 Ω</b></label>
+<input id="r3" type="range" min="1" max="50" value="10" step="1">
+
+<label>Rₛ – звезден център Nₛ <b id="rso">4 Ω</b></label>
+<input id="rs" type="range" min="1" max="20" value="4" step="1">
+</div>
+
+<div class="box">
+<h3>Режим</h3>
+<div class="row"><button id="sym">Симетричен</button><button id="unsym">Несиметричен</button></div>
+</div>
+
+<div class="box values">
+<h3>Фазови токове</h3>
+<div id="curr"><span style="color:#c51d22">IA = 75.0 A</span><br><span style="color:#18833b">IB = 75.0 A</span><br><span style="color:#1557a6">IC = 75.0 A</span></div>
+</div>
+
+<div class="box">
+<h3>Токове в нулевия и земния път</h3>
+<div class="neutral" id="neutral">IN = 0.000 A</div>
+<div class="values" id="earthVals" style="margin-top:7px">IΣ = 0.000 A<br>Iearth = 0.000 A<br>Iearth,1 = 0.000 A<br>Iearth,2 = 0.000 A<br>Iearth,3 = 0.000 A<br>Rearth = 7.33 Ω</div>
+</div>
+
+<div class="box eq">
+I⃗N = −(I⃗A + I⃗B + I⃗C)
+</div>
+
+<div class="box">
+<div class="row"><button id="pause">Пауза</button><button id="reset">Начало</button></div>
+</div>
+
+
+<div class="box eq" style="font-size:15px;text-align:left">
+<b>Модел на земния път</b><br>
+R<sub>g</sub> = (1/R₁ + 1/R₂ + 1/R₃)<sup>−1</sup><br>
+R<sub>earth</sub> = R<sub>g</sub> + Rₛ<br>
+I<sub>earth</sub> = I<sub>Σ</sub> · R<sub>N</sub> /(R<sub>N</sub> + R<sub>earth</sub>)<br>
+I<sub>N</sub> = I<sub>Σ</sub> − I<sub>earth</sub><br>
+<small>В модела е прието R<sub>N</sub> = 0.20 Ω за металния нулев проводник.</small>
+</div>
+
+<div class="box note">
+Движещите се цветни маркери показват фазовите токове. При равни товари токът в нулевия проводник е нула. При нарушаване на симетрията се появяват черни маркери по N и се проследява връщането им до звездния център.
+</div>
+</div>
+
+</div></div>
+
+<script>
+const $=x=>document.getElementById(x);
+let run=true,p=0,last=performance.now();
+
+function vec(m,d){let a=d*Math.PI/180;return {x:m*Math.cos(a),y:m*Math.sin(a)}}
+function calc(){
+ let IA=+$("ia").value,IB=+$("ib").value,IC=+$("ic").value;
+ let R1=+$("r1").value,R2=+$("r2").value,R3=+$("r3").value,Rs=+$("rs").value;
+
+ // Directly selected RMS phase currents, displaced by 120°.
+ let a=vec(IA,0),b=vec(IB,-120),c=vec(IC,120);
+ let sx=a.x+b.x+c.x,sy=a.y+b.y+c.y;
+ let ISUM=Math.hypot(sx,sy);
+
+ // Equivalent grounding path:
+ // n1,n2,n3 electrodes in parallel, then earth return to grounded source star point Rs.
+ let G=1/R1+1/R2+1/R3;
+ let Rg=1/G;
+ let Rearth=Rg+Rs;
+
+ // Metallic neutral resistance for the educational model.
+ let RN=0.20;
+
+ // Current division between metallic neutral and earth-return path.
+ let Iearth=ISUM*RN/(RN+Rearth);
+ let IN=ISUM-Iearth;
+
+ // Earth-current split among n1, n2, n3 according to conductance.
+ let Ie1=Iearth*(1/R1)/G;
+ let Ie2=Iearth*(1/R2)/G;
+ let Ie3=Iearth*(1/R3)/G;
+ let Ies=Iearth;
+
+ return {IA,IB,IC,R1,R2,R3,Rs,Rg,Rearth,RN,ISUM,IN,Iearth,Ie1,Ie2,Ie3,Ies};
+}
+function update(){
+ let q=calc();
+
+ $("iao").textContent=q.IA.toFixed(0)+" A";
+ $("ibo").textContent=q.IB.toFixed(0)+" A";
+ $("ico").textContent=q.IC.toFixed(0)+" A";
+ $("r1o").textContent=q.R1+" Ω"; $("r2o").textContent=q.R2+" Ω"; $("r3o").textContent=q.R3+" Ω"; $("rso").textContent=q.Rs+" Ω";
+
+ $("curr").innerHTML=
+  `<span style="color:#c51d22">IA = ${q.IA.toFixed(1)} A</span><br>`+
+  `<span style="color:#18833b">IB = ${q.IB.toFixed(1)} A</span><br>`+
+  `<span style="color:#1557a6">IC = ${q.IC.toFixed(1)} A</span>`;
+
+ $("neutral").textContent="IN = "+q.IN.toFixed(3)+" A";
+ $("earthVals").innerHTML=
+  `IΣ = ${q.ISUM.toFixed(3)} A<br>`+
+  `Iearth = ${q.Iearth.toFixed(3)} A<br>`+
+  `Iearth,1 = ${q.Ie1.toFixed(3)} A<br>`+
+  `Iearth,2 = ${q.Ie2.toFixed(3)} A<br>`+
+  `Iearth,3 = ${q.Ie3.toFixed(3)} A<br>`+
+  `Rearth = ${q.Reearth ? q.Reearth.toFixed(2) : q.Rearth.toFixed(2)} Ω`;
+
+ $("neutralText").textContent="IN = "+q.IN.toFixed(3)+" A";
+ $("ie1Text").textContent="Iearth,1 = "+q.Ie1.toFixed(3)+" A";
+ $("ie2Text").textContent="Iearth,2 = "+q.Ie2.toFixed(3)+" A";
+ $("ie3Text").textContent="Iearth,3 = "+q.Ie3.toFixed(3)+" A";
+ $("iesText").textContent="Rₛ = "+q.Rs.toFixed(0)+" Ω; Iearth,s = "+q.Ies.toFixed(3)+" A";
+
+ $("neutralArrow").style.opacity=q.IN<.002?.12:1;
+ $("returnGlow").style.opacity=q.IN<.002?.03:Math.min(.32,.08+q.IN/100);
+
+ return q;
+}
+function line(id,x1,y1,x2,y2,t){
+ $(id).setAttribute("cx",x1+(x2-x1)*t);
+ $(id).setAttribute("cy",y1+(y2-y1)*t);
+}
+function animate(t){
+ let dt=(t-last)/1000;last=t;
+ let q=update();
+ if(run)p=(p+dt*.17)%1;
+ line("a1",260,110,955,110,p);line("a2",260,110,955,110,(p+.5)%1);
+ line("b1",235,285,835,285,(p+.15)%1);line("b2",235,285,835,285,(p+.65)%1);
+ line("c1",290,460,715,460,(p+.3)%1);line("c2",290,460,715,460,(p+.8)%1);
+
+ let op=Math.min(1,q.IN/8);$("nn1").style.opacity=op;$("nn2").style.opacity=op;
+ if(q.IN>.02){
+   let n=(p*(.75+Math.min(1,q.IN/18)))%1;
+   // first 85% horizontal return, last 15% vertical up to source star point
+   function neutralPos(id,u){
+     if(u<.85){
+       let f=u/.85; line(id,955,610,145,610,f);
+     }else{
+       let f=(u-.85)/.15; line(id,145,610,145,325,f);
+     }
+   }
+   neutralPos("nn1",n);neutralPos("nn2",(n+.5)%1);
+ }
+
+ // very small current to earth, shown only as a qualitative educational cue
+ let eg=(p*0.8)%1;
+ line("eg1",390,620,390,690,eg);
+ line("eg2",610,620,610,690,(eg+.33)%1);
+ line("eg3",955,620,955,690,(eg+.66)%1);
+
+ // small current through earth toward the grounded star point
+ line("er1",390,708,145,708,eg);
+ line("er2",610,708,145,708,(eg+.33)%1);
+ line("er3",955,708,145,708,(eg+.66)%1);
+
+ // common return from source grounding up to star centre Ns
+ line("egs",145,708,145,325,(eg+.2)%1);
+
+ let eop=Math.min(.85, q.Iearth/0.35);
+ ["eg1","eg2","eg3","er1","er2","er3","egs"].forEach(id=>$(id).style.opacity=eop);
+
+ requestAnimationFrame(animate);
+}
+["ia","ib","ic","r1","r2","r3","rs"].forEach(x=>$(x).oninput=update);
+$("sym").onclick=()=>{$("ia").value=75;$("ib").value=75;$("ic").value=75;update()};
+$("unsym").onclick=()=>{$("ia").value=100;$("ib").value=75;$("ic").value=50;update()};
+$("pause").onclick=()=>{run=!run;$("pause").textContent=run?"Пауза":"Продължи"};
+$("reset").onclick=()=>{$("ia").value=75;$("ib").value=75;$("ic").value=75;$("r1").value=10;$("r2").value=10;$("r3").value=10;$("rs").value=4;p=0;run=true;$("pause").textContent="Пауза";update()};
+update();requestAnimationFrame(animate);
+</script>
+</body></html>

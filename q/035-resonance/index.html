@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<!-- saved from url=(0064)file:///C:/Users/velichko.atanasov/Downloads/preview%20(33).html -->
+<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QR-035 – Резонанс в електрическите вериги</title>
+<style>
+*{box-sizing:border-box}
+:root{
+  --bg:#f3f7fa;--panel:#fff;--ink:#17324a;--muted:#607789;--line:#b8cad6;
+  --red:#d62828;--blue:#1769c2;--green:#16844a;--violet:#6f42c1;--orange:#d98214;
+}
+body{margin:0;background:linear-gradient(#fbfcfd,#eef4f8);font-family:Segoe UI,Arial,sans-serif;color:var(--ink)}
+.wrap{max-width:1320px;margin:auto;padding:12px}
+h1{text-align:center;margin:4px 0;color:#123f73;font-size:clamp(25px,3.6vw,38px)}
+.sub{text-align:center;color:var(--muted);margin:4px 0 12px}
+.top{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.modebar,.controls{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px}
+.modebar{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+button{padding:9px;border:1px solid #8ea6b6;background:#f2f6f9;color:#17324a;border-radius:8px;font-weight:800;cursor:pointer}
+button.active{background:#e4edf5;border-color:#4c7ba0}
+.controls{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;align-items:center}
+.controls label,.side label{font-size:13px;font-weight:700}
+input[type=range]{width:100%;accent-color:#356f9c}
+.main{display:grid;grid-template-columns:1fr 320px;gap:10px}
+.stage,.side{background:#fff;border:1px solid var(--line);border-radius:14px}
+.stage{position:relative;min-height:760px;overflow:hidden}
+svg{position:absolute;inset:0;width:100%;height:100%}
+.side{padding:10px}
+.card{border:1px solid #c9d7e0;border-radius:10px;padding:10px;margin-bottom:9px;background:#fbfdff}
+.card h3{font-size:15px;margin:0 0 8px;color:#124d82}
+.eq{font-family:Cambria Math,Georgia,serif;font-size:18px;text-align:center;line-height:1.55}
+.note{font-size:13px;line-height:1.5;color:#516878}
+.big{text-align:center;font-size:27px;font-weight:900}
+.values{font-family:Cambria Math,Georgia,serif;line-height:1.7;font-size:15px}
+.resonance{border:2px solid #3a9d5d;background:#f2fbf5;color:#176a36}
+.axis{stroke:#9bb0bf;stroke-width:1.2}
+.circuit{stroke:#17324a;stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.label{font-size:16px;font-weight:800;fill:#17324a}
+.small{font-size:12px;font-weight:700;fill:#5f7686}
+@media(max-width:940px){.top,.main{grid-template-columns:1fr}.controls{grid-template-columns:1fr 1fr}.stage{min-height:740px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>QR-035 – Резонанс в електрическите вериги</h1>
+<div class="sub">Последователен и паралелен RLC резонанс – честота, фазов ъгъл и фазорни зависимости</div>
+
+<div class="top">
+  <div class="modebar">
+    <button id="seriesBtn" class="active">Последователен RLC</button>
+    <button id="parallelBtn">Паралелен RLC</button>
+  </div>
+  <div class="controls">
+    <label>Честота f
+      <input id="freq" type="range" min="10" max="250" value="50" step="1">
+    </label>
+    <button id="pause">Пауза</button>
+    <button id="reset">Начало</button>
+  </div>
+</div>
+
+<div class="main">
+<section class="stage">
+<svg viewBox="0 0 980 760">
+<defs>
+ <marker id="ar" markerWidth="4.5" markerHeight="4.5" refX="4" refY="2" orient="auto"><path d="M0 0L0 4L4.8 2z" fill="#d62828"></path></marker>
+ <marker id="ab" markerWidth="4.5" markerHeight="4.5" refX="4" refY="2" orient="auto"><path d="M0 0L0 4L4.8 2z" fill="#1769c2"></path></marker>
+ <marker id="ag" markerWidth="4.5" markerHeight="4.5" refX="4" refY="2" orient="auto"><path d="M0 0L0 4L4.8 2z" fill="#16844a"></path></marker>
+ <marker id="av" markerWidth="5" markerHeight="5" refX="4.5" refY="2.25" orient="auto"><path d="M0 0L0 4.5L5.2 2.25z" fill="#6f42c1"></path></marker>
+</defs>
+
+<text id="mainTitle" x="490" y="38" text-anchor="middle" class="label">Последователен RLC резонанс</text>
+
+<g id="seriesG">
+  <text x="490" y="70" text-anchor="middle" class="small">Един и същ ток протича през R, L и C</text>
+  <circle cx="120" cy="180" r="28" fill="#fff" stroke="#17324a" stroke-width="2"></circle>
+  <path d="M100 180 q10 -18 20 0 q10 18 20 0" class="circuit"></path>
+  <line x1="120" y1="152" x2="120" y2="115" class="circuit"></line>
+  <line x1="120" y1="208" x2="120" y2="245" class="circuit"></line>
+  <line x1="120" y1="115" x2="240" y2="115" class="circuit"></line>
+  <line x1="240" y1="115" x2="255" y2="115" class="circuit"></line>
+  <rect x="255" y="102" width="60" height="26" fill="#fff" stroke="#17324a" stroke-width="2.2"></rect>
+  <line x1="315" y1="115" x2="330" y2="115" class="circuit"></line>
+  <line x1="330" y1="115" x2="390" y2="115" class="circuit"></line>
+  <path d="M390 115 q10 -20 20 0 q10 -20 20 0 q10 -20 20 0 q10 -20 20 0" class="circuit"></path>
+  <line x1="470" y1="115" x2="530" y2="115" class="circuit"></line>
+  <line x1="545" y1="90" x2="545" y2="140" class="circuit"></line>
+  <line x1="565" y1="90" x2="565" y2="140" class="circuit"></line>
+  <line x1="565" y1="115" x2="700" y2="115" class="circuit"></line>
+  <line x1="700" y1="115" x2="700" y2="245" class="circuit"></line>
+  <line x1="700" y1="245" x2="120" y2="245" class="circuit"></line>
+  <text x="282" y="87" class="label">R</text><text x="424" y="87" class="label">L</text><text x="550" y="78" class="label">C</text>
+  <line x1="205" y1="84" x2="300" y2="84" stroke="#1769c2" stroke-width="2.5" marker-end="url(#ab)"></line>
+  <text x="245" y="72" class="small" fill="#1769c2">I</text>
+
+  <line x1="775" y1="215" x2="930" y2="215" class="axis"></line>
+  <line x1="815" y1="285" x2="815" y2="120" class="axis"></line>
+  <line id="sUR" x1="815" y1="215" x2="890.8998059422569" y2="215" stroke="#d62828" stroke-width="2.5" marker-end="url(#ar)"></line>
+  <line id="sUL" x1="815" y1="215" x2="815" y2="139.29330839962552" stroke="#16844a" stroke-width="2.5" marker-end="url(#ag)"></line>
+  <line id="sUC" x1="815" y1="215" x2="815" y2="290.8783247200112" stroke="#1769c2" stroke-width="2.5" marker-end="url(#ab)"></line>
+  <line id="sU" x1="815" y1="215" x2="890.8998059422569" y2="215.1716331196367" stroke="#6f42c1" stroke-width="3.2" marker-end="url(#av)"></line>
+  <text x="895" y="210" class="small" fill="#d62828">U_R</text>
+  <text x="825" y="150" class="small" fill="#16844a">U_L</text>
+  <text x="825" y="272" class="small" fill="#1769c2">U_C</text>
+  <text id="sULabel" x="900.8998059422569" y="205.1716331196367" class="small" fill="#6f42c1">U</text>
+</g>
+
+<g id="parallelG" style="display:none">
+  <text x="490" y="70" text-anchor="middle" class="small">Напрежението е едно и също върху трите клона</text>
+  <circle cx="120" cy="180" r="28" fill="#fff" stroke="#17324a" stroke-width="2"></circle>
+  <path d="M100 180 q10 -18 20 0 q10 18 20 0" class="circuit"></path>
+  <line x1="120" y1="152" x2="120" y2="105" class="circuit"></line>
+  <line x1="120" y1="208" x2="120" y2="255" class="circuit"></line>
+  <line x1="120" y1="105" x2="690" y2="105" class="circuit"></line>
+  <line x1="120" y1="255" x2="690" y2="255" class="circuit"></line>
+
+  <line x1="300" y1="105" x2="300" y2="135" class="circuit"></line>
+  <line x1="300" y1="135" x2="300" y2="148" class="circuit"></line>
+  <rect x="287" y="148" width="26" height="64" fill="#fff" stroke="#17324a" stroke-width="2.2"></rect>
+  <line x1="300" y1="212" x2="300" y2="225" class="circuit"></line>
+  <line x1="300" y1="225" x2="300" y2="255" class="circuit"></line>
+  <text x="282" y="95" class="label">R</text>
+
+  <line x1="470" y1="105" x2="470" y2="135" class="circuit"></line>
+  <path d="M470 135 q-18 10 0 20 q-18 10 0 20 q-18 10 0 20 q-18 10 0 20" class="circuit"></path>
+  <line x1="470" y1="215" x2="470" y2="255" class="circuit"></line>
+  <text x="455" y="95" class="label">L</text>
+
+  <line x1="620" y1="105" x2="620" y2="160" class="circuit"></line>
+  <line x1="600" y1="160" x2="640" y2="160" class="circuit"></line>
+  <line x1="600" y1="180" x2="640" y2="180" class="circuit"></line>
+  <line x1="620" y1="180" x2="620" y2="255" class="circuit"></line>
+  <text x="605" y="95" class="label">C</text>
+
+  <line x1="775" y1="215" x2="930" y2="215" class="axis"></line>
+  <line x1="815" y1="285" x2="815" y2="120" class="axis"></line>
+  <line id="pIR" x1="815" y1="215" x2="890" y2="215" stroke="#d62828" stroke-width="2.5" marker-end="url(#ar)"></line>
+  <line id="pIL" x1="815" y1="215" x2="815" y2="265" stroke="#16844a" stroke-width="2.5" marker-end="url(#ag)"></line>
+  <line id="pIC" x1="815" y1="215" x2="815" y2="150" stroke="#1769c2" stroke-width="2.5" marker-end="url(#ab)"></line>
+  <line id="pI" x1="815" y1="215" x2="890" y2="180" stroke="#6f42c1" stroke-width="3.2" marker-end="url(#av)"></line>
+  <text x="895" y="210" class="small" fill="#d62828">I_R</text>
+  <text x="825" y="150" class="small" fill="#1769c2">I_C</text>
+  <text x="825" y="272" class="small" fill="#16844a">I_L</text>
+  <text id="pILabel" x="900" y="180" class="small" fill="#6f42c1">I</text>
+</g>
+
+<text x="490" y="335" text-anchor="middle" class="label">Времеви диаграми</text>
+<line x1="130" y1="510" x2="850" y2="510" class="axis"></line>
+<line x1="130" y1="370" x2="130" y2="650" class="axis"></line>
+<path id="uWave" d="M130.0 510.0 L133.0 504.0 L136.0 498.0 L139.0 492.0 L142.0 486.1 L145.0 480.2 L148.0 474.5 L151.0 468.8 L154.0 463.2 L157.0 457.8 L160.0 452.5 L163.0 447.4 L166.0 442.4 L169.0 437.6 L172.0 433.0 L175.0 428.7 L178.0 424.5 L181.0 420.6 L184.0 417.0 L187.0 413.6 L190.0 410.4 L193.0 407.5 L196.0 404.9 L199.0 402.6 L202.0 400.6 L205.0 398.9 L208.0 397.5 L211.0 396.4 L214.0 395.6 L217.0 395.2 L220.0 395.0 L223.0 395.2 L226.0 395.6 L229.0 396.4 L232.0 397.5 L235.0 398.9 L238.0 400.6 L241.0 402.6 L244.0 404.9 L247.0 407.5 L250.0 410.4 L253.0 413.6 L256.0 417.0 L259.0 420.6 L262.0 424.5 L265.0 428.7 L268.0 433.0 L271.0 437.6 L274.0 442.4 L277.0 447.4 L280.0 452.5 L283.0 457.8 L286.0 463.2 L289.0 468.8 L292.0 474.5 L295.0 480.2 L298.0 486.1 L301.0 492.0 L304.0 498.0 L307.0 504.0 L310.0 510.0 L313.0 516.0 L316.0 522.0 L319.0 528.0 L322.0 533.9 L325.0 539.8 L328.0 545.5 L331.0 551.2 L334.0 556.8 L337.0 562.2 L340.0 567.5 L343.0 572.6 L346.0 577.6 L349.0 582.4 L352.0 587.0 L355.0 591.3 L358.0 595.5 L361.0 599.4 L364.0 603.0 L367.0 606.4 L370.0 609.6 L373.0 612.5 L376.0 615.1 L379.0 617.4 L382.0 619.4 L385.0 621.1 L388.0 622.5 L391.0 623.6 L394.0 624.4 L397.0 624.8 L400.0 625.0 L403.0 624.8 L406.0 624.4 L409.0 623.6 L412.0 622.5 L415.0 621.1 L418.0 619.4 L421.0 617.4 L424.0 615.1 L427.0 612.5 L430.0 609.6 L433.0 606.4 L436.0 603.0 L439.0 599.4 L442.0 595.5 L445.0 591.3 L448.0 587.0 L451.0 582.4 L454.0 577.6 L457.0 572.6 L460.0 567.5 L463.0 562.2 L466.0 556.8 L469.0 551.2 L472.0 545.5 L475.0 539.8 L478.0 533.9 L481.0 528.0 L484.0 522.0 L487.0 516.0 L490.0 510.0 L493.0 504.0 L496.0 498.0 L499.0 492.0 L502.0 486.1 L505.0 480.2 L508.0 474.5 L511.0 468.8 L514.0 463.2 L517.0 457.8 L520.0 452.5 L523.0 447.4 L526.0 442.4 L529.0 437.6 L532.0 433.0 L535.0 428.7 L538.0 424.5 L541.0 420.6 L544.0 417.0 L547.0 413.6 L550.0 410.4 L553.0 407.5 L556.0 404.9 L559.0 402.6 L562.0 400.6 L565.0 398.9 L568.0 397.5 L571.0 396.4 L574.0 395.6 L577.0 395.2 L580.0 395.0 L583.0 395.2 L586.0 395.6 L589.0 396.4 L592.0 397.5 L595.0 398.9 L598.0 400.6 L601.0 402.6 L604.0 404.9 L607.0 407.5 L610.0 410.4 L613.0 413.6 L616.0 417.0 L619.0 420.6 L622.0 424.5 L625.0 428.7 L628.0 433.0 L631.0 437.6 L634.0 442.4 L637.0 447.4 L640.0 452.5 L643.0 457.8 L646.0 463.2 L649.0 468.8 L652.0 474.5 L655.0 480.2 L658.0 486.1 L661.0 492.0 L664.0 498.0 L667.0 504.0 L670.0 510.0 L673.0 516.0 L676.0 522.0 L679.0 528.0 L682.0 533.9 L685.0 539.8 L688.0 545.5 L691.0 551.2 L694.0 556.8 L697.0 562.2 L700.0 567.5 L703.0 572.6 L706.0 577.6 L709.0 582.4 L712.0 587.0 L715.0 591.3 L718.0 595.5 L721.0 599.4 L724.0 603.0 L727.0 606.4 L730.0 609.6 L733.0 612.5 L736.0 615.1 L739.0 617.4 L742.0 619.4 L745.0 621.1 L748.0 622.5 L751.0 623.6 L754.0 624.4 L757.0 624.8 L760.0 625.0 L763.0 624.8 L766.0 624.4 L769.0 623.6 L772.0 622.5 L775.0 621.1 L778.0 619.4 L781.0 617.4 L784.0 615.1 L787.0 612.5 L790.0 609.6 L793.0 606.4 L796.0 603.0 L799.0 599.4 L802.0 595.5 L805.0 591.3 L808.0 587.0 L811.0 582.4 L814.0 577.6 L817.0 572.6 L820.0 567.5 L823.0 562.2 L826.0 556.8 L829.0 551.2 L832.0 545.5 L835.0 539.8 L838.0 533.9 L841.0 528.0 L844.0 522.0 L847.0 516.0 L850.0 510.0 " fill="none" stroke="#d62828" stroke-width="3"></path>
+<path id="iWave" d="M130.0 509.8 L133.0 505.4 L136.0 500.9 L139.0 496.5 L142.0 492.1 L145.0 487.8 L148.0 483.6 L151.0 479.4 L154.0 475.3 L157.0 471.2 L160.0 467.3 L163.0 463.5 L166.0 459.9 L169.0 456.4 L172.0 453.0 L175.0 449.8 L178.0 446.7 L181.0 443.8 L184.0 441.1 L187.0 438.6 L190.0 436.3 L193.0 434.2 L196.0 432.3 L199.0 430.6 L202.0 429.1 L205.0 427.8 L208.0 426.8 L211.0 426.0 L214.0 425.4 L217.0 425.1 L220.0 425.0 L223.0 425.1 L226.0 425.5 L229.0 426.1 L232.0 426.9 L235.0 427.9 L238.0 429.2 L241.0 430.7 L244.0 432.4 L247.0 434.4 L250.0 436.5 L253.0 438.8 L256.0 441.3 L259.0 444.1 L262.0 447.0 L265.0 450.0 L268.0 453.3 L271.0 456.7 L274.0 460.2 L277.0 463.9 L280.0 467.7 L283.0 471.6 L286.0 475.6 L289.0 479.7 L292.0 483.9 L295.0 488.2 L298.0 492.5 L301.0 496.9 L304.0 501.3 L307.0 505.7 L310.0 510.2 L313.0 514.6 L316.0 519.1 L319.0 523.5 L322.0 527.9 L325.0 532.2 L328.0 536.4 L331.0 540.6 L334.0 544.7 L337.0 548.8 L340.0 552.7 L343.0 556.5 L346.0 560.1 L349.0 563.6 L352.0 567.0 L355.0 570.2 L358.0 573.3 L361.0 576.2 L364.0 578.9 L367.0 581.4 L370.0 583.7 L373.0 585.8 L376.0 587.7 L379.0 589.4 L382.0 590.9 L385.0 592.2 L388.0 593.2 L391.0 594.0 L394.0 594.6 L397.0 594.9 L400.0 595.0 L403.0 594.9 L406.0 594.5 L409.0 593.9 L412.0 593.1 L415.0 592.1 L418.0 590.8 L421.0 589.3 L424.0 587.6 L427.0 585.6 L430.0 583.5 L433.0 581.2 L436.0 578.7 L439.0 575.9 L442.0 573.0 L445.0 570.0 L448.0 566.7 L451.0 563.3 L454.0 559.8 L457.0 556.1 L460.0 552.3 L463.0 548.4 L466.0 544.4 L469.0 540.3 L472.0 536.1 L475.0 531.8 L478.0 527.5 L481.0 523.1 L484.0 518.7 L487.0 514.3 L490.0 509.8 L493.0 505.4 L496.0 500.9 L499.0 496.5 L502.0 492.1 L505.0 487.8 L508.0 483.6 L511.0 479.4 L514.0 475.3 L517.0 471.2 L520.0 467.3 L523.0 463.5 L526.0 459.9 L529.0 456.4 L532.0 453.0 L535.0 449.8 L538.0 446.7 L541.0 443.8 L544.0 441.1 L547.0 438.6 L550.0 436.3 L553.0 434.2 L556.0 432.3 L559.0 430.6 L562.0 429.1 L565.0 427.8 L568.0 426.8 L571.0 426.0 L574.0 425.4 L577.0 425.1 L580.0 425.0 L583.0 425.1 L586.0 425.5 L589.0 426.1 L592.0 426.9 L595.0 427.9 L598.0 429.2 L601.0 430.7 L604.0 432.4 L607.0 434.4 L610.0 436.5 L613.0 438.8 L616.0 441.3 L619.0 444.1 L622.0 447.0 L625.0 450.0 L628.0 453.3 L631.0 456.7 L634.0 460.2 L637.0 463.9 L640.0 467.7 L643.0 471.6 L646.0 475.6 L649.0 479.7 L652.0 483.9 L655.0 488.2 L658.0 492.5 L661.0 496.9 L664.0 501.3 L667.0 505.7 L670.0 510.2 L673.0 514.6 L676.0 519.1 L679.0 523.5 L682.0 527.9 L685.0 532.2 L688.0 536.4 L691.0 540.6 L694.0 544.7 L697.0 548.8 L700.0 552.7 L703.0 556.5 L706.0 560.1 L709.0 563.6 L712.0 567.0 L715.0 570.2 L718.0 573.3 L721.0 576.2 L724.0 578.9 L727.0 581.4 L730.0 583.7 L733.0 585.8 L736.0 587.7 L739.0 589.4 L742.0 590.9 L745.0 592.2 L748.0 593.2 L751.0 594.0 L754.0 594.6 L757.0 594.9 L760.0 595.0 L763.0 594.9 L766.0 594.5 L769.0 593.9 L772.0 593.1 L775.0 592.1 L778.0 590.8 L781.0 589.3 L784.0 587.6 L787.0 585.6 L790.0 583.5 L793.0 581.2 L796.0 578.7 L799.0 575.9 L802.0 573.0 L805.0 570.0 L808.0 566.7 L811.0 563.3 L814.0 559.8 L817.0 556.1 L820.0 552.3 L823.0 548.4 L826.0 544.4 L829.0 540.3 L832.0 536.1 L835.0 531.8 L838.0 527.5 L841.0 523.1 L844.0 518.7 L847.0 514.3 L850.0 509.8 " fill="none" stroke="#1769c2" stroke-width="3"></path>
+<circle id="uDot" r="5" fill="#d62828" cx="445.43919999892034" cy="590.691560389424"></circle><circle id="iDot" r="5" fill="#1769c2" cx="445.43919999892034" cy="569.5044840796412"></circle>
+<text x="855" y="515" class="small">ωt</text><text x="105" y="372" class="small">u, i</text>
+<text x="170" y="388" class="small" fill="#d62828">u(t)</text><text x="230" y="388" class="small" fill="#1769c2">i(t)</text>
+
+<line id="phiU" x1="360" y1="395" x2="360" y2="625" stroke="#888" stroke-dasharray="5 5"></line>
+<line id="phiI" x1="360.1554760752692" y1="395" x2="360.1554760752692" y2="625" stroke="#888" stroke-dasharray="5 5"></line>
+<line id="phiB" x1="360" y1="625" x2="360.1554760752692" y2="625" stroke="#6f42c1" stroke-width="2"></line>
+<text id="phiText" x="360.0777380376346" y="650" text-anchor="middle" class="label" fill="#6f42c1">φ = 0.1°</text>
+<text id="relation" x="490" y="690" text-anchor="middle" class="small">РЕЗОНАНС: токът и напрежението са във фаза.</text>
+</svg>
+</section>
+
+<aside class="side">
+<div class="card">
+  <h3>Параметри</h3>
+  <label>R = <b id="rOut">40 Ω</b></label>
+  <input id="R" type="range" min="5" max="100" value="40" step="1">
+  <label>L = <b id="lOut">127 mH</b></label>
+  <input id="L" type="range" min="20" max="300" value="127" step="1">
+  <label>C = <b id="cOut">79.6 μF</b></label>
+  <input id="C" type="range" min="10" max="200" value="79.6" step="0.1">
+  <label>U = <b id="uOut">230 V</b></label>
+  <input id="U" type="range" min="50" max="400" value="230" step="10">
+</div>
+
+<div id="statusCard" class="card resonance">
+  <h3>Режим</h3>
+  <div id="status" class="big">РЕЗОНАНС</div>
+  <div id="f0Text" class="eq">f₀ = 50.1 Hz</div>
+</div>
+
+<div class="card values">
+  <h3>Изчислени величини</h3>
+  <div id="vals">X_L = 39.90 Ω<br>X_C = 39.99 Ω<br>|Z| = 40.00 Ω<br>I = 5.75 A<br>U_R = 230.0 V<br>U_L = 229.4 V<br>U_C = 229.9 V</div>
+</div>
+
+<div id="seriesEq" class="card eq">
+X<sub>L</sub>=2πfL<br>
+X<sub>C</sub>=1/(2πfC)<br>
+Z=R+j(X<sub>L</sub>−X<sub>C</sub>)
+</div>
+
+<div id="parallelEq" class="card eq" style="display:none">
+B=ωC−1/(ωL)<br>
+Y=1/R+jB<br>
+Z=1/Y
+</div>
+
+<div class="card eq">f₀=1/(2π√LC)</div>
+
+<div id="explain" class="card note">При последователен резонанс X<sub>L</sub>=X<sub>C</sub>, реактивните напрежения се компенсират и токът достига максимум.</div>
+</aside>
+</div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+let mode="series",running=true,time=0,last=performance.now();
+
+function setMode(m){
+  mode=m;
+  $("seriesBtn").classList.toggle("active",m==="series");
+  $("parallelBtn").classList.toggle("active",m==="parallel");
+  $("seriesG").style.display=m==="series"?"":"none";
+  $("parallelG").style.display=m==="parallel"?"":"none";
+  $("seriesEq").style.display=m==="series"?"":"none";
+  $("parallelEq").style.display=m==="parallel"?"":"none";
+  $("mainTitle").textContent=m==="series"?"Последователен RLC резонанс":"Паралелен RLC резонанс";
+  $("explain").innerHTML=m==="series"
+    ?"При последователен резонанс X<sub>L</sub>=X<sub>C</sub>, реактивните напрежения се компенсират и токът достига максимум."
+    :"При паралелен резонанс реактивните токове I<sub>L</sub> и I<sub>C</sub> се компенсират и токът от източника достига минимум.";
+}
+$("seriesBtn").addEventListener("click",()=>setMode("series"));
+$("parallelBtn").addEventListener("click",()=>setMode("parallel"));
+$("pause").addEventListener("click",()=>{running=!running;$("pause").textContent=running?"Пауза":"Продължи"});
+$("reset").addEventListener("click",()=>{
+  $("R").value=40;$("L").value=127;$("C").value=79.6;$("U").value=230;$("freq").value=50;
+  time=0;running=true;$("pause").textContent="Пауза";
+});
+
+function calc(){
+  const R=+$("R").value,L=+$("L").value/1000,C=+$("C").value*1e-6,U=+$("U").value,f=+$("freq").value;
+  const w=2*Math.PI*f,XL=w*L,XC=1/(w*C),f0=1/(2*Math.PI*Math.sqrt(L*C));
+  if(mode==="series"){
+    const X=XL-XC,Zmag=Math.hypot(R,X),phi=Math.atan2(X,R),I=U/Zmag;
+    return {R,L,C,U,f,w,XL,XC,f0,X,Zmag,phi,I,UR:I*R,UL:I*XL,UC:I*XC};
+  }else{
+    const G=1/R,B=w*C-1/(w*L),Ymag=Math.hypot(G,B),phi=Math.atan2(B,G),I=U*Ymag;
+    return {R,L,C,U,f,w,XL,XC,f0,B,Ymag,Zmag:1/Ymag,phi,I,IR:U/R,IL:U/XL,IC:U/XC};
+  }
+}
+function wavePath(x0,y0,w,h,shift){
+  let d="";
+  for(let k=0;k<=240;k++){
+    const x=x0+w*k/240, th=4*Math.PI*k/240;
+    const y=y0-h*Math.sin(th+shift);
+    d+=(k===0?"M":"L")+x.toFixed(1)+" "+y.toFixed(1)+" ";
+  }
+  return d;
+}
+function update(){
+  const q=calc();
+  $("rOut").textContent=q.R.toFixed(0)+" Ω";
+  $("lOut").textContent=(q.L*1000).toFixed(0)+" mH";
+  $("cOut").textContent=(q.C*1e6).toFixed(1)+" μF";
+  $("uOut").textContent=q.U.toFixed(0)+" V";
+  $("f0Text").textContent="f₀ = "+q.f0.toFixed(1)+" Hz";
+
+  const near=Math.abs(q.f-q.f0)/q.f0<0.015;
+  $("statusCard").classList.toggle("resonance",near);
+  if(near) $("status").textContent="РЕЗОНАНС";
+  else if(mode==="series") $("status").textContent=q.X>0?"Индуктивен режим":"Капацитивен режим";
+  else $("status").textContent=q.B>0?"Капацитивен режим":"Индуктивен режим";
+
+  if(mode==="series"){
+    $("vals").innerHTML=`X_L = ${q.XL.toFixed(2)} Ω<br>X_C = ${q.XC.toFixed(2)} Ω<br>|Z| = ${q.Zmag.toFixed(2)} Ω<br>I = ${q.I.toFixed(2)} A<br>U_R = ${q.UR.toFixed(1)} V<br>U_L = ${q.UL.toFixed(1)} V<br>U_C = ${q.UC.toFixed(1)} V`;
+  }else{
+    $("vals").innerHTML=`X_L = ${q.XL.toFixed(2)} Ω<br>X_C = ${q.XC.toFixed(2)} Ω<br>|Z| = ${q.Zmag.toFixed(2)} Ω<br>I = ${q.I.toFixed(2)} A<br>I_R = ${q.IR.toFixed(2)} A<br>I_L = ${q.IL.toFixed(2)} A<br>I_C = ${q.IC.toFixed(2)} A`;
+  }
+  return q;
+}
+function animate(now){
+  const dt=(now-last)/1000;last=now;
+  const q=update();
+  if(running) time+=dt*(q.f/50)*0.7;
+  const th=2*Math.PI*time;
+  const currentShift=mode==="series"?-q.phi:q.phi;
+
+  $("uWave").setAttribute("d",wavePath(130,510,720,115,0));
+  $("iWave").setAttribute("d",wavePath(130,510,720,85,currentShift));
+
+  const frac=(th%(2*Math.PI))/(2*Math.PI),x=130+360*frac;
+  $("uDot").setAttribute("cx",x);$("uDot").setAttribute("cy",510-115*Math.sin(th));
+  $("iDot").setAttribute("cx",x);$("iDot").setAttribute("cy",510-85*Math.sin(th+currentShift));
+
+  const phiDeg=currentShift*180/Math.PI;
+  $("phiText").textContent="φ = "+phiDeg.toFixed(1)+"°";
+  const baseX=360,shiftPx=Math.max(-110,Math.min(110,phiDeg*1.2));
+  $("phiI").setAttribute("x1",baseX+shiftPx);$("phiI").setAttribute("x2",baseX+shiftPx);
+  $("phiB").setAttribute("x1",baseX);$("phiB").setAttribute("x2",baseX+shiftPx);
+  $("phiText").setAttribute("x",baseX+shiftPx/2);
+
+  if(Math.abs(phiDeg)<1.5) $("relation").textContent="РЕЗОНАНС: токът и напрежението са във фаза.";
+  else if(phiDeg<0) $("relation").textContent="Токът изостава спрямо напрежението.";
+  else $("relation").textContent="Токът изпреварва напрежението.";
+
+  if(mode==="series"){
+    const s=.33,ur=Math.min(105,q.UR*s),ul=Math.min(90,q.UL*s),uc=Math.min(90,q.UC*s);
+    $("sUR").setAttribute("x2",815+ur);
+    $("sUL").setAttribute("y2",215-ul);
+    $("sUC").setAttribute("y2",215+uc);
+    const y=-(q.UL-q.UC)*s;
+    $("sU").setAttribute("x2",815+Math.min(110,ur));
+    $("sU").setAttribute("y2",215+Math.max(-90,Math.min(90,y)));
+    $("sULabel").setAttribute("x",825+Math.min(110,ur));
+    $("sULabel").setAttribute("y",205+Math.max(-90,Math.min(90,y)));
+  }else{
+    const s=2.2,ir=Math.min(100,q.IR*s),il=Math.min(90,q.IL*s),ic=Math.min(90,q.IC*s);
+    $("pIR").setAttribute("x2",815+ir);
+    $("pIL").setAttribute("y2",215+il);
+    $("pIC").setAttribute("y2",215-ic);
+    const y=-(q.IC-q.IL)*s;
+    $("pI").setAttribute("x2",815+Math.min(105,ir));
+    $("pI").setAttribute("y2",215+Math.max(-90,Math.min(90,y)));
+    $("pILabel").setAttribute("x",825+Math.min(105,ir));
+    $("pILabel").setAttribute("y",205+Math.max(-90,Math.min(90,y)));
+  }
+
+  requestAnimationFrame(animate);
+}
+["R","L","C","U","freq"].forEach(id=>$(id).addEventListener("input",update));
+setMode("series");
+requestAnimationFrame(animate);
+</script>
+
+</body></html>

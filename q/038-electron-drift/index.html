@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<!-- saved from url=(0064)file:///C:/Users/velichko.atanasov/Downloads/preview%20(42).html -->
+<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Движение на електроните в алуминиев проводник</title>
+<style>
+  :root{
+    --bg:#f5f9ff;
+    --panel:#ffffff;
+    --ink:#102a56;
+    --muted:#5c6f8c;
+    --blue:#1976d2;
+    --blue2:#4da3ff;
+    --red:#d6332f;
+    --metal1:#dce4ec;
+    --metal2:#8f9baa;
+    --metal3:#cfd8e3;
+    --border:#c9d7ea;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:linear-gradient(180deg,#ffffff 0%,var(--bg) 100%);
+    color:var(--ink);
+  }
+  .wrap{
+    max-width:1180px;
+    margin:0 auto;
+    padding:18px 18px 28px;
+  }
+  h1{
+    text-align:center;
+    margin:6px 0 10px;
+    font-size:clamp(24px,3.2vw,42px);
+    letter-spacing:.3px;
+  }
+  .sub{
+    text-align:center;
+    color:var(--muted);
+    margin:0 0 16px;
+    font-size:clamp(14px,1.6vw,18px);
+  }
+  .toolbar{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    justify-content:center;
+    margin-bottom:14px;
+  }
+  button{
+    border:1px solid #9cb7db;
+    background:#fff;
+    color:var(--ink);
+    border-radius:12px;
+    padding:10px 15px;
+    font-weight:700;
+    cursor:pointer;
+    font-size:15px;
+    box-shadow:0 2px 7px rgba(16,42,86,.08);
+  }
+  button.active{
+    background:#e6f1ff;
+    border-color:var(--blue);
+  }
+  button.fieldOn{
+    background:#fff0ef;
+    border-color:var(--red);
+    color:#8d1714;
+  }
+  .stage{
+    position:relative;
+    width:100%;
+    aspect-ratio: 16/9.6;
+    min-height:500px;
+    border:1px solid var(--border);
+    border-radius:18px;
+    background:#fff;
+    overflow:hidden;
+    box-shadow:0 10px 30px rgba(16,42,86,.08);
+  }
+  canvas{width:100%;height:100%;display:block}
+  .formula{
+    position:absolute;
+    right:22px;
+    top:18px;
+    background:rgba(255,255,255,.92);
+    border:1px solid #9cb7db;
+    border-radius:12px;
+    padding:10px 14px;
+    font-size:clamp(18px,2.2vw,30px);
+    font-family:"Cambria Math","Times New Roman",serif;
+  }
+  .note{
+    position:absolute;
+    left:22px;
+    top:18px;
+    background:rgba(255,255,255,.92);
+    border:1px solid #c9d7ea;
+    border-radius:12px;
+    padding:9px 12px;
+    color:var(--ink);
+    font-weight:700;
+    font-size:clamp(13px,1.3vw,17px);
+  }
+  .legend{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    margin-top:14px;
+  }
+  .card{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:12px 14px;
+    line-height:1.45;
+    font-size:15px;
+  }
+  .arrowline{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-weight:700;
+  }
+  .redbar,.bluebar{
+    width:44px;height:4px;border-radius:3px;display:inline-block;position:relative;
+  }
+  .redbar{background:var(--red)}
+  .bluebar{background:var(--blue)}
+  .redbar:after,.bluebar:after{
+    content:"";position:absolute;right:-1px;top:-4px;border-left:9px solid currentColor;
+    border-top:6px solid transparent;border-bottom:6px solid transparent;
+  }
+  .redbar{color:var(--red)}
+  .bluebar{color:var(--blue)}
+  .small{color:var(--muted);font-size:13px;margin-top:8px}
+  @media(max-width:760px){
+    .legend{grid-template-columns:1fr}
+    .stage{min-height:520px;aspect-ratio:auto}
+    .formula{right:12px;top:12px}
+    .note{left:12px;top:12px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Движение на електроните в алуминиев проводник</h1>
+  <p class="sub">Хаотично топлинно движение и дрейф при наличие на външно електрическо поле</p>
+
+  <div class="toolbar">
+    <button id="modeBtn" class="active">Забавено движение без външно поле</button>
+    <button id="realBtn">Модел на електронната плътност</button>
+    <button id="fieldBtn">Електрическо поле: ИЗКЛ.</button>
+    <button id="pauseBtn">Пауза</button>
+    <button id="resetBtn">Нулиране</button>
+  </div>
+
+  <div class="stage">
+    <canvas id="c" width="1289" height="773"></canvas>
+    <div class="note" id="note">Без външно поле: електроните се движат хаотично във всички посоки</div>
+    <div class="formula" id="formula">v⃗<sub>d</sub> = 0</div>
+  </div>
+
+  <div class="legend">
+    <div class="card">
+      <div class="arrowline"><span class="redbar"></span> посока на електрическото поле <b>E⃗</b></div><br>
+      <div class="arrowline"><span class="bluebar" style="transform:rotate(180deg)"></span> дрейф на електроните</div>
+      <div class="small">При отрицателен заряд дрейфовото движение е противоположно на посоката на електрическото поле.</div>
+    </div>
+    <div class="card" id="modeInfo"><b>Забавено движение без външно поле:</b> движението е умишлено забавено, за да се виждат отделните електрони и хаотичните им траектории. При включване на полето хаотичното движение остава, но всички електрони получават ясно видима средна дрейфова компонента срещу E⃗.</div>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+
+let W=0,H=0,dpr=1;
+let paused=false, field=false, realMode=false;
+let tPrev=performance.now();
+let trackedIndex=4;
+
+const electrons=[];
+const ions=[];
+const N=120;
+
+const circuitElectrons=[];
+function resetCircuitElectrons(){
+  circuitElectrons.length=0;
+  const count=46;
+  for(let i=0;i<count;i++){
+    circuitElectrons.push({u:i/count});
+  }
+}
+
+
+function resize(){
+  const r=canvas.getBoundingClientRect();
+  dpr=Math.min(2,window.devicePixelRatio||1);
+  canvas.width=Math.round(r.width*dpr);
+  canvas.height=Math.round(r.height*dpr);
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  W=r.width; H=r.height;
+  buildIons();
+  if(!electrons.length) resetElectrons();
+}
+window.addEventListener('resize',resize);
+
+function conductor(){
+  const x=W*0.08, y=H*0.345, w=W*0.84, h=H*0.19;
+  return {x,y,w,h,r:Math.min(55,h*0.22)};
+}
+
+function buildIons(){
+  ions.length=0;
+  const c=conductor();
+  const sx=34, sy=30;
+  for(let y=c.y+24;y<c.y+c.h-24;y+=sy){
+    for(let x=c.x+24;x<c.x+c.w-24;x+=sx){
+      ions.push({x:x+(Math.random()-.5)*5,y:y+(Math.random()-.5)*5});
+    }
+  }
+}
+
+function resetElectrons(){
+  electrons.length=0;
+  const c=conductor();
+  for(let i=0;i<N;i++){
+    const ang=Math.random()*Math.PI*2;
+    const sp=48+Math.random()*66;
+    electrons.push({
+      x:c.x+25+Math.random()*(c.w-50),
+      y:c.y+22+Math.random()*(c.h-44),
+      vx:Math.cos(ang)*sp,
+      vy:Math.sin(ang)*sp,
+      trail:[]
+    });
+  }
+}
+
+function roundedRect(x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r);
+  ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r);
+  ctx.arcTo(x,y,x+w,y,r);
+  ctx.closePath();
+}
+
+function drawConductor(){
+  const c=conductor();
+
+  const g=ctx.createLinearGradient(0,c.y,0,c.y+c.h);
+  g.addColorStop(0,'#eef3f7');
+  g.addColorStop(.16,'#a5b0bc');
+  g.addColorStop(.36,'#697480');
+  g.addColorStop(.50,'#dce4eb');
+  g.addColorStop(.67,'#7d8894');
+  g.addColorStop(.84,'#b9c2cb');
+  g.addColorStop(1,'#f1f5f8');
+
+  roundedRect(c.x,c.y,c.w,c.h,c.r);
+  ctx.fillStyle=g;
+  ctx.fill();
+
+  ctx.strokeStyle='#687583';
+  ctx.lineWidth=1.4;
+  ctx.stroke();
+
+  // longitudinal metallic reflections
+  ctx.save();
+  roundedRect(c.x+3,c.y+3,c.w-6,c.h-6,Math.max(4,c.r-3));
+  ctx.clip();
+
+  const sheen=ctx.createLinearGradient(0,c.y,0,c.y+c.h);
+  sheen.addColorStop(0,'rgba(255,255,255,.42)');
+  sheen.addColorStop(.18,'rgba(255,255,255,.12)');
+  sheen.addColorStop(.48,'rgba(255,255,255,.28)');
+  sheen.addColorStop(.72,'rgba(255,255,255,.05)');
+  sheen.addColorStop(1,'rgba(255,255,255,.30)');
+  ctx.fillStyle=sheen;
+  ctx.fillRect(c.x,c.y,c.w,c.h);
+
+  // very fine horizontal texture so it looks like real aluminum
+  ctx.strokeStyle='rgba(255,255,255,.10)';
+  ctx.lineWidth=.7;
+  for(let yy=c.y+8; yy<c.y+c.h-6; yy+=7){
+    ctx.beginPath();
+    ctx.moveTo(c.x+8,yy);
+    ctx.lineTo(c.x+c.w-8,yy);
+    ctx.stroke();
+  }
+  ctx.restore();
+
+  return c;
+}
+
+function drawIons(c){
+  ctx.save();
+  roundedRect(c.x,c.y,c.w,c.h,c.r);ctx.clip();
+  for(const p of ions){
+    const rg=ctx.createRadialGradient(p.x-2,p.y-2,1,p.x,p.y,5.2);
+    rg.addColorStop(0,'#f7f7f7');
+    rg.addColorStop(.35,'#b8c0ca');
+    rg.addColorStop(1,'#596473');
+    ctx.fillStyle=rg;
+    ctx.beginPath();ctx.arc(p.x,p.y,4.8,0,Math.PI*2);ctx.fill();
+  }
+  ctx.restore();
+}
+
+
+
+
+function circuitGeometry(c){
+  const cy = c.y + c.h/2;
+  const bottom = c.y + c.h + 82;
+  const bx = c.x + c.w/2;
+  const batteryHalf = 34;
+
+  // Electron-flow path:
+  // right end of conductor -> through conductor to left end ->
+  // down left lead -> bottom lead -> battery -> bottom lead ->
+  // up right lead -> back to right end of conductor.
+  return {
+    cy, bottom, bx, batteryHalf,
+    points: [
+      {x:c.x+c.w, y:cy},          // 0 right end / negative terminal
+      {x:c.x,     y:cy},          // 1 through Al conductor to left / positive end
+      {x:c.x-34,  y:cy},          // 2 short left connector
+      {x:c.x-34,  y:bottom},      // 3 down left lead
+      {x:bx-batteryHalf, y:bottom}, // 4 battery + side
+      {x:bx+batteryHalf, y:bottom}, // 5 battery - side (internal source transfer)
+      {x:c.x+c.w+34, y:bottom},   // 6 bottom right lead
+      {x:c.x+c.w+34, y:cy},       // 7 up right lead
+      {x:c.x+c.w, y:cy}           // 8 back to conductor
+    ]
+  };
+}
+
+function buildCircuitSegments(c){
+  const g=circuitGeometry(c);
+  const pts=g.points;
+  const segs=[];
+  let total=0;
+  for(let i=0;i<pts.length-1;i++){
+    const a=pts[i], b=pts[i+1];
+    const len=Math.hypot(b.x-a.x,b.y-a.y);
+    segs.push({a,b,len,start:total});
+    total+=len;
+  }
+  return {g,segs,total};
+}
+
+function circuitPoint(c,u){
+  const path=buildCircuitSegments(c);
+  let d=(u%1)*path.total;
+  for(const seg of path.segs){
+    if(d<=seg.len){
+      const t=seg.len ? d/seg.len : 0;
+      return {
+        x:seg.a.x+(seg.b.x-seg.a.x)*t,
+        y:seg.a.y+(seg.b.y-seg.a.y)*t
+      };
+    }
+    d-=seg.len;
+  }
+  return {...path.segs[path.segs.length-1].b};
+}
+
+function updateCircuit(dt){
+  if(!field || paused) return;
+  for(const e of circuitElectrons){
+    // continuous electron circulation: through the conductor from − toward +,
+    // then through the external leads and source back to the − side.
+    e.u=(e.u + dt*0.060)%1;
+  }
+}
+
+function drawCircuit(c,time){
+  if(!field) return;
+
+  const path=buildCircuitSegments(c);
+  const g=path.g;
+  const pts=g.points;
+
+  ctx.save();
+
+  // External metallic leads connected directly to both conductor ends.
+  ctx.strokeStyle='rgba(145,104,30,.90)';
+  ctx.lineWidth=8;
+  ctx.lineCap='round';
+  ctx.lineJoin='round';
+
+  // left external lead
+  ctx.beginPath();
+  ctx.moveTo(pts[1].x,pts[1].y);
+  ctx.lineTo(pts[2].x,pts[2].y);
+  ctx.lineTo(pts[3].x,pts[3].y);
+  ctx.lineTo(pts[4].x,pts[4].y);
+  ctx.stroke();
+
+  // right external lead
+  ctx.beginPath();
+  ctx.moveTo(pts[5].x,pts[5].y);
+  ctx.lineTo(pts[6].x,pts[6].y);
+  ctx.lineTo(pts[7].x,pts[7].y);
+  ctx.lineTo(pts[8].x,pts[8].y);
+  ctx.stroke();
+
+  // subtle glow showing the energized leads
+  ctx.strokeStyle='rgba(255,190,45,.28)';
+  ctx.lineWidth=13;
+  ctx.beginPath();
+  ctx.moveTo(pts[1].x,pts[1].y);
+  ctx.lineTo(pts[2].x,pts[2].y);
+  ctx.lineTo(pts[3].x,pts[3].y);
+  ctx.lineTo(pts[4].x,pts[4].y);
+  ctx.moveTo(pts[5].x,pts[5].y);
+  ctx.lineTo(pts[6].x,pts[6].y);
+  ctx.lineTo(pts[7].x,pts[7].y);
+  ctx.lineTo(pts[8].x,pts[8].y);
+  ctx.stroke();
+
+  // Source in the lower branch.
+  const bx=g.bx, by=g.bottom;
+  ctx.fillStyle='#df4438';
+  ctx.fillRect(bx-g.batteryHalf,by-17,g.batteryHalf,34);
+  ctx.fillStyle='#2459bd';
+  ctx.fillRect(bx,by-17,g.batteryHalf,34);
+  ctx.strokeStyle='rgba(255,255,255,.88)';
+  ctx.lineWidth=1.5;
+  ctx.strokeRect(bx-g.batteryHalf,by-17,g.batteryHalf*2,34);
+  ctx.fillStyle='#fff';
+  ctx.font='bold 22px Arial';
+  ctx.textAlign='center';
+  ctx.textBaseline='middle';
+  ctx.fillText('+',bx-g.batteryHalf/2,by+1);
+  ctx.fillText('−',bx+g.batteryHalf/2,by);
+
+  // A visible group of tracked electrons follows the entire closed path,
+  // including the aluminum conductor and both connecting leads.
+  for(const ce of circuitElectrons){
+    const pt=circuitPoint(c,ce.u);
+    const glow=ctx.createRadialGradient(pt.x-1,pt.y-1,1,pt.x,pt.y,7);
+    glow.addColorStop(0,'#d9f1ff');
+    glow.addColorStop(.4,'#2898ff');
+    glow.addColorStop(1,'#0b3c8f');
+    ctx.fillStyle=glow;
+    ctx.beginPath();
+    ctx.arc(pt.x,pt.y,5.2,0,Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle='#fff';
+    ctx.font='bold 10px Arial';
+    ctx.fillText('−',pt.x,pt.y+.2);
+  }
+
+  // Animated blue/cyan arrows in the external leads.
+  // Their motion follows the electron-flow direction around the closed circuit.
+  const arrowColor='#31d7ff';
+  const glowColor='rgba(49,215,255,.85)';
+  const phase=(time*0.12)%110;
+
+  ctx.save();
+  ctx.shadowColor=glowColor;
+  ctx.shadowBlur=10;
+
+  // Bottom-left branch: electrons move left -> right toward the source.
+  const leftStart=c.x-15, leftEnd=g.bx-g.batteryHalf-18;
+  for(let x=leftStart+phase; x<leftEnd; x+=110){
+    drawArrow(x,g.bottom,Math.min(x+42,leftEnd),g.bottom,arrowColor,3.2);
+  }
+
+  // Bottom-right branch: electrons move from source toward the right side.
+  const rightStart=g.bx+g.batteryHalf+18, rightEnd=c.x+c.w+20;
+  for(let x=rightStart+phase; x<rightEnd; x+=110){
+    drawArrow(x,g.bottom,Math.min(x+42,rightEnd),g.bottom,arrowColor,3.2);
+  }
+
+  // Right vertical lead: electrons move upward toward the negative end of conductor.
+  const vSpan=g.bottom-g.cy;
+  const vy=(phase%85);
+  for(let y=g.bottom-vy; y>g.cy+12; y-=85){
+    drawArrow(c.x+c.w+34,y,c.x+c.w+34,Math.max(y-34,g.cy+8),arrowColor,3.2);
+  }
+
+  // Left vertical lead: electrons move downward after leaving the positive end.
+  for(let y=g.cy+12+vy; y<g.bottom-10; y+=85){
+    drawArrow(c.x-34,y,c.x-34,Math.min(y+34,g.bottom-5),arrowColor,3.2);
+  }
+
+  ctx.restore();
+  ctx.restore();
+}
+
+function drawTerminals(c){
+  const cy=c.y+c.h/2;
+  const r=Math.min(22,c.h*0.14);
+
+  // Positive terminal on the left
+  let gp=ctx.createRadialGradient(c.x+3-r*.3,cy-r*.3,2,c.x+3,cy,r);
+  gp.addColorStop(0,'rgba(255,190,180,1)');
+  gp.addColorStop(.38,'rgba(235,74,62,1)');
+  gp.addColorStop(1,'rgba(145,24,19,1)');
+  ctx.fillStyle=gp;
+  ctx.beginPath(); ctx.arc(c.x+3,cy,r,0,Math.PI*2); ctx.fill();
+  ctx.strokeStyle='rgba(255,255,255,.9)'; ctx.lineWidth=2; ctx.stroke();
+  ctx.fillStyle='#fff'; ctx.font=`bold ${Math.round(r*1.35)}px Arial`;
+  ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('+',c.x+3,cy+1);
+
+  // Negative terminal on the right
+  let gn=ctx.createRadialGradient(c.x+c.w-3-r*.3,cy-r*.3,2,c.x+c.w-3,cy,r);
+  gn.addColorStop(0,'rgba(175,215,255,1)');
+  gn.addColorStop(.38,'rgba(35,112,220,1)');
+  gn.addColorStop(1,'rgba(8,52,130,1)');
+  ctx.fillStyle=gn;
+  ctx.beginPath(); ctx.arc(c.x+c.w-3,cy,r,0,Math.PI*2); ctx.fill();
+  ctx.strokeStyle='rgba(255,255,255,.9)'; ctx.lineWidth=2; ctx.stroke();
+  ctx.fillStyle='#fff'; ctx.font=`bold ${Math.round(r*1.35)}px Arial`;
+  ctx.fillText('−',c.x+c.w-3,cy);
+}
+
+function drawArrow(x1,y1,x2,y2,color,width=4,dash=[]){
+  const a=Math.atan2(y2-y1,x2-x1);
+  ctx.save();
+  ctx.strokeStyle=color;ctx.fillStyle=color;ctx.lineWidth=width;
+  ctx.setLineDash(dash);
+  ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+  ctx.setLineDash([]);
+  const s=12;
+  ctx.beginPath();
+  ctx.moveTo(x2,y2);
+  ctx.lineTo(x2-s*Math.cos(a-.5),y2-s*Math.sin(a-.5));
+  ctx.lineTo(x2-s*Math.cos(a+.5),y2-s*Math.sin(a+.5));
+  ctx.closePath();ctx.fill();
+  ctx.restore();
+}
+
+function update(dt){
+  if(paused) return;
+  const c=conductor();
+  for(let i=0;i<electrons.length;i++){
+    const e=electrons[i];
+
+    // thermal randomization
+    const jitter=58;
+    e.vx += (Math.random()-.5)*jitter*dt;
+    e.vy += (Math.random()-.5)*jitter*dt;
+
+    // keep thermal speed bounded
+    let s=Math.hypot(e.vx,e.vy);
+    const target=70;
+    if(s<38){e.vx*=1.035;e.vy*=1.035}
+    if(s>118){e.vx*=.955;e.vy*=.955}
+
+    // drift opposite E: left
+    const drift = field ? -46 : 0;
+    e.x += (e.vx + drift)*dt;
+    e.y += e.vy*dt;
+
+    // boundary scatter
+    if(field){
+      // In a closed circuit electrons that leave one end are replenished from the other.
+      if(e.x<c.x+10){e.x=c.x+c.w-11;e.trail=[]}
+      if(e.x>c.x+c.w-10){e.x=c.x+11;e.trail=[]}
+    }else{
+      if(e.x<c.x+10){e.x=c.x+10;e.vx=Math.abs(e.vx)*(0.65+Math.random()*.55)}
+      if(e.x>c.x+c.w-10){e.x=c.x+c.w-10;e.vx=-Math.abs(e.vx)*(0.65+Math.random()*.55)}
+    }
+    if(e.y<c.y+10){e.y=c.y+10;e.vy=Math.abs(e.vy)*(0.65+Math.random()*.55)}
+    if(e.y>c.y+c.h-10){e.y=c.y+c.h-10;e.vy=-Math.abs(e.vy)*(0.65+Math.random()*.55)}
+
+    e.trail.push({x:e.x,y:e.y});
+    if(e.trail.length>34)e.trail.shift();
+  }
+}
+
+function drawElectron(e,tracked=false){
+  if(e.trail.length>1){
+    ctx.save();
+    ctx.strokeStyle=tracked?'rgba(255,181,42,.95)':(field?'rgba(35,135,255,.48)':'rgba(51,142,255,.28)');
+    ctx.lineWidth=tracked?3:2;
+    ctx.beginPath();
+    ctx.moveTo(e.trail[0].x,e.trail[0].y);
+    for(let i=1;i<e.trail.length;i++) ctx.lineTo(e.trail[i].x,e.trail[i].y);
+    ctx.stroke();ctx.restore();
+  }
+  const r=tracked?9:6.6;
+  const g=ctx.createRadialGradient(e.x-2,e.y-2,1,e.x,e.y,r);
+  g.addColorStop(0,'#9fd0ff');
+  g.addColorStop(.4,'#1976d2');
+  g.addColorStop(1,'#0a3b8f');
+  ctx.fillStyle=g;
+  ctx.beginPath();ctx.arc(e.x,e.y,r,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#fff';ctx.font=`bold ${tracked?14:11}px Arial`;
+  ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('−',e.x,e.y+.2);
+  if(tracked){
+    ctx.strokeStyle='rgba(255,181,42,.8)';ctx.lineWidth=2;
+    ctx.beginPath();ctx.arc(e.x,e.y,r+4,0,Math.PI*2);ctx.stroke();
+  }
+}
+
+function drawDensity(c,time){
+  ctx.save();
+  roundedRect(c.x,c.y,c.w,c.h,c.r);ctx.clip();
+
+  // base electron density
+  const pulse = 0.78 + 0.22*Math.sin(time*0.0052);
+  const base = ctx.createLinearGradient(c.x,0,c.x+c.w,0);
+  base.addColorStop(0,`rgba(45,130,245,${(field?0.18:0.12)*pulse})`);
+  base.addColorStop(.5,`rgba(90,205,255,${(field?0.48:0.22)*pulse})`);
+  base.addColorStop(1,`rgba(45,130,245,${(field?0.18:0.12)*pulse})`);
+  ctx.fillStyle=base;
+  ctx.fillRect(c.x,c.y,c.w,c.h);
+
+  // broad breathing clouds
+  for(let k=0;k<10;k++){
+    const phase=time*.00055 + k*0.83;
+    const driftShift = field ? -((time*0.050 + k*31) % (c.w+180)) : 0;
+    let cx=c.x+c.w*(0.08 + k*0.095) + driftShift;
+    while(cx < c.x-100) cx += c.w+180;
+    while(cx > c.x+c.w+100) cx -= c.w+180;
+    const cy=c.y+c.h*(.18+.64*(0.5+0.5*Math.sin(phase*1.6+k*.7)));
+    const breathe=1 + .18*Math.sin(time*.005+k);
+    const rr=c.h*(.24+.045*Math.sin(phase+k))*breathe;
+    const rg=ctx.createRadialGradient(cx,cy,2,cx,cy,rr);
+    rg.addColorStop(0,`rgba(95,225,255,${(field?0.68:0.30)*pulse})`);
+    rg.addColorStop(.45,`rgba(45,160,255,${(field?0.38:0.16)*pulse})`);
+    rg.addColorStop(1,'rgba(37,132,255,0)');
+    ctx.fillStyle=rg;
+    ctx.beginPath();ctx.arc(cx,cy,rr,0,Math.PI*2);ctx.fill();
+  }
+
+  // moving density ripples to make the cloud visibly pulse
+  for(let k=0;k<4;k++){
+    const y=c.y+c.h*(.28+k*.15);
+    const amp=8+3*Math.sin(time*.004+k);
+    ctx.strokeStyle=`rgba(31,122,225,${0.10+0.04*pulse})`;
+    ctx.lineWidth=10;
+    ctx.beginPath();
+    for(let x=c.x-20;x<=c.x+c.w+20;x+=10){
+      const xx = field ? x-((time*.02)%(c.w+40)) : x;
+      const yy=y+Math.sin((x*.025)+(time*.004)+k)*amp;
+      if(x===c.x-20) ctx.moveTo(xx,yy); else ctx.lineTo(xx,yy);
+    }
+    ctx.stroke();
+  }
+
+  // clearly visible directed flow of the electron density when the field is on
+  if(field){
+    for(let band=0; band<7; band++){
+      const yy=c.y+c.h*(0.16+band*0.115);
+      const shift=(time*0.09 + band*67)%(c.w+220);
+      const x2=c.x+c.w+80-shift;
+      const x1=x2+150;
+      const lg=ctx.createLinearGradient(x1,0,x2,0);
+      lg.addColorStop(0,'rgba(110,220,255,0)');
+      lg.addColorStop(.45,'rgba(90,210,255,.28)');
+      lg.addColorStop(1,'rgba(170,245,255,.72)');
+      ctx.strokeStyle=lg;
+      ctx.shadowColor='rgba(100,225,255,.85)';
+      ctx.shadowBlur=12;
+      ctx.lineWidth=6+2.5*Math.sin(time*.004+band);
+      ctx.beginPath();
+      ctx.moveTo(x1,yy);
+      ctx.lineTo(x2,yy);
+      ctx.stroke();
+      ctx.shadowBlur=0;
+
+      // arrow head pointing left
+      ctx.fillStyle='rgba(155,240,255,.75)';
+      ctx.beginPath();
+      ctx.moveTo(x2,yy);
+      ctx.lineTo(x2+14,yy-7);
+      ctx.lineTo(x2+14,yy+7);
+      ctx.closePath();
+      ctx.fill();
+    }
+  }
+
+  // fine grain
+  ctx.fillStyle=`rgba(28,110,220,${0.12*pulse})`;
+  const step=6;
+  for(let y=c.y+9;y<c.y+c.h-9;y+=step){
+    for(let x=c.x+9;x<c.x+c.w-9;x+=step){
+      const wobble=Math.sin((x+y)*.035+time*.002)*.5+.5;
+      if(wobble>.55){
+        const shift=field ? -((time*.060)%(step*8)) : 0;
+        ctx.fillRect(x+shift+(Math.random()-.5)*1.5,y+(Math.random()-.5)*1.5,1.15,1.15);
+      }
+    }
+  }
+  ctx.restore();
+}
+
+function draw(time){
+  ctx.clearRect(0,0,W,H);
+  const c=drawConductor();
+  drawIons(c);
+  if(field) drawTerminals(c);
+
+  if(realMode){
+    drawDensity(c,time);
+  }else{
+    ctx.save();
+    roundedRect(c.x,c.y,c.w,c.h,c.r);ctx.clip();
+    electrons.forEach((e,i)=>drawElectron(e,i===trackedIndex));
+
+    // Moving drift indicators inside the aluminum conductor.
+    if(field){
+      const driftPhase=(time*0.10)%105;
+      ctx.save();
+      ctx.shadowColor='rgba(80,235,255,.85)';
+      ctx.shadowBlur=9;
+      for(let row=0; row<3; row++){
+        const yy=c.y+c.h*(0.27+row*0.23);
+        for(let x=c.x+c.w-driftPhase; x>c.x+30; x-=105){
+          drawArrow(x,yy,Math.max(x-34,c.x+15),yy,'#35e0ff',2.8);
+        }
+      }
+      ctx.restore();
+    }
+    ctx.restore();
+  }
+
+  drawCircuit(c,time);
+
+  // field / drift arrows beneath conductor
+  const y1=c.y+c.h+118;
+  if(field){
+    drawArrow(c.x+80,y1,c.x+c.w-90,y1,'#ff2d24',7);
+    ctx.save(); ctx.shadowColor='rgba(255,45,36,.75)'; ctx.shadowBlur=14; ctx.fillStyle='#ff2d24';ctx.font='bold 18px Arial';ctx.textAlign='center';
+    ctx.fillText('електрическо поле  E⃗   (+ → −)',c.x+c.w*.52,y1-14); ctx.restore();
+
+    drawArrow(c.x+c.w-120,y1+44,c.x+100,y1+44,'#087cff',5,[12,8]);
+    ctx.fillStyle='#075bbd';ctx.font='bold 16px Arial';
+    ctx.fillText('дрейфово движение на електроните',c.x+c.w*.50,y1+71);
+  }else{
+    ctx.fillStyle='#5c6f8c';ctx.font='bold 17px Arial';ctx.textAlign='center';
+    ctx.fillText('външно електрическо поле не е приложено',c.x+c.w/2,y1+10);
+  }
+}
+
+function loop(t){
+  const dt=Math.min(.035,(t-tPrev)/1000);
+  tPrev=t;
+  update(dt);
+  updateCircuit(dt);
+  draw(t);
+  requestAnimationFrame(loop);
+}
+
+function syncUI(){
+  document.getElementById('modeBtn').classList.toggle('active',!realMode);
+  document.getElementById('realBtn').classList.toggle('active',realMode);
+  document.getElementById('fieldBtn').classList.toggle('fieldOn',field);
+  document.getElementById('fieldBtn').textContent=`Електрическо поле: ${field?'ВКЛ.':'ИЗКЛ.'}`;
+  document.getElementById('pauseBtn').textContent=paused?'Продължи':'Пауза';
+
+  const note=document.getElementById('note');
+  const formula=document.getElementById('formula');
+  const info=document.getElementById('modeInfo');
+
+  if(field){
+    note.textContent=realMode
+      ? 'Полето е включено: електронната плътност показва насочен дрейф, а свързаните проводници образуват затворен път за непрекъснато движение на заряда'
+      : 'Полето е включено: електроните дрейфуват през алуминиевия проводник от − към + и продължават по свързаните външни проводници в затворената верига';
+    formula.innerHTML='v⃗<sub>d</sub> = −μE⃗';
+  }else{
+    note.textContent=realMode
+      ? 'Без външно поле: проводимите електрони са представени чрез разпределена електронна плътност без предпочетена посока на дрейф'
+      : 'Без външно поле: електроните се движат хаотично във всички посоки';
+    formula.innerHTML='v⃗<sub>d</sub> = 0';
+  }
+
+  info.innerHTML=realMode
+    ? '<b>Модел на електронната плътност:</b> проводимите електрони са представени чрез разпределена електронна плътност, а не като отделно проследими частици. При включване на полето върху това представяне се наслагва ясно изразена дрейфова компонента, противоположна на E⃗.'
+    : '<b>Забавено движение без външно поле:</b> движението е умишлено забавено, за да се виждат отделните електрони и хаотичните им траектории. При включване на полето хаотичното движение остава, но всички електрони получават ясно видима средна дрейфова компонента срещу E⃗.';
+}
+
+document.getElementById('modeBtn').onclick=()=>{realMode=false;syncUI()};
+document.getElementById('realBtn').onclick=()=>{realMode=true;syncUI()};
+document.getElementById('fieldBtn').onclick=()=>{field=!field;syncUI()};
+document.getElementById('pauseBtn').onclick=()=>{paused=!paused;syncUI()};
+document.getElementById('resetBtn').onclick=()=>{field=false;paused=false;realMode=false;resetElectrons();resetCircuitElectrons();syncUI()};
+
+resize();
+syncUI();
+requestAnimationFrame(loop);
+</script>
+
+</body></html>

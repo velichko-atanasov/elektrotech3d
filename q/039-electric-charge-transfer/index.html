@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<!-- saved from url=(0064)file:///C:/Users/velichko.atanasov/Downloads/preview%20(45).html -->
+<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QR-039 – Пренасяне на електрически заряд</title>
+<style>
+  :root{
+    --navy:#12366d;
+    --blue:#176fd1;
+    --cyan:#19aee8;
+    --red:#e3342f;
+    --green:#2f8e46;
+    --ink:#13294b;
+    --muted:#5c6f8d;
+    --line:#b9c9dd;
+    --panel:#ffffff;
+    --bg:#f5f8fc;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+  }
+  .wrap{
+    max-width:1240px;
+    margin:0 auto;
+    padding:14px;
+  }
+  .top{
+    display:flex;
+    align-items:flex-start;
+    gap:18px;
+    margin-bottom:10px;
+  }
+  .badge{
+    background:var(--navy);
+    color:white;
+    font-weight:800;
+    font-size:26px;
+    padding:8px 13px;
+    border-radius:10px;
+    white-space:nowrap;
+  }
+  h1{
+    margin:0;
+    font-size:clamp(26px,3vw,42px);
+    letter-spacing:.4px;
+  }
+  .subtitle{
+    margin:3px 0 0;
+    color:#222;
+    font-size:17px;
+  }
+  .controls{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    align-items:center;
+    margin:12px 0;
+  }
+  .controls .label{
+    font-weight:800;
+    color:var(--navy);
+    margin-right:4px;
+  }
+  button{
+    border:1px solid #9db2cc;
+    background:white;
+    color:var(--ink);
+    padding:10px 15px;
+    border-radius:10px;
+    font-weight:800;
+    font-size:15px;
+    cursor:pointer;
+  }
+  button.active{
+    background:#e6f0ff;
+    border-color:var(--blue);
+    color:var(--blue);
+  }
+  #startBtn{background:#2d8f43;color:white;border-color:#2d8f43}
+  .layout{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 340px;
+    gap:14px;
+    align-items:start;
+  }
+  .stage{
+    border:1px solid var(--line);
+    border-radius:16px;
+    background:white;
+    overflow:hidden;
+  }
+  canvas{width:100%;height:650px;display:block}
+  .side{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .callout,.formulaBox,.meterBox{
+    background:white;
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:12px 14px;
+  }
+  .callout{
+    font-size:16px;
+    line-height:1.45;
+  }
+  .callout b.blue{color:var(--blue)}
+  .callout b.red{color:var(--red)}
+  .formulaTitle{
+    background:var(--navy);
+    color:white;
+    margin:-12px -14px 10px;
+    padding:8px 12px;
+    border-radius:13px 13px 0 0;
+    text-align:center;
+    font-weight:800;
+  }
+  .formula{
+    font:700 22px "Cambria Math","Times New Roman",serif;
+    margin:10px 0;
+    text-align:center;
+  }
+  .meter{
+    margin:8px 0;
+  }
+  .meter label{
+    display:flex;
+    justify-content:space-between;
+    font-weight:800;
+    color:var(--navy);
+    font-size:14px;
+  }
+  .display{
+    margin-top:5px;
+    background:#1d1f22;
+    color:#7ee35d;
+    border-radius:7px;
+    padding:8px 10px;
+    text-align:center;
+    font:700 24px Consolas,monospace;
+    box-shadow:inset 0 0 0 2px #666;
+  }
+  .bottom{
+    display:grid;
+    grid-template-columns:1fr 1.2fr 1fr;
+    gap:10px;
+    margin-top:12px;
+  }
+  .card{
+    background:white;
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:12px 14px;
+    min-height:110px;
+  }
+  .card h3{
+    margin:0 0 8px;
+    font-size:16px;
+  }
+  .card.current h3{color:#2c963f}
+  .card.electrons h3{color:#1689d4}
+  .card.note h3{color:#9b2bc5}
+  .arrowDemo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-top:12px;
+  }
+  .lineArrow{
+    height:4px;
+    flex:1;
+    position:relative;
+    background:currentColor;
+  }
+  .lineArrow:after{
+    content:"";
+    position:absolute;
+    right:-1px; top:-5px;
+    border-left:11px solid currentColor;
+    border-top:7px solid transparent;
+    border-bottom:7px solid transparent;
+  }
+  .reverse{transform:rotate(180deg)}
+  .foot{
+    margin-top:10px;
+    border:1px solid var(--line);
+    border-radius:12px;
+    background:white;
+    padding:10px 13px;
+    font-size:14px;
+    color:#31435c;
+  }
+  @media(max-width:920px){
+    .layout{grid-template-columns:1fr}
+    canvas{height:620px}
+    .bottom{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="badge">QR-039</div>
+    <div>
+      <h1>ПРЕНАСЯНЕ НА ЕЛЕКТРИЧЕСКИ ЗАРЯД</h1>
+      <p class="subtitle">Електроните пренасят заряд през напречното сечение S на проводника.</p>
+    </div>
+  </div>
+
+  <div class="controls">
+    <span class="label">ИЗБОР НА ТОК</span>
+    <button class="currentBtn active" data-i="1">1 A</button>
+    <button class="currentBtn" data-i="2">2 A</button>
+    <button class="currentBtn" data-i="5">5 A</button>
+    <button id="startBtn">▶ СТАРТ</button>
+    <button id="pauseBtn">Ⅱ ПАУЗА</button>
+    <button id="resetBtn">↻ НУЛИРАНЕ</button>
+  </div>
+
+  <div class="layout">
+    <div class="stage">
+      <canvas id="c" width="1071" height="813"></canvas>
+    </div>
+
+    <div class="side">
+      <div class="callout">
+        В металната част на външната верига <b class="blue">отрицателно заредените електрони</b>
+        излизат от <b class="blue">отрицателния (−) полюс</b> на източника и се движат към
+        <b class="red">положителния (+) полюс</b>.<br><br>
+        Условната посока на електрическия ток е противоположна – от <b class="red">(+)</b> към <b class="blue">(−)</b>.
+      </div>
+
+      <div class="formulaBox">
+        <div class="formulaTitle">Основни зависимости</div>
+        <div class="formula">I = dQ / dt</div>
+        <div class="formula">Q = ∫ I(t) dt</div>
+        <div class="formula">Q = I·Δt</div>
+        <div class="formula">N = |Q| / e</div>
+      </div>
+
+      <div class="meterBox">
+        <div class="meter">
+          <label><span>ТОК I</span><span>[A]</span></label>
+          <div class="display" id="iVal">1.00</div>
+        </div>
+        <div class="meter">
+          <label><span>ВРЕМЕ Δt</span><span>[s]</span></label>
+          <div class="display" id="tVal">0.00</div>
+        </div>
+        <div class="meter">
+          <label><span>ПРЕНЕСЕН ЗАРЯД Q</span><span>[C]</span></label>
+          <div class="display" id="qVal">0.000000</div>
+        </div>
+        <div class="meter">
+          <label><span>БРОЙ ЕЛЕМЕНТАРНИ ЗАРЯДИ N</span><span></span></label>
+          <div class="display" id="nVal">0</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom">
+    <div class="card current">
+      <h3>ПОСОКА НА ТОКА</h3>
+      Условният ток е от <b>+</b> към <b>−</b>.
+      <div class="arrowDemo" style="color:#e3342f"><b>+</b><span class="lineArrow"></span><b>−</b></div>
+    </div>
+    <div class="card electrons">
+      <h3>ДВИЖЕНИЕ НА ЕЛЕКТРОНИТЕ</h3>
+      Отрицателно заредените електрони се движат от <b>−</b> към <b>+</b>.
+      <div class="arrowDemo" style="color:#176fd1"><b>−</b><span class="lineArrow"></span><b>+</b></div>
+    </div>
+    <div class="card note">
+      <h3>КОЛИЧЕСТВО ЗАРЯД</h3>
+      При постоянен ток пренесеният заряд е <b>Q = I·Δt</b>. При 1 A за 1 s се пренася заряд 1 C.
+    </div>
+  </div>
+
+  <div class="foot">
+    1 C ≈ 6.24 × 10¹⁸ елементарни заряда. Показаните електрони са условно мащабирани и представят огромен брой реални носители на заряд.
+  </div>
+</div>
+
+<script>
+const canvas=document.getElementById('c'),ctx=canvas.getContext('2d');
+let W=0,H=0,dpr=1,current=1,running=false,paused=false,elapsed=0,last=performance.now();
+
+const electrons=[];
+const loopElectrons=[];
+const NPART=70;
+const NLOOP=34;
+
+function resize(){
+  const r=canvas.getBoundingClientRect();
+  dpr=Math.min(2,devicePixelRatio||1);
+  canvas.width=Math.round(r.width*dpr);
+  canvas.height=Math.round(r.height*dpr);
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  W=r.width; H=r.height;
+  resetParticles();
+}
+addEventListener('resize',resize);
+
+function roundedRect(x,y,w,h,r){
+  ctx.beginPath();ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();
+}
+function conductor(){return{x:W*.08,y:H*.18,w:W*.84,h:H*.18,r:18}}
+function geom(){
+  const c=conductor();
+  return {c,left:c.x,right:c.x+c.w,cy:c.y+c.h/2,bottom:H*.72,bx:W*.50,bh:44};
+}
+function resetParticles(){
+  electrons.length=0;loopElectrons.length=0;
+  const c=conductor();
+  for(let i=0;i<NPART;i++)electrons.push({x:c.x+Math.random()*c.w,y:c.y+10+Math.random()*(c.h-20),phase:Math.random()*6.28,vy:(Math.random()-.5)*18});
+  for(let i=0;i<NLOOP;i++)loopElectrons.push({u:i/NLOOP});
+}
+function drawConductor(){
+  const c=conductor(),g=ctx.createLinearGradient(0,c.y,0,c.y+c.h);
+  g.addColorStop(0,'#edf2f5');g.addColorStop(.20,'#9ba6b2');g.addColorStop(.48,'#dce4eb');g.addColorStop(.75,'#717d89');g.addColorStop(1,'#f1f4f6');
+  roundedRect(c.x,c.y,c.w,c.h,c.r);ctx.fillStyle=g;ctx.fill();ctx.strokeStyle='#677584';ctx.lineWidth=1.4;ctx.stroke();
+  return c;
+}
+function drawArrow(x1,y1,x2,y2,color,width=4){
+  const a=Math.atan2(y2-y1,x2-x1);ctx.strokeStyle=color;ctx.fillStyle=color;ctx.lineWidth=width;
+  ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+  const s=10;ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-s*Math.cos(a-.5),y2-s*Math.sin(a-.5));ctx.lineTo(x2-s*Math.cos(a+.5),y2-s*Math.sin(a+.5));ctx.closePath();ctx.fill();
+}
+function drawElectron(x,y,r=6){
+  const g=ctx.createRadialGradient(x-2,y-2,1,x,y,r);
+  g.addColorStop(0,'#caeaff');g.addColorStop(.4,'#2387ed');g.addColorStop(1,'#083c90');
+  ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,6.28);ctx.fill();
+  ctx.fillStyle='#fff';ctx.font=`bold ${Math.max(9,r+4)}px Arial`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('−',x,y);
+}
+
+function pathPoint(u){
+  const g=geom(),c=g.c;
+  const pts=[
+    {x:g.right,y:g.cy},
+    {x:g.left,y:g.cy},
+    {x:g.left-34,y:g.cy},
+    {x:g.left-34,y:g.bottom},
+    {x:g.bx-g.bh,y:g.bottom},
+    {x:g.bx+g.bh,y:g.bottom},
+    {x:g.right+34,y:g.bottom},
+    {x:g.right+34,y:g.cy},
+    {x:g.right,y:g.cy}
+  ];
+  const seg=[];let total=0;
+  for(let i=0;i<pts.length-1;i++){
+    const a=pts[i],b=pts[i+1],len=Math.hypot(b.x-a.x,b.y-a.y);
+    seg.push({a,b,len});total+=len;
+  }
+  let d=(u%1)*total;
+  for(const s of seg){
+    if(d<=s.len){
+      const t=d/s.len;
+      return{x:s.a.x+(s.b.x-s.a.x)*t,y:s.a.y+(s.b.y-s.a.y)*t};
+    }
+    d-=s.len;
+  }
+  return pts[0];
+}
+
+function drawCircuit(){
+  const g=geom();
+  ctx.save();
+  ctx.strokeStyle='#4d5966';ctx.lineWidth=6;ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.beginPath();
+  ctx.moveTo(g.left,g.cy);ctx.lineTo(g.left-34,g.cy);ctx.lineTo(g.left-34,g.bottom);ctx.lineTo(g.bx-g.bh,g.bottom);
+  ctx.moveTo(g.bx+g.bh,g.bottom);ctx.lineTo(g.right+34,g.bottom);ctx.lineTo(g.right+34,g.cy);ctx.lineTo(g.right,g.cy);
+  ctx.stroke();
+
+  // Battery
+  ctx.fillStyle='#d74438';ctx.fillRect(g.bx-g.bh,g.bottom-22,g.bh,44);
+  ctx.fillStyle='#2d3640';ctx.fillRect(g.bx,g.bottom-22,g.bh,44);
+  ctx.strokeStyle='#68717b';ctx.lineWidth=1.5;ctx.strokeRect(g.bx-g.bh,g.bottom-22,g.bh*2,44);
+  ctx.fillStyle='#fff';ctx.font='bold 28px Arial';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText('+',g.bx-g.bh/2,g.bottom+1);ctx.fillText('−',g.bx+g.bh/2,g.bottom+1);
+  ctx.fillStyle='#253858';ctx.font='bold 15px Arial';ctx.fillText('ИЗТОЧНИК (БАТЕРИЯ)',g.bx,g.bottom+46);
+  ctx.restore();
+}
+
+function drawSection(){
+  const c=conductor(),sx=c.x+c.w*.52;
+  ctx.save();ctx.setLineDash([7,6]);ctx.strokeStyle='#176fd1';ctx.lineWidth=2;
+  ctx.beginPath();ctx.ellipse(sx,c.y+c.h/2,14,c.h*.62,0,0,6.28);ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle='#12366d';ctx.font='bold 17px Arial';ctx.textAlign='center';
+  ctx.fillText('НАПРЕЧНО СЕЧЕНИЕ',sx,c.y-30);
+  ctx.font='italic bold 29px Times New Roman';ctx.fillText('S',sx,c.y-4);
+  ctx.restore();
+}
+
+function update(dt){
+  if(!running||paused)return;
+  elapsed+=dt;
+  const c=conductor(),speed=42+current*18;
+  for(const e of electrons){
+    e.phase+=dt*2.4;
+    e.x-=speed*dt;
+    e.y+=Math.sin(e.phase)*10*dt+e.vy*dt*.12;
+    if(e.y<c.y+8){e.y=c.y+8;e.vy=Math.abs(e.vy)}
+    if(e.y>c.y+c.h-8){e.y=c.y+c.h-8;e.vy=-Math.abs(e.vy)}
+    if(e.x<c.x){e.x=c.x+c.w-2;e.y=c.y+10+Math.random()*(c.h-20)}
+  }
+  for(const e of loopElectrons)e.u=(e.u+dt*.052)%1;
+}
+
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  drawCircuit();
+  const c=drawConductor();
+  drawSection();
+
+  // Conventional current, + to −, across the top conductor.
+  ctx.fillStyle='#e3342f';ctx.font='bold 17px Arial';ctx.textAlign='left';
+  ctx.fillText('Условна посока на тока I',c.x+15,c.y-55);
+  drawArrow(c.x+60,c.y-45,c.x+c.w-70,c.y-45,'#e3342f',5);
+
+  // Electrons in aluminum conductor.
+  ctx.save();roundedRect(c.x,c.y,c.w,c.h,c.r);ctx.clip();
+  electrons.forEach(e=>drawElectron(e.x,e.y,6));
+  ctx.restore();
+
+  // External-loop electrons.
+  loopElectrons.forEach(e=>{
+    const p=pathPoint(e.u);
+    // Do not show electrons inside the battery body.
+    const g=geom();
+    if(!(p.y>g.bottom-30 && p.y<g.bottom+30 && p.x>g.bx-g.bh-6 && p.x<g.bx+g.bh+6))
+      drawElectron(p.x,p.y,5.5);
+  });
+
+  // Blue direction arrow for electron motion inside conductor.
+  ctx.fillStyle='#176fd1';ctx.font='bold 16px Arial';ctx.textAlign='center';
+  ctx.fillText('Посока на движение на отрицателно заредените електрони',c.x+c.w/2,c.y+c.h+48);
+  drawArrow(c.x+c.w*.66,c.y+c.h+66,c.x+c.w*.34,c.y+c.h+66,'#176fd1',4);
+
+  updateStats();
+}
+
+function updateStats(){
+  const Q=current*elapsed;
+  const N=Q/1.602176634e-19;
+  document.getElementById('iVal').textContent=current.toFixed(2);
+  document.getElementById('tVal').textContent=elapsed.toFixed(2);
+  document.getElementById('qVal').textContent=Q.toFixed(6);
+  document.getElementById('nVal').textContent=Q===0?'0':N.toExponential(2).replace('e+',' × 10^').replace('e',' × 10^');
+}
+
+function loop(t){
+  const dt=Math.min(.035,(t-last)/1000);
+  last=t;update(dt);draw();requestAnimationFrame(loop);
+}
+
+document.querySelectorAll('.currentBtn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    current=Number(btn.dataset.i);
+    document.querySelectorAll('.currentBtn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    updateStats();
+  });
+});
+document.getElementById('startBtn').addEventListener('click',()=>{running=true;paused=false;document.getElementById('pauseBtn').textContent='Ⅱ ПАУЗА'});
+document.getElementById('pauseBtn').addEventListener('click',()=>{paused=!paused;document.getElementById('pauseBtn').textContent=paused?'▶ ПРОДЪЛЖИ':'Ⅱ ПАУЗА'});
+document.getElementById('resetBtn').addEventListener('click',()=>{elapsed=0;running=false;paused=false;document.getElementById('pauseBtn').textContent='Ⅱ ПАУЗА';resetParticles();updateStats()});
+
+resize();updateStats();requestAnimationFrame(loop);
+</script>
+
+</body></html>

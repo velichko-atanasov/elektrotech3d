@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<!-- saved from url=(0064)file:///C:/Users/velichko.atanasov/Downloads/preview%20(48).html -->
+<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Q042 – Магнитна верига и релуктанс</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f3f8fc;color:#172334}
+.wrap{max-width:1280px;margin:auto;padding:14px}
+.header{background:#0b3769;color:#fff;border-radius:0 0 18px 18px;padding:14px 18px;text-align:center}
+.header h1{margin:0;font-size:clamp(24px,3vw,38px)}
+.header p{margin:6px 0 0;color:#ffd24d;font-size:17px}
+.grid{display:grid;grid-template-columns:290px 1fr 320px;gap:14px;margin-top:14px;align-items:start}
+.card{background:#fff;border:1px solid #cad6e4;border-radius:14px;box-shadow:0 6px 20px rgba(15,55,100,.08);overflow:hidden}
+.card h3{margin:0;background:#0b4a86;color:#fff;text-align:center;padding:11px}
+.pad{padding:14px}
+label{display:block;margin:13px 0 4px}
+input[type=range]{width:100%}
+.v{font-weight:700;color:#15539c}
+.formulaCard{padding:14px;border-bottom:1px solid #e3e8ee;text-align:center}
+.math{font-family:"Cambria Math","STIX Two Math","Times New Roman",serif;font-style:italic}
+.f1{font-size:34px;color:#087c28}
+.f2{font-size:31px;color:#154f95}
+.f3{font-size:34px;color:#d88900}
+.frac{display:inline-block;vertical-align:middle;text-align:center;line-height:1.03}
+.frac .top{display:block;border-bottom:2px solid currentColor;padding:0 7px 3px}
+.frac .bot{display:block;padding-top:3px}
+svg{width:100%;height:auto;display:block}
+.scenePad{padding:8px}
+.flux{fill:none;stroke:#b7ff3c;stroke-width:5;stroke-linecap:round;stroke-dasharray:10 13;animation:flow 1.15s linear infinite;filter:drop-shadow(0 0 5px rgba(183,255,60,.65))}
+@keyframes flow{to{stroke-dashoffset:-46}}
+.coilTurn{fill:none;stroke:#bb5f21;stroke-width:9;stroke-linecap:round;filter:drop-shadow(0 1px 1px rgba(0,0,0,.18))}
+.resultTable{width:100%;border-collapse:collapse}
+.resultTable td{padding:10px 9px;border-bottom:1px solid #e4e9ef}
+.resultTable td:first-child{font-family:"Cambria Math","Times New Roman",serif;font-style:italic}
+.resultTable td:last-child{text-align:right;font-weight:700}
+.note{margin-top:12px;background:#f3f7fb;border-left:4px solid #2870b7;border-radius:7px;padding:10px;line-height:1.5}
+.effect{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.effect div{border:1px solid #d8e1eb;border-radius:9px;padding:8px;text-align:center;background:#fbfdff}
+@media(max-width:980px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <h1>Магнитна верига и магнитно съпротивление (релуктанс)</h1>
+    <p>Изследвайте как параметрите влияят върху магнитния поток Φ</p>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h3>ПАРАМЕТРИ</h3>
+      <div class="pad">
+        <label>Брой навивки N: <span class="v" id="no">500</span></label>
+        <input id="N" type="range" min="100" max="2000" step="50" value="500">
+
+        <label>Ток през намотката I: <span class="v" id="io">1.00 A</span></label>
+        <input id="I" type="range" min=".1" max="5" step=".05" value="1">
+
+        <label>Дължина на магнитния път l: <span class="v" id="lo">0.40 m</span></label>
+        <input id="L" type="range" min=".1" max="1" step=".05" value=".4">
+
+        <label>Напречно сечение S: <span class="v" id="so">4.0 cm²</span></label>
+        <input id="S" type="range" min="1" max="20" step=".5" value="4">
+
+        <label>Относителна проницаемост μr: <span class="v" id="mo">2000</span></label>
+        <input id="M" type="range" min="500" max="10000" step="100" value="2000">
+
+        <label>Въздушна междина δ: <span class="v" id="go">0.5 mm</span></label>
+        <input id="G" type="range" min="0" max="5" step=".1" value=".5">
+
+        <div class="note"><b>Наблюдение:</b> увеличи въздушната междина δ и проследи как релуктансът нараства, а магнитният поток отслабва.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>МАГНИТНА ВЕРИГА</h3>
+      <div class="scenePad">
+        <svg viewBox="0 0 760 590">
+          <defs>
+            <lineargradient id="coreg" x1="0" x2="1">
+              <stop offset="0" stop-color="#8d9499"></stop>
+              <stop offset=".5" stop-color="#c0c4c7"></stop>
+              <stop offset="1" stop-color="#7d8489"></stop>
+            </lineargradient>
+            <marker id="arrRed" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L9,3 z" fill="#d83422"></path>
+            </marker>
+          </defs>
+
+          <!-- magnetic core -->
+          <path d="M205 75 H565 Q610 75 610 120 V470 Q610 515 565 515 H205 Q160 515 160 470 V120 Q160 75 205 75
+                   M270 165 V425 H500 V165 Z" fill="url(#coreg)" fill-rule="evenodd" stroke="#686f74" stroke-width="5"></path>
+
+          <!-- air gap -->
+          <rect id="gap" x="368" y="425" width="10" height="92" fill="#f7fbff"></rect>
+          <rect id="gapGlow" x="368" y="425" width="10" height="92" fill="#53c7d3" opacity=".18"></rect>
+          <text x="380" y="552" text-anchor="middle" font-size="30" fill="#0e8e97" font-family="Cambria Math">δ</text>
+
+          <!-- realistic coil around left limb -->
+          <g id="coil">
+            <path class="coilTurn" d="M135 176 C170 158,258 158,292 176"></path>
+            <path class="coilTurn" d="M135 196 C170 178,258 178,292 196"></path>
+            <path class="coilTurn" d="M135 216 C170 198,258 198,292 216"></path>
+            <path class="coilTurn" d="M135 236 C170 218,258 218,292 236"></path>
+            <path class="coilTurn" d="M135 256 C170 238,258 238,292 256"></path>
+            <path class="coilTurn" d="M135 276 C170 258,258 258,292 276"></path>
+            <path class="coilTurn" d="M135 296 C170 278,258 278,292 296"></path>
+            <path class="coilTurn" d="M135 316 C170 298,258 298,292 316"></path>
+            <path class="coilTurn" d="M135 336 C170 318,258 318,292 336"></path>
+            <path class="coilTurn" d="M135 356 C170 338,258 338,292 356"></path>
+            <path class="coilTurn" d="M135 376 C170 358,258 358,292 376"></path>
+            <path class="coilTurn" d="M135 396 C170 378,258 378,292 396"></path>
+            <line x1="75" y1="176" x2="136" y2="176" stroke="#bb5f21" stroke-width="9" stroke-linecap="round"></line>
+            <line x1="75" y1="396" x2="136" y2="396" stroke="#bb5f21" stroke-width="9" stroke-linecap="round"></line>
+          </g>
+
+          <!-- current arrow -->
+          <line x1="65" y1="150" x2="130" y2="150" stroke="#d83422" stroke-width="5" marker-end="url(#arrRed)"></line>
+          <text x="92" y="132" font-size="31" fill="#c8231d" font-family="Cambria Math" font-style="italic">I</text>
+          <text x="90" y="285" font-size="32" fill="#15812a" font-family="Cambria Math" font-style="italic">N</text>
+
+          <!-- magnetic flux path -->
+          <path id="fluxPath" class="flux" d="M225 120 H545 Q565 120 565 145 V445 Q565 470 540 470 H220 Q195 470 195 445 V145 Q195 120 225 120" style="opacity: 0.698799; stroke-width: 5.8; animation-duration: 1.11s;"></path>
+
+          <!-- direction arrows -->
+          <polygon points="360,107 390,120 360,133" fill="#b7ff3c"></polygon>
+          <polygon points="552,280 565,310 578,280" fill="#b7ff3c"></polygon>
+          <polygon points="400,457 370,470 400,483" fill="#b7ff3c"></polygon>
+          <polygon points="182,315 195,285 208,315" fill="#b7ff3c"></polygon>
+
+          <text x="385" y="300" text-anchor="middle" font-size="52" fill="#18802c" font-family="Cambria Math" font-style="italic">Φ</text>
+          <text x="385" y="330" text-anchor="middle" font-size="19" fill="#18802c">МАГНИТЕН ПОТОК</text>
+          <text id="coilTxt" x="74" y="430" font-size="17" fill="#273444">N=500, I=1.00 A</text>
+          <text id="gapTxt" x="410" y="550" font-size="17" fill="#0e8e97">δ=0.5 mm</text>
+        </svg>
+      </div>
+
+      <div class="pad">
+        <div class="effect">
+          <div>N ↑ или I ↑<br><b>Θ ↑ → Φ ↑</b></div>
+          <div>l ↑ или δ ↑<br><b>R<sub>μ</sub> ↑ → Φ ↓</b></div>
+          <div>S ↑<br><b>R<sub>μ</sub> ↓ → Φ ↑</b></div>
+          <div>μ<sub>r</sub> ↑<br><b>R<sub>μ</sub> ↓ → Φ ↑</b></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>ОСНОВНИ ФОРМУЛИ</h3>
+      <div class="formulaCard">
+        <div class="math f1">Θ = N·I</div>
+        <div>магнитодвижещо напрежение</div>
+      </div>
+      <div class="formulaCard">
+        <div class="math f2">R<sub>μ</sub> =
+          <span class="frac"><span class="top">l</span><span class="bot">μS</span></span>
+        </div>
+        <div>магнитно съпротивление</div>
+      </div>
+      <div class="formulaCard">
+        <div class="math f3">Φ =
+          <span class="frac"><span class="top">Θ</span><span class="bot">R<sub>μ</sub></span></span>
+        </div>
+        <div>магнитен поток</div>
+      </div>
+
+      <h3>ИЗЧИСЛЕНИ СТОЙНОСТИ</h3>
+      <div class="pad">
+        <table class="resultTable">
+          <tbody><tr><td>Θ = N·I</td><td id="th">500.0 A·нав.</td></tr>
+          <tr><td>μ = μ₀μr</td><td id="muabs">2.513×10^-3 H/m</td></tr>
+          <tr><td>Rμ, ядро</td><td id="rc">3.979×10^+5 A/Wb</td></tr>
+          <tr><td>Rμ, междина</td><td id="rg">9.947×10^+5 A/Wb</td></tr>
+          <tr><td>Rμ, общо</td><td id="rt">1.393×10^+6 A/Wb</td></tr>
+          <tr><td>Φ = Θ/Rμ</td><td id="ph">3.590×10^-4 Wb</td></tr>
+          <tr><td>B = Φ/S</td><td id="bb">0.898 T</td></tr>
+        </tbody></table>
+
+        <div class="note">Моделът е учебен и приема постоянна μ<sub>r</sub>. Не се отчитат магнитно насищане, разсейване и разширяване на потока във въздушната междина.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const mu0=4*Math.PI*1e-7,$=id=>document.getElementById(id);
+["N","I","L","S","M","G"].forEach(id=>$(id).addEventListener("input",calc));
+
+function sci(x, digits=3){
+  if(x===0) return "0";
+  return x.toExponential(digits).replace("e","×10^");
+}
+
+function calc(){
+  const N=+$("N").value;
+  const I=+$("I").value;
+  const l=+$("L").value;
+  const Scm=+$("S").value;
+  const mur=+$("M").value;
+  const gmm=+$("G").value;
+
+  const S=Scm*1e-4;
+  const g=gmm*1e-3;
+  const mu=mu0*mur;
+  const theta=N*I;
+  const Rcore=l/(mu*S);
+  const Rgap=g/(mu0*S);
+  const Rtotal=Rcore+Rgap;
+  const phi=theta/Rtotal;
+  const B=phi/S;
+
+  $("no").textContent=N;
+  $("io").textContent=I.toFixed(2)+" A";
+  $("lo").textContent=l.toFixed(2)+" m";
+  $("so").textContent=Scm.toFixed(1)+" cm²";
+  $("mo").textContent=mur;
+  $("go").textContent=gmm.toFixed(1)+" mm";
+
+  $("th").textContent=theta.toFixed(1)+" A·нав.";
+  $("muabs").textContent=sci(mu)+" H/m";
+  $("rc").textContent=sci(Rcore)+" A/Wb";
+  $("rg").textContent=sci(Rgap)+" A/Wb";
+  $("rt").textContent=sci(Rtotal)+" A/Wb";
+  $("ph").textContent=sci(phi)+" Wb";
+  $("bb").textContent=B.toFixed(3)+" T";
+
+  $("coilTxt").textContent=`N=${N}, I=${I.toFixed(2)} A`;
+  $("gapTxt").textContent=`δ=${gmm.toFixed(1)} mm`;
+
+  const gapW=6+gmm*8;
+  $("gap").setAttribute("width",gapW);
+  $("gapGlow").setAttribute("width",gapW);
+
+  const z=Math.max(.12,Math.min(1,B/1.5));
+  $("fluxPath").style.opacity=.25+.75*z;
+  $("fluxPath").style.strokeWidth=(2.5+5.5*z).toFixed(1);
+  $("fluxPath").style.animationDuration=(1.8-1.15*z).toFixed(2)+"s";
+}
+
+calc();
+</script>
+
+</body></html>

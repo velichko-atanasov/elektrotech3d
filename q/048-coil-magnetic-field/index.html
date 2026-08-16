@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<!-- saved from url=(0059)file:///C:/Users/Rosi/Downloads/index(20260816-093629).html -->
+<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QR-048 – Магнитно поле около бобина</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;background:#f4f8fc;color:#17324d;
+  font-family:Arial,Helvetica,sans-serif
+}
+.wrap{max-width:1050px;margin:auto;padding:16px}
+h1{text-align:center;margin:5px 0 4px;font-size:30px;color:#123c78}
+.sub{text-align:center;color:#516b84;margin-bottom:14px}
+.panel{
+  background:#fff;border:1px solid #cbd8e6;border-radius:16px;
+  padding:14px;box-shadow:0 4px 16px rgba(25,60,95,.08)
+}
+.controls{
+  display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:10px 0 14px
+}
+button{
+  border:0;border-radius:10px;padding:11px 16px;font-weight:700;
+  color:#fff;cursor:pointer;font-size:15px
+}
+#on{background:#249447}
+#reverse{background:#1768c8}
+#off{background:#6f7f8f}
+.status{
+  text-align:center;background:#eef5fb;border:1px solid #c9d9ea;
+  border-radius:10px;padding:10px;font-weight:700;margin-bottom:10px
+}
+svg{width:100%;height:auto;display:block}
+.wire{fill:none;stroke:#333;stroke-width:4;stroke-linecap:round}
+.coil{fill:none;stroke:#cf6b16;stroke-width:8;stroke-linecap:round}
+.field{
+  fill:none;stroke:#1768c8;stroke-width:3;stroke-linecap:round;
+  opacity:0;transition:opacity .55s ease
+}
+.field.on{opacity:1}
+.current{
+  fill:none;stroke:#ef3d2f;stroke-width:5;stroke-linecap:round;
+  stroke-dasharray:12 10;opacity:0
+}
+.current.on{opacity:1;animation:flow .8s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-22}}
+.pole{font:bold 34px Arial}
+.n{fill:#d82222}.s{fill:#1768c8}
+.note{
+  margin-top:12px;border-left:4px solid #1768c8;background:#eef5fb;
+  padding:10px 12px;border-radius:8px;line-height:1.45
+}
+.small{font:16px Arial;fill:#34495e}
+.label{font:bold 18px Arial;fill:#17324d}
+@media(max-width:760px){h1{font-size:24px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>QR-048 – Магнитно поле около бобина</h1>
+<div class="sub">Посоката на магнитното поле зависи от посоката на тока.</div>
+
+<div class="controls">
+  <button id="on">▶ Включи тока</button>
+  <button id="reverse">↻ Обърни посоката</button>
+  <button id="off">■ Изключи тока</button>
+</div>
+
+<div class="panel">
+<div id="status" class="status">Токът е изключен – магнитно поле няма.</div>
+
+<svg viewBox="0 0 980 560" aria-label="Анимация на магнитно поле около бобина">
+<defs>
+  <marker id="blueArrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+    <path d="M0,0 L0,6 L9,3 z" fill="#1768c8"></path>
+  </marker>
+  <marker id="redArrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+    <path d="M0,0 L0,6 L9,3 z" fill="#ef3d2f"></path>
+  </marker>
+</defs>
+
+<!-- magnetic field loops -->
+<g id="fieldGroup">
+  <path id="f1" class="field" d="M255 270 C180 235 170 105 490 95 C810 105 800 235 725 270" marker-end="url(#blueArrow)"></path>
+  <path id="f2" class="field" d="M255 285 C135 280 145 60 490 55 C835 60 845 280 725 285" marker-end="url(#blueArrow)"></path>
+  <path id="f3" class="field" d="M255 310 C155 345 170 455 490 465 C810 455 825 345 725 310" marker-end="url(#blueArrow)"></path>
+  <path id="f4" class="field" d="M255 295 C210 300 220 395 490 405 C760 395 770 300 725 295" marker-end="url(#blueArrow)"></path>
+  <path id="inside" class="field" d="M695 290 H285" marker-end="url(#blueArrow)"></path>
+</g>
+
+<!-- realistic coil body -->
+<defs>
+  <lineargradient id="copperGrad" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#7b2f00"></stop>
+    <stop offset="18%" stop-color="#c65d0a"></stop>
+    <stop offset="42%" stop-color="#ffad4d"></stop>
+    <stop offset="60%" stop-color="#d96b12"></stop>
+    <stop offset="82%" stop-color="#8f3400"></stop>
+    <stop offset="100%" stop-color="#4f1c00"></stop>
+  </lineargradient>
+  <lineargradient id="copperHi" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#ffd08a"></stop>
+    <stop offset="45%" stop-color="#ff9b2f"></stop>
+    <stop offset="100%" stop-color="#9d3a00"></stop>
+  </lineargradient>
+  <filter id="coilShadow" x="-30%" y="-30%" width="160%" height="160%">
+    <fedropshadow dx="0" dy="5" stdDeviation="4" flood-color="#000" flood-opacity=".22"></fedropshadow>
+  </filter>
+</defs>
+
+<!-- leads -->
+<path class="wire" d="M210 430 V350 H255"></path>
+<path class="wire" d="M725 350 H770 V430"></path>
+
+<!-- shaded cylindrical core opening -->
+<ellipse cx="270" cy="285" rx="28" ry="78" fill="#173b63" opacity=".12"></ellipse>
+<ellipse cx="710" cy="285" rx="28" ry="78" fill="#173b63" opacity=".12"></ellipse>
+
+<!-- back halves of turns -->
+<g id="coilBack" filter="url(#coilShadow)" fill="none" stroke="url(#copperGrad)" stroke-width="9">
+  <path d="M270 350 C248 335 248 235 270 220"></path>
+  <path d="M304 350 C282 335 282 235 304 220"></path>
+  <path d="M338 350 C316 335 316 235 338 220"></path>
+  <path d="M372 350 C350 335 350 235 372 220"></path>
+  <path d="M406 350 C384 335 384 235 406 220"></path>
+  <path d="M440 350 C418 335 418 235 440 220"></path>
+  <path d="M474 350 C452 335 452 235 474 220"></path>
+  <path d="M508 350 C486 335 486 235 508 220"></path>
+  <path d="M542 350 C520 335 520 235 542 220"></path>
+  <path d="M576 350 C554 335 554 235 576 220"></path>
+  <path d="M610 350 C588 335 588 235 610 220"></path>
+  <path d="M644 350 C622 335 622 235 644 220"></path>
+  <path d="M678 350 C656 335 656 235 678 220"></path>
+  <path d="M712 350 C690 335 690 235 712 220"></path>
+</g>
+
+<!-- connecting top/bottom copper rails to make the winding visually continuous -->
+<path d="M270 220 C285 205 697 205 712 220" fill="none" stroke="url(#copperGrad)" stroke-width="8" opacity=".7"></path>
+<path d="M270 350 C285 365 697 365 712 350" fill="none" stroke="url(#copperGrad)" stroke-width="8" opacity=".7"></path>
+
+<!-- front halves of turns -->
+<g id="coilFront" filter="url(#coilShadow)" fill="none" stroke="url(#copperHi)" stroke-width="10" stroke-linecap="round">
+  <path d="M270 220 C292 235 292 335 270 350"></path>
+  <path d="M304 220 C326 235 326 335 304 350"></path>
+  <path d="M338 220 C360 235 360 335 338 350"></path>
+  <path d="M372 220 C394 235 394 335 372 350"></path>
+  <path d="M406 220 C428 235 428 335 406 350"></path>
+  <path d="M440 220 C462 235 462 335 440 350"></path>
+  <path d="M474 220 C496 235 496 335 474 350"></path>
+  <path d="M508 220 C530 235 530 335 508 350"></path>
+  <path d="M542 220 C564 235 564 335 542 350"></path>
+  <path d="M576 220 C598 235 598 335 576 350"></path>
+  <path d="M610 220 C632 235 632 335 610 350"></path>
+  <path d="M644 220 C666 235 666 335 644 350"></path>
+  <path d="M678 220 C700 235 700 335 678 350"></path>
+  <path d="M712 220 C734 235 734 335 712 350"></path>
+</g>
+
+<!-- subtle highlights -->
+<g opacity=".55" fill="none" stroke="#ffe0a8" stroke-width="2.2">
+  <path d="M276 224 C292 244 292 320 276 344"></path>
+  <path d="M344 224 C360 244 360 320 344 344"></path>
+  <path d="M412 224 C428 244 428 320 412 344"></path>
+  <path d="M480 224 C496 244 496 320 480 344"></path>
+  <path d="M548 224 C564 244 564 320 548 344"></path>
+  <path d="M616 224 C632 244 632 320 616 344"></path>
+  <path d="M684 224 C700 244 700 320 684 344"></path>
+</g>
+<!-- source -->
+<line x1="210" y1="430" x2="410" y2="430" class="wire"></line>
+<line x1="570" y1="430" x2="770" y2="430" class="wire"></line>
+<rect x="410" y="398" width="160" height="64" rx="12" fill="#2f3540"></rect>
+<rect x="505" y="398" width="65" height="64" rx="12" fill="#d84132"></rect>
+<text x="435" y="442" class="pole" fill="#fff">−</text>
+<text x="530" y="442" class="pole" fill="#fff">+</text>
+
+<!-- current route -->
+<path id="currentPath" class="current" d="M570 430 H770 V350 H725 M255 350 H210 V430 H410" marker-end="url(#redArrow)" style="animation-direction: reverse;"></path>
+
+<!-- poles -->
+<text id="leftPole" x="210" y="300" class="pole n">N</text>
+<text id="rightPole" x="730" y="300" class="pole s">S</text>
+
+<!-- labels -->
+<text x="455" y="190" class="label">Бобина</text>
+<text x="466" y="285" class="label">B</text>
+<text id="iLabel" x="575" y="390" class="label" fill="#ef3d2f">I ←</text>
+<text x="430" y="315" class="small" fill="#1768c8">вътре: S → N</text>
+<text x="410" y="78" class="small" fill="#1768c8">извън: N → S</text>
+
+<text x="36" y="520" class="small">При обръщане на тока посоката на магнитното поле се обръща и полюсите N и S си разменят местата.</text>
+</svg>
+
+<div class="note">
+<b>Правило на дясната ръка:</b> ако свитите пръсти следват посоката на тока в навивките,
+изпънатият палец показва посоката на магнитното поле <b>вътре</b> в бобината и сочи към северния полюс <b>N</b>.
+Извън бобината магнитните силови линии се връщат от <b>N към S</b>.
+</div>
+</div>
+</div>
+
+<script>
+let enabled=false;
+let reversed=false;
+
+const fields=[...document.querySelectorAll('.field')];
+const current=document.getElementById('currentPath');
+const status=document.getElementById('status');
+const leftPole=document.getElementById('leftPole');
+const rightPole=document.getElementById('rightPole');
+const iLabel=document.getElementById('iLabel');
+
+function setFieldDirection(){
+  // Физически коректна посока:
+  // При нормално състояние: ляв край = S, десен край = N.
+  // ВЪТРЕ в бобината: B е от S към N (ляво -> дясно).
+  // ИЗВЪН бобината: B е от N към S (дясно -> ляво).
+  const normal = [
+    // upper outer loops: right -> left
+    "M725 270 C800 235 810 105 490 95 C170 105 180 235 255 270",
+    "M725 285 C845 280 835 60 490 55 C145 60 135 280 255 285",
+    // lower outer loops: right -> left
+    "M725 310 C825 345 810 455 490 465 C170 455 155 345 255 310",
+    "M725 295 C770 300 760 395 490 405 C220 395 210 300 255 295",
+    // inside: left -> right
+    "M285 290 H695"
+  ];
+
+  const reversedDefs = [
+    // upper outer loops: left -> right
+    "M255 270 C180 235 170 105 490 95 C810 105 800 235 725 270",
+    "M255 285 C135 280 145 60 490 55 C835 60 845 280 725 285",
+    // lower outer loops: left -> right
+    "M255 310 C155 345 170 455 490 465 C810 455 825 345 725 310",
+    "M255 295 C210 300 220 395 490 405 C760 395 770 300 725 295",
+    // inside: right -> left
+    "M695 290 H285"
+  ];
+
+  const defs = reversed ? reversedDefs : normal;
+  fields.forEach((f,i)=>f.setAttribute("d", defs[i]));
+
+  if(reversed){
+    leftPole.textContent="N";
+    leftPole.setAttribute("class","pole n");
+    rightPole.textContent="S";
+    rightPole.setAttribute("class","pole s");
+    iLabel.textContent="I ←";
+  } else {
+    leftPole.textContent="S";
+    leftPole.setAttribute("class","pole s");
+    rightPole.textContent="N";
+    rightPole.setAttribute("class","pole n");
+    iLabel.textContent="I →";
+  }
+
+  // Обръщане на визуалната посока на токовия път.
+  current.style.animationDirection = reversed ? "reverse" : "normal";
+}
+
+function render(){
+  fields.forEach(f=>f.classList.toggle("on",enabled));
+  current.classList.toggle("on",enabled);
+  setFieldDirection();
+
+  if(!enabled){
+    status.textContent="Токът е изключен – магнитно поле няма.";
+  } else if(!reversed){
+    status.textContent="Токът е включен – десният край е N, левият е S. Вътре в бобината полето е S → N, а извън нея N → S.";
+  } else {
+    status.textContent="Посоката на тока е обърната – полюсите са разменени. Вътрешното и външното магнитно поле също сменят посоката си.";
+  }
+}
+
+document.getElementById("on").onclick=()=>{enabled=true;render()};
+document.getElementById("off").onclick=()=>{enabled=false;render()};
+document.getElementById("reverse").onclick=()=>{reversed=!reversed;enabled=true;render()};
+
+render();
+</script>
+
+</body></html>

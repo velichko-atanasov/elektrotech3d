@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<!-- saved from url=(0050)file:///C:/Users/Rosi/Downloads/preview%20(7).html -->
+<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QR-049 – Видове периодични сигнали</title>
+<style>
+*{box-sizing:border-box} body{margin:0;background:#f4f8fc;font-family:Arial,sans-serif;color:#17324d}
+.app{max-width:1400px;margin:auto;background:white;min-height:100vh;border:1px solid #cbd8e6}
+header{background:linear-gradient(90deg,#0b3f79,#07539e);color:#fff;padding:18px 24px;display:flex;justify-content:space-between;align-items:center}
+h1{margin:0;font-size:29px} main{display:grid;grid-template-columns:285px 1fr}
+aside{padding:18px;border-right:1px solid #d8e3ef;background:#fbfdff}
+.sig{width:100%;padding:14px;margin:6px 0;border:1px solid #c8d8ea;border-radius:11px;background:#fff;font-size:17px;font-weight:700;text-align:left;cursor:pointer}
+.sig.active{border:2px solid #1670d2;background:#eef6ff}.info{margin-top:20px;padding:13px;border-radius:10px;background:#eef6ff;border:1px solid #bcd3ec;line-height:1.5}
+.work{padding:18px}.card{border:1px solid #d8e3ef;border-radius:14px;background:#fff;padding:14px;margin-bottom:14px}
+#plot{width:100%;height:390px;display:block;border-radius:10px;background:#fff}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}.row{display:grid;grid-template-columns:150px 1fr 105px;gap:12px;align-items:center;margin:12px 0}
+input[type=range]{width:100%}.value{border:1px solid #cbd8e6;border-radius:8px;padding:8px;text-align:center;background:#fbfdff;font-weight:bold}
+.formula{font-family:"Times New Roman",serif;font-size:31px;text-align:center;padding:18px;border:1px solid #bcd3ec;border-radius:10px;background:#f7fbff}
+.summary{margin-top:12px;padding:10px;background:#effaf2;border:1px solid #b9dfc3;border-radius:9px;text-align:center;font-family:"Times New Roman",serif;font-size:20px}
+.bottom{display:flex;align-items:center;gap:12px;padding:13px 18px;border-top:1px solid #d8e3ef;background:#fbfdff}
+.round{width:48px;height:48px;border:0;border-radius:50%;font-size:21px;color:white;cursor:pointer;background:#1670d2}.pause{background:#7b8794}
+.read{font-size:16px;line-height:1.6;text-align:right;margin-right:20px}.topline{display:flex;justify-content:space-between;align-items:center}
+@media(max-width:900px){main{grid-template-columns:1fr}.grid2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+<header><h1>ВИДОВЕ ПЕРИОДИЧНИ СИГНАЛИ</h1><div id="reset" style="cursor:pointer">↻ Нулирай</div></header>
+<main>
+<aside>
+<h3>ИЗБЕРИ СИГНАЛ</h3>
+<button class="sig active" data-t="sin">〰 Синусоидален</button>
+<button class="sig" data-t="square">▔▁ Правоъгълен</button>
+<button class="sig" data-t="triangle">△ Триъгълен</button>
+<button class="sig" data-t="saw">／| Трионообразен</button>
+<div class="info"><b>Основни понятия</b><br><br>Всички сигнали са периодични с период <i>T</i>.<br><i>U<sub>m</sub></i> е амплитудата.<br>При по-голяма честота <i>f</i> в един и същ времеви интервал се виждат повече периоди.<br>Моментната стойност е <i>u(t)</i>.</div>
+</aside>
+<section class="work">
+<div class="card">
+<div class="topline"><h3>Графика на сигнала</h3><div class="read"><b>Моментна стойност</b><br><span id="inst">u(t) = 2.245 V</span><br><span id="trel">t = 20.53 ms</span></div></div>
+<canvas id="plot" width="990" height="390"></canvas>
+</div>
+<div class="grid2">
+<div class="card">
+<h3>ПАРАМЕТРИ</h3>
+<div class="row"><label>Амплитуда U<sub>m</sub></label><input id="amp" type="range" min="1" max="20" value="10"><div class="value"><span id="av">10</span> V</div></div>
+<div class="row"><label>Честота f</label><input id="freq" type="range" min="10" max="200" step="10" value="50"><div class="value"><span id="fv">120</span> Hz</div></div>
+<div class="summary">T = 1/f = <span id="Tval">0.008</span> s &nbsp;&nbsp; ω = 2πf = <span id="oval">753.98</span> rad/s</div>
+</div>
+<div class="card">
+<h3>ФОРМУЛА</h3>
+<div id="formula" class="formula">u(t)=U<sub>m</sub> sin(ωt+φ)</div>
+<div class="row"><label>Начален фазов ъгъл φ</label><input id="phase" type="range" min="-180" max="180" step="15" value="0"><div class="value">φ=<span id="pv">0</span>°</div></div>
+</div>
+</div>
+<div class="bottom">
+<button id="play" class="round">▶</button><span>Старт</span>
+<button id="pause" class="round pause">Ⅱ</button><span>Пауза</span>
+<label style="margin-left:25px">Скорост</label><input id="speed" type="range" min=".3" max="2.5" step=".1" value="1" style="width:220px">
+<label style="margin-left:auto"><input id="two" type="checkbox" checked=""> Времеви прозорец 40 ms</label>
+</div>
+</section>
+</main>
+</div>
+<script>
+const c=document.getElementById('plot');
+const x=c.getContext('2d');
+const amp=document.getElementById('amp');
+const freq=document.getElementById('freq');
+const phase=document.getElementById('phase');
+const speed=document.getElementById('speed');
+const two=document.getElementById('two');
+const playBtn=document.getElementById('play');
+const pauseBtn=document.getElementById('pause');
+const resetBtn=document.getElementById('reset');
+let type='sin',run=false,p=0,last=0;
+function sigTime(t){
+  const A=+amp.value;
+  const f=+freq.value;
+  const ph=+phase.value*Math.PI/180;
+  const z=2*Math.PI*f*t+ph;
+  if(type==='sin') return A*Math.sin(z);
+  if(type==='square') return A*(Math.sin(z)>=0?1:-1);
+  if(type==='triangle') return A*(2/Math.PI)*Math.asin(Math.sin(z));
+  let cyc=((f*t + ph/(2*Math.PI) + 0.5)%1 + 1)%1;
+  return A*(2*cyc-1);
+}
+function col(){return type==='sin'?'#1670d2':type==='square'?'#d62828':type==='triangle'?'#198754':'#7b2cbf'}
+function resize(){let r=c.getBoundingClientRect();c.width=r.width*devicePixelRatio;c.height=r.height*devicePixelRatio;x.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);draw()}
+function draw(){
+  const w=c.clientWidth,h=c.clientHeight,L=70,R=35,Top=30,B=55,mid=h/2,W=w-L-R,H=h-Top-B;
+  const A=+amp.value, f=+freq.value, period=1/f;
+  const windowT = two.checked ? 0.040 : 2*period; // 40 ms fixed window, or exactly 2 periods
+  x.clearRect(0,0,w,h);
+
+  // grid
+  x.strokeStyle='#e6eef5';x.lineWidth=1;
+  for(let i=0;i<=12;i++){let xx=L+i*W/12;x.beginPath();x.moveTo(xx,Top);x.lineTo(xx,h-B);x.stroke()}
+  for(let i=0;i<=8;i++){let yy=Top+i*H/8;x.beginPath();x.moveTo(L,yy);x.lineTo(w-R,yy);x.stroke()}
+
+  // axes
+  x.strokeStyle='#111';x.lineWidth=1.5;
+  x.beginPath();x.moveTo(L,Top);x.lineTo(L,h-B);x.stroke();
+  x.beginPath();x.moveTo(L,mid);x.lineTo(w-R,mid);x.stroke();
+
+  x.font='16px Times New Roman';x.fillStyle='#111';
+  x.fillText('u(t)',L+8,20);x.fillText('t',w-R+8,mid+5);
+  x.fillText('+Uₘ',18,Top+22);x.fillText('0',L-22,mid+5);x.fillText('−Uₘ',18,h-B-8);
+
+  // time ticks
+  const tickCount=4;
+  for(let k=0;k<=tickCount;k++){
+    const tt=windowT*k/tickCount;
+    const xx=L+W*k/tickCount;
+    x.fillText((tt*1000).toFixed(tt<0.01?1:0)+' ms',xx-16,mid+30);
+  }
+
+  // indicate one period T
+  const periodPx=W*(period/windowT);
+  if(periodPx>40 && periodPx<W){
+    x.strokeStyle='#5f7fa4';x.setLineDash([5,5]);
+    x.beginPath();x.moveTo(L+periodPx,Top);x.lineTo(L+periodPx,h-B);x.stroke();
+    x.setLineDash([]);
+    x.fillStyle='#123c78';x.fillText('T',L+periodPx-5,Top+18);
+  }
+
+  // drawing progress
+  const shownTime = windowT*Math.min(p,1);
+  x.strokeStyle=col();x.lineWidth=3;x.beginPath();
+  const n=1200;
+  for(let i=0;i<=n;i++){
+    const t=windowT*i/n;
+    if(t>shownTime) break;
+    const v=sigTime(t);
+    const xx=L+W*(t/windowT);
+    const yy=mid-(v/A)*(H*.38);
+    i?x.lineTo(xx,yy):x.moveTo(xx,yy);
+  }
+  x.stroke();
+
+  // moving point
+  const tNow=shownTime;
+  const v=sigTime(tNow);
+  const xx=L+W*(tNow/windowT);
+  const yy=mid-(v/A)*(H*.38);
+  x.fillStyle=col();x.beginPath();x.arc(xx,yy,7,0,Math.PI*2);x.fill();
+  x.setLineDash([5,5]);x.strokeStyle=col();
+  x.beginPath();x.moveTo(xx,yy);x.lineTo(xx,h-B);x.stroke();x.setLineDash([]);
+
+  document.getElementById('inst').textContent='u(t) = '+v.toFixed(3)+' V';
+  document.getElementById('trel').textContent='t = '+(tNow*1000).toFixed(2)+' ms';
+}
+function update(){document.getElementById('av').textContent=amp.value;document.getElementById('fv').textContent=freq.value;document.getElementById('pv').textContent=phase.value;document.getElementById('Tval').textContent=(1/+freq.value).toFixed(3);document.getElementById('oval').textContent=(2*Math.PI*+freq.value).toFixed(2);
+document.getElementById('formula').innerHTML=type==='sin'?'u(t)=U<sub>m</sub> sin(ωt+φ)':type==='square'?'Правоъгълен сигнал: u(t)=±U<sub>m</sub>':type==='triangle'?'Триъгълен периодичен сигнал':'Трионообразен периодичен сигнал';draw()}
+[amp,freq,phase,two].forEach(e=>{
+  e.addEventListener('input',update);
+  e.addEventListener('change',update);
+});
+document.querySelectorAll('.sig').forEach(b=>b.onclick=()=>{document.querySelectorAll('.sig').forEach(z=>z.classList.remove('active'));b.classList.add('active');type=b.dataset.t;p=0;update()});
+function anim(t){if(!last)last=t;let dt=(t-last)/1000;last=t;if(run){p+=dt*.28*+speed.value;if(p>1)p=0;draw()}requestAnimationFrame(anim)}requestAnimationFrame(anim);
+playBtn.addEventListener('click',()=>{
+  if(p>=1) p=0;
+  run=true;
+});
+pauseBtn.addEventListener('click',()=>{run=false;});
+resetBtn.addEventListener('click',()=>{
+  run=false;
+  p=0;
+  type='sin';
+  amp.value=10;
+  freq.value=50;
+  phase.value=0;
+  speed.value=1;
+  two.checked=true;
+  document.querySelectorAll('.sig').forEach(z=>z.classList.toggle('active',z.dataset.t==='sin'));
+  update();
+});
+window.addEventListener('resize',resize);
+resize();
+update();
+</script>
+</body></html>

@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<!-- saved from url=(0051)file:///C:/Users/Rosi/Downloads/preview%20(10).html -->
+<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Анимация 51 – Въртящ се фазор и синусоидална величина</title>
+  <style>
+    :root{
+      --blue:#0f4da8;
+      --blue2:#1e6bd6;
+      --green:#238823;
+      --light:#f7fbff;
+      --line:#c7d8ef;
+      --text:#12233a;
+      --muted:#6b7280;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Arial, Helvetica, sans-serif;
+      background:linear-gradient(180deg,#eef6ff 0%,#ffffff 100%);
+      color:var(--text);
+    }
+    .wrap{
+      width:min(1500px,98vw);
+      margin:14px auto;
+      background:white;
+      border:2px solid var(--blue2);
+      border-radius:20px;
+      box-shadow:0 10px 30px rgba(15,77,168,.12);
+      padding:14px;
+    }
+    h1{
+      margin:4px 0 14px;
+      text-align:center;
+      color:#163f7a;
+      font-size:clamp(24px,2.1vw,40px);
+    }
+    .topbar{
+      display:grid;
+      grid-template-columns:1.3fr 1fr;
+      gap:12px;
+      margin-bottom:12px;
+    }
+    .panel{
+      border:1.5px solid var(--line);
+      border-radius:14px;
+      background:linear-gradient(180deg,#ffffff 0%,#fbfdff 100%);
+      padding:12px;
+    }
+    .controls{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      justify-content:center;
+    }
+    button{
+      border:1px solid #a8bfdc;
+      background:#edf4fb;
+      color:#173d70;
+      padding:10px 18px;
+      border-radius:10px;
+      font-size:17px;
+      cursor:pointer;
+      font-weight:600;
+    }
+    button.primary{
+      background:linear-gradient(180deg,#1765c5,#0f4da8);
+      color:white;
+      border:none;
+    }
+    button:hover{filter:brightness(.98)}
+    input[type="range"]{width:240px}
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1.22fr;
+      gap:12px;
+    }
+    .title{
+      text-align:center;
+      color:#174d96;
+      font-weight:700;
+      font-size:21px;
+      margin-bottom:6px;
+    }
+    canvas{
+      width:100%;
+      height:520px;
+      display:block;
+      border-radius:10px;
+      background:white;
+    }
+    .info{
+      display:grid;
+      grid-template-columns:1fr 1fr 1.6fr;
+      gap:12px;
+      margin-top:12px;
+    }
+    .value{
+      font-family:Georgia, "Times New Roman", serif;
+      font-size:30px;
+      text-align:center;
+      color:var(--green);
+      margin:12px 0 4px;
+    }
+    .small{
+      font-size:16px;
+      line-height:1.5;
+    }
+    .formula{
+      text-align:center;
+      font-family:Georgia, "Times New Roman", serif;
+      font-size:24px;
+      background:#fff9e9;
+      border:1px solid #e7c767;
+      border-radius:12px;
+      padding:12px;
+      margin-top:12px;
+    }
+    .badge{
+      display:inline-block;
+      padding:5px 9px;
+      border-radius:8px;
+      background:#eef5ff;
+      border:1px solid var(--line);
+      margin:3px;
+    }
+    @media (max-width: 900px){
+      .grid,.info,.topbar{grid-template-columns:1fr}
+      canvas{height:430px}
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Анимация 51: Връзка между въртящ се фазор и синусоидална величина</h1>
+
+  <div class="topbar">
+    <div class="panel">
+      <div class="controls">
+        <strong>Скорост на анимацията</strong>
+        <input id="speed" type="range" min="0.15" max="2.5" value="0.7" step="0.05">
+        <span id="speedText" class="badge">0.70×</span>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="controls">
+        <label><input id="showProj" type="checkbox" checked=""> Покажи проекция</label>
+        <label><input id="showTrail" type="checkbox" checked=""> Покажи следа</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <section class="panel">
+      <div class="title">Въртящ се фазор (векторно представяне)</div>
+      <canvas id="phasor" width="553" height="520"></canvas>
+    </section>
+
+    <section class="panel">
+      <div class="title">Синусоидална величина</div>
+      <canvas id="sine" width="681" height="520"></canvas>
+    </section>
+  </div>
+
+  <div class="info">
+    <div class="panel">
+      <div class="title">Управление</div>
+      <div class="controls">
+        <button id="play" class="primary">▶ Пуск</button>
+        <button id="pause">Ⅱ Пауза</button>
+        <button id="stop">↻ Стоп</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="title">Моментна стойност</div>
+      <div id="instant" class="value">u(t) = 162.6 V</div>
+      <div class="small" style="text-align:center">
+        <div>t = <span id="timeVal">0.0000</span> s</div>
+        <div>ωt + φ = <span id="phaseVal">30.0</span>°</div>
+      </div>
+    </div>
+
+    <div class="panel small">
+      <div class="title">Обяснение</div>
+      <p>Фазорът <b>Ū</b> се върти с ъглова скорост <b>ω</b>. Проекцията му върху въображаемата ос е пропорционална на моментната стойност <b>u(t)</b> при използваната синусова форма.</p>
+      <p><span class="badge">U = 230 V</span>
+         <span class="badge">Uₘ = 325.3 V</span>
+         <span class="badge">f = 50 Hz</span>
+         <span class="badge">φ = 30°</span></p>
+    </div>
+  </div>
+
+  <div class="formula">
+    u(t) = Uₘ sin(ωt + φ)
+    &nbsp;&nbsp; ↔ &nbsp;&nbsp;
+    Ū = U∠φ
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    U = Uₘ/√2<br><span style="font-size:16px;color:#475569">При синусова форма: u(t) ∝ Im{Ū(t)}; числената моментна стойност използва амплитудата Uₘ.</span>
+  </div>
+</div>
+
+<script>
+const U = 230;
+const Um = U * Math.sqrt(2);
+const f = 50;
+const omega = 2 * Math.PI * f;
+const phi = Math.PI/6;
+
+const phasorCanvas = document.getElementById('phasor');
+const sineCanvas = document.getElementById('sine');
+const pctx = phasorCanvas.getContext('2d');
+const sctx = sineCanvas.getContext('2d');
+
+let running = false;
+let simTime = 0;
+let lastStamp = null;
+let trail = [];
+
+function resizeCanvas(canvas, ctx){
+  const rect = canvas.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+
+function resizeAll(){
+  resizeCanvas(phasorCanvas,pctx);
+  resizeCanvas(sineCanvas,sctx);
+  draw();
+}
+window.addEventListener('resize', resizeAll);
+
+function line(ctx,x1,y1,x2,y2,color='#111',w=1,dash=[]){
+  ctx.save();
+  ctx.strokeStyle=color; ctx.lineWidth=w; ctx.setLineDash(dash);
+  ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+  ctx.restore();
+}
+function arrow(ctx,x1,y1,x2,y2,color='#0f4da8',w=4){
+  line(ctx,x1,y1,x2,y2,color,w);
+  const ang=Math.atan2(y2-y1,x2-x1), len=12;
+  ctx.save();
+  ctx.fillStyle=color;
+  ctx.beginPath();
+  ctx.moveTo(x2,y2);
+  ctx.lineTo(x2-len*Math.cos(ang-Math.PI/6),y2-len*Math.sin(ang-Math.PI/6));
+  ctx.lineTo(x2-len*Math.cos(ang+Math.PI/6),y2-len*Math.sin(ang+Math.PI/6));
+  ctx.closePath(); ctx.fill();
+  ctx.restore();
+}
+function text(ctx,txt,x,y,size=18,color='#111',align='left',font='Arial'){
+  ctx.save();
+  ctx.font=`${size}px ${font}`; ctx.fillStyle=color; ctx.textAlign=align; ctx.textBaseline='middle';
+  ctx.fillText(txt,x,y); ctx.restore();
+}
+
+function drawPhasor(){
+  const w=phasorCanvas.clientWidth,h=phasorCanvas.clientHeight;
+  pctx.clearRect(0,0,w,h);
+  const cx=w*0.50, cy=h*0.56, r=Math.min(w,h)*0.32;
+  const th=omega*simTime+phi;
+
+  line(pctx,35,cy,w-35,cy,'#111',1.5);
+  line(pctx,cx,h-35,cx,45,'#111',1.5);
+  arrow(pctx,w-55,cy,w-35,cy,'#111',1.5);
+  arrow(pctx,cx,65,cx,45,'#111',1.5);
+  text(pctx,'Re',w-42,cy+26,20,'#111','right');
+  text(pctx,'Im',cx+12,55,20,'#111');
+  text(pctx,'O',cx-12,cy+24,20,'#111','right');
+
+  pctx.save();
+  pctx.strokeStyle='#8a8a8a'; pctx.setLineDash([8,8]); pctx.lineWidth=2;
+  pctx.beginPath(); pctx.arc(cx,cy,r,0,Math.PI*2); pctx.stroke(); pctx.restore();
+
+  const ex=cx+r*Math.cos(th), ey=cy-r*Math.sin(th);
+  arrow(pctx,cx,cy,ex,ey,'#0f4da8',5);
+  text(pctx,'Ū',ex+14,ey-8,25,'#0f4da8');
+  text(pctx,'U',cx+(ex-cx)*.55-12,cy+(ey-cy)*.55-14,22,'#0f4da8');
+
+  if(document.getElementById('showProj').checked){
+    line(pctx,ex,ey,cx,ey,'#238823',1.5,[6,6]);
+    pctx.save(); pctx.fillStyle='#0f4da8'; pctx.beginPath(); pctx.arc(ex,ey,6,0,Math.PI*2); pctx.fill(); pctx.restore();
+  }
+
+  // phase arc
+  pctx.save();
+  pctx.strokeStyle='#238823'; pctx.lineWidth=2.5;
+  pctx.beginPath();
+  pctx.arc(cx,cy,55,0,-th,(th<0)); pctx.stroke();
+  pctx.restore();
+  text(pctx,'ωt + φ',cx+82*Math.cos(th/2),cy-82*Math.sin(th/2),20,'#238823','center','Georgia');
+
+  text(pctx,'Ū = U ∠ φ',22,30,22,'#163f7a','left','Georgia');
+  text(pctx,'U = 230 V',22,62,17,'#222');
+  text(pctx,'Uₘ = √2 U = 325.3 V',22,90,17,'#222');
+  text(pctx,'(фазорът е по ефективна стойност)',22,114,14,'#666');
+  text(pctx,'φ = 30°',22,140,17,'#238823');
+
+  // rotation hint
+  pctx.save();
+  pctx.strokeStyle='#777'; pctx.lineWidth=2;
+  pctx.beginPath(); pctx.arc(cx,cy,r+32,-1.15,-.45); pctx.stroke();
+  pctx.restore();
+  text(pctx,'ω',cx+r*.62,cy-r*.77,22,'#666','center','Georgia');
+}
+
+function drawSine(){
+  const w=sineCanvas.clientWidth,h=sineCanvas.clientHeight;
+  sctx.clearRect(0,0,w,h);
+
+  const left=70,right=25,top=50,bottom=70;
+  const gw=w-left-right, gh=h-top-bottom;
+  const x0=left, y0=top+gh/2;
+  const amp=gh*0.37;
+  const T=1/f;
+  const windowT=T*1.10;
+
+  line(sctx,x0,y0,w-right,y0,'#111',1.5);
+  line(sctx,x0,h-bottom,x0,top,'#111',1.5);
+  arrow(sctx,w-right-20,y0,w-right,y0,'#111',1.5);
+  arrow(sctx,x0,top+20,x0,top,'#111',1.5);
+
+  text(sctx,'u(t) [V]',18,top-8,19,'#111');
+  text(sctx,'t [s]',w-right,y0+28,18,'#111','right');
+
+  line(sctx,x0, y0-amp, w-right, y0-amp, '#999',1,[6,6]);
+  line(sctx,x0, y0+amp, w-right, y0+amp, '#999',1,[6,6]);
+  text(sctx,'325.3',x0-10,y0-amp,16,'#0f4da8','right');
+  text(sctx,'0',x0-10,y0,16,'#111','right');
+  text(sctx,'-325.3',x0-10,y0+amp,16,'#0f4da8','right');
+
+  sctx.save();
+  sctx.strokeStyle='#0f4da8'; sctx.lineWidth=4; sctx.beginPath();
+  for(let i=0;i<=gw;i++){
+    const t=(i/gw)*windowT;
+    const val=Math.sin(omega*t+phi);
+    const x=x0+i, y=y0-amp*val;
+    if(i===0) sctx.moveTo(x,y); else sctx.lineTo(x,y);
+  }
+  sctx.stroke(); sctx.restore();
+
+  [0,T/4,T/2,3*T/4,T].forEach((tt,idx)=>{
+    const x=x0+(tt/windowT)*gw;
+    line(sctx,x,y0-amp,x,y0+amp,'#b5b5b5',1,[5,6]);
+    const labels=['0','T/4','T/2','3T/4','T'];
+    const nums=['0','0.005','0.010','0.015','0.020'];
+    text(sctx,labels[idx],x,y0+24,16,'#111','center','Georgia');
+    text(sctx,nums[idx],x,y0+46,14,'#333','center');
+  });
+
+  const localTime=((simTime%windowT)+windowT)%windowT;
+  const x=x0+(localTime/windowT)*gw;
+  const val=Math.sin(omega*simTime+phi);
+  const y=y0-amp*val;
+
+  if(document.getElementById('showProj').checked){
+    line(sctx,x,y0+amp,x,y,'#238823',1.5,[6,6]);
+  }
+  sctx.save(); sctx.fillStyle='#0f4da8'; sctx.beginPath(); sctx.arc(x,y,7,0,Math.PI*2); sctx.fill(); sctx.restore();
+
+  if(document.getElementById('showTrail').checked){
+    trail.push({x,y});
+    if(trail.length>120) trail.shift();
+    sctx.save(); sctx.strokeStyle='rgba(15,77,168,.28)'; sctx.lineWidth=6;
+    sctx.beginPath();
+    trail.forEach((p,i)=>{ if(i===0)sctx.moveTo(p.x,p.y); else sctx.lineTo(p.x,p.y); });
+    sctx.stroke(); sctx.restore();
+  } else {
+    trail=[];
+  }
+
+  text(sctx,'u(t) = Uₘ sin(ωt + φ)',w/2,25,22,'#163f7a','center','Georgia');
+}
+
+function draw(){
+  drawPhasor();
+  drawSine();
+
+  const val=Um*Math.sin(omega*simTime+phi);
+  const deg=((omega*simTime+phi)*180/Math.PI)%360;
+  document.getElementById('instant').textContent=`u(t) = ${val.toFixed(1)} V`;
+  document.getElementById('timeVal').textContent=simTime.toFixed(4);
+  document.getElementById('phaseVal').textContent=((deg+360)%360).toFixed(1);
+}
+
+function animate(stamp){
+  if(lastStamp===null) lastStamp=stamp;
+  const dt=(stamp-lastStamp)/1000;
+  lastStamp=stamp;
+  if(running){
+    const speed=parseFloat(document.getElementById('speed').value);
+    // slowed educational motion: 1 simulated cycle per ~4.5 s at 1x
+    simTime += dt * speed * (1/f) / 4.5;
+  }
+  draw();
+  requestAnimationFrame(animate);
+}
+
+document.getElementById('play').onclick=()=>{running=true};
+document.getElementById('pause').onclick=()=>{running=false};
+document.getElementById('stop').onclick=()=>{running=false; simTime=0; trail=[]; draw()};
+document.getElementById('speed').oninput=e=>{
+  document.getElementById('speedText').textContent=`${parseFloat(e.target.value).toFixed(2)}×`;
+};
+document.getElementById('showProj').onchange=draw;
+document.getElementById('showTrail').onchange=()=>{trail=[]; draw()};
+
+resizeAll();
+requestAnimationFrame(animate);
+</script>
+
+</body></html>

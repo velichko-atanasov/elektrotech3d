@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<!-- saved from url=(0050)file:///C:/Users/Rosi/Downloads/preview%20(1).html -->
+<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Анимация 57 – Въртящо магнитно поле</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f4f7fa;font-family:Arial,sans-serif;color:#17212b}
+.wrap{max-width:1420px;margin:12px auto;background:#fff;border:1px solid #b8c6d5;border-radius:12px;padding:15px}
+h1{text-align:center;color:#173f70;margin:2px 0 5px;font-size:27px}
+.sub{text-align:center;font-weight:700;margin-bottom:10px}
+.steps{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:10px 0}
+button{border:1px solid #aabaca;background:#f8fafc;border-radius:7px;padding:9px 14px;font-weight:700;cursor:pointer}
+button.on{background:#173f70;color:white}
+.grid{display:grid;grid-template-columns:1.05fr .95fr;gap:14px}
+.card{border:1px solid #ccd7e2;border-radius:10px;padding:12px;background:#fff}
+canvas{width:100%;display:block}
+#field{height:560px}
+#waves{height:290px}
+.formula{text-align:center;font:21px "Cambria Math","Times New Roman",serif;margin:8px}
+.explain{margin-top:12px;background:#f5f8fc;border-left:4px solid #173f70;padding:11px 13px;line-height:1.5}
+.values{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:10px 0}
+.val{text-align:center;padding:8px;border:1px solid #d7e0e8;border-radius:7px;font-weight:700}
+.controls{display:flex;justify-content:center;gap:18px;align-items:center;flex-wrap:wrap;border-top:1px solid #e2e7ec;margin-top:10px;padding-top:10px;font-weight:700}
+.note{font-size:13px;color:#4b5563;text-align:center;margin-top:6px}
+@media(max-width:950px){.grid{grid-template-columns:1fr}.values{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Анимация 57: Въртящо магнитно поле на трифазна система</h1>
+<div class="sub">Три статорни намотки A–A′, B–B′ и C–C′, разположени пространствено на 120°</div>
+
+<div class="steps">
+<button class="" data-mode="0">1. Трите намотки</button>
+<button data-mode="1" class="">2. Фазови полета</button>
+<button data-mode="2" class="">3. Резултантно поле</button>
+<button data-mode="3" class="on">4. Пълна анимация</button>
+</div>
+
+<div class="grid">
+<div class="card">
+<canvas id="field" width="654" height="560"></canvas>
+
+<div class="values">
+<div class="val" id="va" style="color:#d52323">iA = 0.55 Im</div>
+<div class="val" id="vb" style="color:#21843f">iB = 0.45 Im</div>
+<div class="val" id="vc" style="color:#1559d5">iC = -1.00 Im</div>
+</div>
+
+<div class="controls">
+<button id="play">Пауза</button>
+<button id="reset">Начало</button>
+<label>Скорост:
+<input id="speed" type="range" min="20" max="150" value="70">
+</label>
+</div>
+<div class="note">Движението е умишлено забавено за учебни цели.</div>
+</div>
+
+<div>
+<div class="card"><canvas id="waves" width="590" height="290"></canvas></div>
+<div class="card" style="margin-top:14px">
+<div class="formula">i<sub>A</sub> = I<sub>m</sub> cos ωt</div>
+<div class="formula">i<sub>B</sub> = I<sub>m</sub> cos(ωt − 120°)</div>
+<div class="formula">i<sub>C</sub> = I<sub>m</sub> cos(ωt − 240°)</div>
+<div class="formula"><b>B⃗ = B⃗<sub>A</sub> + B⃗<sub>B</sub> + B⃗<sub>C</sub></b></div>
+<div class="formula"><b>|B⃗| = 3B<sub>m</sub>/2 = const.</b></div>
+<div class="explain" id="info"><b>Стъпка 4.</b> Натиснете „Старт“. Ще видите как трите фазови полета пулсират, а резултантното магнитно поле се върти равномерно в статора. Това е физическата основа на въртящото поле в трифазните електрически машини.</div>
+</div>
+</div>
+</div>
+</div>
+
+<script>
+const f=document.getElementById('field'),c=f.getContext('2d');
+const wcan=document.getElementById('waves'),q=wcan.getContext('2d');
+const colors=['#d52323','#21843f','#1559d5'],purple='#7030a0',ink='#17212b';
+let mode=0,theta=0,running=false,last=0;
+
+function fit(x,z){
+  let r=x.getBoundingClientRect(),d=devicePixelRatio||1;
+  x.width=r.width*d;x.height=r.height*d;
+  z.setTransform(d,0,0,d,0,0);
+}
+function line(z,x1,y1,x2,y2,col=ink,lw=1.5,d=[]){
+  z.save();z.strokeStyle=col;z.lineWidth=lw;z.setLineDash(d);z.lineCap='round';
+  z.beginPath();z.moveTo(x1,y1);z.lineTo(x2,y2);z.stroke();z.restore();
+}
+function arrow(z,x1,y1,x2,y2,col=ink,lw=2){
+  line(z,x1,y1,x2,y2,col,lw);
+  let a=Math.atan2(y2-y1,x2-x1),s=9;
+  z.save();z.fillStyle=col;z.beginPath();z.moveTo(x2,y2);
+  z.lineTo(x2-s*Math.cos(a-.45),y2-s*Math.sin(a-.45));
+  z.lineTo(x2-s*Math.cos(a+.45),y2-s*Math.sin(a+.45));
+  z.closePath();z.fill();z.restore();
+}
+function text(z,s,x,y,n=15,col=ink,b=false){
+  z.save();z.fillStyle=col;z.font=(b?'bold ':'')+n+'px Arial';
+  z.textAlign='center';z.textBaseline='middle';z.fillText(s,x,y);z.restore();
+}
+function drawCoil(ctx,cx,cy,angle,r,col,label){
+  // Една фазова намотка = две активни страни, разположени диаметрално,
+  // свързани с видима крайна връзка. Така ясно се вижда, че имаме 3 намотки,
+  // а не 6 отделни.
+  const ux=Math.cos(angle), uy=-Math.sin(angle);
+  const px=-uy, py=ux;
+  const sideR=r-8;
+  const x1=cx+ux*sideR, y1=cy+uy*sideR;
+  const x2=cx-ux*sideR, y2=cy-uy*sideR;
+
+  // Класически активни страни на намотката: два малки проводника от всяка страна.
+  function side(x,y,sgn){
+    const sep=9;
+    for(let k=-1;k<=1;k+=2){
+      let xx=x+px*k*sep, yy=y+py*k*sep;
+      ctx.save();
+      ctx.strokeStyle=col; ctx.lineWidth=2.2;
+      ctx.beginPath(); ctx.arc(xx,yy,7,0,Math.PI*2); ctx.stroke();
+      ctx.restore();
+
+      // точка / кръст за посока на тока през проводника
+      if(sgn>0){
+        ctx.save();ctx.fillStyle=col;ctx.beginPath();ctx.arc(xx,yy,2.4,0,Math.PI*2);ctx.fill();ctx.restore();
+      }else{
+        line(ctx,xx-3,yy-3,xx+3,yy+3,col,1.5);
+        line(ctx,xx-3,yy+3,xx+3,yy-3,col,1.5);
+      }
+    }
+  }
+
+  side(x1,y1,1);
+  side(x2,y2,-1);
+
+  // Видима крайна връзка между двете страни на същата намотка,
+  // изнесена малко извън статора, за да не пресича работната зона.
+  const rr=r+22;
+  const a1=Math.atan2(-(y1-cy),(x1-cx));
+  const a2=Math.atan2(-(y2-cy),(x2-cx));
+
+  ctx.save();
+  ctx.strokeStyle=col;ctx.lineWidth=2.2;
+  ctx.beginPath();
+  ctx.arc(cx,cy,rr,-a1,-a2,false);
+  ctx.stroke();
+  ctx.restore();
+
+  // Ясни крайни означения A–A′, B–B′, C–C′.
+  text(ctx,label,cx+ux*(r+45),cy+uy*(r+45),18,col,true);
+  text(ctx,label+"′",cx-ux*(r+45),cy-uy*(r+45),18,col,true);
+}
+function field(){
+  let W=f.clientWidth,H=f.clientHeight;c.clearRect(0,0,W,H);
+  let x=W/2,y=H*.52,R=Math.min(W,H)*.37,stator=R+48;
+
+  text(c,'Три фазови намотки: A–A′, B–B′ и C–C′',x,22,16,'#173f70',true);
+
+  // stator circles
+  c.save();c.strokeStyle='#8794a1';c.lineWidth=2;
+  c.beginPath();c.arc(x,y,stator,0,Math.PI*2);c.stroke();
+  c.strokeStyle='#c1c8cf';c.lineWidth=1.4;
+  c.beginPath();c.arc(x,y,R,0,Math.PI*2);c.stroke();
+  c.restore();
+
+  // spatial magnetic axes
+  const ax=[Math.PI/2,-Math.PI/6,7*Math.PI/6], nm=['A','B','C'];
+  ax.forEach((a,k)=>{
+    line(c,x-(R-12)*Math.cos(a),y+(R-12)*Math.sin(a),
+           x+(R-12)*Math.cos(a),y-(R-12)*Math.sin(a),
+           colors[k],1.3,[6,4]);
+    drawCoil(c,x,y,a,stator-8,colors[k],nm[k]);
+  });
+
+  c.fillStyle=ink;c.beginPath();c.arc(x,y,3,0,Math.PI*2);c.fill();
+  text(c,'O',x-13,y+16,14);
+
+  const cur=[
+    Math.cos(theta),
+    Math.cos(theta-2*Math.PI/3),
+    Math.cos(theta-4*Math.PI/3)
+  ];
+
+  if(mode>=1){
+    cur.forEach((v,k)=>{
+      let len=R*.47*v,a=ax[k],ex=x+len*Math.cos(a),ey=y-len*Math.sin(a);
+      arrow(c,x,y,ex,ey,colors[k],2.7);
+      if(Math.abs(v)>.07){
+        text(c,'B'+nm[k],ex+16*Math.sign(v)*Math.cos(a),ey-16*Math.sign(v)*Math.sin(a),14,colors[k],true);
+      }
+    });
+  }
+
+  if(mode>=2){
+    let sx=0,sy=0;
+    cur.forEach((v,k)=>{sx+=v*Math.cos(ax[k]);sy+=v*Math.sin(ax[k])});
+    let scale=R*.47,ex=x+scale*sx,ey=y-scale*sy;
+    arrow(c,x,y,ex,ey,purple,4.5);
+    text(c,'B – резултантно поле',ex,ey-24,16,purple,true);
+
+    // rotation direction
+    c.save();c.strokeStyle=purple;c.lineWidth=2;c.beginPath();
+    c.arc(x,y,R*.72,-0.15,-1.05,true);c.stroke();c.restore();
+    arrow(c,x+R*.72*Math.cos(-.98),y+R*.72*Math.sin(-.98),
+            x+R*.72*Math.cos(-1.05),y+R*.72*Math.sin(-1.05),purple,2);
+    text(c,'посока на въртене',x+R*.48,y-R*.60,14,purple,true);
+  }
+}
+function waves(){
+  let W=wcan.clientWidth,H=wcan.clientHeight;
+  q.clearRect(0,0,W,H);
+  let L=42,R=W-14,T=30,B=H-35,M=(T+B)/2,A=(B-T)*.31;
+  line(q,L,M,R,M,'#555',1);
+  line(q,L,T,L,B,'#555',1);
+
+  const ph=[0,-2*Math.PI/3,-4*Math.PI/3],nm=['iA','iB','iC'];
+  ph.forEach((p,k)=>{
+    q.save();q.strokeStyle=colors[k];q.lineWidth=2;q.beginPath();
+    for(let px=L;px<=R;px++){
+      let u=(px-L)/(R-L)*2*Math.PI;
+      let yy=M-A*Math.cos(u+p);
+      px===L?q.moveTo(px,yy):q.lineTo(px,yy);
+    }
+    q.stroke();q.restore();
+    text(q,nm[k],L+24,T+14+k*20,13,colors[k],true);
+  });
+
+  let xx=L+(((theta%(2*Math.PI)+2*Math.PI)%(2*Math.PI))/(2*Math.PI))*(R-L);
+  line(q,xx,T,xx,B,purple,1.6,[4,3]);
+  text(q,'текущ момент',xx,B+16,12,purple);
+}
+function update(){
+  let cur=[
+    Math.cos(theta),
+    Math.cos(theta-2*Math.PI/3),
+    Math.cos(theta-4*Math.PI/3)
+  ];
+  ['va','vb','vc'].forEach((id,k)=>{
+    document.getElementById(id).textContent='i'+['A','B','C'][k]+' = '+cur[k].toFixed(2)+' Im';
+  });
+
+  const info=document.getElementById('info');
+  if(mode===0) info.innerHTML='<b>Стъпка 1.</b> Намотките A, B и C са неподвижни в статора. Магнитните им оси са разположени на 120° една спрямо друга. Всяка фаза е една намотка с две противоположни активни страни. Точката и кръстът показват противоположните посоки на тока в двете страни.';
+  if(mode===1) info.innerHTML='<b>Стъпка 2.</b> През трите намотки протичат синусоидални токове, изместени по фаза на 120°. Всеки ток създава пулсиращо магнитно поле по оста на собствената намотка.';
+  if(mode===2) info.innerHTML='<b>Стъпка 3.</b> Виолетовият вектор е сумата B⃗A + B⃗B + B⃗C. При симетрична трифазна система неговата големина е постоянна: <b>|B⃗| = 3Bm/2</b>. Променя се само посоката му.';
+  if(mode===3) info.innerHTML='<b>Стъпка 4.</b> Натиснете „Старт“. Ще видите как трите фазови полета пулсират, а резултантното магнитно поле се върти равномерно в статора. Това е физическата основа на въртящото поле в трифазните електрически машини.';
+
+  field();waves();
+}
+document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{
+  mode=+b.dataset.mode;
+  document.querySelectorAll('[data-mode]').forEach(x=>x.classList.toggle('on',x===b));
+  if(mode<3){running=false;play.textContent='Старт'}
+  update();
+});
+play.onclick=()=>{running=!running;play.textContent=running?'Пауза':'Старт'};
+reset.onclick=()=>{theta=0;running=false;play.textContent='Старт';update()};
+function resize(){fit(f,c);fit(wcan,q);update()}
+window.onresize=resize;resize();
+function loop(ts){
+  if(!last)last=ts;
+  let dt=Math.min((ts-last)/1000,.04);last=ts;
+  if(running){
+    theta+=dt*(+document.getElementById('speed').value/70)*.9;
+    update();
+  }
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+</script>
+
+</body></html>

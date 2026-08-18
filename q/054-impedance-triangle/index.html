@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<!-- saved from url=(0059)file:///C:/Users/Rosi/Downloads/index(20260818-085444).html -->
+<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Анимация 54 – Импедансен триъгълник</title>
+<style>
+*{box-sizing:border-box} body{margin:0;background:#f4f8fd;font-family:Arial,sans-serif;color:#172235}
+.wrap{max-width:1400px;margin:12px auto;background:#fff;border:2px solid #4d83c7;border-radius:16px;padding:14px}
+h1{text-align:center;color:#174d96;margin:3px 0 5px} .sub{text-align:center;font-weight:700;margin-bottom:14px}
+.grid{display:grid;grid-template-columns:300px 1fr 330px;gap:12px}
+.card{border:1px solid #cbd9ea;border-radius:12px;padding:13px;background:white}
+h2{color:#174d96;font-size:20px;margin:0 0 12px}.ctl{margin:18px 0}.ctl label{display:flex;justify-content:space-between;font-weight:700;margin-bottom:7px}
+input[type=range]{width:100%}.red{color:#c51e16}.green{color:#16812d}.blue{color:#155cc4}.purple{color:#7030a0}
+canvas{width:100%;height:570px;display:block}.box{border:1px solid #b9d0ed;border-radius:10px;padding:10px;margin-top:10px;background:#fbfdff}
+.formula{font-family:"Times New Roman";font-size:25px;text-align:center;margin:17px 0}.status{text-align:center;padding:10px;border-radius:8px;font-weight:bold;margin-top:15px}
+.ind{background:#edf5ff;color:#174d96}.cap{background:#fff0f0;color:#a32b25}.res{background:#edf9ef;color:#187239}
+button{width:100%;padding:11px;border:1px solid #b8cbe2;border-radius:8px;background:#eef4fb;font-size:16px;cursor:pointer}
+.small{font-size:14px;line-height:1.45}
+@media(max-width:950px){.grid{grid-template-columns:1fr}canvas{height:480px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Анимация 54: Импедансен триъгълник</h1>
+<div class="sub">Последователна RLC верига</div>
+<div class="grid">
+<div class="card">
+<h2>Параметри</h2>
+<div class="ctl"><label class="red">R <span id="Rv">140 Ω</span></label><input id="R" type="range" min="1" max="200" value="40"></div>
+<div class="ctl"><label class="green">X<sub>L</sub> <span id="XLv">91 Ω</span></label><input id="XL" type="range" min="0" max="200" value="80"></div>
+<div class="ctl"><label class="blue">X<sub>C</sub> <span id="XCv">0 Ω</span></label><input id="XC" type="range" min="0" max="200" value="20"></div>
+<button id="reset">↻ Възстанови началните стойности</button>
+<div id="status" class="status ind">Индуктивен характер (X &gt; 0)</div>
+<div class="box small"><b>Наблюдавай:</b><br>Променяй R, X<sub>L</sub> и X<sub>C</sub>. Триъгълникът автоматично показва общото реактивно съпротивление X, импеданса Z и фазовия ъгъл φ.</div>
+</div>
+
+<div class="card">
+<h2 style="text-align:center">Импедансен триъгълник</h2>
+<canvas id="cv" width="629" height="570"></canvas>
+<div class="box">
+<b>Текущи стойности</b><br><br>
+<span class="red">R = <span id="r2">140</span> Ω</span><br>
+<span class="green">X<sub>L</sub> = <span id="xl2">91</span> Ω</span><br>
+<span class="blue">X<sub>C</sub> = <span id="xc2">0</span> Ω</span><br>
+<span class="purple">X = X<sub>L</sub> − X<sub>C</sub> = <span id="x2">91</span> Ω</span><br>
+<span class="purple">Z = <span id="z2">166.98</span> Ω</span><br>
+φ = <span id="p2">33.02</span>°
+</div>
+</div>
+
+<div class="card">
+<h2>Основни зависимости</h2>
+<div class="formula">X = X<sub>L</sub> − X<sub>C</sub></div>
+<div class="formula">Z = √(R² + X²)</div>
+<div class="formula">φ = arctan(X/R)</div>
+<hr>
+<div class="formula">cos φ = R/Z</div>
+<div class="formula">sin φ = X/Z</div>
+<div class="formula">tan φ = X/R</div>
+<div class="box small">
+<b>Характер на веригата</b><br><br>
+<b class="green">X &gt; 0:</b> индуктивен характер — токът изостава от напрежението.<br><br>
+<b class="blue">X &lt; 0:</b> капацитивен характер — токът изпреварва напрежението.<br><br>
+<b class="purple">X = 0:</b> Z = R и φ = 0° — резонансен режим.
+</div>
+</div>
+</div>
+</div>
+<script>
+const $=x=>document.getElementById(x), R=$('R'),XL=$('XL'),XC=$('XC'),cv=$('cv'),ctx=cv.getContext('2d');
+function fit(){let r=cv.getBoundingClientRect(),d=devicePixelRatio||1;cv.width=r.width*d;cv.height=r.height*d;ctx.setTransform(d,0,0,d,0,0);draw()}
+function line(x1,y1,x2,y2,c,w=2,d=[]){ctx.save();ctx.strokeStyle=c;ctx.lineWidth=w;ctx.setLineDash(d);ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();ctx.restore()}
+function arrow(x1,y1,x2,y2,c,w=3){line(x1,y1,x2,y2,c,w);let a=Math.atan2(y2-y1,x2-x1),m=10;ctx.fillStyle=c;ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-m*Math.cos(a-.5),y2-m*Math.sin(a-.5));ctx.lineTo(x2-m*Math.cos(a+.5),y2-m*Math.sin(a+.5));ctx.fill()}
+function text(t,x,y,s=17,c='#111',a='left'){ctx.save();ctx.font=s+'px Arial';ctx.fillStyle=c;ctx.textAlign=a;ctx.textBaseline='middle';ctx.fillText(t,x,y);ctx.restore()}
+function draw(){
+ let r=+R.value,xl=+XL.value,xc=+XC.value,x=xl-xc,z=Math.hypot(r,x),phi=Math.atan2(x,r)*180/Math.PI;
+ $('Rv').textContent=r+' Ω';$('XLv').textContent=xl+' Ω';$('XCv').textContent=xc+' Ω';
+ $('r2').textContent=r.toFixed(0);$('xl2').textContent=xl.toFixed(0);$('xc2').textContent=xc.toFixed(0);$('x2').textContent=x.toFixed(0);$('z2').textContent=z.toFixed(2);$('p2').textContent=phi.toFixed(2);
+ let st=$('status'); if(Math.abs(x)<.01){st.className='status res';st.textContent='Резонанс: X = 0, Z = R, φ = 0°'} else if(x>0){st.className='status ind';st.textContent='Индуктивен характер (X > 0)'} else {st.className='status cap';st.textContent='Капацитивен характер (X < 0)'}
+ let w=cv.clientWidth,h=cv.clientHeight;ctx.clearRect(0,0,w,h);let ox=75,oy=h*.53,maxX=200,maxY=200,sx=(w-145)/maxX,sy=(h*.38)/maxY,sc=Math.min(sx,sy);
+ arrow(35,oy,w-35,oy,'#111',1.5);arrow(ox,h-35,ox,35,'#111',1.5);text('R (Ω)',w-42,oy+25,17);text('+jX',ox+15,42,17);text('−jX',ox+15,h-42,17);
+ let ex=ox+r*sc,ey=oy-x*sc;
+ line(ox,oy,ex,oy,'#d3221b',4); line(ex,oy,ex,ey,'#7030a0',4); arrow(ox,oy,ex,ey,'#7030a0',4);
+ line(ex,ey,ox,ey,'#999',1,[7,6]);
+ text('R = '+r+' Ω',(ox+ex)/2,oy+22,17,'#d3221b','center');
+ text('X = '+x.toFixed(0)+' Ω',ex+12,(oy+ey)/2,17,'#7030a0');
+ text('Z = '+z.toFixed(2)+' Ω',(ox+ex)/2-10,(oy+ey)/2-18,18,'#7030a0','center');
+ text('φ = '+phi.toFixed(1)+'°',ox+85,oy+(x>=0?-28:28),17);
+}
+[R,XL,XC].forEach(e=>e.oninput=draw);$('reset').onclick=()=>{R.value=40;XL.value=80;XC.value=20;draw()};window.onresize=fit;fit();
+</script>
+</body></html>

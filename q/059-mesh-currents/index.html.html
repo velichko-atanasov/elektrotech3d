@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<!-- saved from url=(0064)file:///C:/Users/velichko.atanasov/Downloads/preview%20(49).html -->
+<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Q059 – Метод на контурните токове</title>
+<style>
+:root{
+  --bg:#f7f9fc;--panel:#ffffff;--text:#172033;--muted:#657086;--border:#d9e0ea;
+  --a:#2563eb;--b:#16a34a;--c:#9333ea;--warn:#fff7d6;--soft:#eef4ff
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
+.wrap{max-width:1180px;margin:0 auto;padding:20px}
+.title{text-align:center;margin:4px 0 8px;font-size:28px}
+.sub{text-align:center;color:var(--muted);margin:0 0 18px}
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:16px;margin-bottom:14px}
+.control-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.slider-card{border:1px solid var(--border);border-radius:14px;padding:12px;background:#fff}
+.slider-card label{display:flex;justify-content:space-between;font-weight:700;margin-bottom:8px}
+.slider-card input{width:100%}
+.small{font-size:14px;color:var(--muted)}
+.svgbox{width:100%;overflow:hidden}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+button{border:1px solid var(--border);background:#fff;border-radius:10px;padding:10px 14px;font-size:15px;cursor:pointer}
+button:hover{background:#f1f5f9}
+.badge{display:inline-flex;align-items:center;padding:8px 12px;border-radius:999px;background:#eaf1ff;color:#1947a3;font-weight:700}
+.step{display:none;background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px;margin-top:10px;line-height:1.55}
+.step.active{display:block;border-color:#9bb7ff;background:#f7faff}
+.step h3{margin:0 0 8px;font-size:19px}
+.eq{font-family:"Cambria Math","Times New Roman",serif;font-size:21px;text-align:center;margin:10px 0}
+.note{background:var(--warn);border:1px solid #eadb90;border-radius:12px;padding:12px;margin-top:12px}
+.explain{background:var(--soft);border:1px solid #cddcff;border-radius:12px;padding:12px;margin-top:12px}
+.calcbox{background:#fbfcff;border:1px solid var(--border);border-radius:14px;padding:14px;margin-top:12px}.calcbox .eq{font-size:18px;margin:7px 0}.results{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.r{background:#fff;border:1px solid var(--border);border-radius:14px;padding:12px;text-align:center}
+.r strong{display:block;font-size:20px;margin:3px 0}
+.fade{opacity:.12}
+.show{opacity:1;transition:opacity .35s ease}
+.circuit{stroke:currentColor;stroke-width:2.2;fill:none}
+.i1{stroke:var(--a);stroke-width:1.7;fill:none}
+.i2{stroke:var(--b);stroke-width:1.7;fill:none}
+.phys{stroke:var(--c);stroke-width:1.9;fill:none}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:14px;margin-top:4px}
+.dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:5px}
+@media(max-width:780px){.control-grid,.results{grid-template-columns:1fr}.title{font-size:23px}}
+@media(max-width:520px){.wrap{padding:10px}.eq{font-size:18px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1 class="title">Q059 – Метод на контурните токове</h1>
+  <div class="sub">Интерактивно приложение с променливи импеданси и автоматично изчисляване</div>
+
+  <div class="panel">
+    <div class="control-grid">
+      <div class="slider-card">
+        <label for="z1">Z₁ = R₁ <span id="z1v">4.0 Ω</span></label>
+        <input id="z1" type="range" min="1" max="12" step="0.5" value="4">
+        <div class="small">Собствен импеданс на първия контур.</div>
+      </div>
+      <div class="slider-card">
+        <label for="z2">Z₂ = R₂ <span id="z2v">6.0 Ω</span></label>
+        <input id="z2" type="range" min="1" max="12" step="0.5" value="6">
+        <div class="small">Собствен импеданс на втория контур.</div>
+      </div>
+      <div class="slider-card">
+        <label for="z3">Z₃ = jX <span id="z3v">j2.0 Ω</span></label>
+        <input id="z3" type="range" min="0.5" max="8" step="0.5" value="2">
+        <div class="small">Общ реактивен импеданс между двата контура.</div>
+      </div>
+    </div>
+    <div class="note"><b>Източникът е постоянен:</b> Ė₁ = 20∠0° V. Премествайте плъзгачите и наблюдавайте как се изменят контурните и клоновият ток.</div>
+  </div>
+
+  <div class="panel">
+    <div class="svgbox">
+      <svg viewBox="0 0 820 390" width="100%" role="img" aria-label="Схема на два контура с общ импеданс">
+        <defs>
+          <marker id="m1" markerWidth="5" markerHeight="5" refX="4.3" refY="2.2" orient="auto"><path d="M0 0 L0 4.4 L5 2.2z" fill="#2563eb"></path></marker>
+          <marker id="m2" markerWidth="5" markerHeight="5" refX="4.3" refY="2.2" orient="auto"><path d="M0 0 L0 4.4 L5 2.2z" fill="#16a34a"></path></marker>
+          <marker id="m3" markerWidth="5" markerHeight="5" refX="4.3" refY="2.2" orient="auto"><path d="M0 0 L0 4.4 L5 2.2z" fill="#9333ea"></path></marker>
+        </defs>
+
+        <path class="circuit" d="M130 80 H690 V300 H130 Z"></path>
+        <path class="circuit" d="M410 80 V300"></path>
+
+        <circle cx="130" cy="190" r="36" fill="white" stroke="currentColor" stroke-width="2.2"></circle>
+        <path d="M106 190 q12 -20 24 0 q12 20 24 0" class="circuit"></path>
+        <text x="47" y="180" font-size="19">Ė₁</text>
+        <text x="36" y="207" font-size="16">20∠0° V</text>
+
+        <rect x="235" y="60" width="92" height="40" rx="5" fill="white" stroke="currentColor"></rect>
+        <text x="266" y="86" font-size="18">Z₁</text><text id="z1svg" x="254" y="122" font-size="16">4.0 Ω</text>
+        <rect x="545" y="60" width="92" height="40" rx="5" fill="white" stroke="currentColor"></rect>
+        <text x="576" y="86" font-size="18">Z₂</text><text id="z2svg" x="564" y="122" font-size="16">6.0 Ω</text>
+        <rect x="383" y="156" width="54" height="74" rx="5" fill="white" stroke="currentColor"></rect>
+        <text x="395" y="186" font-size="18">Z₃</text><text id="z3svg" x="389" y="212" font-size="16">j2.0 Ω</text>
+
+        <path id="i1p" d="M220 150 C260 120 330 122 365 152 C380 170 380 225 350 248 C312 273 246 258 220 215" class="i1 show" marker-end="url(#m1)"></path>
+        <text id="i1t" x="275" y="200" fill="#2563eb" font-size="18" font-weight="700" class="show">İ₁</text>
+
+        <path id="i2p" d="M455 150 C495 120 570 122 610 152 C625 170 625 225 595 248 C555 273 485 258 455 215" class="i2 show" marker-end="url(#m2)"></path>
+        <text id="i2t" x="515" y="200" fill="#16a34a" font-size="18" font-weight="700" class="show">İ₂</text>
+
+        <path id="sd" d="M397 132 V147" class="i1 fade" marker-end="url(#m1)"></path>
+        <path id="su" d="M423 250 V235" class="i2 fade" marker-end="url(#m2)"></path>
+        <text id="sdt" x="310" y="142" fill="#2563eb" font-size="14" class="fade">İ₁ надолу</text>
+        <text id="sut" x="440" y="250" fill="#16a34a" font-size="14" class="fade">İ₂ нагоре</text>
+
+        <path id="ph" d="M410 244 V264" class="phys fade" marker-end="url(#m3)"></path>
+        <text id="pht" x="442" y="274" fill="#9333ea" font-size="16" font-weight="700" class="fade">İ₁₂ = İ₁ − İ₂</text>
+      </svg>
+    </div>
+
+    <div class="legend">
+      <span><span class="dot" style="background:#2563eb"></span>контурен ток İ₁</span>
+      <span><span class="dot" style="background:#16a34a"></span>контурен ток İ₂</span>
+      <span><span class="dot" style="background:#9333ea"></span>реален ток в общия клон</span>
+    </div>
+
+    <div class="controls">
+      <button id="prev">Назад</button>
+      <button id="next">Следваща стъпка</button>
+      <button id="auto">Автоматично</button>
+      <button id="reset">Отначало</button>
+      <span id="badge" class="badge">Стъпка 1 от 5</span>
+    </div>
+
+    <section id="st1" class="step active">
+      <h3>Стъпка 1. Избираме контурни токове</h3>
+      <p>Въвеждаме два помощни тока – <b>İ₁</b> за левия контур и <b>İ₂</b> за десния. За удобство и двата са избрани по часовниковата стрелка.</p>
+      <div class="explain"><b>Защо ги наричаме помощни?</b> Защото те служат за съставяне на уравненията. Само в клон, който принадлежи на един-единствен контур, контурният ток съвпада с реалния ток в този клон.</div>
+    </section>
+
+    <section id="st2" class="step">
+      <h3>Стъпка 2. Разбираме общия клон</h3>
+      <p>Импедансът <b>Z₃</b> принадлежи едновременно на двата контура. Понеже и двата контурни тока са избрани по часовниковата стрелка, през общия клон те действат в противоположни посоки.</p>
+      <div class="eq">İ₁₂ = İ₁ − İ₂</div>
+      <div class="explain">Ако сме избрали положителната посока на клоновия ток надолу, İ₁ участва със знак „+“, а İ₂ със знак „−“. Ако резултатът стане отрицателен, това само означава, че действителната посока е нагоре.</div>
+    </section>
+
+    <section id="st3" class="step">
+      <h3>Стъпка 3. Съставяме контурните уравнения</h3>
+      <p>За левия контур сумата на импедансите е <b>Z₁ + Z₃</b>. Общият импеданс Z₃ участва и с тока на съседния контур, но със знак минус.</p>
+      <div id="eq1" class="eq">(4.0 + j2.0)İ₁ − j2.0İ₂ = 20∠0°</div>
+      <p>За десния контур няма независим източник, затова дясната страна е нула:</p>
+      <div id="eq2" class="eq">−j2.0İ₁ + (6.0 + j2.0)İ₂ = 0</div>
+      <div class="note"><b>Лесно правило:</b> по главния диагонал записваме „всичко в моя контур“. Извън диагонала записваме общия импеданс със знак, определен от относителните посоки.</div>
+    </section>
+
+    <section id="st4" class="step">
+      <h3>Стъпка 4. Решаваме системата</h3>
+      <p>След решаване на двете комплексни уравнения получаваме контурните токове. Показваме ги в полярна форма, защото така едновременно виждаме ефективната стойност и фазовия ъгъл.</p>
+      <div id="i1eq" class="eq">İ₁ ≈ 4.05∠-21.37° A</div>
+      <div id="i2eq" class="eq">İ₂ ≈ 1.28∠50.19° A</div>
+      <div class="explain">Когато промените някой от плъзгачите, тези стойности се преизчисляват веднага. Така може да се наблюдава как всеки импеданс влияе върху големината и фазата на контурните токове.</div>
+    </section>
+
+    <section id="st5" class="step">
+      <h3>Стъпка 5. Намираме реалния ток в общия клон</h3>
+      <p>Това е най-важната стъпка. През Z₃ не тече нито само İ₁, нито само İ₂. Реалният ток е тяхната векторна разлика:</p>
+      <div class="eq">İ₁₂ = İ₁ − İ₂</div>
+      <div id="i12eq" class="eq"><b>İ₁₂ ≈ 3.84∠-39.81° A</b></div>
+      <div class="note"><b>Основен извод:</b> контурният ток е помощна величина. Реалният ток в общ клон се намира от алгебричната разлика на контурните токове.</div>
+    </section>
+
+
+    <div class="panel" style="margin-top:14px">
+      <h3 style="margin:0 0 10px">Текущи контурни уравнения</h3>
+      <p class="small" style="margin-top:0">Уравненията се променят автоматично при движение на плъзгачите.</p>
+      <div id="liveEq1" class="eq">(4.0 + j2.0)İ₁ − j2.0İ₂ = 20∠0°</div>
+      <div id="liveEq2" class="eq">−j2.0İ₁ + (6.0 + j2.0)İ₂ = 0</div>
+      <div id="liveMatrix" class="eq" style="font-size:18px">[ 4.0+j2.0    −j2.0 ;   −j2.0    6.0+j2.0 ] · [ İ₁ ; İ₂ ] = [ 20 ; 0 ]</div>
+      <div class="explain">
+        <b>Как се четат?</b> В първото уравнение коефициентът пред İ₁ е сумата на всички импеданси в първия контур.
+        Коефициентът пред İ₂ е общият импеданс Z₃ със знак минус. По същия начин се съставя и второто уравнение.
+      </div>
+    </div>
+
+
+    <div class="calcbox">
+      <h3 style="margin:0 0 8px">Изчисляване на токовете</h3>
+      <p class="small" style="margin-top:0">След съставяне на системата токовете се намират чрез решаване на двете комплексни уравнения. Сметките по-долу също се променят автоматично.</p>
+
+      <div class="eq">Δ = Z₁₁Z₂₂ − Z₁₂Z₂₁</div>
+      <div id="detCalc" class="eq">Δ = (4.0 + j2.0)(6.0 + j2.0) − (−j2.0)(−j2.0) = 24.000 + j20.000 Ω²</div>
+
+      <div class="eq">İ₁ = Ė₁Z₂₂ / Δ</div>
+      <div id="i1Calc" class="eq">İ₁ = [20(6.0 + j2.0)] / (24.000 + j20.000) = 3.770 − j1.475 A = 4.05∠-21.37° A</div>
+
+      <div class="eq">İ₂ = −Ė₁Z₂₁ / Δ</div>
+      <div id="i2Calc" class="eq">İ₂ = [j40.0] / (24.000 + j20.000) = 0.820 + j0.984 A = 1.28∠50.19° A</div>
+
+      <div class="eq">İ₁₂ = İ₁ − İ₂</div>
+      <div id="i12Calc" class="eq">İ₁₂ = (3.770 − j1.475) − (0.820 + j0.984) = 2.951 − j2.459 A = 3.84∠-39.81° A</div>
+
+      <div class="explain"><b>Какво показват сметките?</b> Първо се намира детерминантата Δ на системата. След това се определят двата контурни тока İ₁ и İ₂. Накрая реалният ток през общия импеданс Z₃ се получава като векторна разлика İ₁ − İ₂.</div>
+    </div>
+
+    <div class="results">
+      <div class="r">Контур 1<strong id="r1m">4.05 A</strong><span id="r1a">∠ -21.37°</span></div>
+      <div class="r">Контур 2<strong id="r2m">1.28 A</strong><span id="r2a">∠ 50.19°</span></div>
+      <div class="r">Общ клон<strong id="r12m">3.84 A</strong><span id="r12a">∠ -39.81°</span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+let step=1,timer=null;
+const E=20;
+
+const el = id => document.getElementById(id);
+const sections=[1,2,3,4,5].map(n=>el('st'+n));
+const groups={
+  i1:[el('i1p'),el('i1t')],
+  i2:[el('i2p'),el('i2t')],
+  shared:[el('sd'),el('su'),el('sdt'),el('sut')],
+  physical:[el('ph'),el('pht')]
+};
+
+function C(re,im){return {re,im}}
+function add(a,b){return C(a.re+b.re,a.im+b.im)}
+function sub(a,b){return C(a.re-b.re,a.im-b.im)}
+function mul(a,b){return C(a.re*b.re-a.im*b.im,a.re*b.im+a.im*b.re)}
+function div(a,b){
+  const d=b.re*b.re+b.im*b.im;
+  return C((a.re*b.re+a.im*b.im)/d,(a.im*b.re-a.re*b.im)/d)
+}
+function mag(a){return Math.hypot(a.re,a.im)}
+function ang(a){return Math.atan2(a.im,a.re)*180/Math.PI}
+function fmt(n,d=2){return Number(n).toFixed(d).replace(/\.00$/,'')}
+function polar(a){return `${fmt(mag(a))}∠${fmt(ang(a))}° A`}
+
+function rect(a,unit=''){
+  const sign=a.im>=0?' + ':' − ';
+  return `${fmt(a.re,3)}${sign}j${fmt(Math.abs(a.im),3)}${unit ? ' '+unit : ''}`;
+}
+
+function solve(){
+  const R1=parseFloat(el('z1').value);
+  const R2=parseFloat(el('z2').value);
+  const X=parseFloat(el('z3').value);
+
+  el('z1v').textContent=fmt(R1,1)+' Ω';
+  el('z2v').textContent=fmt(R2,1)+' Ω';
+  el('z3v').textContent='j'+fmt(X,1)+' Ω';
+  el('z1svg').textContent=fmt(R1,1)+' Ω';
+  el('z2svg').textContent=fmt(R2,1)+' Ω';
+  el('z3svg').textContent='j'+fmt(X,1)+' Ω';
+
+  // Matrix:
+  // (R1+jX)I1 - jX I2 = E
+  // -jX I1 + (R2+jX)I2 = 0
+  const a=C(R1,X), b=C(0,-X), c=C(0,-X), d=C(R2,X);
+  const det=sub(mul(a,d),mul(b,c));
+  const I1=div(C(E*d.re,E*d.im),det);
+  const I2=div(C(-E*c.re,-E*c.im),det);
+  const I12=sub(I1,I2);
+
+  el('eq1').textContent=`(${fmt(R1,1)} + j${fmt(X,1)})İ₁ − j${fmt(X,1)}İ₂ = 20∠0°`;
+  el('eq2').textContent=`−j${fmt(X,1)}İ₁ + (${fmt(R2,1)} + j${fmt(X,1)})İ₂ = 0`;
+
+  el('liveEq1').textContent=`(${fmt(R1,1)} + j${fmt(X,1)})İ₁ − j${fmt(X,1)}İ₂ = 20∠0°`;
+  el('liveEq2').textContent=`−j${fmt(X,1)}İ₁ + (${fmt(R2,1)} + j${fmt(X,1)})İ₂ = 0`;
+  el('liveMatrix').textContent=
+    `[ ${fmt(R1,1)}+j${fmt(X,1)}    −j${fmt(X,1)} ;   −j${fmt(X,1)}    ${fmt(R2,1)}+j${fmt(X,1)} ] · [ İ₁ ; İ₂ ] = [ 20 ; 0 ]`;
+
+  el('i1eq').textContent='İ₁ ≈ '+polar(I1);
+  el('i2eq').textContent='İ₂ ≈ '+polar(I2);
+  el('i12eq').innerHTML='<b>İ₁₂ ≈ '+polar(I12)+'</b>';
+
+  el('detCalc').textContent =
+    `Δ = (${fmt(R1,1)} + j${fmt(X,1)})(${fmt(R2,1)} + j${fmt(X,1)}) − (−j${fmt(X,1)})(−j${fmt(X,1)}) = ${rect(det,'Ω²')}`;
+
+  el('i1Calc').textContent =
+    `İ₁ = [20(${fmt(R2,1)} + j${fmt(X,1)})] / (${rect(det)}) = ${rect(I1,'A')} = ${polar(I1)}`;
+
+  el('i2Calc').textContent =
+    `İ₂ = [j${fmt(20*X,1)}] / (${rect(det)}) = ${rect(I2,'A')} = ${polar(I2)}`;
+
+  el('i12Calc').textContent =
+    `İ₁₂ = (${rect(I1)}) − (${rect(I2)}) = ${rect(I12,'A')} = ${polar(I12)}`;
+
+  el('r1m').textContent=fmt(mag(I1))+' A';
+  el('r1a').textContent='∠ '+fmt(ang(I1))+'°';
+  el('r2m').textContent=fmt(mag(I2))+' A';
+  el('r2a').textContent='∠ '+fmt(ang(I2))+'°';
+  el('r12m').textContent=fmt(mag(I12))+' A';
+  el('r12a').textContent='∠ '+fmt(ang(I12))+'°';
+}
+
+function vis(arr,on){
+  arr.forEach(e=>{e.classList.toggle('fade',!on);e.classList.toggle('show',on)})
+}
+function render(){
+  sections.forEach((e,i)=>e.classList.toggle('active',i+1===step));
+  el('badge').textContent=`Стъпка ${step} от 5`;
+  vis(groups.i1,step>=1);
+  vis(groups.i2,step>=1);
+  vis(groups.shared,step>=2);
+  vis(groups.physical,step>=5);
+}
+['z1','z2','z3'].forEach(id=>el(id).addEventListener('input',solve));
+el('prev').addEventListener('click',()=>{step=Math.max(1,step-1);render()});
+el('next').addEventListener('click',()=>{step=Math.min(5,step+1);render()});
+el('reset').addEventListener('click',()=>{
+  if(timer)clearInterval(timer);timer=null;el('auto').textContent='Автоматично';
+  el('z1').value=4;el('z2').value=6;el('z3').value=2;step=1;solve();render()
+});
+el('auto').addEventListener('click',()=>{
+  if(timer){clearInterval(timer);timer=null;el('auto').textContent='Автоматично';return}
+  el('auto').textContent='Пауза';
+  timer=setInterval(()=>{if(step<5){step++;render()}else{clearInterval(timer);timer=null;el('auto').textContent='Автоматично'}},2200)
+});
+
+solve();
+render();
+</script>
+
+</body></html>

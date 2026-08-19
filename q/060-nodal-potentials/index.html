@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<!-- saved from url=(0050)file:///C:/Users/Rosi/Downloads/preview%20(7).html -->
+<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Q060 – Метод на възловите потенциали</title>
+<style>
+:root{
+  --bg:#f7f9fc;--panel:#fff;--text:#172033;--muted:#657086;--border:#d9e0ea;
+  --blue:#2563eb;--green:#16a34a;--purple:#9333ea;--orange:#d97706;
+  --soft:#eef4ff;--warn:#fff7d6;--ok:#effcf3
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
+.wrap{max-width:1180px;margin:0 auto;padding:20px}
+h1{text-align:center;margin:4px 0 8px;font-size:28px}
+.subtitle{text-align:center;color:var(--muted);margin-bottom:18px}
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:16px;margin-bottom:14px}
+.control-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.slider-card{border:1px solid var(--border);border-radius:14px;padding:12px;background:#fff}
+.slider-card label{display:flex;justify-content:space-between;font-weight:700;margin-bottom:8px}
+.slider-card input{width:100%}
+.small{font-size:14px;color:var(--muted);line-height:1.45}
+.note,.explain,.okbox{border-radius:12px;padding:12px;margin-top:12px;line-height:1.5}
+.note{background:var(--warn);border:1px solid #eadb90}
+.explain{background:var(--soft);border:1px solid #cddcff}
+.okbox{background:var(--ok);border:1px solid #bde6c8}
+.modebar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.modebar button.activeMode{background:#eaf1ff;border-color:#9bb7ff;color:#1947a3;font-weight:700}.adv-only{display:none}.advanced .adv-only{display:block}.controls{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+button{border:1px solid var(--border);background:#fff;border-radius:10px;padding:10px 14px;font-size:15px;cursor:pointer}
+button:hover{background:#f1f5f9}
+.badge{display:inline-flex;align-items:center;padding:8px 12px;border-radius:999px;background:#eaf1ff;color:#1947a3;font-weight:700}
+.step{display:none;background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px;margin-top:10px;line-height:1.58}
+.step.active{display:block;border-color:#9bb7ff;background:#f8faff}
+.step h3{margin:0 0 8px;font-size:19px}
+.eq{font-family:"Cambria Math","Times New Roman",serif;font-size:21px;text-align:center;margin:10px 0}
+.calcbox{background:#fbfcff;border:1px solid var(--border);border-radius:14px;padding:14px;margin-top:12px}
+.calcbox .eq{font-size:18px;margin:7px 0}
+.results{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+.r{background:#fff;border:1px solid var(--border);border-radius:14px;padding:12px;text-align:center}
+.r strong{display:block;font-size:20px;margin:3px 0}
+.svgbox{width:100%;overflow:hidden}
+.circuit{stroke:currentColor;stroke-width:2.2;fill:none}
+.i1{stroke:var(--blue);stroke-width:1.7;fill:none}
+.i2{stroke:var(--green);stroke-width:1.7;fill:none}
+.node{fill:var(--purple)}
+.fade{opacity:.12}
+.show{opacity:1;transition:opacity .35s ease}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:14px;margin-top:6px}
+.dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:5px}
+@media(max-width:800px){.control-grid,.results{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.control-grid,.results{grid-template-columns:1fr}.wrap{padding:10px}.eq{font-size:18px}h1{font-size:23px}}
+</style>
+</head>
+<body class="advanced">
+<div class="wrap">
+  <h1>Q060 – Метод на възловите потенциали</h1>
+  <div class="subtitle">Интерактивен пример с един неизвестен възел, динамични уравнения и проверка по първия закон на Кирхоф</div>
+
+  <div class="panel">
+    <div class="modebar">
+      <button id="basicMode" type="button" class="">Основен пример</button>
+      <button id="advancedMode" type="button" class="activeMode">Разширен пример</button>
+    </div>
+    <div id="modeHelp" class="small" style="margin-bottom:12px">Разширен пример: един неизвестен възел и три клона към два известни потенциала и опорен възел.</div>
+    <div class="control-grid">
+      <div class="slider-card">
+        <label for="e">Известен потенциал Ė <span id="ev">12.0 V</span></label>
+        <input id="e" type="range" min="4" max="24" step="1" value="12">
+        <div class="small">Потенциалът на левия известен възел спрямо опорния възел.</div>
+      </div>
+      <div class="slider-card">
+        <label for="z1">Z₁ = R₁ <span id="z1v">2.0 Ω</span></label>
+        <input id="z1" type="range" min="1" max="10" step="0.5" value="2">
+        <div class="small">Импедансът между неизвестния възел V̇ и известния потенциал Ė.</div>
+      </div>
+      <div class="slider-card">
+        <label for="z2">Z₂ = R₂ <span id="z2v">4.0 Ω</span></label>
+        <input id="z2" type="range" min="1" max="12" step="0.5" value="4">
+        <div class="small">Импедансът между неизвестния възел V̇ и опорния възел V̇₀ = 0.</div>
+      </div>
+      <div class="slider-card adv-only">
+        <label for="e2">Втори потенциал Ė₂ <span id="e2v">6.0 V</span></label>
+        <input id="e2" type="range" min="0" max="20" step="1" value="6">
+        <div class="small">Потенциалът на допълнителния известен възел.</div>
+      </div>
+      <div class="slider-card adv-only">
+        <label for="z3">Z₃ = R₃ <span id="z3v">3.0 Ω</span></label>
+        <input id="z3" type="range" min="1" max="12" step="0.5" value="3">
+        <div class="small">Импедансът на третия клон между V̇ и Ė₂.</div>
+      </div>
+    </div>
+    <div id="exampleNote" class="note"><b>Разширен пример:</b> към възела V̇ е добавен трети клон Z₃ към втори известен потенциал Ė₂. Възловото уравнение вече съдържа три тока. При началните стойности Ė₁=12 V, Z₁=2 Ω, Z₂=4 Ω, Ė₂=6 V и Z₃=3 Ω се получава V̇≈7.385 V и токовият баланс е изпълнен.</div>
+  </div>
+
+  <div class="panel">
+    <div class="svgbox">
+      <svg viewBox="0 0 860 390" width="100%" role="img" aria-label="Схема за метода на възловите потенциали с един неизвестен възел">
+        <defs>
+          <marker id="m1" markerWidth="5" markerHeight="5" refX="4.3" refY="2.2" orient="auto">
+            <path d="M0 0 L0 4.4 L5 2.2z" fill="#2563eb"></path>
+          </marker>
+          <marker id="m2" markerWidth="5" markerHeight="5" refX="4.3" refY="2.2" orient="auto">
+            <path d="M0 0 L0 4.4 L5 2.2z" fill="#16a34a"></path>
+          </marker>
+          <marker id="m3" markerWidth="5" markerHeight="5" refX="4.3" refY="2.2" orient="auto">
+            <path d="M0 0 L0 4.4 L5 2.2z" fill="#9333ea"></path>
+          </marker>
+        </defs>
+
+        <!-- Напълно свързана електрическа схема -->
+        <!-- ляв вертикален клон с източника -->
+        <path class="circuit" d="M150 90 V150"></path>
+        <circle cx="150" cy="205" r="36" fill="white" stroke="currentColor" stroke-width="2.2"></circle>
+        <path d="M126 205 q12 -20 24 0 q12 20 24 0" class="circuit"></path>
+        <path class="circuit" d="M150 241 V310"></path>
+
+        <!-- горен клон: източник -> Z1 -> неизвестен възел -->
+        <path class="circuit" d="M150 90 H285"></path>
+        <rect x="285" y="70" width="105" height="40" rx="5" fill="white" stroke="currentColor" stroke-width="2"></rect>
+        <path class="circuit" d="M390 90 H480"></path>
+
+        <!-- неизвестен възел -->
+        <circle cx="480" cy="90" r="8" class="node"></circle>
+
+        <!-- вертикален клон: V -> Z2 -> опорен възел -->
+        <path class="circuit" d="M480 98 V165"></path>
+        <rect x="455" y="165" width="50" height="85" rx="5" fill="white" stroke="currentColor" stroke-width="2"></rect>
+        <path class="circuit" d="M480 250 V310"></path>
+
+        <!-- долен общ проводник -->
+        <path class="circuit" d="M150 310 H480"></path>
+
+        <!-- земя -->
+        <line x1="445" y1="310" x2="515" y2="310" class="circuit"></line>
+        <line x1="454" y1="320" x2="506" y2="320" class="circuit"></line>
+        <line x1="465" y1="330" x2="495" y2="330" class="circuit"></line>
+
+        <!-- надписи -->
+        <text x="64" y="195" font-size="19">Ė</text>
+        <text id="esvg" x="50" y="223" font-size="16">12.0 V</text>
+        <text x="88" y="70" font-size="14">известен възел</text>
+
+        <text x="322" y="96" font-size="18">Z₁</text>
+        <text id="z1svg" x="320" y="132" font-size="16">2.0 Ω</text>
+
+        <text x="463" y="55" fill="#9333ea" font-size="21" font-weight="700">V̇</text>
+        <text id="vsvg" x="425" y="35" fill="#9333ea" font-size="16">V̇ = 7.385 V</text>
+
+        <text x="468" y="198" font-size="18">Z₂</text>
+        <text id="z2svg" x="461" y="232" font-size="16">4.0 Ω</text>
+
+        <text x="530" y="310" font-size="18">V̇₀ = 0</text>
+        <text x="530" y="334" font-size="14">опорен възел</text>
+
+        <!-- токове, избрани като излизащи от неизвестния възел -->
+        <path id="i1p" d="M458 128 H390" class="i1 fade" marker-end="url(#m1)"></path>
+        <text id="i1t" x="292" y="158" fill="#2563eb" font-size="16" font-weight="700" class="fade">İ₁ = (V̇ − Ė)/Z₁</text>
+
+        <path id="i2p" d="M520 128 V158" class="i2 fade" marker-end="url(#m2)"></path>
+        <text id="i2t" x="540" y="150" fill="#16a34a" font-size="16" font-weight="700" class="fade">İ₂ = V̇/Z₂</text>
+
+        <!-- разширен трети клон: непрекъсната връзка V -> Z3 -> E2 -> V0 -->
+        <g id="advBranch" class="adv-only">
+          <!-- от неизвестния възел до левия край на Z3 -->
+          <path class="circuit" d="M480 90 H545"></path>
+          <!-- Z3 е реално включен в проводника -->
+          <rect x="545" y="70" width="90" height="40" rx="5" fill="white" stroke="currentColor" stroke-width="2"></rect>
+          <text x="576" y="96" font-size="18">Z₃</text>
+          <text id="z3svg" x="566" y="132" font-size="16">3.0 Ω</text>
+          <!-- от десния край на Z3 до горния край на E2 -->
+          <path class="circuit" d="M635 90 H680 V169"></path>
+          <!-- втори известен потенциал -->
+          <circle cx="680" cy="205" r="36" fill="white" stroke="currentColor" stroke-width="2.2"></circle>
+          <path d="M656 205 q12 -20 24 0 q12 20 24 0" class="circuit"></path>
+          <!-- от долния край на E2 към общия опорен проводник -->
+          <path class="circuit" d="M680 241 V310 H480"></path>
+          <text x="730" y="195" font-size="18">Ė₂</text>
+          <text id="e2svg" x="730" y="222" font-size="16">6.0 V</text>
+          <!-- токът I3 е избран от V към E2 -->
+          <path id="i3p" d="M505 125 H535" class="phys fade" marker-end="url(#m3)"></path>
+          <text id="i3t" x="520" y="158" fill="#9333ea" font-size="16" font-weight="700" class="fade">İ₃ = (V̇ − Ė₂)/Z₃</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="legend">
+      <span><span class="dot" style="background:#9333ea"></span>неизвестен възлов потенциал V̇</span>
+      <span><span class="dot" style="background:#2563eb"></span>избран ток İ₁ към известния възел</span>
+      <span><span class="dot" style="background:#16a34a"></span>избран ток İ₂ към опорния възел</span>
+      <span class="adv-only"><span class="dot" style="background:#9333ea"></span>избран ток İ₃ към втория известен възел</span>
+    </div>
+
+
+    <div class="explain">
+      <b>Как се получават токовете?</b><br>
+      За всеки клон използваме закона на Ом, но напрежението върху клона е <b>разлика на възловите потенциали</b> в двата му края.
+      <div class="eq" style="font-size:18px">İ₁ = (V̇ − Ė)/Z₁</div>
+      Тук токът İ₁ е избран от неизвестния възел V̇ към възела с известен потенциал Ė.
+      Ако V̇ е по-малък от Ė, числителят става отрицателен и получаваме отрицателен ток. Това означава, че реалният ток всъщност тече <b>от източника към възела</b>.
+      <div class="eq" style="font-size:18px">İ₂ = (V̇ − 0)/Z₂ = V̇/Z₂</div>
+      При втория клон другият край е опорният възел с потенциал 0 V, затова изразът се опростява до V̇/Z₂.
+      <div class="adv-only">
+        <div class="eq" style="font-size:18px">İ₃ = (V̇ − Ė₂)/Z₃</div>
+        В разширения пример третият ток се определя по същия начин: потенциалът в началото на клона минус потенциалът в края, разделено на импеданса на клона.
+      </div>
+    </div>
+
+    <div class="controls">
+      <button id="prev">Назад</button>
+      <button id="next">Следваща стъпка</button>
+      <button id="auto">Автоматично</button>
+      <button id="reset">Отначало</button>
+      <span id="badge" class="badge">Стъпка 1 от 6</span>
+    </div>
+
+    <section id="st1" class="step active">
+      <h3>Стъпка 1. Избираме опорен възел</h3>
+      <p>Първо трябва да изберем един възел, спрямо който ще измерваме всички останали потенциали. Приемаме неговия потенциал за нула:</p>
+      <div class="eq">V̇₀ = 0</div>
+      <div class="explain"><b>Защо е необходим?</b> Сам по себе си потенциалът няма смисъл без отправна точка. Опорният възел играе ролята на „нула“, спрямо която се измерват останалите възлови потенциали.</div>
+    </section>
+
+    <section id="st2" class="step">
+      <h3>Стъпка 2. Означаваме неизвестния възлов потенциал</h3>
+      <p>В схемата има един възел с неизвестен потенциал. Означаваме го с <b>V̇</b>. Това ще бъде нашата основна неизвестна.</p>
+      <div class="explain"><b>Главната идея на метода:</b> вместо първо да търсим токовете, намираме възловия потенциал. След това токовете се получават директно чрез закона на Ом.</div>
+    </section>
+
+    <section id="st3" class="step">
+      <h3>Стъпка 3. Изразяваме клоновите токове</h3>
+      <p>Избираме за положителни токовете, които <b>излизат</b> от неизвестния възел. Токът винаги се определя от разликата между потенциала в началото и потенциала в края на клона.</p>
+      <div id="i1formula" class="eq">İ₁ = (V̇ − 12.0)/2.0</div>
+      <div id="i2formula" class="eq">İ₂ = (V̇ − 0)/4.0 = V̇/4.0</div>
+      <div id="i3formula" class="eq adv-only">İ₃ = (V̇ − 6.0)/3.0</div>
+      <div class="explain"><b>Как мислим за İ₁:</b> тръгваме от възела V̇ и вървим по избраната стрелка към възела Ė. Напрежението в тази посока е V̇ − Ė, затова İ₁ = (V̇ − Ė)/Z₁.</div>
+      <div class="explain"><b>Как мислим за İ₂:</b> тръгваме от V̇ към опорния възел. Там потенциалът е 0 V, следователно напрежението е V̇ − 0 и İ₂ = V̇/Z₂.</div>
+      <div class="note"><b>Много важно:</b> не трябва механично да записваме V̇/Ż за всеки клон. Това е правилно само когато другият край на клона е свързан към опорния възел.</div>
+    </section>
+
+    <section id="st4" class="step">
+      <h3>Стъпка 4. Прилагаме първия закон на Кирхоф</h3>
+      <p>Тъй като сме избрали всички токове, които излизат от възела, за положителни, тяхната алгебрична сума трябва да бъде нула:</p>
+      <div id="sumCurrentsEq" class="eq">İ₁ + İ₂ + İ₃ = 0</div>
+      <div id="nodeEq" class="eq">(V̇ − 12.0)/2.0 + V̇/4.0 + (V̇ − 6.0)/3.0 = 0</div>
+      <div class="explain">Това е възловото уравнение. То съдържа само една неизвестна – V̇. Именно това е голямото предимство на метода.</div>
+    </section>
+
+    <section id="st5" class="step">
+      <h3>Стъпка 5. Решаваме уравнението и намираме V̇</h3>
+      <p>Премахваме знаменателите или използваме адмитансите. След групиране на членовете получаваме:</p>
+      <div id="solveEq1" class="eq">0.5(V̇ − 12.0) + 0.25V̇ + 0.333(V̇ − 6.0) = 0</div>
+      <div id="solveEq2" class="eq">(0.5 + 0.25 + 0.333)V̇ = 0.5·12.0 + 0.333·6.0</div>
+      <div id="vEq" class="eq"><b>V̇ = 7.385 V</b></div>
+      <div class="explain">Полученият възлов потенциал е тази стойност, при която токът, който влиза във възела, точно се балансира от тока, който излиза от него.</div>
+    </section>
+
+    <section id="st6" class="step">
+      <h3>Стъпка 6. Намираме токовете и проверяваме Кирхоф</h3>
+      <p>След като V̇ е известен, клоновите токове се изчисляват директно:</p>
+      <div id="i1Eq" class="eq">İ₁ = (7.385 − 12.0)/2.0 = -2.308 A</div>
+      <div id="i2Eq" class="eq">İ₂ = 7.385/4.0 = 1.846 A</div>
+      <div id="i3Eq" class="eq adv-only">İ₃ = (7.385 − 6.0)/3.0 = 0.462 A</div>
+      <div id="checkEq" class="eq">İ₁ + İ₂ + İ₃ = -2.308 + 1.846 + 0.462 = 0.000000 A</div>
+      <div id="directionBox" class="okbox"><b>Физическа посока:</b> İ₁ е отрицателен спрямо избраната стрелка, следователно 2.308 A реално <b>влизат</b> във възела от страната на Ė. İ₂ = 1.846 A <b>излиза</b> към опорния възел. İ₃ = 0.462 A е по избраната посока към Ė₂.</div>
+      <div id="currentMeaning" class="explain"><b>Подробно за текущите стойности:</b><br>
+       İ₁ = (V̇ − Ė)/Z₁ = (7.385 − 12.0)/2.0 = -2.308 A.<br>
+       İ₂ = (V̇ − 0)/Z₂ = 7.385/4.0 = 1.846 A.<br>
+       İ₃ = (V̇ − Ė₂)/Z₃ = (7.385 − 6.0)/3.0 = 0.462 A.<br>
+       Баланс: -2.308 + 1.846 + 0.462 = 0.000000 A ≈ 0.</div>
+      <div class="note"><b>Запомнете:</b> отрицателният ток не е грешка. Той означава, че действителната посока е обратна на предварително избраната стрелка.</div>
+    </section>
+
+    <div class="panel" style="margin-top:14px">
+      <h3 style="margin:0 0 10px">Текущо възлово уравнение</h3>
+      <p class="small" style="margin-top:0">То се променя автоматично при движение на плъзгачите.</p>
+      <div id="liveEq" class="eq">(V̇ − 12.0)/2.0 + V̇/4.0 + (V̇ − 6.0)/3.0 = 0</div>
+      <div id="liveAdmEq" class="eq">0.5(V̇ − 12.0) + 0.25V̇ + 0.333(V̇ − 6.0) = 0</div>
+      <div class="explain"><b>Как се чете?</b> Всеки член е клонов ток. За всеки клон записваме „потенциал в началото минус потенциал в края“, умножено по адмитанса или разделено на импеданса.</div>
+    </div>
+
+    <div class="calcbox">
+      <h3 style="margin:0 0 8px">Сметки стъпка по стъпка</h3>
+      <div id="calc1" class="eq">Y₁ = 1/2.0 = 0.5 S</div>
+      <div id="calc2" class="eq">Y₂ = 1/4.0 = 0.25 S</div>
+      <div id="calc3" class="eq">Y₃ = 1/3.0 = 0.333 S</div>
+      <div id="calc4" class="eq">(0.5 + 0.25 + 0.333)V̇ = 6 + 2 = 8</div>
+      <div id="calc5" class="eq">V̇ = 8 / 1.083 = 7.385 V;  İ₁ = -2.308 A,  İ₂ = 1.846 A,  İ₃ = 0.462 A;  Σİ = 0.000000 A ≈ 0</div>
+    </div>
+
+    <div class="results">
+      <div class="r">Възлов потенциал<strong id="rv">7.385 V</strong><span>спрямо V̇₀</span></div>
+      <div class="r">Ток İ₁<strong id="ri1">-2.308 A</strong><span id="ri1d">реално влиза във възела</span></div>
+      <div class="r">Ток İ₂<strong id="ri2">1.846 A</strong><span id="ri2d">към опорния възел</span></div>
+      <div class="r adv-only">Ток İ₃<strong id="ri3">0.462 A</strong><span id="ri3d">към Ė₂</span></div>
+      <div class="r">Проверка<strong id="rcheck">0.000000 A</strong><span id="checkLabel">İ₁ + İ₂ + İ₃</span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+let step=1,timer=null,advanced=false;
+const el=id=>document.getElementById(id);
+const sections=[1,2,3,4,5,6].map(n=>el('st'+n));
+const groups={
+  i1:[el('i1p'),el('i1t')],
+  i2:[el('i2p'),el('i2t')],
+  i3:[el('i3p'),el('i3t')]
+};
+function fmt(n,d=3){
+  const s=Number(n).toFixed(d);
+  return s.replace(/\.000$/,'').replace(/(\.\d*[1-9])0+$/,'$1');
+}
+function visible(arr,on){
+  arr.forEach(x=>{x.classList.toggle('fade',!on);x.classList.toggle('show',on)})
+}
+function solve(){
+  const E=parseFloat(el('e').value);
+  const Z1=parseFloat(el('z1').value);
+  const Z2=parseFloat(el('z2').value);
+  const E2=parseFloat(el('e2').value);
+  const Z3=parseFloat(el('z3').value);
+  const Y1=1/Z1, Y2=1/Z2, Y3=1/Z3;
+
+  // Basic: (V-E)/Z1 + V/Z2 = 0
+  // Advanced: (V-E)/Z1 + V/Z2 + (V-E2)/Z3 = 0
+  const denom = advanced ? (Y1+Y2+Y3) : (Y1+Y2);
+  const numer = advanced ? (Y1*E + Y3*E2) : (Y1*E);
+  const V=numer/denom;
+
+  const I1=(V-E)/Z1;
+  const I2=V/Z2;
+  const I3=advanced ? (V-E2)/Z3 : 0;
+  const check=I1+I2+I3;
+
+  el('ev').textContent=fmt(E,1)+' V';
+  el('z1v').textContent=fmt(Z1,1)+' Ω';
+  el('z2v').textContent=fmt(Z2,1)+' Ω';
+  el('e2v').textContent=fmt(E2,1)+' V';
+  el('z3v').textContent=fmt(Z3,1)+' Ω';
+  el('esvg').textContent=fmt(E,1)+' V';
+  el('z1svg').textContent=fmt(Z1,1)+' Ω';
+  el('z2svg').textContent=fmt(Z2,1)+' Ω';
+  el('e2svg').textContent=fmt(E2,1)+' V';
+  el('z3svg').textContent=fmt(Z3,1)+' Ω';
+  el('vsvg').textContent='V̇ = '+fmt(V)+' V';
+
+  el('i1formula').textContent=`İ₁ = (V̇ − ${fmt(E,1)})/${fmt(Z1,1)}`;
+  el('i2formula').textContent=`İ₂ = (V̇ − 0)/${fmt(Z2,1)} = V̇/${fmt(Z2,1)}`;
+  el('i3formula').textContent=`İ₃ = (V̇ − ${fmt(E2,1)})/${fmt(Z3,1)}`;
+
+  if(advanced){
+    el('sumCurrentsEq').textContent='İ₁ + İ₂ + İ₃ = 0';
+    el('nodeEq').textContent=`(V̇ − ${fmt(E,1)})/${fmt(Z1,1)} + V̇/${fmt(Z2,1)} + (V̇ − ${fmt(E2,1)})/${fmt(Z3,1)} = 0`;
+    el('solveEq1').textContent=`${fmt(Y1,3)}(V̇ − ${fmt(E,1)}) + ${fmt(Y2,3)}V̇ + ${fmt(Y3,3)}(V̇ − ${fmt(E2,1)}) = 0`;
+    el('solveEq2').textContent=`(${fmt(Y1,3)} + ${fmt(Y2,3)} + ${fmt(Y3,3)})V̇ = ${fmt(Y1,3)}·${fmt(E,1)} + ${fmt(Y3,3)}·${fmt(E2,1)}`;
+  } else {
+    el('sumCurrentsEq').textContent='İ₁ + İ₂ = 0';
+    el('nodeEq').textContent=`(V̇ − ${fmt(E,1)})/${fmt(Z1,1)} + V̇/${fmt(Z2,1)} = 0`;
+    el('solveEq1').textContent=`${fmt(Y1,3)}(V̇ − ${fmt(E,1)}) + ${fmt(Y2,3)}V̇ = 0`;
+    el('solveEq2').textContent=`(${fmt(Y1,3)} + ${fmt(Y2,3)})V̇ = ${fmt(Y1,3)}·${fmt(E,1)}`;
+  }
+  el('vEq').innerHTML=`<b>V̇ = ${fmt(V)} V</b>`;
+
+  el('i1Eq').textContent=`İ₁ = (${fmt(V)} − ${fmt(E,1)})/${fmt(Z1,1)} = ${fmt(I1)} A`;
+  el('i2Eq').textContent=`İ₂ = ${fmt(V)}/${fmt(Z2,1)} = ${fmt(I2)} A`;
+  el('i3Eq').textContent=`İ₃ = (${fmt(V)} − ${fmt(E2,1)})/${fmt(Z3,1)} = ${fmt(I3)} A`;
+  el('checkEq').textContent=advanced
+    ? `İ₁ + İ₂ + İ₃ = ${fmt(I1)} + ${fmt(I2)} + ${fmt(I3)} = ${fmt(check,6)} A`
+    : `İ₁ + İ₂ = ${fmt(I1)} + ${fmt(I2)} = ${fmt(check,6)} A`;
+
+  let directionText=`<b>Физическа посока:</b> `;
+  directionText += I1<0
+    ? `İ₁ е отрицателен спрямо избраната стрелка, следователно ${fmt(Math.abs(I1))} A реално <b>влизат</b> във възела от страната на Ė. `
+    : `İ₁ = ${fmt(I1)} A е по избраната посока. `;
+  directionText += I2<0
+    ? `İ₂ е с обратна посока. `
+    : `İ₂ = ${fmt(I2)} A <b>излиза</b> към опорния възел. `;
+  if(advanced){
+    directionText += I3<0
+      ? `İ₃ е отрицателен, затова ${fmt(Math.abs(I3))} A реално <b>влизат</b> във възела от страната на Ė₂.`
+      : `İ₃ = ${fmt(I3)} A е по избраната посока към Ė₂.`;
+  }
+  el('directionBox').innerHTML=directionText;
+
+  el('currentMeaning').innerHTML = advanced
+    ? `<b>Подробно за текущите стойности:</b><br>
+       İ₁ = (V̇ − Ė)/Z₁ = (${fmt(V)} − ${fmt(E,1)})/${fmt(Z1,1)} = ${fmt(I1)} A.<br>
+       İ₂ = (V̇ − 0)/Z₂ = ${fmt(V)}/${fmt(Z2,1)} = ${fmt(I2)} A.<br>
+       İ₃ = (V̇ − Ė₂)/Z₃ = (${fmt(V)} − ${fmt(E2,1)})/${fmt(Z3,1)} = ${fmt(I3)} A.<br>
+       Баланс: ${fmt(I1)} + ${fmt(I2)} + ${fmt(I3)} = ${fmt(check,6)} A ≈ 0.`
+    : `<b>Подробно за текущите стойности:</b><br>
+       İ₁ = (V̇ − Ė)/Z₁ = (${fmt(V)} − ${fmt(E,1)})/${fmt(Z1,1)} = ${fmt(I1)} A.<br>
+       İ₂ = (V̇ − 0)/Z₂ = ${fmt(V)}/${fmt(Z2,1)} = ${fmt(I2)} A.<br>
+       Баланс: ${fmt(I1)} + ${fmt(I2)} = ${fmt(check,6)} A ≈ 0.`;
+
+  el('liveEq').textContent=advanced
+    ? `(V̇ − ${fmt(E,1)})/${fmt(Z1,1)} + V̇/${fmt(Z2,1)} + (V̇ − ${fmt(E2,1)})/${fmt(Z3,1)} = 0`
+    : `(V̇ − ${fmt(E,1)})/${fmt(Z1,1)} + V̇/${fmt(Z2,1)} = 0`;
+
+  el('liveAdmEq').textContent=advanced
+    ? `${fmt(Y1,3)}(V̇ − ${fmt(E,1)}) + ${fmt(Y2,3)}V̇ + ${fmt(Y3,3)}(V̇ − ${fmt(E2,1)}) = 0`
+    : `${fmt(Y1,3)}(V̇ − ${fmt(E,1)}) + ${fmt(Y2,3)}V̇ = 0`;
+
+  el('calc1').textContent=`Y₁ = 1/${fmt(Z1,1)} = ${fmt(Y1,3)} S`;
+  el('calc2').textContent=`Y₂ = 1/${fmt(Z2,1)} = ${fmt(Y2,3)} S`;
+  el('calc3').textContent=advanced
+    ? `Y₃ = 1/${fmt(Z3,1)} = ${fmt(Y3,3)} S`
+    : `(${fmt(Y1,3)} + ${fmt(Y2,3)})V̇ = ${fmt(numer,3)}`;
+  el('calc4').textContent=advanced
+    ? `(${fmt(Y1,3)} + ${fmt(Y2,3)} + ${fmt(Y3,3)})V̇ = ${fmt(Y1*E,3)} + ${fmt(Y3*E2,3)} = ${fmt(numer,3)}`
+    : `V̇ = ${fmt(numer,3)} / ${fmt(denom,3)} = ${fmt(V)} V`;
+  el('calc5').textContent=advanced
+    ? `V̇ = ${fmt(numer,3)} / ${fmt(denom,3)} = ${fmt(V)} V;  İ₁ = ${fmt(I1)} A,  İ₂ = ${fmt(I2)} A,  İ₃ = ${fmt(I3)} A;  Σİ = ${fmt(check,6)} A ≈ 0`
+    : `Проверка: ${fmt(I1)} + ${fmt(I2)} = ${fmt(check,6)} A ≈ 0`;
+
+  el('rv').textContent=fmt(V)+' V';
+  el('ri1').textContent=fmt(I1)+' A';
+  el('ri2').textContent=fmt(I2)+' A';
+  el('ri3').textContent=fmt(I3)+' A';
+  el('rcheck').textContent=fmt(check,6)+' A';
+  el('ri1d').textContent=I1<0?'реално влиза във възела':'по избраната посока';
+  el('ri2d').textContent=I2<0?'реално обратна посока':'към опорния възел';
+  el('ri3d').textContent=I3<0?'реално влиза във възела':'към Ė₂';
+  el('checkLabel').textContent=advanced?'İ₁ + İ₂ + İ₃':'İ₁ + İ₂';
+
+  el('modeHelp').textContent=advanced
+    ? 'Разширен пример: един неизвестен възел и три клона към два известни потенциала и опорен възел.'
+    : 'Основен пример: един неизвестен възел и два клона.';
+  el('exampleNote').innerHTML=advanced
+    ? `<b>Разширен пример:</b> към възела V̇ е добавен трети клон Z₃ към втори известен потенциал Ė₂. Възловото уравнение вече съдържа три тока. При началните стойности Ė₁=12 V, Z₁=2 Ω, Z₂=4 Ω, Ė₂=6 V и Z₃=3 Ω се получава V̇≈7.385 V и токовият баланс е изпълнен.`
+    : `<b>Началният пример:</b> Ė = ${fmt(E,1)} V, Z₁ = ${fmt(Z1,1)} Ω и Z₂ = ${fmt(Z2,1)} Ω. Премествайте плъзгачите и наблюдавайте резултатите.`;
+}
+function render(){
+  sections.forEach((s,i)=>s.classList.toggle('active',i+1===step));
+  el('badge').textContent=`Стъпка ${step} от 6`;
+  visible(groups.i1,step>=3);
+  visible(groups.i2,step>=3);
+  visible(groups.i3,advanced && step>=3);
+}
+['e','z1','z2','e2','z3'].forEach(id=>el(id).addEventListener('input',solve));
+
+el('basicMode').addEventListener('click',()=>{
+  advanced=false;
+  document.body.classList.remove('advanced');
+  el('basicMode').classList.add('activeMode');
+  el('advancedMode').classList.remove('activeMode');
+  step=1; solve(); render();
+});
+el('advancedMode').addEventListener('click',()=>{
+  advanced=true;
+  document.body.classList.add('advanced');
+  el('advancedMode').classList.add('activeMode');
+  el('basicMode').classList.remove('activeMode');
+  step=1; solve(); render();
+});
+el('prev').addEventListener('click',()=>{step=Math.max(1,step-1);render()});
+el('next').addEventListener('click',()=>{step=Math.min(6,step+1);render()});
+el('reset').addEventListener('click',()=>{
+  if(timer)clearInterval(timer);timer=null;el('auto').textContent='Автоматично';
+  el('e').value=12;el('z1').value=2;el('z2').value=4;el('e2').value=6;el('z3').value=3;step=1;solve();render()
+});
+el('auto').addEventListener('click',()=>{
+  if(timer){clearInterval(timer);timer=null;el('auto').textContent='Автоматично';return}
+  el('auto').textContent='Пауза';
+  timer=setInterval(()=>{
+    if(step<6){step++;render()}
+    else{clearInterval(timer);timer=null;el('auto').textContent='Автоматично'}
+  },2400)
+});
+solve();
+render();
+</script>
+
+</body></html>

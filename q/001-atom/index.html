@@ -1,7 +1,7 @@
-<!doctype html>
-<html lang="bg">
-<head>
-<meta charset="utf-8">
+<!DOCTYPE html>
+<!-- saved from url=(0061)https://velichko-atanasov.github.io/elektrotech3d/q/001-atom/ -->
+<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#040814">
 <title>QR-001 · Живият атом</title>
@@ -130,7 +130,7 @@ input[type=range]{width:100%;accent-color:var(--cyan)}
   main{padding:8px}.card{padding:13px}.stage{min-height:430px}.atom{scale:.60}
 }
 </style>
-</head>
+<script src="chrome-extension://liecbddmkiiihnedobmlmillhodjkdmb/js/recordConsoleEvents.js"></script></head>
 <body>
 <main>
 <header>
@@ -143,9 +143,9 @@ input[type=range]{width:100%;accent-color:var(--cyan)}
 
 <div class="grid">
   <section class="card stage">
-    <div class="atom" id="atom">
-      <div id="orbits"></div>
-      <div class="nucleus" id="nucleus"></div>
+    <div class="atom" id="atom" style="scale: 1;">
+      <div id="orbits"><div class="orbit shell1" style="--rotation: 18deg;"><div class="electron" data-base="4.2" style="--duration: 4.2s; animation-delay: 0s; animation-duration: 4.2s;"></div><div class="electron" data-base="4.2" style="--duration: 4.2s; animation-delay: -2.1s; animation-duration: 4.2s;"></div></div><div class="orbit shell2" style="--rotation: 0deg;"><div class="electron" data-base="5.6" style="--duration: 5.6s; animation-delay: 0s; animation-duration: 5.6s;"></div><div class="electron" data-base="5.6" style="--duration: 5.6s; animation-delay: -0.933333s; animation-duration: 5.6s;"></div></div><div class="orbit shell2" style="--rotation: 60deg;"><div class="electron" data-base="5.8999999999999995" style="--duration: 5.8999999999999995s; animation-delay: -1.96667s; animation-duration: 5.9s;"></div><div class="electron" data-base="5.8999999999999995" style="--duration: 5.8999999999999995s; animation-delay: -2.95s; animation-duration: 5.9s;"></div></div><div class="orbit shell2" style="--rotation: 120deg;"><div class="electron" data-base="6.199999999999999" style="--duration: 6.199999999999999s; animation-delay: -4.13333s; animation-duration: 6.2s;"></div><div class="electron" data-base="6.199999999999999" style="--duration: 6.199999999999999s; animation-delay: -5.16667s; animation-duration: 6.2s;"></div></div></div>
+      <div class="nucleus" id="nucleus"><div class="nucleon proton" style="left: 103.5px; top: 93.5px; z-index: 1;">+</div><div class="nucleon neutron" style="left: 80.0799px; top: 105.794px; z-index: 2;"></div><div class="nucleon proton" style="left: 95.3881px; top: 71.9861px; z-index: 3;">+</div><div class="nucleon neutron" style="left: 108.226px; top: 112.707px; z-index: 4;"></div><div class="nucleon proton" style="left: 67.5036px; top: 88.9016px; z-index: 5;">+</div><div class="nucleon neutron" style="left: 117.408px; top: 78.2914px; z-index: 6;"></div><div class="nucleon proton" style="left: 85.6896px; top: 122.554px; z-index: 7;">+</div><div class="nucleon neutron" style="left: 78.8915px; top: 65.3722px; z-index: 8;"></div><div class="nucleon proton" style="left: 124.679px; top: 104.887px; z-index: 9;">+</div><div class="nucleon neutron" style="left: 61.5176px; top: 106.702px; z-index: 10;"></div><div class="nucleon proton" style="left: 108.729px; top: 60.9564px; z-index: 11;">+</div><div class="nucleon neutron" style="left: 104.632px; top: 128.991px; z-index: 12;"></div><div class="nucleon proton" style="left: 60.271px; top: 74.2431px; z-index: 13;">+</div><div class="nucleon neutron" style="left: 132.143px; top: 85.0045px; z-index: 14;"></div><div class="nucleon proton" style="left: 70.1028px; top: 126.78px; z-index: 15;">+</div><div class="nucleon neutron" style="left: 88.1336px; top: 52.0878px; z-index: 16;"></div></div>
     </div>
   </section>
 
@@ -179,7 +179,7 @@ input[type=range]{width:100%;accent-color:var(--cyan)}
       <div class="actions">
         <button id="pauseBtn">Пауза</button>
         <button id="neutralBtn">Направи неутрален</button>
-        <button class="primary" id="hologramBtn">Холограма</button>
+        <button class="primary" id="voiceBtn">🔊 Гласово обяснение</button>
       </div>
     </div>
 
@@ -195,20 +195,12 @@ input[type=range]{width:100%;accent-color:var(--cyan)}
       <b id="electronConfig">2, 6</b>
     </div>
 
-    <div class="note" id="note">Кислород-16: 8 протона, 8 неутрона и 8 електрона.</div>
+    <div class="note" id="note">Кислород-16: 8 протона, 8 неутрона и 8 електрона. Атомът е електрически неутрален.</div>
   </section>
 </div>
 </main>
 
-<div class="hologram-screen" id="hologramScreen">
-  <button class="holo-close" id="closeHologram">Затвори</button>
-  <div class="holo-wrap">
-    <div class="holo-atom htop"><div class="holo-orbit"></div><div class="holo-orbit"></div><div class="holo-orbit"></div><div class="holo-core"></div></div>
-    <div class="holo-atom hbottom"><div class="holo-orbit"></div><div class="holo-orbit"></div><div class="holo-orbit"></div><div class="holo-core"></div></div>
-    <div class="holo-atom hleft"><div class="holo-orbit"></div><div class="holo-orbit"></div><div class="holo-orbit"></div><div class="holo-core"></div></div>
-    <div class="holo-atom hright"><div class="holo-orbit"></div><div class="holo-orbit"></div><div class="holo-orbit"></div><div class="holo-core"></div></div>
-  </div>
-</div>
+<audio id="voiceExplanation" preload="metadata" src="./q001-voice-explanation.mp3"></audio>
 
 <script>
 const ELEMENTS = [
@@ -381,18 +373,39 @@ document.getElementById("resetBtn").onclick = () => {
   renderAll();
 };
 
-document.getElementById("hologramBtn").onclick = () => {
-  document.getElementById("hologramScreen").classList.add("active");
-  document.documentElement.requestFullscreen?.();
-};
-document.getElementById("closeHologram").onclick = () => {
-  document.getElementById("hologramScreen").classList.remove("active");
-  document.exitFullscreen?.();
-};
+const voiceAudio = document.getElementById("voiceExplanation");
+const voiceBtn = document.getElementById("voiceBtn");
+
+voiceBtn.addEventListener("click", async () => {
+  if (!voiceAudio.paused) {
+    voiceAudio.pause();
+    voiceAudio.currentTime = 0;
+    voiceBtn.textContent = "🔊 Гласово обяснение";
+    return;
+  }
+
+  try {
+    await voiceAudio.play();
+    voiceBtn.textContent = "⏹ Спри обяснението";
+  } catch (err) {
+    console.error("Audio playback error:", err);
+    voiceBtn.textContent = "⚠ Звукът е блокиран в този преглед";
+  }
+});
+
+voiceAudio.addEventListener("ended", () => {
+  voiceAudio.currentTime = 0;
+  voiceBtn.textContent = "🔊 Гласово обяснение";
+});
+
+voiceAudio.addEventListener("error", () => {
+  console.error("Audio file could not be loaded.");
+  voiceBtn.textContent = "⚠ Аудиофайлът не е намерен";
+});
 
 speed.addEventListener("input", updateControls);
 zoom.addEventListener("input", updateControls);
 renderAll();
 </script>
-</body>
-</html>
+
+</body></html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<!-- saved from url=(0074)file:///C:/Users/Rosi/Downloads/q061-two-three-four-terminal-networks.html -->
+<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Q061 – Двуполюсник, триполюсник и четириполюсник</title>
+<style>
+:root{
+  --bg:#f7f9fc;--panel:#ffffff;--text:#172033;--muted:#657086;--border:#d9e0ea;
+  --a:#2563eb;--b:#16a34a;--soft:#eef4ff;--warn:#fff7d6
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
+.wrap{max-width:1120px;margin:0 auto;padding:18px}
+h1{text-align:center;margin:4px 0 6px;font-size:28px}
+.sub{text-align:center;color:var(--muted);margin-bottom:16px}
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:16px;margin-bottom:14px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:12px}
+button{border:1px solid var(--border);background:#fff;border-radius:10px;padding:10px 14px;font-size:15px;cursor:pointer}
+button.active{background:#eaf1ff;border-color:#9bb7ff;color:#1947a3;font-weight:700}
+.explain,.note{border-radius:12px;padding:12px;line-height:1.5;margin-top:10px}
+.explain{background:var(--soft);border:1px solid #cddcff}
+.note{background:var(--warn);border:1px solid #eadb90}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:10px}
+.box{border:1px solid var(--border);border-radius:12px;padding:10px;background:#fff}
+.svgbox{width:100%;overflow:hidden}
+.wire{stroke:currentColor;stroke-width:2.2;fill:none}
+.block{fill:#fff;stroke:currentColor;stroke-width:2}
+.node{fill:var(--a)}
+.i1{stroke:var(--a);stroke-width:1.8;fill:none}
+.i2{stroke:var(--b);stroke-width:1.8;fill:none}
+.plusminus{font-size:18px;font-weight:700}
+.hidden{display:none}
+.device-list{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px}
+.pill{border:1px solid var(--border);border-radius:999px;padding:7px 11px;background:#fff}
+@media(max-width:650px){.grid{grid-template-columns:1fr}.wrap{padding:10px}h1{font-size:23px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Q061 – Двуполюсник, триполюсник и четириполюсник</h1>
+  <div class="sub">Външни клеми, входни и изходни величини и основни свойства на четириполюсника</div>
+
+  <div class="panel">
+    <div class="tabs">
+      <button id="b2" class="" type="button">Двуполюсник</button>
+      <button id="b3" type="button" class="">Триполюсник</button>
+      <button id="b4" type="button" class="">Четириполюсник</button>
+      <button id="bp" type="button" class="">Свойства</button>
+      <button id="be" type="button" class="active">Примери</button>
+    </div>
+
+    <div class="svgbox">
+      <svg viewBox="0 0 860 420" width="100%" role="img" aria-label="Сравнение между двуполюсник, триполюсник и четириполюсник">
+        <defs>
+          <marker id="a1" markerWidth="6" markerHeight="6" refX="5" refY="2.5" orient="auto">
+            <path d="M0 0 L0 5 L6 2.5z" fill="#2563eb"></path>
+          </marker>
+          <marker id="a2" markerWidth="6" markerHeight="6" refX="5" refY="2.5" orient="auto">
+            <path d="M0 0 L0 5 L6 2.5z" fill="#16a34a"></path>
+          </marker>
+        </defs>
+
+        <g id="g2" style="display: none;">
+          <rect x="300" y="120" width="260" height="150" rx="18" class="block"></rect>
+          <text x="430" y="185" text-anchor="middle" font-size="27" font-weight="700">ДВУПОЛЮСНИК</text>
+          <text x="430" y="220" text-anchor="middle" font-size="17">2 външни клеми</text>
+          <path d="M170 195 H300" class="wire"></path><path d="M560 195 H690" class="wire"></path>
+          <circle cx="170" cy="195" r="7" class="node"></circle><circle cx="690" cy="195" r="7" class="node"></circle>
+          <text x="145" y="177" font-size="18">1</text><text x="700" y="177" font-size="18">2</text>
+          <path d="M205 165 H270" class="i1" marker-end="url(#a1)"></path>
+          <text x="232" y="150" fill="#2563eb" font-size="18">I</text>
+          <text x="430" y="315" text-anchor="middle" font-size="16">Примери: резистор, бобина, кондензатор, диод, товар</text>
+        </g>
+
+        <g id="g3" style="display: none;">
+          <rect x="300" y="110" width="260" height="170" rx="18" class="block"></rect>
+          <text x="430" y="180" text-anchor="middle" font-size="27" font-weight="700">ТРИПОЛЮСНИК</text>
+          <text x="430" y="216" text-anchor="middle" font-size="17">3 външни клеми</text>
+          <path d="M170 150 H300" class="wire"></path><path d="M170 240 H300" class="wire"></path><path d="M560 195 H690" class="wire"></path>
+          <circle cx="170" cy="150" r="7" class="node"></circle><circle cx="170" cy="240" r="7" class="node"></circle><circle cx="690" cy="195" r="7" class="node"></circle>
+          <text x="145" y="132" font-size="18">1</text><text x="145" y="264" font-size="18">2</text><text x="700" y="178" font-size="18">3</text>
+          <text x="430" y="322" text-anchor="middle" font-size="16">Примери: транзистор, автотрансформатор, някои усилвателни схеми</text>
+        </g>
+
+        <g id="g4" style="display: block;">
+          <rect x="285" y="92" width="290" height="220" rx="18" class="block"></rect>
+          <text x="430" y="164" text-anchor="middle" font-size="26" font-weight="700">ЧЕТИРИПОЛЮСНИК</text>
+          <text x="430" y="198" text-anchor="middle" font-size="17">две двойки външни клеми</text>
+
+          <path d="M125 140 H285" class="wire"></path><path d="M125 260 H285" class="wire"></path>
+          <path d="M575 140 H735" class="wire"></path><path d="M575 260 H735" class="wire"></path>
+          <circle cx="125" cy="140" r="7" class="node"></circle><circle cx="125" cy="260" r="7" class="node"></circle>
+          <circle cx="735" cy="140" r="7" class="node"></circle><circle cx="735" cy="260" r="7" class="node"></circle>
+          <text x="100" y="122" font-size="18">1</text><text x="92" y="286" font-size="18">1′</text>
+          <text x="745" y="122" font-size="18">2</text><text x="745" y="286" font-size="18">2′</text>
+
+          <text x="185" y="106" font-size="17" font-weight="700">ВХОД</text>
+          <text x="650" y="106" font-size="17" font-weight="700">ИЗХОД</text>
+
+          <path d="M155 130 H250" class="i1" marker-end="url(#a1)"></path>
+          <text x="194" y="115" fill="#2563eb" font-size="18">İ₁</text>
+          <path d="M705 130 H610" class="i2" marker-end="url(#a2)"></path>
+          <text x="655" y="115" fill="#16a34a" font-size="18">İ₂</text>
+
+          <text x="155" y="175" fill="#2563eb" class="plusminus">+</text>
+          <text x="155" y="246" fill="#2563eb" class="plusminus">−</text>
+          <text x="183" y="213" fill="#2563eb" font-size="18">Ů₁</text>
+
+          <text x="688" y="175" fill="#16a34a" class="plusminus">+</text>
+          <text x="688" y="246" fill="#16a34a" class="plusminus">−</text>
+          <text x="650" y="213" fill="#16a34a" font-size="18">Ů₂</text>
+
+          <text x="430" y="350" text-anchor="middle" font-size="16">В анимацията İ₁ и İ₂ са избрани положителни към четириполюсника.</text>
+        </g>
+      </svg>
+    </div>
+
+    <div id="t2" class="explain hidden"><b>Двуполюсник:</b> електрически елемент или схема с две външни клеми. Между тях се задава напрежение и през двуполюсника може да протича ток.</div>
+    <div id="t3" class="explain hidden"><b>Триполюсник:</b> устройство с три външни клеми. Една от клемите често е обща за два входно-изходни контура.</div>
+    <div id="t4" class="explain"><b>Четириполюсник:</b> схема с две двойки клеми – входни и изходни. Той е математически модел, чрез който се разглежда връзката между входните и изходните величини, без непременно да се анализира подробно вътрешната структура.</div>
+
+    <div id="props" class="hidden">
+      <div class="explain"><b>Знакова конвенция:</b> напреженията са определени като Ů₁ = V₁ − V₁′ и Ů₂ = V₂ − V₂′. В тази анимация токовете İ₁ и İ₂ са избрани положителни към четириполюсника. При други системи параметри може да се използва различна посока за изходния ток, затова знаковата конвенция винаги трябва да бъде уточнена.</div>
+      <div class="grid">
+        <div class="box"><b>Вход и изход</b><br><span style="color:var(--muted)">Две клеми образуват входа, а другите две – изхода.</span></div>
+        <div class="box"><b>Математически модел</b><br><span style="color:var(--muted)">Сложната вътрешна схема може да се разглежда чрез четири външни величини.</span></div>
+        <div class="box"><b>Пасивен / активен</b><br><span style="color:var(--muted)">Пасивният не съдържа независим източник на енергия; активният може да съдържа активни елементи и източници.</span></div>
+        <div class="box"><b>Линеен / нелинеен</b><br><span style="color:var(--muted)">При линейния четириполюсник връзките между входа и изхода са линейни.</span></div>
+        <div class="box"><b>Симетричен / несиметричен</b><br><span style="color:var(--muted)">При симетричния входът и изходът имат еднакви свойства при взаимна размяна.</span></div>
+        <div class="box"><b>Взаимен / невзаимен</b><br><span style="color:var(--muted)">При взаимния четириполюсник предаването между входа и изхода удовлетворява условието за взаимност.</span></div>
+      </div>
+      <div class="note"><b>Най-важното:</b> не е необходимо винаги да знаем подробно какво има вътре в четириполюсника. За много задачи е достатъчно да знаем как Ů₁ и İ₁ са свързани с Ů₂ и İ₂.</div>
+    </div>
+
+    <div id="examples" class="">
+      <div class="explain"><b>Какво може да бъде моделирано като четириполюсник?</b> Много различни електрически устройства могат да бъдат разглеждани по този начин, ако имат ясно определен вход и изход.</div>
+      <div class="device-list">
+        <span class="pill">Филтър</span>
+        <span class="pill">Трансформатор</span>
+        <span class="pill">Усилвател</span>
+        <span class="pill">Участък от електрическа линия</span>
+        <span class="pill">Кабелен участък</span>
+        <span class="pill">Електронен блок</span>
+      </div>
+      <div class="note"><b>Общ принцип:</b> независимо какво има вътре, четириполюсникът се описва чрез поведението си на входа и изхода.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const ids=['b2','b3','b4','bp','be'];
+const buttons=ids.map(id=>document.getElementById(id));
+const g2=document.getElementById('g2');
+const g3=document.getElementById('g3');
+const g4=document.getElementById('g4');
+const t2=document.getElementById('t2');
+const t3=document.getElementById('t3');
+const t4=document.getElementById('t4');
+const props=document.getElementById('props');
+const examples=document.getElementById('examples');
+
+function show(id){
+  buttons.forEach(b=>b.classList.toggle('active',b.id===id));
+  g2.style.display='none';
+  g3.style.display='none';
+  g4.style.display='none';
+  t2.classList.add('hidden');
+  t3.classList.add('hidden');
+  t4.classList.add('hidden');
+  props.classList.add('hidden');
+  examples.classList.add('hidden');
+
+  if(id==='b2'){g2.style.display='block';t2.classList.remove('hidden')}
+  if(id==='b3'){g3.style.display='block';t3.classList.remove('hidden')}
+  if(id==='b4'){g4.style.display='block';t4.classList.remove('hidden')}
+  if(id==='bp'){g4.style.display='block';t4.classList.remove('hidden');props.classList.remove('hidden')}
+  if(id==='be'){g4.style.display='block';t4.classList.remove('hidden');examples.classList.remove('hidden')}
+}
+buttons.forEach(b=>b.addEventListener('click',()=>show(b.id)));
+show('b2');
+</script>
+
+
+</body></html>

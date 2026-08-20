@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0064)file:///C:/Users/velichko.atanasov/Downloads/preview%20(42).html -->
+<!-- saved from url=(0071)https://velichko-atanasov.github.io/elektrotech3d/q/038-electron-drift/ -->
 <html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -143,7 +143,7 @@
     .note{left:12px;top:12px}
   }
 </style>
-</head>
+<script src="chrome-extension://liecbddmkiiihnedobmlmillhodjkdmb/js/recordConsoleEvents.js"></script></head>
 <body>
 <div class="wrap">
   <h1>Движение на електроните в алуминиев проводник</h1>
@@ -155,10 +155,11 @@
     <button id="fieldBtn">Електрическо поле: ИЗКЛ.</button>
     <button id="pauseBtn">Пауза</button>
     <button id="resetBtn">Нулиране</button>
+    <button id="voiceBtn">🔊 Гласово обяснение</button>
   </div>
 
   <div class="stage">
-    <canvas id="c" width="1289" height="773"></canvas>
+    <canvas id="c" width="1142" height="684"></canvas>
     <div class="note" id="note">Без външно поле: електроните се движат хаотично във всички посоки</div>
     <div class="formula" id="formula">v⃗<sub>d</sub> = 0</div>
   </div>
@@ -172,6 +173,8 @@
     <div class="card" id="modeInfo"><b>Забавено движение без външно поле:</b> движението е умишлено забавено, за да се виждат отделните електрони и хаотичните им траектории. При включване на полето хаотичното движение остава, но всички електрони получават ясно видима средна дрейфова компонента срещу E⃗.</div>
   </div>
 </div>
+
+<audio id="voiceExplanation" preload="metadata" src="./q038-voice-explanation.mp3"></audio>
 
 <script>
 const canvas = document.getElementById('c');
@@ -786,6 +789,33 @@ document.getElementById('realBtn').onclick=()=>{realMode=true;syncUI()};
 document.getElementById('fieldBtn').onclick=()=>{field=!field;syncUI()};
 document.getElementById('pauseBtn').onclick=()=>{paused=!paused;syncUI()};
 document.getElementById('resetBtn').onclick=()=>{field=false;paused=false;realMode=false;resetElectrons();resetCircuitElectrons();syncUI()};
+
+
+const voiceAudio = document.getElementById('voiceExplanation');
+const voiceBtn = document.getElementById('voiceBtn');
+
+voiceBtn.addEventListener('click', async () => {
+  if (!voiceAudio.paused) {
+    voiceAudio.pause();
+    voiceAudio.currentTime = 0;
+    voiceBtn.textContent = '🔊 Гласово обяснение';
+    return;
+  }
+  try {
+    await voiceAudio.play();
+    voiceBtn.textContent = '⏹ Спри обяснението';
+  } catch (err) {
+    console.error('Audio playback error:', err);
+    voiceBtn.textContent = '⚠ Аудиофайлът не може да се пусне';
+  }
+});
+voiceAudio.addEventListener('ended', () => {
+  voiceAudio.currentTime = 0;
+  voiceBtn.textContent = '🔊 Гласово обяснение';
+});
+voiceAudio.addEventListener('error', () => {
+  voiceBtn.textContent = '⚠ Аудиофайлът не е намерен';
+});
 
 resize();
 syncUI();

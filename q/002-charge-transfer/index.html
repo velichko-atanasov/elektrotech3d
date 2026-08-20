@@ -1,7 +1,7 @@
-<!doctype html>
-<html lang="bg">
-<head>
-<meta charset="utf-8">
+<!DOCTYPE html>
+<!-- saved from url=(0064)file:///C:/Users/velichko.atanasov/Downloads/preview%20(53).html -->
+<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>QR-002 · Предаване на електричен заряд</title>
 <style>
@@ -42,7 +42,7 @@ table{width:100%;border-collapse:collapse;margin-top:18px}th,td{padding:10px;bor
 
 <div class="grid">
 <section class="card stage">
-<div class="scene active" id="metal"><div class="conductor" id="conductor"></div></div>
+<div class="scene active" id="metal"><div class="conductor" id="conductor"><div class="fixed" style="left: 5%; top: 12px;">+</div><div class="fixed" style="left: 19%; top: 12px;">+</div><div class="fixed" style="left: 33%; top: 12px;">+</div><div class="fixed" style="left: 47%; top: 12px;">+</div><div class="fixed" style="left: 61%; top: 12px;">+</div><div class="fixed" style="left: 75%; top: 12px;">+</div><div class="fixed" style="left: 89%; top: 12px;">+</div><div class="fixed" style="left: 5%; top: 48px;">+</div><div class="fixed" style="left: 19%; top: 48px;">+</div><div class="fixed" style="left: 33%; top: 48px;">+</div><div class="fixed" style="left: 47%; top: 48px;">+</div><div class="fixed" style="left: 61%; top: 48px;">+</div><div class="fixed" style="left: 75%; top: 48px;">+</div><div class="fixed" style="left: 89%; top: 48px;">+</div><div class="fixed" style="left: 5%; top: 84px;">+</div><div class="fixed" style="left: 19%; top: 84px;">+</div><div class="fixed" style="left: 33%; top: 84px;">+</div><div class="fixed" style="left: 47%; top: 84px;">+</div><div class="fixed" style="left: 61%; top: 84px;">+</div><div class="fixed" style="left: 75%; top: 84px;">+</div><div class="particle electron" style="left: 6%; top: 14%;">−</div><div class="particle electron" style="left: 10%; top: 32%;">−</div><div class="particle electron" style="left: 14%; top: 50%;">−</div><div class="particle electron" style="left: 18%; top: 68%;">−</div><div class="particle electron" style="left: 22%; top: 86%;">−</div><div class="particle electron" style="left: 26%; top: 14%;">−</div><div class="particle electron" style="left: 30%; top: 32%;">−</div><div class="particle electron" style="left: 34%; top: 50%;">−</div><div class="particle electron" style="left: 38%; top: 68%;">−</div><div class="particle electron" style="left: 42%; top: 86%;">−</div><div class="particle electron" style="left: 46%; top: 14%;">−</div><div class="particle electron" style="left: 50%; top: 32%;">−</div><div class="particle electron" style="left: 54%; top: 50%;">−</div><div class="particle electron" style="left: 58%; top: 68%;">−</div><div class="particle electron" style="left: 62%; top: 86%;">−</div><div class="particle electron" style="left: 66%; top: 14%;">−</div><div class="particle electron" style="left: 70%; top: 32%;">−</div><div class="particle electron" style="left: 74%; top: 50%;">−</div><div class="particle electron" style="left: 78%; top: 68%;">−</div><div class="particle electron" style="left: 82%; top: 86%;">−</div><div class="particle electron" style="left: 86%; top: 14%;">−</div><div class="particle electron" style="left: 90%; top: 32%;">−</div><div class="particle electron" style="left: 6%; top: 50%;">−</div><div class="particle electron" style="left: 10%; top: 68%;">−</div></div></div>
 <div class="scene" id="water"><div class="beaker"><div class="water"></div><div class="electrode left"></div><div class="electrode right"></div><div id="ions"></div></div></div>
 <div class="scene" id="air"><div class="air"><div class="rod"></div><div class="rod r"></div><div class="spark" id="spark"></div><div id="airParticles"></div></div></div>
 <div class="scene" id="semi"><div class="semi"><div class="preg"></div><div class="nreg"></div><div class="label p">p-област</div><div class="label n">n-област</div><div id="carriers"></div></div></div>
@@ -82,19 +82,19 @@ function particle(cls,txt,x,y,parent){
 function renderMetal(){
  conductor.innerHTML="";
  for(let i=0;i<20;i++){const a=document.createElement("div");a.className="fixed";a.textContent="+";a.style.left=(5+(i%7)*14)+"%";a.style.top=(12+Math.floor(i/7)*36)+"px";conductor.appendChild(a)}
- for(let i=0;i<12;i++){const e=particle("electron","−",8+(i*7)%85,18+(i%3)*30,conductor);e.animate([{transform:"translateX(0)"},{transform:"translateX(-90px)"}],{duration:1000+(100-slider.value)*18,iterations:Infinity,delay:i*100})}
+ for(let i=0;i<24;i++){const e=particle("electron","−",6+(i*4)%88,14+(i%5)*18,conductor);e.animate([{transform:"translateX(0)"},{transform:"translateX(-90px)"}],{duration:520+(100-slider.value)*8,iterations:Infinity,delay:i*45})}
 }
 function renderWater(){
- ions.innerHTML="";let count=4+Math.round(slider.value/10);
- for(let i=0;i<count;i++){let pos=i%2===0;let el=particle(pos?"positive":"negative",pos?"Na⁺":"Cl⁻",12+(i*8)%72,28+(i*11)%58,ions);el.animate([{transform:"translateX(0)"},{transform:"translateX("+(pos?-110:110)+"px)"}],{duration:2200,iterations:Infinity,direction:"alternate",delay:i*90})}
+ ions.innerHTML="";let count=10+Math.round(slider.value/6);
+ for(let i=0;i<count;i++){let pos=i%2===0;let el=particle(pos?"positive":"negative",pos?"Na⁺":"Cl⁻",12+(i*8)%72,28+(i*11)%58,ions);el.animate([{transform:"translateX(0)"},{transform:"translateX("+(pos?-110:110)+"px)"}],{duration:1050,iterations:Infinity,direction:"alternate",delay:i*40})}
 }
 function renderAir(){
  airParticles.innerHTML="";let on=slider.value>=70;spark.classList.toggle("on",on);state.textContent=on?"Йонизиран газ":"Изолатор";
- let count=on?16:4;for(let i=0;i<count;i++){let pos=i%2;let el=particle(pos?"positive":"electron",pos?"+":"−",15+(i*5)%68,18+(i*13)%64,airParticles);if(on)el.animate([{transform:"translateX(0)"},{transform:"translateX("+(pos?80:-80)+"px)"}],{duration:900+i*35,iterations:Infinity,direction:"alternate"})}
+ let count=on?30:8;for(let i=0;i<count;i++){let pos=i%2;let el=particle(pos?"positive":"electron",pos?"+":"−",15+(i*5)%68,18+(i*13)%64,airParticles);if(on)el.animate([{transform:"translateX(0)"},{transform:"translateX("+(pos?80:-80)+"px)"}],{duration:480+i*12,iterations:Infinity,direction:"alternate"})}
 }
 function renderSemi(){
- carriers.innerHTML="";let count=6+Math.round(slider.value/10);
- for(let i=0;i<count;i++){let elc=i%2===0;let el=particle(elc?"electron":"hole",elc?"−":"+",8+(i*7)%80,28+(i*11)%50,carriers);el.animate([{transform:"translateX(0)"},{transform:"translateX("+(elc?-90:90)+"px)"}],{duration:2100,iterations:Infinity,direction:"alternate",delay:i*80})}
+ carriers.innerHTML="";let count=12+Math.round(slider.value/6);
+ for(let i=0;i<count;i++){let elc=i%2===0;let el=particle(elc?"electron":"hole",elc?"−":"+",8+(i*7)%80,28+(i*11)%50,carriers);el.animate([{transform:"translateX(0)"},{transform:"translateX("+(elc?-90:90)+"px)"}],{duration:980,iterations:Infinity,direction:"alternate",delay:i*35})}
 }
 function render(){value.textContent=slider.value+"%";if(mode==="metal")renderMetal();if(mode==="water")renderWater();if(mode==="air")renderAir();if(mode==="semi")renderSemi()}
 function setMode(m){mode=m;document.querySelectorAll("[data-mode]").forEach(b=>b.classList.toggle("active",b.dataset.mode===m));document.querySelectorAll(".scene").forEach(s=>s.classList.remove("active"));document.getElementById(m).classList.add("active");slider.value=50;const d=data[m];title.textContent=d[0];text.textContent=d[1];sliderLabel.textContent=d[2];mainCarriers.textContent=d[3];state.textContent=d[4];note.textContent=d[5];render()}

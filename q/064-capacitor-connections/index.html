@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<!-- saved from url=(0096)file:///C:/Users/velichko.atanasov/Downloads/capacitor-connections-animation-verified%20(1).html -->
+<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Свързване на кондензатори</title>
+<style>
+:root{--bg:#07111d;--panel:#0c1b2b;--line:#31516d;--txt:#eef7ff;--muted:#a9bfd0;--blue:#4a8fff;--cyan:#54d8ff;--gold:#ffd45a;--red:#ff6767;--green:#6ce49b}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 50% 0,#12304b,#07111d 55%);color:var(--txt);font-family:Segoe UI,Arial,sans-serif}
+.wrap{max-width:1180px;margin:auto;padding:16px}
+h1{margin:0 0 5px;font-size:clamp(24px,3vw,34px)}
+.sub{color:var(--cyan);margin-bottom:14px}
+.tabs{display:flex;gap:10px;margin-bottom:12px}
+button{border:1px solid #45657f;background:#10263a;color:white;border-radius:9px;padding:10px 17px;font-size:16px;font-weight:700;cursor:pointer}
+button.active{background:#087bcf;border-color:#38a8ef}
+.main{display:grid;grid-template-columns:1.45fr .75fr;gap:14px}
+.panel{background:linear-gradient(180deg,#0d2032,#081624);border:1px solid var(--line);border-radius:14px;padding:13px}
+canvas{display:block;width:100%;height:440px;background:rgba(0,0,0,.10);border-radius:10px}
+.side h2{margin:0 0 12px;color:var(--gold);font-size:21px}
+.eq{font:italic 22px Georgia,serif;background:#07131f;border:1px solid #355b76;border-radius:9px;padding:12px;margin:9px 0;text-align:center}
+.fact{line-height:1.6;color:#dce9f2}
+.value{font-size:27px;color:var(--green);font-weight:800;text-align:center;margin:12px 0}
+.controls{margin-top:14px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px}
+.row{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+.ctrl label{display:flex;justify-content:space-between;font-weight:700;margin-bottom:6px}
+input[type=range]{width:100%;accent-color:#1687ff}
+.actions{display:flex;gap:9px;margin-top:14px;flex-wrap:wrap}
+.readouts{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:13px}
+.read{background:#081725;border:1px solid #2e506a;border-radius:9px;padding:10px;text-align:center}
+.read b{display:block;font-size:20px;color:#67b9ff;margin-top:3px}
+.note{margin-top:11px;color:var(--muted);line-height:1.5}
+@media(max-width:850px){.main,.row{grid-template-columns:1fr}.readouts{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>СВЪРЗВАНЕ НА КОНДЕНЗАТОРИ</h1>
+<div class="sub">Последователно и паралелно свързване · еквивалентен капацитет · заряд и напрежение</div>
+
+<div class="tabs">
+<button id="seriesBtn" class="active">Последователно</button>
+<button id="parallelBtn">Паралелно</button>
+</div>
+
+<div class="main">
+<div class="panel"><canvas id="cv" width="760" height="440"></canvas></div>
+<div class="panel side">
+<h2 id="modeTitle">Последователно свързване</h2>
+<div class="eq" id="eq1">1/Cекв = 1/C₁ + 1/C₂ + 1/C₃</div>
+<div class="eq" id="eq2">Q₁ = Q₂ = Q₃ = Q</div>
+<div class="value" id="ceq">Cекв = 3.00 µF</div>
+<div class="fact" id="fact"></div>
+</div>
+</div>
+
+<div class="controls">
+<div class="row">
+<div class="ctrl"><label><span>C₁</span><span id="c1v">6 µF</span></label><input id="c1" type="range" min="1" max="30" value="6" step="1"></div>
+<div class="ctrl"><label><span>C₂</span><span id="c2v">10 µF</span></label><input id="c2" type="range" min="1" max="30" value="10" step="1"></div>
+<div class="ctrl"><label><span>C₃</span><span id="c3v">15 µF</span></label><input id="c3" type="range" min="1" max="30" value="15" step="1"></div>
+<div class="ctrl"><label><span>U</span><span id="uv">12 V</span></label><input id="u" type="range" min="1" max="24" value="12" step="1"></div>
+</div>
+<div class="actions">
+<button id="charge">⚡ Зареждане</button>
+<button id="pause">Ⅱ Пауза</button>
+<button id="reset">↻ Отначало</button>
+</div>
+<div class="readouts">
+<div class="read">Кондензатор C₁<b id="r1">U₁=6.00 V · Q₁=36.00 µC</b></div>
+<div class="read">Кондензатор C₂<b id="r2">U₂=3.60 V · Q₂=36.00 µC</b></div>
+<div class="read">Кондензатор C₃<b id="r3">U₃=2.40 V · Q₃=36.00 µC</b></div>
+</div>
+<div class="note" id="note"><b>Важно:</b> при последователно свързване зарядът по големина е еднакъв за всички кондензатори, а напрежението се разпределя: U = U₁ + U₂ + U₃. Ток протича само по време на зареждането.</div>
+</div>
+</div>
+
+<script>
+const ctx=cv.getContext('2d');
+let mode='series', phase=0, paused=false, charging=false, chargeProgress=0;
+
+function line(x1,y1,x2,y2,col='#4a8fff',w=5){
+ ctx.strokeStyle=col;ctx.lineWidth=w;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke()
+}
+function text(s,x,y,col='#eef7ff',size=18,align='center'){
+ ctx.fillStyle=col;ctx.font=`${size}px Segoe UI,Arial`;ctx.textAlign=align;ctx.fillText(s,x,y)
+}
+function capVertical(x,y,label){
+ line(x,y-42,x,y-12,'#4a8fff',5); line(x,y+12,x,y+42,'#4a8fff',5);
+ line(x-34,y-12,x+34,y-12,'#79a8ff',7); line(x-34,y+12,x+34,y+12,'#79a8ff',7);
+ text(label,x,y+70,'#ffd45a',19);
+}
+function capHorizontal(x,y,label){
+ line(x-42,y,x-12,y,'#4a8fff',5); line(x+12,y,x+42,y,'#4a8fff',5);
+ line(x-12,y-34,x-12,y+34,'#79a8ff',7); line(x+12,y-34,x+12,y+34,'#79a8ff',7);
+ text(label,x,y-55,'#ffd45a',19);
+}
+function battery(x,y){
+ line(x,y-28,x,y-8,'#eef7ff',3);line(x,y+8,x,y+28,'#eef7ff',3);
+ line(x-18,y-8,x+18,y-8,'#ff6a6a',5);line(x-10,y+8,x+10,y+8,'#eef7ff',3);
+ text('+',x-30,y-3,'#ff6a6a',22);text('−',x-30,y+23,'#6da9ff',22);
+}
+function dot(x,y,col){
+ ctx.fillStyle=col;ctx.beginPath();ctx.arc(x,y,5,0,Math.PI*2);ctx.fill()
+}
+function movingDots(path,n,speed){
+ if(!charging)return;
+ let seg=[],total=0;
+ for(let i=0;i<path.length-1;i++){let d=Math.hypot(path[i+1][0]-path[i][0],path[i+1][1]-path[i][1]);seg.push(d);total+=d}
+ for(let k=0;k<n;k++){
+   let d=((phase*speed+k/n)%1)*total,i=0;
+   while(i<seg.length-1&&d>seg[i]){d-=seg[i];i++}
+   let t=d/seg[i],x=path[i][0]+t*(path[i+1][0]-path[i][0]),y=path[i][1]+t*(path[i+1][1]-path[i][1]);
+   dot(x,y,'#54d8ff');
+ }
+}
+function chargesOnPlate(x,y,vertical,plus){
+ if(chargeProgress<=0)return;
+ const count=Math.max(1,Math.round(5*chargeProgress));
+ for(let k=0;k<count;k++){
+   const pos=k-(count-1)/2;
+   if(vertical) text(plus?'+':'−',x+pos*13,y,plus?'#ff6767':'#54d8ff',17);
+   else text(plus?'+':'−',x,y+pos*13,plus?'#ff6767':'#54d8ff',17);
+ }
+}
+function drawSeries(){
+ ctx.clearRect(0,0,760,440);
+ text('ПОСЛЕДОВАТЕЛНО СВЪРЗВАНЕ',380,35,'#eef7ff',22);
+ const y=190, xs=[250,390,530];
+ battery(105,275);
+ line(105,247,105,190); line(105,190,208,190);
+ capHorizontal(xs[0],y,'C₁'); line(292,y,348,y);
+ capHorizontal(xs[1],y,'C₂'); line(432,y,488,y);
+ capHorizontal(xs[2],y,'C₃'); line(572,y,650,y); line(650,y,650,330); line(650,330,105,330); line(105,330,105,303);
+ text('I',175,168,'#ff6767',20);
+ // polarity marks on capacitor plates
+ chargesOnPlate(238,145,false,true); chargesOnPlate(262,235,false,false);
+ chargesOnPlate(378,145,false,true); chargesOnPlate(402,235,false,false);
+ chargesOnPlate(518,145,false,true); chargesOnPlate(542,235,false,false);
+ movingDots([[105,190],[208,190]],7,.12);
+ movingDots([[572,190],[650,190],[650,330],[105,330]],10,.12);
+}
+function drawParallel(){
+ ctx.clearRect(0,0,760,440);
+ text('ПАРАЛЕЛНО СВЪРЗВАНЕ',380,35,'#eef7ff',22);
+ battery(105,220);
+ line(105,192,105,85); line(105,85,650,85);
+ line(105,248,105,355); line(105,355,650,355);
+ const xs=[260,400,540];
+ xs.forEach((x,i)=>{
+   line(x,85,x,143);capVertical(x,185,'C'+['₁','₂','₃'][i]);line(x,227,x,355);
+   chargesOnPlate(x,166,true,true);chargesOnPlate(x,204,true,false);
+ });
+ movingDots([[105,85],[650,85]],12,.11);
+ movingDots([[650,355],[105,355]],12,.11);
+}
+function calc(){
+ let C1=+c1.value,C2=+c2.value,C3=+c3.value,U=+u.value,Ceq,Q,U1,U2,U3,Q1,Q2,Q3;
+ if(mode==='series'){
+   Ceq=1/(1/C1+1/C2+1/C3); Q=Ceq*U; U1=Q/C1;U2=Q/C2;U3=Q/C3;
+   ceq.textContent='Cекв = '+Ceq.toFixed(2)+' µF';
+   r1.textContent=`U₁=${U1.toFixed(2)} V · Q₁=${Q.toFixed(2)} µC`;
+   r2.textContent=`U₂=${U2.toFixed(2)} V · Q₂=${Q.toFixed(2)} µC`;
+   r3.textContent=`U₃=${U3.toFixed(2)} V · Q₃=${Q.toFixed(2)} µC`;
+   note.innerHTML='<b>Важно:</b> при последователно свързване зарядът по големина е еднакъв за всички кондензатори, а напрежението се разпределя: U = U₁ + U₂ + U₃. Ток протича само по време на зареждането.';
+ }else{
+   Ceq=C1+C2+C3;Q1=C1*U;Q2=C2*U;Q3=C3*U;
+   ceq.textContent='Cекв = '+Ceq.toFixed(2)+' µF';
+   r1.textContent=`U₁=${U.toFixed(2)} V · Q₁=${Q1.toFixed(2)} µC`;
+   r2.textContent=`U₂=${U.toFixed(2)} V · Q₂=${Q2.toFixed(2)} µC`;
+   r3.textContent=`U₃=${U.toFixed(2)} V · Q₃=${Q3.toFixed(2)} µC`;
+   note.innerHTML='<b>Важно:</b> при паралелно свързване напрежението е еднакво за всички кондензатори, а общият заряд е Q = Q₁ + Q₂ + Q₃. След установяване на заряда токът през идеалните кондензатори е нула.';
+ }
+ c1v.textContent=C1+' µF';c2v.textContent=C2+' µF';c3v.textContent=C3+' µF';uv.textContent=U+' V';
+ draw();
+}
+function draw(){mode==='series'?drawSeries():drawParallel()}
+seriesBtn.onclick=()=>{
+ mode='series';charging=false;chargeProgress=0;phase=0;charge.textContent='⚡ Зареждане';
+ seriesBtn.classList.add('active');parallelBtn.classList.remove('active');
+ modeTitle.textContent='Последователно свързване';
+ eq1.textContent='1/Cекв = 1/C₁ + 1/C₂ + 1/C₃';
+ eq2.textContent='Q₁ = Q₂ = Q₃ = Q';
+ calc();
+}
+parallelBtn.onclick=()=>{
+ mode='parallel';charging=false;chargeProgress=0;phase=0;charge.textContent='⚡ Зареждане';
+ parallelBtn.classList.add('active');seriesBtn.classList.remove('active');
+ modeTitle.textContent='Паралелно свързване';
+ eq1.textContent='Cекв = C₁ + C₂ + C₃';
+ eq2.textContent='U₁ = U₂ = U₃ = U';
+ calc();
+}
+charge.onclick=()=>{
+ charging=true;
+ chargeProgress=0;
+ phase=0;
+ paused=false;
+ pause.textContent='Ⅱ Пауза';
+ charge.textContent='⚡ Зареждане...';
+}
+pause.onclick=()=>{paused=!paused;pause.textContent=paused?'▶ Продължи':'Ⅱ Пауза'}
+reset.onclick=()=>{
+ c1.value=6;c2.value=10;c3.value=15;u.value=12;
+ charging=false;chargeProgress=0;paused=false;phase=0;
+ charge.textContent='⚡ Зареждане';pause.textContent='Ⅱ Пауза';calc();
+}
+[c1,c2,c3,u].forEach(el=>el.oninput=calc);
+function loop(){
+ if(!paused&&charging){
+   phase+=.012;
+   chargeProgress=Math.min(1,chargeProgress+0.004);
+   draw();
+   if(chargeProgress>=1){
+     charging=false;
+     charge.textContent='⚡ Заредено';
+     draw();
+   }
+ }
+ requestAnimationFrame(loop);
+}
+calc();loop();
+</script>
+</body></html>

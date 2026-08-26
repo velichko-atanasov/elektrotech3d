@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<!-- saved from url=(0064)file:///C:/Users/velichko.atanasov/Downloads/preview%20(80).html -->
+<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>QR-068 – Електрически потенциал и потенциална разлика</title>
+<style>
+*{box-sizing:border-box}
+:root{--bg:#050b13;--panel:#0a1624;--line:#2b4b68;--txt:#eef7ff;--muted:#9eb7cc;--cyan:#5dd7ff;--blue:#4a8fff;--red:#ff5f68;--gold:#ffd36a;--green:#6be6a1}
+body{margin:0;background:radial-gradient(circle at 50% 8%,#183d63,#050b13 52%,#02050a);color:var(--txt);font-family:Segoe UI,Arial,sans-serif}
+.wrap{max-width:1180px;margin:auto;padding:16px}
+h1{margin:3px 0 5px;text-align:center;font-size:clamp(24px,4vw,38px)}
+.sub{text-align:center;color:var(--muted);margin-bottom:14px}
+.grid{display:grid;grid-template-columns:1.35fr .65fr;gap:14px}
+.card{background:#081522;border:1px solid var(--line);border-radius:20px;box-shadow:0 18px 50px #0007}
+.stage{overflow:hidden;position:relative}
+svg{width:100%;height:auto;display:block}
+.side{padding:14px;display:grid;gap:12px;align-content:start}
+.block{border:1px solid #294760;background:#0b1a29;border-radius:15px;padding:12px}
+.block h3{margin:0 0 8px;font-size:17px}
+.block p{margin:0;color:#d6e6f3;line-height:1.48}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.kpi{border:1px solid #31516e;border-radius:12px;padding:10px;background:#07131f}
+.kpi span{display:block;color:var(--muted);font-size:12px}
+.kpi b{display:block;margin-top:4px;font-size:18px}
+.eq{font-family:Cambria Math,Georgia,serif;text-align:center;font-size:22px;font-weight:800;color:var(--gold)}
+.controls{margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.control{background:#081522;border:1px solid var(--line);border-radius:16px;padding:12px}
+.control label{display:flex;justify-content:space-between;gap:10px;font-weight:800;margin-bottom:8px}
+input[type=range]{width:100%;accent-color:var(--cyan)}
+.buttons{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+button{flex:1;min-width:160px;border:1px solid #355a78;background:#10283e;color:#fff;border-radius:13px;padding:11px 12px;font-weight:850;cursor:pointer}
+button.active{background:var(--gold);color:#13202b;border-color:var(--gold)}
+.note{margin-top:12px;border-left:4px solid var(--gold);background:#0b1825;border-radius:12px;padding:12px;line-height:1.5;color:#dceaf5}
+.platePos{fill:#ff6c74}.plateNeg{fill:#4b94ff}
+.field{stroke:#62c7ff;stroke-width:3;opacity:.9}
+.eqline{stroke:#8fb4ce;stroke-width:1.6;stroke-dasharray:8 7;opacity:.45}
+.pointA{fill:#ffd36a;filter:drop-shadow(0 0 7px #ffd36a)}
+.pointB{fill:#6be6a1;filter:drop-shadow(0 0 7px #6be6a1)}
+.probe{fill:#ff6c74;stroke:#fff;stroke-width:2;filter:drop-shadow(0 0 10px #ff6c74)}
+.probeText{font-size:17px;font-weight:900;fill:#fff;text-anchor:middle;dominant-baseline:middle}
+.label{font-size:18px;font-weight:850;fill:#eef7ff}.small{font-size:15px;fill:#b8cbe0}.value{font-size:19px;font-weight:850;fill:#ffd36a}
+.energyBarBg{fill:#152636;stroke:#31516e}.energyBar{fill:url(#energyGrad)}
+@media(max-width:850px){.grid{grid-template-columns:1fr}.controls{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Електрически потенциал и потенциална разлика</h1>
+<div class="sub">Интерактивно изследване на потенциала между две успоредни проводящи плочи</div>
+
+<div class="grid">
+<div class="card stage">
+<svg viewBox="0 0 760 640" aria-label="Електрическо поле между две успоредни плочи">
+<defs>
+<marker id="arr" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 Z" fill="#62c7ff"></path></marker>
+<lineargradient id="energyGrad" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#6be6a1"></stop><stop offset=".55" stop-color="#ffd36a"></stop><stop offset="1" stop-color="#ff6c74"></stop></lineargradient>
+</defs>
+<rect x="70" y="55" width="620" height="18" rx="5" class="platePos"></rect>
+<rect x="70" y="525" width="620" height="18" rx="5" class="plateNeg"></rect>
+<text x="380" y="34" class="label" text-anchor="middle">Положителна плоча (+)</text>
+<text id="topPlateV" x="380" y="51" class="small" text-anchor="middle" fill="#ffd36a">V = U = 230 V</text>
+<text x="380" y="572" class="label" text-anchor="middle">Отрицателна плоча (−)</text>
+<text x="380" y="595" class="small" text-anchor="middle" fill="#5dd7ff">V = 0 V — опорен потенциал</text>
+
+<g id="equipotentials" style="display:none">
+<line x1="95" y1="150" x2="665" y2="150" class="eqline"></line><line x1="95" y1="240" x2="665" y2="240" class="eqline"></line>
+<line x1="95" y1="330" x2="665" y2="330" class="eqline"></line><line x1="95" y1="420" x2="665" y2="420" class="eqline"></line>
+<text id="v1lbl" x="675" y="155" class="small">196 V</text><text id="v2lbl" x="675" y="245" class="small">150 V</text>
+<text id="v3lbl" x="675" y="335" class="small">103 V</text><text id="v4lbl" x="675" y="425" class="small">58 V</text>
+</g>
+
+<g id="fieldArrows">
+<line x1="130" y1="95" x2="130" y2="495" class="field" marker-end="url(#arr)"></line><line x1="220" y1="95" x2="220" y2="495" class="field" marker-end="url(#arr)"></line>
+<line x1="310" y1="95" x2="310" y2="495" class="field" marker-end="url(#arr)"></line><line x1="400" y1="95" x2="400" y2="495" class="field" marker-end="url(#arr)"></line>
+<line x1="490" y1="95" x2="490" y2="495" class="field" marker-end="url(#arr)"></line><line x1="580" y1="95" x2="580" y2="495" class="field" marker-end="url(#arr)"></line>
+</g>
+<text x="610" y="125" class="value">E⃗</text>
+
+<line id="abLine" x1="345" y1="178.4782608695652" x2="345" y2="384.1304347826087" stroke="#fff" stroke-width="2.5" opacity=".8"></line>
+<text id="dLabel" x="360" y="281.30434782608694" class="small">d</text>
+<circle id="pointA" cx="345" cy="178.4782608695652" r="8" class="pointA"></circle><circle id="pointB" cx="345" cy="384.1304347826087" r="8" class="pointB"></circle>
+<text id="labelA" x="315" y="172.4782608695652" class="label">A</text><text id="labelB" x="315" y="391.1304347826087" class="label">B</text>
+<text id="vaSvg" x="370" y="172.4782608695652" class="value">Vₐ</text><text id="vbSvg" x="370" y="391.1304347826087" class="value">Vᵦ</text>
+
+<g id="probeGroup" style="display:none">
+<circle id="probe" cx="470" cy="175" r="15" class="probe"></circle><text id="probeT" x="470" y="175" class="probeText">+</text>
+</g>
+
+<text x="110" y="612" class="small">Потенциална енергия на +q</text>
+<rect x="320" y="598" width="300" height="16" rx="8" class="energyBarBg"></rect><rect id="energyBar" x="320" y="598" width="260" height="16" rx="8" class="energyBar"></rect>
+</svg>
+</div>
+
+<div class="card side">
+<div class="block"><h3>Текущи стойности</h3><div class="kpis">
+<div class="kpi"><span>Потенциал в A</span><b id="va">180 V</b></div>
+<div class="kpi"><span>Потенциал в B</span><b id="vb">70 V</b></div>
+<div class="kpi"><span>Потенциална разлика</span><b id="uab">110 V</b></div>
+<div class="kpi"><span>Поле</span><b id="eVal">23.0 V/cm</b></div>
+</div></div>
+<div class="block"><div class="eq">U<sub>AB</sub> = V<sub>A</sub> − V<sub>B</sub></div></div>
+<div class="block"><h3>Обяснение</h3><p id="explain">Точка A е на по-висок потенциал от точка B. UAB = 180 − 70 = 110 V.</p></div>
+<div class="block"><h3>Физически смисъл</h3><p>Потенциалът характеризира една точка от полето, а напрежението характеризира разликата между потенциалите на две точки.</p></div>
+</div>
+</div>
+
+<div class="controls">
+<div class="control"><label>Потенциал в точка A <span id="aPosText">Vₐ = 180 V</span></label><input id="aPos" type="range" min="0" max="230" value="180" step="1"></div>
+<div class="control"><label>Потенциал в точка B <span id="bPosText">Vᵦ = 70 V</span></label><input id="bPos" type="range" min="0" max="230" value="70" step="1"></div>
+<div class="control"><label>Напрежение между плочите <span id="uText">U = 230 V</span></label><input id="uPlate" type="range" min="50" max="400" value="230" step="10"></div>
+<div class="control"><label>Начално положение на +q <span id="probePosText">20%</span></label><input id="probeStart" type="range" min="5" max="95" value="20" step="1"></div>
+</div>
+
+<div class="buttons">
+<button id="equipBtn">Покажи еквипотенциални линии</button>
+<button id="probeBtn">▶ Пусни пробния заряд</button>
+<button id="resetBtn">↺ Начално положение</button>
+</div>
+
+<div class="note"><b>Запомнете:</b> в тази анимация отрицателната плоча е избрана за опорно ниво <b>V = 0 V</b>, а положителната има <b>V = U</b>. В еднородно електрично поле потенциалът намалява по посока на полето. Ако две точки имат еднакъв потенциал, между тях няма потенциална разлика: <b>U<sub>AB</sub> = 0</b>. За положителен пробен заряд потенциалната енергия е <b>W<sub>p</sub> = qV</b>.</div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const yTop=85,yBottom=515,span=yBottom-yTop,plateDistanceCm=10;
+let equip=false,moving=false,anim=null;
+const yFromPercent=p=>yTop+span*(p/100);
+const potentialAtPercent=(p,U)=>U*(1-p/100);
+
+function updateEquipLabels(U){
+  [15,35,55,75].forEach((p,i)=>$("v"+(i+1)+"lbl").textContent=potentialAtPercent(p,U).toFixed(0)+" V");
+}
+function update(){
+  const U=+$("uPlate").value;
+
+  // A and B sliders directly specify electric potential.
+  $("aPos").max=U;
+  $("bPos").max=U;
+  if(+$("aPos").value>U) $("aPos").value=U;
+  if(+$("bPos").value>U) $("bPos").value=U;
+
+  const vA=+$("aPos").value;
+  const vB=+$("bPos").value;
+  const uab=vA-vB;
+
+  // In a uniform field: V decreases linearly from + plate (U) to − plate (0).
+  const aPercent=100*(1-vA/U);
+  const bPercent=100*(1-vB/U);
+  const yA=yFromPercent(aPercent);
+  const yB=yFromPercent(bPercent);
+  const E=U/plateDistanceCm;
+
+  $("pointA").setAttribute("cy",yA);
+  $("labelA").setAttribute("y",yA-6);
+  $("vaSvg").setAttribute("y",yA-6);
+
+  $("pointB").setAttribute("cy",yB);
+  $("labelB").setAttribute("y",yB+7);
+  $("vbSvg").setAttribute("y",yB+7);
+
+  $("abLine").setAttribute("y1",yA);
+  $("abLine").setAttribute("y2",yB);
+  $("dLabel").setAttribute("y",(yA+yB)/2);
+
+  $("va").textContent=vA.toFixed(0)+" V";
+  $("vb").textContent=vB.toFixed(0)+" V";
+  $("uab").textContent=uab.toFixed(0)+" V";
+  $("eVal").textContent=E.toFixed(1)+" V/cm";
+
+  $("aPosText").textContent=`Vₐ = ${vA.toFixed(0)} V`;
+  $("bPosText").textContent=`Vᵦ = ${vB.toFixed(0)} V`;
+  $("uText").textContent=`U = ${U} V`;
+  $("topPlateV").textContent=`V = U = ${U} V`;
+
+  if(Math.abs(uab)<0.5){
+    $("explain").textContent="Точките A и B са на еднакъв потенциал. Следователно UAB = VA − VB = 0 V.";
+  }else if(vA>vB){
+    $("explain").textContent=`Точка A е на по-висок потенциал от точка B. UAB = ${vA.toFixed(0)} − ${vB.toFixed(0)} = ${uab.toFixed(0)} V.`;
+  }else{
+    $("explain").textContent=`Точка B е на по-висок потенциал от точка A. UAB = ${vA.toFixed(0)} − ${vB.toFixed(0)} = ${uab.toFixed(0)} V.`;
+  }
+  updateEquipLabels(U);
+}
+$("aPos").oninput=update;
+$("bPos").oninput=update;
+$("uPlate").oninput=()=>{
+  const U=+$("uPlate").value;
+  $("aPos").max=U;$("bPos").max=U;
+  if(+$("aPos").value>U)$("aPos").value=U;
+  if(+$("bPos").value>U)$("bPos").value=U;
+  update();
+};
+
+$("equipBtn").onclick=()=>{
+  equip=!equip;$("equipotentials").style.display=equip?"block":"none";$("equipBtn").classList.toggle("active",equip);
+  $("equipBtn").textContent=equip?"Скрий еквипотенциалните линии":"Покажи еквипотенциални линии";
+};
+
+$("probeStart").oninput=()=>{
+  const p=+$("probeStart").value,y=yFromPercent(p),U=+$("uPlate").value,V=potentialAtPercent(p,U);
+  $("probePosText").textContent=p+"%";$("probe").setAttribute("cy",y);$("probeT").setAttribute("y",y);$("probeGroup").style.display="block";
+  $("energyBar").setAttribute("width",Math.max(5,300*V/U));
+  $("explain").textContent="Положителният пробен заряд е поставен в избраната точка. Натиснете „Пусни пробния заряд“, за да наблюдавате движението му.";
+};
+
+$("probeBtn").onclick=()=>{
+  if(moving){cancelAnimationFrame(anim);moving=false;$("probeBtn").textContent="▶ Пусни пробния заряд";return}
+  moving=true;$("probeGroup").style.display="block";$("probeBtn").textContent="⏸ Спри заряда";
+  let p=+$("probeStart").value;
+  function step(){
+    if(!moving)return;
+    p+=0.28;
+    if(p>=94){p=94;moving=false;$("probeBtn").textContent="▶ Пусни пробния заряд";}
+    const y=yFromPercent(p),U=+$("uPlate").value,V=potentialAtPercent(p,U);
+    $("probe").setAttribute("cy",y);$("probeT").setAttribute("y",y);$("energyBar").setAttribute("width",Math.max(5,300*V/U));
+    $("explain").textContent="Положителният пробен заряд се движи по посока на електричното поле – от по-висок към по-нисък потенциал. Потенциалната му енергия намалява.";
+    if(moving)anim=requestAnimationFrame(step);
+  }
+  step();
+};
+
+$("resetBtn").onclick=()=>{
+  if(anim)cancelAnimationFrame(anim);moving=false;$("uPlate").value=230;$("aPos").value=180;$("bPos").value=70;$("probeStart").value=20;
+  $("probePosText").textContent="20%";$("probeGroup").style.display="none";$("energyBar").setAttribute("width",260);$("probeBtn").textContent="▶ Пусни пробния заряд";update();
+};
+update();
+</script>
+
+</body></html>

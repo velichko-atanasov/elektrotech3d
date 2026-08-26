@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0070)file:///C:/Users/Rosi/Downloads/Q014-electrization-real-rod-cloth.html -->
+<!-- saved from url=(0064)file:///C:/Users/velichko.atanasov/Downloads/preview%20(79).html -->
 <html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -61,6 +61,10 @@ button.active{background:var(--gold);color:#13202b;border-color:var(--gold)}
 .friction-controls{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:13px}
 .friction-controls button.active{background:var(--gold);color:#13202b;border-color:var(--gold)}
 .friction-object{transition:transform .55s ease}
+.induction-control{margin-top:13px;border:1px solid var(--line);background:#081522;border-radius:16px;padding:13px}
+.induction-control label{display:flex;justify-content:space-between;gap:12px;font-weight:800;margin-bottom:8px}
+.induction-control input[type=range]{width:100%;accent-color:var(--cyan)}
+.distance-readout{color:var(--gold)}
 .rub-arrow{stroke:var(--gold);stroke-width:8;stroke-linecap:round}
 @media(max-width:700px){.mode-switch,.friction-controls{grid-template-columns:1fr}}
 </style>
@@ -95,24 +99,24 @@ button.active{background:var(--gold);color:#13202b;border-color:var(--gold)}
 
   <rect x="35" y="95" width="910" height="390" rx="18" fill="none" stroke="#355a78" stroke-width="2"></rect>
 
-  <text id="frPhaseTitle" x="490" y="45" class="label">3. След разделяне</text>
-  <text id="frPhaseText" x="490" y="75" class="small" text-anchor="middle">Пръчката има излишък на електрони, а платът – недостиг.</text>
+  <text id="frPhaseTitle" x="490" y="45" class="label">1. Неутрално състояние</text>
+  <text id="frPhaseText" x="490" y="75" class="small" text-anchor="middle">Двете тела са електрически неутрални.</text>
 
   <!-- Учебни маркери върху реалистичната снимка -->
-  <g id="rodNeutralMarks" style="display: none;">
+  <g id="rodNeutralMarks" style="">
     <text x="300" y="215" class="charge pos">+</text><text x="330" y="215" class="charge neg">−</text>
     <text x="420" y="255" class="charge pos">+</text><text x="450" y="255" class="charge neg">−</text>
     <text x="545" y="300" class="charge pos">+</text><text x="575" y="300" class="charge neg">−</text>
     <text x="655" y="340" class="charge pos">+</text><text x="685" y="340" class="charge neg">−</text>
   </g>
 
-  <g id="woolNeutralMarks" style="display: none;">
+  <g id="woolNeutralMarks" style="">
     <text x="205" y="385" class="charge pos">+</text><text x="235" y="385" class="charge neg">−</text>
     <text x="330" y="420" class="charge pos">+</text><text x="360" y="420" class="charge neg">−</text>
     <text x="455" y="430" class="charge pos">+</text><text x="485" y="430" class="charge neg">−</text>
   </g>
 
-  <g id="rodNegativeMarks" style="">
+  <g id="rodNegativeMarks" style="display: none;">
     <text x="265" y="205" class="charge neg">−</text>
     <text x="335" y="225" class="charge neg">−</text>
     <text x="405" y="250" class="charge neg">−</text>
@@ -122,7 +126,7 @@ button.active{background:var(--gold);color:#13202b;border-color:var(--gold)}
     <text x="685" y="350" class="charge neg">−</text>
   </g>
 
-  <g id="woolPositiveMarks" style="">
+  <g id="woolPositiveMarks" style="display: none;">
     <text x="190" y="380" class="charge pos">+</text>
     <text x="255" y="400" class="charge pos">+</text>
     <text x="320" y="420" class="charge pos">+</text>
@@ -132,8 +136,12 @@ button.active{background:var(--gold);color:#13202b;border-color:var(--gold)}
   </g>
 
   <g id="frictionMotion" style="display: none;">
-    <line x1="270" y1="365" x2="570" y2="285" class="rub-arrow" marker-end="url(#frArrow)"></line>
-    <text x="410" y="305" class="small" text-anchor="middle" fill="#ffd36a">прехвърляне на електрони</text>
+    <rect x="245" y="265" width="390" height="135" rx="28" fill="#ffd36a" opacity=".07" stroke="#ffd36a" stroke-width="2" stroke-dasharray="10 9"></rect>
+    <line x1="285" y1="350" x2="585" y2="270" class="rub-arrow" marker-end="url(#frArrow)"></line>
+    <line x1="565" y1="300" x2="305" y2="370" class="rub-arrow" marker-end="url(#frArrow)" opacity=".55"></line>
+    <text x="485" y="245" class="label" fill="#ffd36a">ЗОНА НА ТРИЕНЕ</text>
+    <text x="490" y="392" class="small" text-anchor="middle" fill="#eef7ff">електрони e⁻ преминават от плата към пръчката</text>
+    <g id="frictionElectrons"><g><circle r="9" fill="#39b9ff" stroke="#dff7ff" stroke-width="1.4"></circle><text text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="14" font-weight="900">−</text></g><g><circle r="9" fill="#39b9ff" stroke="#dff7ff" stroke-width="1.4"></circle><text text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="14" font-weight="900">−</text></g><g><circle r="9" fill="#39b9ff" stroke="#dff7ff" stroke-width="1.4"></circle><text text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="14" font-weight="900">−</text></g><g><circle r="9" fill="#39b9ff" stroke="#dff7ff" stroke-width="1.4"></circle><text text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="14" font-weight="900">−</text></g><g><circle r="9" fill="#39b9ff" stroke="#dff7ff" stroke-width="1.4"></circle><text text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="14" font-weight="900">−</text></g><g><circle r="9" fill="#39b9ff" stroke="#dff7ff" stroke-width="1.4"></circle><text text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="14" font-weight="900">−</text></g><g><circle r="9" fill="#39b9ff" stroke="#dff7ff" stroke-width="1.4"></circle><text text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="14" font-weight="900">−</text></g><g><circle r="9" fill="#39b9ff" stroke="#dff7ff" stroke-width="1.4"></circle><text text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="14" font-weight="900">−</text></g><g><circle r="9" fill="#39b9ff" stroke="#dff7ff" stroke-width="1.4"></circle><text text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="14" font-weight="900">−</text></g><g><circle r="9" fill="#39b9ff" stroke="#dff7ff" stroke-width="1.4"></circle><text text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="14" font-weight="900">−</text></g><g><circle r="9" fill="#39b9ff" stroke="#dff7ff" stroke-width="1.4"></circle><text text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="14" font-weight="900">−</text></g><g><circle r="9" fill="#39b9ff" stroke="#dff7ff" stroke-width="1.4"></circle><text text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="14" font-weight="900">−</text></g><g><circle r="9" fill="#39b9ff" stroke="#dff7ff" stroke-width="1.4"></circle><text text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="14" font-weight="900">−</text></g><g><circle r="9" fill="#39b9ff" stroke="#dff7ff" stroke-width="1.4"></circle><text text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="14" font-weight="900">−</text></g><g><circle r="9" fill="#39b9ff" stroke="#dff7ff" stroke-width="1.4"></circle><text text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="14" font-weight="900">−</text></g><g><circle r="9" fill="#39b9ff" stroke="#dff7ff" stroke-width="1.4"></circle><text text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="14" font-weight="900">−</text></g><g><circle r="9" fill="#39b9ff" stroke="#dff7ff" stroke-width="1.4"></circle><text text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="14" font-weight="900">−</text></g><g><circle r="9" fill="#39b9ff" stroke="#dff7ff" stroke-width="1.4"></circle><text text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="14" font-weight="900">−</text></g></g>
   </g>
 
   <g id="transferGroup"></g>
@@ -147,19 +155,19 @@ button.active{background:var(--gold);color:#13202b;border-color:var(--gold)}
   </div>
 
   <div class="friction-controls">
-    <button id="f1" class="">1. Неутрално състояние</button>
+    <button id="f1" class="active">1. Неутрално състояние</button>
     <button id="f2" class="">2. Триене</button>
-    <button id="f3" class="active">3. След разделяне</button>
+    <button id="f3" class="">3. След разделяне</button>
   </div>
 
   <div class="info">
-    <div class="eq" id="frEq">Q₁ = −Q,   Q₂ = +Q</div>
-    <div class="status" id="frStatus">Двете тела остават електризирани с противоположни заряди.</div>
+    <div class="eq" id="frEq">Q₁ = 0,   Q₂ = 0</div>
+    <div class="status" id="frStatus">Ебонитовата пръчка и вълненият плат са неутрални.</div>
     <div class="legend">
       <span><i class="dot" style="background:#4a8fff"></i>електрони e⁻</span>
       <span><i class="dot" style="background:#ff5f68"></i>недостиг на електрони</span>
     </div>
-    <div class="note" id="frNote">Заряд не е създаден: електрони са прехвърлени от едното тяло към другото, така че Q₁ + Q₂ = 0.</div>
+    <div class="note" id="frNote">Положителните и отрицателните заряди във всяко тяло са балансирани.</div>
   </div>
 </div>
 
@@ -167,59 +175,88 @@ button.active{background:var(--gold);color:#13202b;border-color:var(--gold)}
 <div class="stage">
 <svg viewBox="0 0 980 560" aria-label="Електростатична индукция с две метални сфери">
 <defs>
- <radialgradient id="metal1" cx="35%" cy="28%">
-   <stop offset="0" stop-color="#f8fdff"></stop><stop offset=".20" stop-color="#d9e6ef"></stop>
-   <stop offset=".48" stop-color="#8197a7"></stop><stop offset=".74" stop-color="#405361"></stop>
-   <stop offset="1" stop-color="#1c2b35"></stop>
+ <radialgradient id="metal1" cx="32%" cy="25%">
+   <stop offset="0" stop-color="#ffffff"></stop><stop offset=".16" stop-color="#e9eef1"></stop>
+   <stop offset=".43" stop-color="#9ba6ad"></stop><stop offset=".72" stop-color="#505a61"></stop>
+   <stop offset="1" stop-color="#20272c"></stop>
  </radialgradient>
- <radialgradient id="metal2" cx="35%" cy="28%">
-   <stop offset="0" stop-color="#ffffff"></stop><stop offset=".20" stop-color="#dfe8ef"></stop>
-   <stop offset=".50" stop-color="#8a9cab"></stop><stop offset=".76" stop-color="#425461"></stop>
-   <stop offset="1" stop-color="#1c2b35"></stop>
+ <radialgradient id="metal2" cx="32%" cy="25%">
+   <stop offset="0" stop-color="#ffffff"></stop><stop offset=".16" stop-color="#e9eef1"></stop>
+   <stop offset=".43" stop-color="#9ba6ad"></stop><stop offset=".72" stop-color="#505a61"></stop>
+   <stop offset="1" stop-color="#20272c"></stop>
  </radialgradient>
- <lineargradient id="rodG" x1="0" y1="0" x2="1" y2="0">
-   <stop offset="0" stop-color="#45505d"></stop><stop offset=".35" stop-color="#232a32"></stop>
-   <stop offset=".7" stop-color="#0f1318"></stop><stop offset="1" stop-color="#3b4652"></stop>
+ <lineargradient id="rodG" x1="0" y1="0" x2="0" y2="1">
+   <stop offset="0" stop-color="#343b42"></stop><stop offset=".38" stop-color="#11161a"></stop>
+   <stop offset=".72" stop-color="#050708"></stop><stop offset="1" stop-color="#252c31"></stop>
  </lineargradient>
- <filter id="glow"><fegaussianblur stdDeviation="4" result="b"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+ <lineargradient id="brass" x1="0" y1="0" x2="1" y2="1">
+   <stop offset="0" stop-color="#f2d28b"></stop><stop offset=".32" stop-color="#a87524"></stop>
+   <stop offset=".65" stop-color="#5e3b0e"></stop><stop offset="1" stop-color="#d8ae58"></stop>
+ </lineargradient>
+ <lineargradient id="insulator" x1="0" y1="0" x2="1" y2="0">
+   <stop offset="0" stop-color="#5b341d"></stop><stop offset=".45" stop-color="#d39b64"></stop>
+   <stop offset=".7" stop-color="#754326"></stop><stop offset="1" stop-color="#3a2115"></stop>
+ </lineargradient>
+ <filter id="shadow"><fedropshadow dx="0" dy="7" stdDeviation="7" flood-color="#000" flood-opacity=".7"></fedropshadow></filter>
 </defs>
 
-<!-- bench -->
-<rect x="70" y="455" width="840" height="18" rx="9" fill="#344452"></rect>
-<rect x="150" y="472" width="18" height="52" rx="6" fill="#26333d"></rect>
-<rect x="810" y="472" width="18" height="52" rx="6" fill="#26333d"></rect>
+<rect width="980" height="560" fill="#07111b"></rect>
+<rect x="38" y="96" width="904" height="390" rx="18" fill="#0b141c" stroke="#355a78" stroke-width="2"></rect>
+<ellipse cx="490" cy="465" rx="380" ry="28" fill="#000" opacity=".38"></ellipse>
 
-<!-- insulating stands -->
-<rect x="335" y="345" width="24" height="108" rx="10" fill="#c8a55a"></rect>
-<rect x="621" y="345" width="24" height="108" rx="10" fill="#c8a55a"></rect>
-<rect x="305" y="440" width="85" height="15" rx="7" fill="#705b2d"></rect>
-<rect x="590" y="440" width="85" height="15" rx="7" fill="#705b2d"></rect>
+<text id="phaseTitle" x="490" y="50" class="label">1. Неутрални сфери</text>
+<text id="phaseText" x="490" y="80" class="small" text-anchor="middle">При силно приближаване движението на електроните става ясно видимо: отрицателната пръчка ги отблъсква от сфера 1 към сфера 2. Общият заряд на системата остава непроменен.</text>
 
-<!-- spheres -->
-<circle id="sphere1" cx="347" cy="280" r="92" fill="url(#metal1)" stroke="#d8ecf7" stroke-width="3"></circle>
-<circle id="sphere2" cx="633" cy="280" r="92" fill="url(#metal2)" stroke="#d8ecf7" stroke-width="3"></circle>
-<rect id="contactBridge" x="438" y="268" width="104" height="24" rx="12" fill="#96a9b8" style="opacity: 1;"></rect>
+<!-- Laboratory insulating stands -->
+<g filter="url(#shadow)">
+ <rect x="310" y="365" width="74" height="78" rx="8" fill="url(#insulator)" stroke="#e0b07d" stroke-width="1.5"></rect>
+ <rect x="285" y="438" width="124" height="18" rx="6" fill="#30383e" stroke="#7e8a92"></rect>
+ <rect x="596" y="365" width="74" height="78" rx="8" fill="url(#insulator)" stroke="#e0b07d" stroke-width="1.5"></rect>
+ <rect x="571" y="438" width="124" height="18" rx="6" fill="#30383e" stroke="#7e8a92"></rect>
+</g>
 
-<!-- charged rod -->
-<g id="rod" transform="translate(90 210)">
- <rect x="0" y="0" width="155" height="36" rx="18" fill="url(#rodG)" stroke="#697886" stroke-width="2"></rect>
- <text x="78" y="22" class="small" text-anchor="middle" fill="#fff">заредена пръчка</text>
+<!-- Polished conducting spheres -->
+<circle id="sphere1" cx="347" cy="280" r="92" fill="url(#metal1)" stroke="#e7eef2" stroke-width="2.5" filter="url(#shadow)"></circle>
+<circle id="sphere2" cx="633" cy="280" r="92" fill="url(#metal2)" stroke="#e7eef2" stroke-width="2.5" filter="url(#shadow)"></circle>
+<ellipse cx="319" cy="247" rx="26" ry="14" fill="#fff" opacity=".25"></ellipse>
+<ellipse cx="605" cy="247" rx="26" ry="14" fill="#fff" opacity=".25"></ellipse>
+
+<!-- Removable conductive bridge -->
+<g id="contactBridge" style="opacity:1">
+ <rect x="432" y="269" width="116" height="22" rx="5" fill="url(#brass)" stroke="#f4d893" stroke-width="1.5"></rect>
+ <circle cx="441" cy="280" r="5" fill="#dfe5e8"></circle><circle cx="539" cy="280" r="5" fill="#dfe5e8"></circle>
+</g>
+
+<!-- Charged ebonite rod in an insulated handle -->
+<g id="rod" transform="translate(131.78571428571428 210)" filter="url(#shadow)">
+ <rect x="-38" y="3" width="48" height="30" rx="8" fill="#7c4d2b" stroke="#d5a273"></rect>
+ <rect x="0" y="0" width="155" height="36" rx="8" fill="url(#rodG)" stroke="#7e8991" stroke-width="2"></rect>
+ <path d="M12 7 H143" stroke="#c6d0d5" stroke-width="2" opacity=".28"></path>
+ <text x="78" y="-12" class="small" text-anchor="middle" fill="#d9e7f1">ебонитова пръчка</text>
  <g id="rodCharges"><circle cx="20" cy="18" r="5" class="electron"></circle><text x="20" y="18.5" class="etxt">−</text><circle cx="42" cy="18" r="5" class="electron"></circle><text x="42" y="18.5" class="etxt">−</text><circle cx="64" cy="18" r="5" class="electron"></circle><text x="64" y="18.5" class="etxt">−</text><circle cx="86" cy="18" r="5" class="electron"></circle><text x="86" y="18.5" class="etxt">−</text><circle cx="108" cy="18" r="5" class="electron"></circle><text x="108" y="18.5" class="etxt">−</text><circle cx="130" cy="18" r="5" class="electron"></circle><text x="130" y="18.5" class="etxt">−</text></g>
 </g>
 
-<!-- labels -->
-<text x="347" y="120" class="label">Метална сфера 1</text>
-<text x="633" y="120" class="label">Метална сфера 2</text>
-<text x="347" y="520" class="small" text-anchor="middle">изолираща стойка</text>
-<text x="633" y="520" class="small" text-anchor="middle">изолираща стойка</text>
+<text x="347" y="150" class="label">Проводяща сфера 1</text>
+<text x="633" y="150" class="label">Проводяща сфера 2</text>
+<text x="347" y="480" class="small" text-anchor="middle">изолираща стойка</text>
+<text x="633" y="480" class="small" text-anchor="middle">изолираща стойка</text>
 
 <g id="charges1"><circle cx="300" cy="240" r="6" class="electron"></circle><text x="300" y="240.5" class="etxt">−</text><circle cx="332" cy="218" r="6" class="electron"></circle><text x="332" y="218.5" class="etxt">−</text><circle cx="365" cy="235" r="6" class="electron"></circle><text x="365" y="235.5" class="etxt">−</text><circle cx="314" cy="292" r="6" class="electron"></circle><text x="314" y="292.5" class="etxt">−</text><circle cx="350" cy="315" r="6" class="electron"></circle><text x="350" y="315.5" class="etxt">−</text><circle cx="382" cy="282" r="6" class="electron"></circle><text x="382" y="282.5" class="etxt">−</text></g>
 <g id="charges2"><circle cx="590" cy="235" r="6" class="electron"></circle><text x="590" y="235.5" class="etxt">−</text><circle cx="625" cy="218" r="6" class="electron"></circle><text x="625" y="218.5" class="etxt">−</text><circle cx="662" cy="238" r="6" class="electron"></circle><text x="662" y="238.5" class="etxt">−</text><circle cx="600" cy="295" r="6" class="electron"></circle><text x="600" y="295.5" class="etxt">−</text><circle cx="638" cy="315" r="6" class="electron"></circle><text x="638" y="315.5" class="etxt">−</text><circle cx="675" cy="282" r="6" class="electron"></circle><text x="675" y="282.5" class="etxt">−</text></g>
-<g id="moving"></g>
+<g id="moving"><path d="M405 332 H575" stroke="#39b9ff" stroke-width="4" fill="none" stroke-linecap="round" opacity=".9"></path><path d="M575 332 l-15 -9 v18 z" fill="#39b9ff"></path><text x="490" y="360" text-anchor="middle" fill="#bdeaff" font-size="16">преразпределение на електрони e⁻</text><g><circle r="9" fill="#39b9ff" stroke="#d9f5ff" stroke-width="1.4"></circle><text text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="15" font-weight="900">−</text></g><g><circle r="9" fill="#39b9ff" stroke="#d9f5ff" stroke-width="1.4"></circle><text text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="15" font-weight="900">−</text></g><g><circle r="9" fill="#39b9ff" stroke="#d9f5ff" stroke-width="1.4"></circle><text text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="15" font-weight="900">−</text></g><g><circle r="9" fill="#39b9ff" stroke="#d9f5ff" stroke-width="1.4"></circle><text text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="15" font-weight="900">−</text></g><g><circle r="9" fill="#39b9ff" stroke="#d9f5ff" stroke-width="1.4"></circle><text text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="15" font-weight="900">−</text></g><g><circle r="9" fill="#39b9ff" stroke="#d9f5ff" stroke-width="1.4"></circle><text text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="15" font-weight="900">−</text></g><g><circle r="9" fill="#39b9ff" stroke="#d9f5ff" stroke-width="1.4"></circle><text text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="15" font-weight="900">−</text></g><g><circle r="9" fill="#39b9ff" stroke="#d9f5ff" stroke-width="1.4"></circle><text text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="15" font-weight="900">−</text></g><g><circle r="9" fill="#39b9ff" stroke="#d9f5ff" stroke-width="1.4"></circle><text text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="15" font-weight="900">−</text></g><g><text x="317.5889042563407" y="217.93205206228458" text-anchor="middle" fill="#ff6978" font-size="24" font-weight="900">+</text><text x="662.4110957436593" y="217.93205206228458" text-anchor="middle" fill="#39b9ff" font-size="24" font-weight="900">−</text><text x="286.5781542257129" y="243.0192342335123" text-anchor="middle" fill="#ff6978" font-size="24" font-weight="900">+</text><text x="693.4218457742871" y="243.0192342335123" text-anchor="middle" fill="#39b9ff" font-size="24" font-weight="900">−</text><text x="275" y="280" text-anchor="middle" fill="#ff6978" font-size="24" font-weight="900">+</text><text x="705" y="280" text-anchor="middle" fill="#39b9ff" font-size="24" font-weight="900">−</text><text x="286.5781542257129" y="316.9807657664877" text-anchor="middle" fill="#ff6978" font-size="24" font-weight="900">+</text><text x="693.4218457742871" y="316.9807657664877" text-anchor="middle" fill="#39b9ff" font-size="24" font-weight="900">−</text><text x="317.5889042563407" y="342.0679479377154" text-anchor="middle" fill="#ff6978" font-size="24" font-weight="900">+</text><text x="662.4110957436593" y="342.0679479377154" text-anchor="middle" fill="#39b9ff" font-size="24" font-weight="900">−</text></g></g>
+<text id="inductionStrength" x="490" y="520" class="small" text-anchor="middle" fill="#ffd36a">Индукционно влияние: средно</text>
 
-<text id="phaseTitle" x="490" y="52" class="label">1. Неутрални сфери</text>
-<text id="phaseText" x="490" y="82" class="small" text-anchor="middle">В двете сфери положителните и отрицателните заряди са балансирани.</text>
+<!-- Technical annotation -->
+<g opacity=".9">
+ <path d="M245 205 C275 190 295 185 315 185" fill="none" stroke="#5dd7ff" stroke-width="2" stroke-dasharray="6 6"></path>
+ <text x="285" y="176" class="small" text-anchor="middle" fill="#5dd7ff">електростатично влияние</text>
+</g>
 </svg>
+</div>
+
+<div class="induction-control" id="inductionControl">
+  <label>Разстояние на заредената пръчка <span class="distance-readout" id="distanceReadout">d = 12 cm</span></label>
+  <input id="rodDistance" type="range" min="2" max="30" value="12" step="1">
 </div>
 
 <div class="controls">
@@ -287,8 +324,8 @@ function frictionScene2(){
   document.getElementById("frPhaseTitle").textContent="2. Триене на двете тела";
   document.getElementById("frPhaseText").textContent="В този пример електрони преминават от вълнения плат към ебонитовата пръчка.";
   document.getElementById("frEq").textContent="ΔQ₁ = −ΔQ₂";
-  document.getElementById("frStatus").textContent="Започва пренос на електрони между повърхностите.";
-  document.getElementById("frNote").textContent="Триенето улеснява прехвърлянето на електрони. Общият заряд на системата се запазва.";
+  document.getElementById("frStatus").textContent="При плъзгането повърхностите многократно влизат в контакт и електрони преминават от плата към пръчката.";
+  document.getElementById("frNote").textContent="Жълтата зона показва мястото на контакт. Движещите се e⁻ показват посоката на преноса; общият заряд на системата се запазва.";
   let k=0;
   frTimer=setInterval(()=>{
     document.getElementById("transferGroup").innerHTML="";
@@ -400,6 +437,213 @@ function scene4(){
 $("b1").onclick=scene1;$("b2").onclick=scene2;$("b3").onclick=scene3;$("b4").onclick=scene4;
 scene1();
 selectMainMode("friction");
+
+
+// --- Плъзгач: приближаване на пръчката и преразпределение на заряда ---
+const rodDistance = document.getElementById("rodDistance");
+const distanceReadout = document.getElementById("distanceReadout");
+const inductionStrength = document.getElementById("inductionStrength");
+const inductionRod = document.getElementById("rod");
+const movingGroup = document.getElementById("moving");
+
+function svgElectron(x,y,opacity=1){
+  const g=document.createElementNS("http://www.w3.org/2000/svg","g");
+  g.setAttribute("opacity",opacity);
+  const c=document.createElementNS("http://www.w3.org/2000/svg","circle");
+  c.setAttribute("cx",x); c.setAttribute("cy",y); c.setAttribute("r",11);
+  c.setAttribute("fill","#39b9ff"); c.setAttribute("stroke","#d9f5ff"); c.setAttribute("stroke-width","1.5");
+  const t=document.createElementNS("http://www.w3.org/2000/svg","text");
+  t.setAttribute("x",x);t.setAttribute("y",y+5);t.setAttribute("text-anchor","middle");
+  t.setAttribute("fill","#fff");t.setAttribute("font-size","17");t.setAttribute("font-weight","900");t.textContent="−";
+  g.append(c,t); return g;
+}
+
+function showTransfer(amount){
+  if(!movingGroup) return;
+  movingGroup.innerHTML="";
+
+  // More visible electrons as the negatively charged rod approaches.
+  const count = Math.max(0, Math.round(amount*14));
+  if(count===0) return;
+
+  // Direction arrow through the conductive bridge.
+  const arrow=document.createElementNS("http://www.w3.org/2000/svg","path");
+  arrow.setAttribute("d","M405 332 H575");
+  arrow.setAttribute("stroke","#39b9ff");
+  arrow.setAttribute("stroke-width","4");
+  arrow.setAttribute("fill","none");
+  arrow.setAttribute("stroke-linecap","round");
+  arrow.setAttribute("opacity",".9");
+  movingGroup.appendChild(arrow);
+
+  const head=document.createElementNS("http://www.w3.org/2000/svg","path");
+  head.setAttribute("d","M575 332 l-15 -9 v18 z");
+  head.setAttribute("fill","#39b9ff");
+  movingGroup.appendChild(head);
+
+  const tx=document.createElementNS("http://www.w3.org/2000/svg","text");
+  tx.setAttribute("x","490");tx.setAttribute("y","360");
+  tx.setAttribute("text-anchor","middle");
+  tx.setAttribute("fill","#bdeaff");tx.setAttribute("font-size","16");
+  tx.textContent="преразпределение на електрони e⁻";
+  movingGroup.appendChild(tx);
+
+  // Multiple moving electrons with staggered animations.
+  for(let i=0;i<count;i++){
+    const g=document.createElementNS("http://www.w3.org/2000/svg","g");
+    const c=document.createElementNS("http://www.w3.org/2000/svg","circle");
+    c.setAttribute("r","9");
+    c.setAttribute("fill","#39b9ff");
+    c.setAttribute("stroke","#d9f5ff");
+    c.setAttribute("stroke-width","1.4");
+    const t=document.createElementNS("http://www.w3.org/2000/svg","text");
+    t.setAttribute("text-anchor","middle");
+    t.setAttribute("dominant-baseline","central");
+    t.setAttribute("fill","#fff");
+    t.setAttribute("font-size","15");
+    t.setAttribute("font-weight","900");
+    t.textContent="−";
+    g.append(c,t);
+    movingGroup.appendChild(g);
+
+    const dur = 900 + (i%4)*120;
+    const delay = (i*95)%850;
+    const y = 260 + ((i%5)-2)*8;
+
+    g.animate([
+      {transform:`translate(375px,${y}px)`,opacity:.15},
+      {transform:`translate(425px,${y-5}px)`,opacity:1,offset:.20},
+      {transform:`translate(490px,${y+4}px)`,opacity:1,offset:.52},
+      {transform:`translate(555px,${y-3}px)`,opacity:1,offset:.82},
+      {transform:`translate(605px,${y}px)`,opacity:.2}
+    ],{
+      duration:dur,
+      delay:delay,
+      iterations:Infinity,
+      easing:"linear"
+    });
+  }
+
+  // Extra charge polarization close to sphere surfaces:
+  // negative charges accumulate on far side, positive deficit appears near rod.
+  const polar=document.createElementNS("http://www.w3.org/2000/svg","g");
+  const polCount=Math.max(2,Math.round(amount*8));
+  for(let i=0;i<polCount;i++){
+    const a=-1.15 + i*(2.3/Math.max(1,polCount-1));
+    // Positive signs on left side of sphere 1 (electron deficit)
+    const p=document.createElementNS("http://www.w3.org/2000/svg","text");
+    p.setAttribute("x",347-72*Math.cos(a));
+    p.setAttribute("y",280+68*Math.sin(a));
+    p.setAttribute("text-anchor","middle");
+    p.setAttribute("fill","#ff6978");
+    p.setAttribute("font-size","24");
+    p.setAttribute("font-weight","900");
+    p.textContent="+";
+    polar.appendChild(p);
+
+    // Negative signs on right side of sphere 2
+    const n=document.createElementNS("http://www.w3.org/2000/svg","text");
+    n.setAttribute("x",633+72*Math.cos(a));
+    n.setAttribute("y",280+68*Math.sin(a));
+    n.setAttribute("text-anchor","middle");
+    n.setAttribute("fill","#39b9ff");
+    n.setAttribute("font-size","24");
+    n.setAttribute("font-weight","900");
+    n.textContent="−";
+    polar.appendChild(n);
+  }
+  movingGroup.appendChild(polar);
+}
+
+function updateRodDistance(){
+  if(!rodDistance || !inductionRod) return;
+  const d=Number(rodDistance.value);
+  distanceReadout.textContent=`d = ${d} cm`;
+
+  // rod closer when d is smaller
+  const closeness=(30-d)/28; // 0..1
+  const x=45 + 135*closeness;
+  inductionRod.setAttribute("transform",`translate(${x} 210)`);
+
+  let label="слабо";
+  if(closeness>.68) label="силно";
+  else if(closeness>.30) label="средно";
+  inductionStrength.textContent=`Индукционно влияние: ${label}`;
+
+  // The spheres stay electrically connected. The slider visualizes redistribution:
+  // electrons are repelled by the negatively charged rod from sphere 1 to sphere 2.
+  showTransfer(closeness);
+
+  if(closeness<.12){
+    phaseText.textContent="Пръчката е далеч – разделянето на зарядите е слабо.";
+  } else if(closeness<.55){
+    phaseText.textContent="При приближаване все повече електрони се преразпределят през металната връзка между двете сфери.";
+  } else {
+    phaseText.textContent="При силно приближаване движението на електроните става ясно видимо: отрицателната пръчка ги отблъсква от сфера 1 към сфера 2. Общият заряд на системата остава непроменен.";
+  }
+}
+if(rodDistance){
+ rodDistance.addEventListener("input",updateRodDistance);
+ updateRodDistance();
+}
+
+// --- По-ясен поток от електрони при триене ---
+const frictionElectrons = document.getElementById("frictionElectrons");
+
+function buildFrictionElectronFlow(){
+  if(!frictionElectrons) return;
+  frictionElectrons.innerHTML="";
+
+  // Several simultaneous electrons, staggered so the transfer looks continuous.
+  const paths = [
+    [300,355,555,286],
+    [320,372,575,303],
+    [285,337,540,268],
+    [345,382,595,315],
+    [310,345,565,276]
+  ];
+
+  for(let i=0;i<18;i++){
+    const [x1,y1,x2,y2]=paths[i%paths.length];
+    const g=document.createElementNS("http://www.w3.org/2000/svg","g");
+
+    const c=document.createElementNS("http://www.w3.org/2000/svg","circle");
+    c.setAttribute("r","9");
+    c.setAttribute("fill","#39b9ff");
+    c.setAttribute("stroke","#dff7ff");
+    c.setAttribute("stroke-width","1.4");
+
+    const t=document.createElementNS("http://www.w3.org/2000/svg","text");
+    t.setAttribute("text-anchor","middle");
+    t.setAttribute("dominant-baseline","central");
+    t.setAttribute("fill","#fff");
+    t.setAttribute("font-size","14");
+    t.setAttribute("font-weight","900");
+    t.textContent="−";
+
+    g.append(c,t);
+    frictionElectrons.appendChild(g);
+
+    const dx=x2-x1, dy=y2-y1;
+    const duration=850+(i%5)*110;
+    const delay=(i*115)%1200;
+
+    g.animate([
+      {transform:`translate(${x1}px,${y1}px) scale(.75)`,opacity:0},
+      {transform:`translate(${x1+dx*.18}px,${y1+dy*.18}px) scale(1)`,opacity:1,offset:.18},
+      {transform:`translate(${x1+dx*.52}px,${y1+dy*.52-5}px) scale(1)`,opacity:1,offset:.52},
+      {transform:`translate(${x1+dx*.82}px,${y1+dy*.82+3}px) scale(1)`,opacity:1,offset:.82},
+      {transform:`translate(${x2}px,${y2}px) scale(.8)`,opacity:0}
+    ],{
+      duration,
+      delay,
+      iterations:Infinity,
+      easing:"linear"
+    });
+  }
+}
+buildFrictionElectronFlow();
+
 </script>
 
 </div></body></html>

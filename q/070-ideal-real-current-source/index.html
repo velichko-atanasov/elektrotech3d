@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<!-- saved from url=(0064)file:///C:/Users/velichko.atanasov/Downloads/preview%20(86).html -->
+<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Идеален и реален източник на ток</title>
+<style>
+:root{--bg:#07111f;--panel:#0d1b2d;--wire:#f3f7fb;--blue:#38a8ff;--red:#ff4a43;--muted:#b5c6d6;--line:#29445e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:#fff;font-family:Arial,Helvetica,sans-serif}
+.wrap{max-width:1180px;margin:auto;padding:20px}
+h1{text-align:center;margin:4px 0 5px;font-size:29px}
+.subtitle{text-align:center;color:var(--muted);margin-bottom:16px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:14px}
+.card h2{text-align:center;margin:3px 0 0;font-size:23px}
+svg{width:100%;height:auto;display:block}
+.wire{stroke:var(--wire);stroke-width:4.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.elem{stroke:var(--wire);stroke-width:3.5;fill:var(--panel)}
+.txt{fill:#fff;font-size:21px;font-weight:700}
+.small{fill:var(--muted);font-size:16px}
+.blue{fill:var(--blue)}
+.red{fill:var(--red)}
+.controls{margin-top:16px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:15px}
+.row{display:grid;grid-template-columns:190px 1fr 110px;gap:12px;align-items:center;margin:8px 0}
+input[type=range]{width:100%}
+.readouts{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px}
+.read{background:#081522;border:1px solid var(--line);border-radius:13px;padding:16px;text-align:center;line-height:1.65;font-size:19px}
+.formula{font-size:28px;font-weight:700;display:inline-block;margin-top:7px;letter-spacing:.2px}
+.note{text-align:center;margin-top:13px;color:#dbe7f1;line-height:1.5}
+@media(max-width:800px){.grid,.readouts{grid-template-columns:1fr}.row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Идеален и реален източник на ток</h1>
+<div class="subtitle">Сравнение на поведението при промяна на товарното съпротивление R</div>
+
+<div class="grid">
+<!-- IDEAL -->
+<div class="card">
+<h2>Идеален източник</h2>
+<svg viewBox="0 0 520 430">
+<defs>
+<marker id="ar1" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="8" markerHeight="8" orient="auto" markerUnits="userSpaceOnUse">
+<path d="M0 0L10 5L0 10Z" fill="#ff4a43"></path></marker>
+<marker id="ab1" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto" markerUnits="userSpaceOnUse">
+<path d="M0 0L10 5L0 10Z" fill="#38a8ff"></path></marker>
+</defs>
+<path class="wire" d="M130 95H390M390 95V155M390 275V340H130M130 340V275M130 155V95"></path>
+<circle class="elem" cx="130" cy="215" r="60"></circle>
+<line x1="130" y1="250" x2="130" y2="180" stroke="#38a8ff" stroke-width="5" marker-end="url(#ab1)"></line>
+<text x="50" y="221" class="txt blue">Iₛ</text>
+<rect x="350" y="155" width="80" height="120" class="elem"></rect>
+<text x="450" y="222" class="txt">R</text>
+<text x="323" y="163" class="txt red">+</text><text x="326" y="288" class="txt red">−</text>
+<text x="290" y="222" class="txt blue">U</text>
+<line x1="210" y1="95" x2="285" y2="95" stroke="#ff4a43" stroke-width="3" marker-end="url(#ar1)"></line>
+<text x="238" y="73" class="txt red">I</text>
+<g id="flowIdeal"><circle cx="301.05579999276733" cy="95" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="390" cy="97.8739818109492" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="390" cy="189.69216362913096" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="390" cy="281.51034544731283" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="356.6714727345054" cy="340" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="264.85329091632366" cy="340" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="173.0351090981418" cy="340" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="130" cy="291.2169272799599" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="130" cy="199.398745461778" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="130" cy="107.58056364359624" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="209.23761817458546" cy="95" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle></g>
+<text x="115" y="397" fill="#b5c6d6" font-size="20" font-weight="700">Rᵢ → ∞   •   I = Iₛ = const</text>
+</svg>
+</div>
+
+<!-- REAL -->
+<div class="card">
+<h2>Реален източник</h2>
+<svg viewBox="0 0 520 430">
+<defs>
+<marker id="ar2" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="8" markerHeight="8" orient="auto" markerUnits="userSpaceOnUse">
+<path d="M0 0L10 5L0 10Z" fill="#ff4a43"></path></marker>
+<marker id="ab2" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto" markerUnits="userSpaceOnUse">
+<path d="M0 0L10 5L0 10Z" fill="#38a8ff"></path></marker>
+</defs>
+
+<!-- common output nodes -->
+<path class="wire" d="M70 95H450M70 340H450"></path>
+
+<!-- internal resistance: separate parallel branch -->
+<path class="wire" d="M105 95V145M105 285V340"></path>
+<rect x="70" y="145" width="70" height="140" class="elem"></rect>
+<text x="82" y="132" class="txt">Rᵢ</text>
+<text x="58" y="222" class="small">вътрешно</text>
+<line x1="160" y1="165" x2="160" y2="250" stroke="#ff4a43" stroke-width="3" marker-end="url(#ar2)"></line>
+<text x="170" y="215" class="txt red">Iᵢ</text>
+
+<!-- ideal current-source part of the real-source model -->
+<path class="wire" d="M245 95V155M245 275V340"></path>
+<circle class="elem" cx="245" cy="215" r="60"></circle>
+<line x1="245" y1="250" x2="245" y2="180" stroke="#38a8ff" stroke-width="5" marker-end="url(#ab2)"></line>
+<text x="218" y="310" class="txt blue">Iₛ</text>
+<line x1="285" y1="250" x2="285" y2="180" stroke="#ff4a43" stroke-width="3" marker-end="url(#ar2)"></line>
+<text x="295" y="220" class="txt red">Iₛ</text>
+
+<!-- load branch -->
+<path class="wire" d="M410 95V155M410 275V340"></path>
+<rect x="370" y="155" width="80" height="120" class="elem"></rect>
+<text x="462" y="222" class="txt">R</text>
+<text x="342" y="163" class="txt red">+</text><text x="345" y="288" class="txt red">−</text>
+<text x="365" y="75" class="txt red">Iₗ</text>
+<line x1="410" y1="115" x2="410" y2="145" stroke="#ff4a43" stroke-width="3" marker-end="url(#ar2)"></line>
+<g id="flowSource"><circle cx="245" cy="254.84290000175446" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="245" cy="219.84290000175446" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="245" cy="184.84290000175446" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="245" cy="149.8429000017545" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="245" cy="114.84290000175446" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="245" cy="324.84290000175446" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="245" cy="289.84290000175446" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle></g>
+<g id="flowLoad"><circle cx="410" cy="129.8584999958824" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="410" cy="193.74738888477128" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="410" cy="257.63627777366014" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="410" cy="321.5251666625491" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="364.5859444485621" cy="340" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="300.6970555596731" cy="340" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="253.1918333292157" cy="95" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="317.0807222181046" cy="95" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="380.9696111069934" cy="95" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle></g>
+<g id="flowInternal"><circle cx="105" cy="137.47949999624046" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="164.97949999624046" cy="340" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle></g>
+<text x="120" y="395" class="small">Rᵢ е паралелно на идеалния източник Iₛ</text>
+</svg>
+</div>
+</div>
+
+<div class="controls">
+<div class="row"><b>Товарно съпротивление R</b><input id="R" type="range" min="1" max="50" step="1" value="10"><b><span id="Rv">10</span> Ω</b></div>
+<div class="row"><b>Вътрешно съпротивление Rᵢ</b><input id="Ri" type="range" min="20" max="200" step="10" value="100"><b><span id="Riv">100</span> Ω</b></div>
+
+<div class="readouts">
+<div class="read">
+<b>Идеален източник</b><br>
+I = <span id="Ii">2.000</span> A &nbsp;&nbsp; U = <span id="Ui">20.0</span> V<br>
+<span class="formula">I = I<sub>S</sub> = const</span>
+</div>
+<div class="read">
+<b>Реален източник</b><br>
+I<sub>L</sub> = <span id="Ir">1.818</span> A &nbsp;&nbsp;
+I<sub>i</sub> = <span id="Iint">0.182</span> A &nbsp;&nbsp;
+U = <span id="Ur">18.2</span> V<br>
+<span class="formula">I<sub>S</sub> = I<sub>L</sub> + I<sub>i</sub></span><br>
+<span class="formula">I<sub>L</sub> = I<sub>S</sub> ·
+    <span style="display:inline-block;vertical-align:middle;text-align:center;line-height:1.15">
+      <span style="display:block;border-bottom:2px solid #fff;padding:0 8px 3px">R<sub>i</sub></span>
+      <span style="display:block;padding-top:3px">R<sub>i</sub> + R</span>
+    </span></span>
+</div>
+</div>
+<div class="note">
+При идеалния източник товарният ток не зависи от R. При реалния източник токът Iₛ се разделя между товара R и вътрешното съпротивление Rᵢ: Iₛ = Iₗ + Iᵢ.
+</div>
+</div>
+</div>
+
+<script>
+const IS=2;
+const R=document.getElementById('R'), Ri=document.getElementById('Ri');
+function update(){
+ const r=+R.value, ri=+Ri.value;
+ const ii=IS, ui=ii*r;
+ const ir=IS*ri/(ri+r), ur=ir*r;
+ Rv.textContent=r; Riv.textContent=ri;
+ Ii.textContent=ii.toFixed(3); Ui.textContent=ui.toFixed(1);
+ Ir.textContent=ir.toFixed(3);
+ Iint.textContent=(IS-ir).toFixed(3);
+ Ur.textContent=ur.toFixed(1);
+}
+R.oninput=Ri.oninput=update; update();
+
+// Moving red markers: conventional current, exactly on the white conductors.
+const idealPts=[[130,275],[130,95],[390,95],[390,340],[130,340],[130,275]];
+const realSourcePts=[[245,340],[245,95]];
+const realLoadPts=[[245,95],[410,95],[410,340],[245,340]];
+const realInternalPts=[[245,95],[105,95],[105,340],[245,340]];
+function prep(pts){
+ let ls=[],total=0;
+ for(let i=0;i<pts.length-1;i++){let l=Math.hypot(pts[i+1][0]-pts[i][0],pts[i+1][1]-pts[i][1]);ls.push(l);total+=l}
+ return {pts,ls,total};
+}
+const PI=prep(idealPts), PRS=prep(realSourcePts), PRL=prep(realLoadPts), PRI=prep(realInternalPts);
+function point(P,u){
+ let d=(u%1)*P.total;
+ for(let i=0;i<P.ls.length;i++){
+  if(d<=P.ls[i]){let a=P.pts[i],b=P.pts[i+1],q=d/P.ls[i];return[a[0]+(b[0]-a[0])*q,a[1]+(b[1]-a[1])*q]}
+  d-=P.ls[i];
+ }
+ return P.pts[0];
+}
+let ph=0,last=performance.now();
+function draw(g,P,n,phase){
+ let h='';
+ for(let k=0;k<n;k++){let p=point(P,phase+k/n);h+=`<circle cx="${p[0]}" cy="${p[1]}" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"/>`}
+ g.innerHTML=h;
+}
+function anim(t){
+ ph=(ph+(t-last)*.00015)%1; last=t;
+ draw(document.getElementById('flowIdeal'),PI,11,ph);
+ const r=+R.value, ri=+Ri.value;
+ const fracLoad=ri/(ri+r);
+ const nLoad=Math.max(4,Math.round(10*fracLoad));
+ const nInt=Math.max(2,Math.round(10*(1-fracLoad)));
+ draw(document.getElementById('flowSource'),PRS,7,ph);
+ draw(document.getElementById('flowLoad'),PRL,nLoad,ph);
+ draw(document.getElementById('flowInternal'),PRI,nInt,ph);
+ requestAnimationFrame(anim);
+}
+requestAnimationFrame(anim);
+</script>
+</body></html>

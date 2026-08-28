@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0078)file:///C:/Users/velichko.atanasov/Downloads/index(20260808-120232)%20(1).html -->
+<!-- saved from url=(0097)file:///C:/Users/velichko.atanasov/Downloads/QR-020-resistor-connections-final-blue-formulas.html -->
 <html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -17,12 +17,14 @@ h1{text-align:center;margin:4px 0;font-size:clamp(23px,4vw,37px)}
 .tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
 .tab{padding:11px;border:1px solid #3c607e;border-radius:12px;background:#10263a;color:#fff;font-weight:850;cursor:pointer}
 .tab.on{background:#245e9c;border-color:#67aef2}
-.main{display:grid;grid-template-columns:1.34fr .66fr;gap:11px}
+.main{display:grid;grid-template-columns:1.34fr .66fr;gap:11px;align-items:start}
+.stagecol{min-width:0}.stagecol>.card{margin-top:10px}
 .stage{position:relative;min-height:620px;border:1px solid var(--line);border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#0b1d2c,#07111b)}
 svg{position:absolute;inset:0;width:100%;height:100%}
 .side{border:1px solid var(--line);border-radius:20px;background:var(--panel);padding:11px}
 .card{border:1px solid #2d4b63;border-radius:14px;padding:10px;margin-bottom:9px;background:#ffffff05}
-.eq{font-family:Cambria Math,Georgia,serif;color:var(--gold);font-size:20px;line-height:1.6;text-align:center;font-weight:800}
+.eq{font-family:Cambria Math,Georgia,serif;color:#67aef2;font-size:19px;line-height:1.7;text-align:center;font-weight:800}
+.frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;line-height:1.05;margin:0 .12em}.frac .num{border-bottom:1.7px solid currentColor;padding:0 .18em .08em}.frac .den{padding:.08em .18em 0}.calc{color:#ffffff;font-size:.92em}.eqline{display:block;margin:.12em 0}
 .res{color:var(--green);font-size:17px;line-height:1.55;font-weight:850}
 .note{color:var(--muted);font-size:13px;line-height:1.4}
 label{display:flex;justify-content:space-between;gap:8px;font-weight:750;margin:6px 0}
@@ -30,7 +32,7 @@ input[type=range]{width:100%}
 button.small{width:100%;padding:10px;border:1px solid #3f6480;background:#102940;color:#fff;border-radius:11px;font-weight:800}
 .wire{stroke:#9ba7af;stroke-width:5;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .node{fill:#dfe9ef;stroke:#405361;stroke-width:2}
-.resistor{fill:#d9c5a1;stroke:#5f4930;stroke-width:2}
+.resistor{fill:#07111b;stroke:#315dff;stroke-width:4}
 .rband{stroke-width:5}
 .lab{fill:#fff;font-size:18px;font-weight:850}
 .smallLab{fill:#c9d9e7;font-size:14px;font-weight:650}
@@ -40,7 +42,7 @@ button.small{width:100%;padding:10px;border:1px solid #3f6480;background:#102940
 .vtxt{fill:#eaf6ff;font-size:14px;font-weight:850;text-anchor:middle}
 .itag{fill:#143020;stroke:#71e29b;stroke-width:2}
 .itxt{fill:#dfffea;font-size:14px;font-weight:850;text-anchor:middle}
-.arrow{stroke:#ffd968;stroke-width:3;marker-end:url(#arr)}
+.arrow{stroke:#5aa7ff;stroke-width:3;marker-end:url(#arr)}
 @media(max-width:820px){.main{grid-template-columns:1fr}.tabs{grid-template-columns:1fr}.stage{min-height:540px}.lab{font-size:20px}.smallLab{font-size:17px}}
 </style>
 </head>
@@ -56,30 +58,44 @@ button.small{width:100%;padding:10px;border:1px solid #3f6480;background:#102940
 </div>
 
 <div class="main">
+<div class="stagecol">
 <section class="stage">
 <svg viewBox="0 0 780 620">
 <defs>
  <marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
-   <path d="M0 0L0 6L9 3z" fill="#ffd968"></path>
+   <path d="M0 0L0 6L9 3z" fill="#5aa7ff"></path>
  </marker>
 </defs>
 
 <!-- common DC source -->
 <g id="source">
- <line x1="85" y1="210" x2="85" y2="410" class="wire"></line>
- <line x1="67" y1="270" x2="103" y2="270" stroke="#ff6a6f" stroke-width="5"></line>
- <line x1="74" y1="350" x2="96" y2="350" stroke="#63d8ff" stroke-width="5"></line>
- <text x="45" y="276" class="lab">+</text>
- <text x="45" y="356" class="lab">−</text>
- <text x="85" y="445" class="smallLab" text-anchor="middle">DC източник</text>
+ <line x1="85" y1="210" x2="85" y2="270" class="wire"></line>
+ <circle cx="85" cy="310" r="40" fill="#07111b" stroke="#315dff" stroke-width="4"></circle>
+ <line x1="85" y1="350" x2="85" y2="410" class="wire"></line>
+ <line x1="85" y1="328" x2="85" y2="294" stroke="#5aa7ff" stroke-width="3" marker-end="url(#arr)"></line>
+ <text x="122" y="316" class="lab" fill="#5aa7ff">E</text>
+ <text x="85" y="445" class="smallLab" text-anchor="middle">Източник</text>
 </g>
-
-<g id="series"><line x1="85" y1="210" x2="175" y2="210" class="wire"></line><line x1="140" y1="210" x2="175" y2="210" class="wire"></line><rect x="175" y="193" width="105" height="34" rx="5" class="resistor"></rect><line x1="280" y1="210" x2="315" y2="210" class="wire"></line><text x="227.5" y="185" class="lab" text-anchor="middle">R₁</text><text x="227.5" y="217" class="smallLab" text-anchor="middle">100 Ω</text><line x1="315" y1="210" x2="350" y2="210" class="wire"></line><rect x="350" y="193" width="105" height="34" rx="5" class="resistor"></rect><line x1="455" y1="210" x2="490" y2="210" class="wire"></line><text x="402.5" y="185" class="lab" text-anchor="middle">R₂</text><text x="402.5" y="217" class="smallLab" text-anchor="middle">220 Ω</text><line x1="490" y1="210" x2="525" y2="210" class="wire"></line><rect x="525" y="193" width="105" height="34" rx="5" class="resistor"></rect><line x1="630" y1="210" x2="665" y2="210" class="wire"></line><text x="577.5" y="185" class="lab" text-anchor="middle">R₃</text><text x="577.5" y="217" class="smallLab" text-anchor="middle">330 Ω</text><line x1="665" y1="210" x2="700" y2="210" class="wire"></line><line x1="700" y1="210" x2="700" y2="410" class="wire"></line><line x1="700" y1="410" x2="85" y2="410" class="wire"></line><rect x="185" y="135" width="84" height="34" rx="8" class="vtag"></rect><text x="227" y="157" class="vtxt" text-anchor="middle">U₁=1.85 V</text><rect x="360" y="135" width="84" height="34" rx="8" class="vtag"></rect><text x="402" y="157" class="vtxt" text-anchor="middle">U₂=4.06 V</text><rect x="535" y="135" width="84" height="34" rx="8" class="vtag"></rect><text x="577" y="157" class="vtxt" text-anchor="middle">U₃=6.09 V</text><rect x="358" y="340" width="84" height="34" rx="8" class="itag"></rect><text x="400" y="362" class="itxt" text-anchor="middle">I=0.018 A</text><line x1="150" y1="310" x2="640" y2="310" class="arrow"></line><text x="395" y="295" class="smallLab" text-anchor="middle">Един и същ ток през всички резистори</text></g>
-<g id="parallel" style="display:none"></g>
+<g id="series" style=""><line x1="85" y1="210" x2="175" y2="210" class="wire"></line><line x1="140" y1="210" x2="175" y2="210" class="wire"></line><rect x="175" y="193" width="105" height="34" rx="5" class="resistor"></rect><line x1="280" y1="210" x2="315" y2="210" class="wire"></line><text x="227.5" y="185" class="lab" text-anchor="middle">R₁</text><text x="227.5" y="217" class="smallLab" text-anchor="middle">100 Ω</text><line x1="315" y1="210" x2="350" y2="210" class="wire"></line><rect x="350" y="193" width="105" height="34" rx="5" class="resistor"></rect><line x1="455" y1="210" x2="490" y2="210" class="wire"></line><text x="402.5" y="185" class="lab" text-anchor="middle">R₂</text><text x="402.5" y="217" class="smallLab" text-anchor="middle">220 Ω</text><line x1="490" y1="210" x2="525" y2="210" class="wire"></line><rect x="525" y="193" width="105" height="34" rx="5" class="resistor"></rect><line x1="630" y1="210" x2="665" y2="210" class="wire"></line><text x="577.5" y="185" class="lab" text-anchor="middle">R₃</text><text x="577.5" y="217" class="smallLab" text-anchor="middle">330 Ω</text><line x1="665" y1="210" x2="700" y2="210" class="wire"></line><line x1="700" y1="210" x2="700" y2="410" class="wire"></line><line x1="700" y1="410" x2="85" y2="410" class="wire"></line><rect x="185" y="135" width="84" height="34" rx="8" class="vtag"></rect><text x="227" y="157" class="vtxt" text-anchor="middle">U₁=1.85 V</text><rect x="360" y="135" width="84" height="34" rx="8" class="vtag"></rect><text x="402" y="157" class="vtxt" text-anchor="middle">U₂=4.06 V</text><rect x="535" y="135" width="84" height="34" rx="8" class="vtag"></rect><text x="577" y="157" class="vtxt" text-anchor="middle">U₃=6.09 V</text><rect x="358" y="340" width="84" height="34" rx="8" class="itag"></rect><text x="400" y="362" class="itxt" text-anchor="middle">I=0.018 A</text><line x1="150" y1="310" x2="640" y2="310" class="arrow"></line><text x="395" y="295" class="smallLab" text-anchor="middle">Един и същ ток през всички резистори</text></g>
+<g id="parallel" style="display: none;"><line x1="85" y1="210" x2="210" y2="210" class="wire"></line><line x1="210" y1="210" x2="210" y2="410" class="wire"></line><line x1="650" y1="210" x2="650" y2="410" class="wire"></line><line x1="650" y1="210" x2="700" y2="210" class="wire"></line><line x1="700" y1="210" x2="700" y2="410" class="wire"></line><line x1="700" y1="410" x2="85" y2="410" class="wire"></line><line x1="290" y1="240" x2="325" y2="240" class="wire"></line><rect x="325" y="225" width="90" height="30" rx="5" class="resistor"></rect><line x1="415" y1="240" x2="450" y2="240" class="wire"></line><text x="370" y="215" class="lab" text-anchor="middle">R₁</text><text x="370" y="247" class="smallLab" text-anchor="middle">100 Ω</text><line x1="210" y1="240" x2="290" y2="240" class="wire"></line><line x1="450" y1="240" x2="650" y2="240" class="wire"></line><line x1="290" y1="310" x2="325" y2="310" class="wire"></line><rect x="325" y="295" width="90" height="30" rx="5" class="resistor"></rect><line x1="415" y1="310" x2="450" y2="310" class="wire"></line><text x="370" y="285" class="lab" text-anchor="middle">R₂</text><text x="370" y="317" class="smallLab" text-anchor="middle">220 Ω</text><line x1="210" y1="310" x2="290" y2="310" class="wire"></line><line x1="450" y1="310" x2="650" y2="310" class="wire"></line><line x1="290" y1="380" x2="325" y2="380" class="wire"></line><rect x="325" y="365" width="90" height="30" rx="5" class="resistor"></rect><line x1="415" y1="380" x2="450" y2="380" class="wire"></line><text x="370" y="355" class="lab" text-anchor="middle">R₃</text><text x="370" y="387" class="smallLab" text-anchor="middle">330 Ω</text><line x1="210" y1="380" x2="290" y2="380" class="wire"></line><line x1="450" y1="380" x2="650" y2="380" class="wire"></line><rect x="478" y="205" width="84" height="34" rx="8" class="itag"></rect><text x="520" y="227" class="itxt" text-anchor="middle">I₁=0.120 A</text><rect x="478" y="275" width="84" height="34" rx="8" class="itag"></rect><text x="520" y="297" class="itxt" text-anchor="middle">I₂=0.055 A</text><rect x="478" y="345" width="84" height="34" rx="8" class="itag"></rect><text x="520" y="367" class="itxt" text-anchor="middle">I₃=0.036 A</text><rect x="358" y="135" width="84" height="34" rx="8" class="vtag"></rect><text x="400" y="157" class="vtxt" text-anchor="middle">U₁=U₂=U₃=12.0 V</text></g>
 <g id="mixed" style="display:none"></g>
-<g id="markers"><circle cx="470" cy="210" r="9" class="curr"></circle><text x="470" y="210.4" class="ctxt">I</text><circle cx="640" cy="210" r="9" class="curr"></circle><text x="640" y="210.4" class="ctxt">I</text><circle cx="700" cy="300" r="9" class="curr"></circle><text x="700" y="300.4" class="ctxt">I</text><circle cx="600" cy="410" r="9" class="curr"></circle><text x="600" y="410.4" class="ctxt">I</text><circle cx="400" cy="410" r="9" class="curr"></circle><text x="400" y="410.4" class="ctxt">I</text><circle cx="200" cy="410" r="9" class="curr"></circle><text x="200" y="410.4" class="ctxt">I</text><circle cx="130" cy="210" r="9" class="curr"></circle><text x="130" y="210.4" class="ctxt">I</text><circle cx="300" cy="210" r="9" class="curr"></circle><text x="300" y="210.4" class="ctxt">I</text></g>
+<g id="markers"></g>
 </svg>
 </section>
+<div class="card eq" id="formula"><span class="eqline">R<sub>eq</sub> = R₁ + R₂ + R₃</span>
+ <span class="eqline calc">R<sub>eq</sub> = 100 + 220 + 330 = 650.0 Ω</span>
+ <span class="eqline">I = <span class="frac"><span class="num">U</span><span class="den">R<sub>eq</sub></span></span></span>
+ <span class="eqline calc">I = <span class="frac"><span class="num">12</span><span class="den">650.0</span></span> = 0.0185 A</span>
+ <span class="eqline calc">U₁ = IR₁ = 0.0185·100 = 1.85 V &nbsp;&nbsp; U₂ = 4.06 V &nbsp;&nbsp; U₃ = 6.09 V</span>
+ <span class="eqline">P₁ = I²R₁</span>
+ <span class="eqline calc">P₁ = 0.0185²·100 = 0.034 W</span>
+ <span class="eqline">P₂ = I²R₂ &nbsp;&nbsp; P₃ = I²R₃</span>
+ <span class="eqline calc">P₂ = 0.0185²·220 = 0.075 W &nbsp;&nbsp; P₃ = 0.0185²·330 = 0.112 W</span>
+ <span class="eqline">P = UI</span>
+ <span class="eqline calc">P = 12·0.0185 = 0.222 W</span></div>
+<div class="card res" id="results"><span style="color:#ffd968">Резултат:</span> &nbsp; R<sub>eq</sub> = 650.0 Ω &nbsp; | &nbsp; I = 0.0185 A &nbsp; | &nbsp; P = 0.222 W<br>
+ <span style="color:#71e29b">Проверка: P₁ + P₂ + P₃ = 0.222 W = P</span></div>
+</div>
 
 <aside class="side">
 <div class="card">
@@ -95,15 +111,6 @@ button.small{width:100%;padding:10px;border:1px solid #3f6480;background:#102940
  <input id="R4" type="range" min="10" max="1000" step="10" value="470">
 </div>
 
-<div class="card eq" id="formula">R<sub>eq</sub>=R₁+R₂+R₃<br>U=U₁+U₂+U₃<br>Pᵢ=I²Rᵢ</div>
-<div class="card res" id="results">R<sub>eq</sub> = 650.0 Ω<br>
- I = 0.0185 A<br>
- U₁ = 1.85 V &nbsp; U₂ = 4.06 V &nbsp; U₃ = 6.09 V
- <hr style="border:0;border-top:1px solid #31516b;margin:8px 0">
- <span style="color:#ffd968">Мощност върху резисторите:</span><br>
- P₁ = 0.034 W &nbsp; P₂ = 0.075 W &nbsp; P₃ = 0.112 W<br>
- P = U·I = 0.222 W<br>
- <span style="color:#71e29b">Проверка: P₁ + P₂ + P₃ = 0.222 W = P</span></div>
 <div class="card note" id="explain">При последователно свързване токът е еднакъв през всички резистори, а напрежението се разпределя между тях.</div>
 </aside>
 </div>
@@ -155,79 +162,135 @@ function drawSeries(){
  tag(g,227,155,"U₁="+U1.toFixed(2)+" V");tag(g,402,155,"U₂="+U2.toFixed(2)+" V");tag(g,577,155,"U₃="+U3.toFixed(2)+" V");
  tag(g,400,360,"I="+I.toFixed(3)+" A","i");
  line(g,150,310,640,310,"arrow");txt(g,395,295,"Един и същ ток през всички резистори","smallLab");
- $("formula").innerHTML="R<sub>eq</sub>=R₁+R₂+R₃<br>U=U₁+U₂+U₃<br>Pᵢ=I²Rᵢ";
+ $("formula").innerHTML=`<span class="eqline">R<sub>eq</sub> = R₁ + R₂ + R₃</span>
+ <span class="eqline calc">R<sub>eq</sub> = ${R1} + ${R2} + ${R3} = ${Req.toFixed(1)} Ω</span>
+ <span class="eqline">I = <span class="frac"><span class="num">U</span><span class="den">R<sub>eq</sub></span></span></span>
+ <span class="eqline calc">I = <span class="frac"><span class="num">${U}</span><span class="den">${Req.toFixed(1)}</span></span> = ${I.toFixed(4)} A</span>
+ <span class="eqline calc">U₁ = IR₁ = ${I.toFixed(4)}·${R1} = ${U1.toFixed(2)} V &nbsp;&nbsp; U₂ = ${U2.toFixed(2)} V &nbsp;&nbsp; U₃ = ${U3.toFixed(2)} V</span>
+ <span class="eqline">P₁ = I²R₁</span>
+ <span class="eqline calc">P₁ = ${I.toFixed(4)}²·${R1} = ${P1.toFixed(3)} W</span>
+ <span class="eqline">P₂ = I²R₂ &nbsp;&nbsp; P₃ = I²R₃</span>
+ <span class="eqline calc">P₂ = ${I.toFixed(4)}²·${R2} = ${P2.toFixed(3)} W &nbsp;&nbsp; P₃ = ${I.toFixed(4)}²·${R3} = ${P3.toFixed(3)} W</span>
+ <span class="eqline">P = UI</span>
+ <span class="eqline calc">P = ${U}·${I.toFixed(4)} = ${P.toFixed(3)} W</span>`;
  $("results").innerHTML=
- `R<sub>eq</sub> = ${Req.toFixed(1)} Ω<br>
- I = ${I.toFixed(4)} A<br>
- U₁ = ${U1.toFixed(2)} V &nbsp; U₂ = ${U2.toFixed(2)} V &nbsp; U₃ = ${U3.toFixed(2)} V
- <hr style="border:0;border-top:1px solid #31516b;margin:8px 0">
- <span style="color:#ffd968">Мощност върху резисторите:</span><br>
- P₁ = ${P1.toFixed(3)} W &nbsp; P₂ = ${P2.toFixed(3)} W &nbsp; P₃ = ${P3.toFixed(3)} W<br>
- P = U·I = ${P.toFixed(3)} W<br>
+ `<span style="color:#ffd968">Резултат:</span> &nbsp; R<sub>eq</sub> = ${Req.toFixed(1)} Ω &nbsp; | &nbsp; I = ${I.toFixed(4)} A &nbsp; | &nbsp; P = ${P.toFixed(3)} W<br>
  <span style="color:#71e29b">Проверка: P₁ + P₂ + P₃ = ${Psum.toFixed(3)} W = P</span>`;
  $("explain").innerHTML="При последователно свързване токът е еднакъв през всички резистори, а напрежението се разпределя между тях.";
 }
 function drawParallel(){
- const g=$("parallel");g.innerHTML="";
- const R1=val("R1"),R2=val("R2"),R3=val("R3"),U=val("U");
- const Req=1/(1/R1+1/R2+1/R3),I1=U/R1,I2=U/R2,I3=U/R3,I=I1+I2+I3;
- const P1=U*I1,P2=U*I2,P3=U*I3,P=U*I,Psum=P1+P2+P3;
- line(g,85,210,210,210);line(g,210,210,210,410);line(g,650,210,650,410);line(g,650,210,700,210);line(g,700,210,700,410);line(g,700,410,85,410);
- resistor(g,325,240,90,30,"R₁",R1);line(g,210,240,290,240);line(g,450,240,650,240);
- resistor(g,325,310,90,30,"R₂",R2);line(g,210,310,290,310);line(g,450,310,650,310);
- resistor(g,325,380,90,30,"R₃",R3);line(g,210,380,290,380);line(g,450,380,650,380);
- tag(g,520,225,"I₁="+I1.toFixed(3)+" A","i");tag(g,520,295,"I₂="+I2.toFixed(3)+" A","i");tag(g,520,365,"I₃="+I3.toFixed(3)+" A","i");
- tag(g,400,155,"U₁=U₂=U₃="+U.toFixed(1)+" V");
- $("formula").innerHTML="1/R<sub>eq</sub>=1/R₁+1/R₂+1/R₃<br>U=U₁=U₂=U₃<br>Pᵢ=U²/Rᵢ";
- $("results").innerHTML=
- `R<sub>eq</sub> = ${Req.toFixed(2)} Ω<br>
- I = ${I.toFixed(4)} A<br>
- I₁ = ${I1.toFixed(4)} A &nbsp; I₂ = ${I2.toFixed(4)} A &nbsp; I₃ = ${I3.toFixed(4)} A
- <hr style="border:0;border-top:1px solid #31516b;margin:8px 0">
- <span style="color:#ffd968">Мощност върху резисторите:</span><br>
- P₁ = ${P1.toFixed(3)} W &nbsp; P₂ = ${P2.toFixed(3)} W &nbsp; P₃ = ${P3.toFixed(3)} W<br>
- P = U·I = ${P.toFixed(3)} W<br>
- <span style="color:#71e29b">Проверка: P₁ + P₂ + P₃ = ${Psum.toFixed(3)} W = P</span>`;
- $("explain").innerHTML="При паралелно свързване напрежението е еднакво върху всеки клон, а общият ток е сумата от токовете в клоновете.";
+  const g=$("parallel");g.innerHTML="";
+  const R1=val("R1"),R2=val("R2"),R3=val("R3"),U=val("U");
+  const Req=1/(1/R1+1/R2+1/R3),I1=U/R1,I2=U/R2,I3=U/R3,I=I1+I2+I3;
+  const P1=U*I1,P2=U*I2,P3=U*I3,P=U*I,Psum=P1+P2+P3;
+
+  // Source and two common nodes a, b
+  line(g,85,210,145,210);
+  node(g,145,210); txt(g,125,195,"a","lab");
+  line(g,665,210,700,210); node(g,665,210); txt(g,680,195,"b","lab");
+
+  // top branch R2
+  path(g,"M145 210 L190 145 L300 145");
+  resistor(g,300,145,105,34,"R₂",R2);
+  path(g,"M440 145 L610 145 L665 210");
+
+  // middle branch R1
+  line(g,145,210,300,210);
+  resistor(g,300,210,105,34,"R₁",R1);
+  line(g,440,210,665,210);
+
+  // bottom branch R3
+  path(g,"M145 210 L190 300 L300 300");
+  resistor(g,300,300,105,34,"R₃",R3);
+  path(g,"M440 300 L610 300 L665 210");
+
+  // return path
+  line(g,700,210,700,410); line(g,700,410,85,410);
+
+  // current arrows in each branch
+  line(g,205,145,265,145,"arrow"); txt(g,235,132,"I₂","smallLab");
+  line(g,205,210,265,210,"arrow"); txt(g,235,197,"I₁","smallLab");
+  line(g,205,300,265,300,"arrow"); txt(g,235,287,"I₃","smallLab");
+
+  // total current and common voltage
+  line(g,120,365,120,305,"arrow"); txt(g,105,338,"I","smallLab");
+  line(g,675,305,675,365,"arrow"); txt(g,690,338,"I","smallLab");
+  txt(g,405,365,"U₁ = U₂ = U₃ = U","smallLab");
+
+  $("formula").innerHTML=`<span class="eqline"><span class="frac"><span class="num">1</span><span class="den">R<sub>eq</sub></span></span> = <span class="frac"><span class="num">1</span><span class="den">R₁</span></span> + <span class="frac"><span class="num">1</span><span class="den">R₂</span></span> + <span class="frac"><span class="num">1</span><span class="den">R₃</span></span></span>
+ <span class="eqline calc">R<sub>eq</sub> = <span class="frac"><span class="num">1</span><span class="den"><span class="frac"><span class="num">1</span><span class="den">${R1}</span></span> + <span class="frac"><span class="num">1</span><span class="den">${R2}</span></span> + <span class="frac"><span class="num">1</span><span class="den">${R3}</span></span></span></span> = ${Req.toFixed(2)} Ω</span>
+ <span class="eqline">I₁ = <span class="frac"><span class="num">U</span><span class="den">R₁</span></span>, &nbsp; I₂ = <span class="frac"><span class="num">U</span><span class="den">R₂</span></span>, &nbsp; I₃ = <span class="frac"><span class="num">U</span><span class="den">R₃</span></span></span>
+ <span class="eqline calc">I₁ = <span class="frac"><span class="num">${U}</span><span class="den">${R1}</span></span> = ${I1.toFixed(4)} A &nbsp;&nbsp; I₂ = ${I2.toFixed(4)} A &nbsp;&nbsp; I₃ = ${I3.toFixed(4)} A</span>
+ <span class="eqline">I = I₁ + I₂ + I₃</span>
+ <span class="eqline calc">I = ${I1.toFixed(4)} + ${I2.toFixed(4)} + ${I3.toFixed(4)} = ${I.toFixed(4)} A</span>
+ <span class="eqline">P₁ = UI₁, &nbsp; P₂ = UI₂, &nbsp; P₃ = UI₃</span>
+ <span class="eqline calc">P₁ = ${U}·${I1.toFixed(4)} = ${P1.toFixed(3)} W &nbsp;&nbsp; P₂ = ${P2.toFixed(3)} W &nbsp;&nbsp; P₃ = ${P3.toFixed(3)} W</span>
+ <span class="eqline">P = UI</span>
+ <span class="eqline calc">P = ${U}·${I.toFixed(4)} = ${P.toFixed(3)} W</span>`;
+  $("results").innerHTML=
+  `<span style="color:#ffd968">Резултат:</span> &nbsp; R<sub>eq</sub> = ${Req.toFixed(2)} Ω &nbsp; | &nbsp; I = ${I.toFixed(4)} A &nbsp; | &nbsp; P = ${P.toFixed(3)} W<br>
+   <span style="color:#71e29b">Проверка: P₁ + P₂ + P₃ = ${Psum.toFixed(3)} W = P</span>`;
+  $("explain").innerHTML="При паралелно свързване всички резистори са включени между едни и същи два възела a и b. Напрежението е еднакво във всеки клон, а общият ток е сумата от клоновите токове.";
 }
 function drawMixed(){
- const g=$("mixed");g.innerHTML="";
- const R1=val("R1"),R2=val("R2"),R3=val("R3"),R4=val("R4"),U=val("U");
- const Rp=R3*R4/(R3+R4),Req=R1+R2+Rp,I=U/Req,U1=I*R1,U2=I*R2,Up=I*Rp,I3=Up/R3,I4=Up/R4;
- const P1=I*I*R1,P2=I*I*R2,P3=I3*I3*R3,P4=I4*I4*R4,P=U*I,Psum=P1+P2+P3+P4;
- line(g,85,210,145,210);resistor(g,145,210,90,32,"R₁",R1);resistor(g,305,210,90,32,"R₂",R2);
- line(g,430,210,480,210);node(g,480,210);line(g,480,210,480,350);node(g,480,350);
- line(g,480,240,530,240);resistor(g,530,240,90,30,"R₃",R3);line(g,655,240,690,240);
- line(g,480,350,530,350);resistor(g,530,350,90,30,"R₄",R4);line(g,655,350,690,350);
- line(g,690,240,690,410);line(g,690,350,690,410);line(g,690,410,85,410);
- tag(g,190,155,"U₁="+U1.toFixed(2)+" V");tag(g,350,155,"U₂="+U2.toFixed(2)+" V");tag(g,590,190,"U₃=U₄="+Up.toFixed(2)+" V");
- tag(g,570,290,"I₃="+I3.toFixed(3)+" A","i");tag(g,570,400,"I₄="+I4.toFixed(3)+" A","i");tag(g,350,360,"I="+I.toFixed(3)+" A","i");
- $("formula").innerHTML="Rₚ=(R₃R₄)/(R₃+R₄)<br>R<sub>eq</sub>=R₁+R₂+Rₚ<br>Pᵢ=UᵢIᵢ";
- $("results").innerHTML=
- `Rₚ = ${Rp.toFixed(2)} Ω<br>
- R<sub>eq</sub> = ${Req.toFixed(2)} Ω<br>
- I = ${I.toFixed(4)} A<br>
- I₃ = ${I3.toFixed(4)} A &nbsp; I₄ = ${I4.toFixed(4)} A
- <hr style="border:0;border-top:1px solid #31516b;margin:8px 0">
- <span style="color:#ffd968">Мощност върху резисторите:</span><br>
- P₁ = ${P1.toFixed(3)} W &nbsp; P₂ = ${P2.toFixed(3)} W<br>
- P₃ = ${P3.toFixed(3)} W &nbsp; P₄ = ${P4.toFixed(3)} W<br>
- P = U·I = ${P.toFixed(3)} W<br>
- <span style="color:#71e29b">Проверка: P₁ + P₂ + P₃ + P₄ = ${Psum.toFixed(3)} W = P</span>`;
- $("explain").innerHTML="Смесена схема по твоята фигура: R₁ и R₂ са последователни, след тях токът се разделя през паралелните R₃ и R₄.";
+  const g=$("mixed");g.innerHTML="";
+  const R1=val("R1"),R2=val("R2"),R3=val("R3"),R4=val("R4"),U=val("U");
+  const Rp=R3*R4/(R3+R4),Req=R1+R2+Rp,I=U/Req,U1=I*R1,U2=I*R2,Up=I*Rp,I3=Up/R3,I4=Up/R4;
+  const P1=I*I*R1,P2=I*I*R2,P3=I3*I3*R3,P4=I4*I4*R4,P=U*I,Psum=P1+P2+P3+P4;
+
+  // Series section R1, R2
+  line(g,85,210,145,210);
+  resistor(g,145,210,90,32,"R₁",R1);
+  resistor(g,305,210,90,32,"R₂",R2);
+  line(g,430,210,475,210);
+  node(g,475,210); txt(g,460,190,"a","lab");
+
+  // Parallel section R3 || R4
+  path(g,"M475 210 L515 150 L550 150");
+  resistor(g,550,150,90,30,"R₃",R3);
+  path(g,"M675 150 L710 150 L745 210");
+
+  path(g,"M475 210 L515 300 L550 300");
+  resistor(g,550,300,90,30,"R₄",R4);
+  path(g,"M675 300 L710 300 L745 210");
+
+  node(g,745,210); txt(g,760,190,"b","lab");
+  line(g,745,210,745,410); line(g,745,410,85,410);
+
+  // Currents
+  line(g,110,210,140,210,"arrow"); txt(g,125,195,"I","smallLab");
+  line(g,505,150,535,150,"arrow"); txt(g,520,137,"I₃","smallLab");
+  line(g,505,300,535,300,"arrow"); txt(g,520,287,"I₄","smallLab");
+  line(g,665,365,665,330,"arrow"); txt(g,680,350,"I","smallLab");
+
+  // Voltage labels
+  txt(g,190,155,"U₁","smallLab");
+  txt(g,350,155,"U₂","smallLab");
+  txt(g,610,225,"U₃ = U₄","smallLab");
+
+  $("formula").innerHTML=`<span class="eqline">Rₚ = <span class="frac"><span class="num">R₃R₄</span><span class="den">R₃ + R₄</span></span></span>
+ <span class="eqline calc">Rₚ = <span class="frac"><span class="num">${R3}·${R4}</span><span class="den">${R3} + ${R4}</span></span> = ${Rp.toFixed(2)} Ω</span>
+ <span class="eqline">R<sub>eq</sub> = R₁ + R₂ + Rₚ</span>
+ <span class="eqline calc">R<sub>eq</sub> = ${R1} + ${R2} + ${Rp.toFixed(2)} = ${Req.toFixed(2)} Ω</span>
+ <span class="eqline">I = <span class="frac"><span class="num">U</span><span class="den">R<sub>eq</sub></span></span></span>
+ <span class="eqline calc">I = <span class="frac"><span class="num">${U}</span><span class="den">${Req.toFixed(2)}</span></span> = ${I.toFixed(4)} A</span>
+ <span class="eqline">Uₚ = IRₚ</span>
+ <span class="eqline calc">Uₚ = ${I.toFixed(4)}·${Rp.toFixed(2)} = ${Up.toFixed(2)} V</span>
+ <span class="eqline">I₃ = <span class="frac"><span class="num">Uₚ</span><span class="den">R₃</span></span>, &nbsp; I₄ = <span class="frac"><span class="num">Uₚ</span><span class="den">R₄</span></span></span>
+ <span class="eqline calc">I₃ = <span class="frac"><span class="num">${Up.toFixed(2)}</span><span class="den">${R3}</span></span> = ${I3.toFixed(4)} A &nbsp;&nbsp; I₄ = <span class="frac"><span class="num">${Up.toFixed(2)}</span><span class="den">${R4}</span></span> = ${I4.toFixed(4)} A</span>
+ <span class="eqline">I = I₃ + I₄</span>
+ <span class="eqline calc">I = ${I3.toFixed(4)} + ${I4.toFixed(4)} = ${I.toFixed(4)} A</span>
+ <span class="eqline">P₁ = I²R₁, &nbsp; P₂ = I²R₂, &nbsp; P₃ = I₃²R₃, &nbsp; P₄ = I₄²R₄</span>
+ <span class="eqline calc">P₁ = ${P1.toFixed(3)} W &nbsp; P₂ = ${P2.toFixed(3)} W &nbsp; P₃ = ${P3.toFixed(3)} W &nbsp; P₄ = ${P4.toFixed(3)} W</span>
+ <span class="eqline">P = UI</span>
+ <span class="eqline calc">P = ${U}·${I.toFixed(4)} = ${P.toFixed(3)} W</span>`;
+  $("results").innerHTML=
+  `<span style="color:#ffd968">Резултат:</span> &nbsp; R<sub>eq</sub> = ${Req.toFixed(2)} Ω &nbsp; | &nbsp; I = ${I.toFixed(4)} A &nbsp; | &nbsp; P = ${P.toFixed(3)} W<br>
+   <span style="color:#71e29b">Проверка: P₁ + P₂ + P₃ + P₄ = ${Psum.toFixed(3)} W = P</span>`;
+  $("explain").innerHTML="Смесено свързване: R₁ и R₂ са последователни, след което токът се разделя във възел a през паралелните клонове R₃ и R₄ и отново се събира във възел b.";
 }
-function drawMarkers(){
- const g=$("markers");g.innerHTML="";
- let pts=[];
- if(mode==="series") pts=[[130,210],[300,210],[470,210],[640,210],[700,300],[600,410],[400,410],[200,410]];
- if(mode==="parallel") pts=[[150,210],[210,270],[210,350],[320,240],[320,310],[320,380],[650,300],[560,410],[300,410]];
- if(mode==="mixed") pts=[[120,210],[270,210],[430,210],[500,240],[640,240],[500,350],[640,350],[690,390],[500,410],[250,410]];
- for(let i=0;i<pts.length;i++){
-   const p=pts[(i+Math.floor(phase))%pts.length];
-   const c=document.createElementNS(NS,"circle");c.setAttribute("cx",p[0]);c.setAttribute("cy",p[1]);c.setAttribute("r",9);c.setAttribute("class","curr");g.appendChild(c);
-   const t=document.createElementNS(NS,"text");t.setAttribute("x",p[0]);t.setAttribute("y",p[1]+.4);t.setAttribute("class","ctxt");t.textContent="I";g.appendChild(t);
- }
-}
+function drawMarkers(){ $("markers").innerHTML=""; }
+
 function redraw(){
  $("uOut").textContent=val("U")+" V";["1","2","3","4"].forEach(n=>$("r"+n+"Out").textContent=val("R"+n)+" Ω");
  $("series").style.display=mode==="series"?"":"none";$("parallel").style.display=mode==="parallel"?"":"none";$("mixed").style.display=mode==="mixed"?"":"none";

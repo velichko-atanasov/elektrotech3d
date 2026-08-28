@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<!-- saved from url=(0089)file:///C:/Users/velichko.atanasov/Downloads/QR-071-electrical-conductance-E-outside.html -->
+<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QR-071 – Електрическа проводимост</title>
+<style>
+:root{
+ --bg:#07111b; --panel:#0b1724; --line:#dce7f5; --blue:#5aa7ff;
+ --blue2:#315dff; --muted:#9fb1c5; --white:#f7fbff;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--white);font-family:Arial,Helvetica,sans-serif}
+.wrap{max-width:1180px;margin:auto;padding:22px}
+h1{font-size:28px;margin:0 0 6px}
+.sub{color:var(--muted);margin-bottom:18px}
+.tabs{display:flex;gap:10px;margin-bottom:16px}
+button{background:#102236;color:#dbe9fa;border:1px solid #27435f;border-radius:9px;padding:10px 18px;font-weight:700;cursor:pointer}
+button.active{background:#163b67;border-color:var(--blue);color:white}
+.card{background:var(--panel);border:1px solid #20364d;border-radius:14px;padding:18px}
+.grid{display:grid;grid-template-columns:1.25fr .75fr;gap:18px}
+@media(max-width:850px){.grid{grid-template-columns:1fr}}
+svg{width:100%;height:auto;display:block}
+.wire{stroke:var(--line);stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.res{fill:#07111b;stroke:var(--blue2);stroke-width:4}
+.node{fill:var(--white)}
+.blue{stroke:var(--blue);fill:none;stroke-width:3}
+.txt{fill:var(--white);font-size:23px}
+.small{fill:var(--muted);font-size:18px}
+.btxt{fill:var(--blue);font-size:23px;font-weight:700}
+.controls label{display:block;margin:13px 0 5px;color:#c9d8e8}
+input[type=range]{width:100%}
+.value{color:var(--blue);font-weight:700}
+.calc{margin-top:16px;border-top:1px solid #20364d;padding-top:15px}
+.row{margin:9px 0;font-size:20px;line-height:1.5}
+.formula{color:var(--blue);font-weight:700}
+.number{color:var(--white)}
+.note{margin-top:14px;color:#b9c9d9;line-height:1.55}
+.frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;line-height:1.05;margin:0 4px}
+.frac .top{border-bottom:1.7px solid currentColor;padding:0 4px 2px}
+.frac .bot{padding:2px 4px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>QR-071 – Електрическа проводимост</h1>
+<div class="sub">Връзка между съпротивление, проводимост и ток</div>
+
+<div class="tabs">
+<button id="b1" class="active" onclick="mode=&#39;single&#39;;draw()">R и G</button>
+<button id="b2" onclick="mode=&#39;parallel&#39;;draw()">Паралелно свързване</button>
+</div>
+
+<div class="card">
+<div class="grid">
+<div>
+<svg id="svg" viewBox="0 0 760 470">
+<defs>
+ <marker id="arr" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+  <path d="M0 0 L10 5 L0 10 z" fill="#5aa7ff"></path>
+ </marker>
+</defs>
+<g id="scene">
+ <line x1="95" y1="100" x2="95" y2="170" class="wire"></line>
+ <circle cx="95" cy="220" r="50" fill="#07111b" stroke="#315dff" stroke-width="4"></circle>
+ <line x1="95" y1="270" x2="95" y2="365" class="wire"></line>
+ <line x1="95" y1="242" x2="95" y2="198" class="blue" marker-end="url(#arr)"></line>
+ <text x="158" y="227" class="btxt">E</text>
+ <line x1="95" y1="100" x2="590" y2="100" class="wire"></line>
+ <line x1="590" y1="100" x2="590" y2="165" class="wire"></line>
+ <rect x="560" y="165" width="60" height="135" class="res"></rect>
+ <line x1="590" y1="300" x2="590" y2="365" class="wire"></line>
+ <line x1="590" y1="365" x2="95" y2="365" class="wire"></line>
+ <line x1="250" y1="75" x2="335" y2="75" class="blue" marker-end="url(#arr)"></line>
+ <text x="278" y="58" class="btxt">I</text>
+ <text x="635" y="220" class="txt">R = 100 Ω</text>
+ <text x="635" y="252" class="btxt">G = 10,00 mS</text>
+ <text x="35" y="330" class="txt">U = 12 V</text></g>
+</svg>
+</div>
+<div class="controls" id="controls">
+    <label>Напрежение U: <span class="value">12 V</span></label>
+    <input type="range" min="1" max="24" value="12" oninput="window.U=this.value;draw()">
+    <label>Съпротивление R: <span class="value">100 Ω</span></label>
+    <input type="range" min="20" max="500" step="10" value="100" oninput="window.R=this.value;draw()"></div>
+</div>
+<div class="calc" id="calc">
+    <div class="row formula">G = <span class="frac"><span class="top">1</span><span class="bot">R</span></span></div>
+    <div class="row number">G = <span class="frac"><span class="top">1</span><span class="bot">100 Ω</span></span> = 0,0100 S = 10,00 mS</div>
+    <div class="row formula">I = U·G = <span class="frac"><span class="top">U</span><span class="bot">R</span></span></div>
+    <div class="row number">I = 12 V · 0,0100 S = 0,120 A</div></div>
+<div class="note" id="note">При намаляване на <b>R</b> проводимостта <b>G</b> нараства. При постоянно напрежение заедно с нея нараства и токът <b>I</b>.</div>
+</div>
+</div>
+
+<script>
+let mode='single';
+const f=(n,d=2)=>Number(n).toFixed(d).replace('.',',');
+const frac=(a,b)=>`<span class="frac"><span class="top">${a}</span><span class="bot">${b}</span></span>`;
+
+function source(){
+ return `
+ <line x1="95" y1="100" x2="95" y2="170" class="wire"/>
+ <circle cx="95" cy="220" r="50" fill="#07111b" stroke="#315dff" stroke-width="4"/>
+ <line x1="95" y1="270" x2="95" y2="365" class="wire"/>
+ <line x1="95" y1="242" x2="95" y2="198" class="blue" marker-end="url(#arr)"/>
+ <text x="158" y="227" class="btxt">E</text>`;
+}
+function arrow(x1,y1,x2,y2,label,x,y){
+ return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" class="blue" marker-end="url(#arr)"/>
+ <text x="${x}" y="${y}" class="btxt">${label}</text>`;
+}
+function singleScene(R,U){
+ return source()+`
+ <line x1="95" y1="100" x2="590" y2="100" class="wire"/>
+ <line x1="590" y1="100" x2="590" y2="165" class="wire"/>
+ <rect x="560" y="165" width="60" height="135" class="res"/>
+ <line x1="590" y1="300" x2="590" y2="365" class="wire"/>
+ <line x1="590" y1="365" x2="95" y2="365" class="wire"/>
+ ${arrow(250,75,335,75,'I',278,58)}
+ <text x="635" y="220" class="txt">R = ${R} Ω</text>
+ <text x="635" y="252" class="btxt">G = ${f(1000/R,2)} mS</text>
+ <text x="35" y="330" class="txt">U = ${U} V</text>`;
+}
+function parallelScene(R1,R2,U){
+ return source()+`
+ <line x1="95" y1="100" x2="650" y2="100" class="wire"/>
+ <line x1="650" y1="100" x2="650" y2="365" class="wire"/>
+ <line x1="650" y1="365" x2="95" y2="365" class="wire"/>
+ <line x1="385" y1="100" x2="385" y2="165" class="wire"/>
+ <rect x="355" y="165" width="60" height="135" class="res"/>
+ <line x1="385" y1="300" x2="385" y2="365" class="wire"/>
+ <rect x="620" y="165" width="60" height="135" class="res"/>
+ <circle cx="385" cy="100" r="6" class="node"/><circle cx="385" cy="365" r="6" class="node"/>
+ <circle cx="650" cy="100" r="6" class="node"/><circle cx="650" cy="365" r="6" class="node"/>
+ ${arrow(230,75,305,75,'I',255,58)}
+ ${arrow(435,130,435,180,'I₁',447,160)}
+ ${arrow(700,130,700,180,'I₂',710,160)}
+ <text x="430" y="225" class="txt">R₁ = ${R1} Ω</text>
+ <text x="430" y="257" class="btxt">G₁ = ${f(1000/R1,2)} mS</text>
+ <text x="515" y="325" class="txt">R₂ = ${R2} Ω</text>
+ <text x="515" y="355" class="btxt">G₂ = ${f(1000/R2,2)} mS</text>
+ <text x="35" y="330" class="txt">U = ${U} V</text>`;
+}
+
+function draw(){
+ document.getElementById('b1').classList.toggle('active',mode==='single');
+ document.getElementById('b2').classList.toggle('active',mode==='parallel');
+ const scene=document.getElementById('scene'), controls=document.getElementById('controls');
+ const calc=document.getElementById('calc'), note=document.getElementById('note');
+
+ if(mode==='single'){
+   let R=+(window.R||100), U=+(window.U||12);
+   scene.innerHTML=singleScene(R,U);
+   controls.innerHTML=`
+    <label>Напрежение U: <span class="value">${U} V</span></label>
+    <input type="range" min="1" max="24" value="${U}" oninput="window.U=this.value;draw()">
+    <label>Съпротивление R: <span class="value">${R} Ω</span></label>
+    <input type="range" min="20" max="500" step="10" value="${R}" oninput="window.R=this.value;draw()">`;
+   let G=1/R, I=U/R;
+   calc.innerHTML=`
+    <div class="row formula">G = ${frac('1','R')}</div>
+    <div class="row number">G = ${frac('1',R+' Ω')} = ${f(G,4)} S = ${f(G*1000,2)} mS</div>
+    <div class="row formula">I = U·G = ${frac('U','R')}</div>
+    <div class="row number">I = ${U} V · ${f(G,4)} S = ${f(I,3)} A</div>`;
+   note.innerHTML=`При намаляване на <b>R</b> проводимостта <b>G</b> нараства. При постоянно напрежение заедно с нея нараства и токът <b>I</b>.`;
+ } else {
+   let R1=+(window.R1||100), R2=+(window.R2||200), U=+(window.UP||12);
+   scene.innerHTML=parallelScene(R1,R2,U);
+   controls.innerHTML=`
+    <label>Напрежение U: <span class="value">${U} V</span></label>
+    <input type="range" min="1" max="24" value="${U}" oninput="window.UP=this.value;draw()">
+    <label>R₁: <span class="value">${R1} Ω</span></label>
+    <input type="range" min="20" max="500" step="10" value="${R1}" oninput="window.R1=this.value;draw()">
+    <label>R₂: <span class="value">${R2} Ω</span></label>
+    <input type="range" min="20" max="500" step="10" value="${R2}" oninput="window.R2=this.value;draw()">`;
+   let G1=1/R1,G2=1/R2,Geq=G1+G2,Req=1/Geq,I1=U*G1,I2=U*G2,I=I1+I2;
+   calc.innerHTML=`
+    <div class="row formula">G₁ = ${frac('1','R₁')} &nbsp;&nbsp;&nbsp; G₂ = ${frac('1','R₂')}</div>
+    <div class="row number">G₁ = ${frac('1',R1+' Ω')} = ${f(G1*1000,2)} mS &nbsp;&nbsp;&nbsp; G₂ = ${frac('1',R2+' Ω')} = ${f(G2*1000,2)} mS</div>
+    <div class="row formula">G<sub>eq</sub> = G₁ + G₂</div>
+    <div class="row number">G<sub>eq</sub> = ${f(G1*1000,2)} + ${f(G2*1000,2)} = ${f(Geq*1000,2)} mS</div>
+    <div class="row formula">R<sub>eq</sub> = ${frac('1','G<sub>eq</sub>')}</div>
+    <div class="row number">R<sub>eq</sub> = ${frac('1',f(Geq,4)+' S')} = ${f(Req,2)} Ω</div>
+    <div class="row formula">I₁ = U·G₁ &nbsp;&nbsp; I₂ = U·G₂ &nbsp;&nbsp; I = I₁ + I₂ = U·G<sub>eq</sub></div>
+    <div class="row number">I₁ = ${f(I1,3)} A &nbsp;&nbsp; I₂ = ${f(I2,3)} A &nbsp;&nbsp; I = ${f(I,3)} A</div>`;
+   note.innerHTML=`При паралелно свързване проводимостите се <b>събират директно</b>. Добавянето на паралелен клон увеличава G<sub>eq</sub> и намалява R<sub>eq</sub>.`;
+ }
+}
+draw();
+</script>
+
+</body></html>

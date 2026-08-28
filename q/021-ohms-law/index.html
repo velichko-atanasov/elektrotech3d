@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<!-- saved from url=(0064)file:///C:/Users/velichko.atanasov/Downloads/preview%20(65).html -->
+<!-- saved from url=(0064)file:///C:/Users/velichko.atanasov/Downloads/preview%20(91).html -->
 <html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>QR-021 – Закон на Ом</title>
 <style>
 *{box-sizing:border-box}
-:root{--bg:#041525;--panel:#0b2941;--line:#4ca6df;--txt:#ffffff;--muted:#c9e7f7;--gold:#ffe45c;--green:#55f28b;--cyan:#27d9ff;--red:#ff626c}
+:root{--bg:#041525;--panel:#0b2941;--line:#4ca6df;--txt:#ffffff;--muted:#c9e7f7;--formula:#29b6f6;--calc:#ffffff;--cyan:#27d9ff;--red:#ff626c}
 body{margin:0;background:radial-gradient(circle at 50% 0,#1d6594,#061c2e 58%,#020b12);color:var(--txt);font-family:Segoe UI,Arial,sans-serif}
 .wrap{max-width:1180px;margin:auto;padding:12px}
 h1{text-align:center;margin:4px 0;font-size:clamp(24px,4vw,38px)}
@@ -14,34 +14,34 @@ h1{text-align:center;margin:4px 0;font-size:clamp(24px,4vw,38px)}
 .tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
 .tab{padding:12px;border:1px solid #3c607e;border-radius:12px;background:#10263a;color:#fff;font-weight:850;cursor:pointer}
 .tab.on{background:#147ac3;border-color:#8bd4ff;box-shadow:0 0 14px #168ee755}
-.main{display:grid;grid-template-columns:1.35fr .65fr;gap:11px}
-.stage{position:relative;min-height:610px;border:1px solid var(--line);border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#123b59,#071827)}
+.main{display:grid;grid-template-columns:1fr;gap:11px}
+.stage{position:relative;min-height:570px;border:1px solid var(--line);border-radius:20px;overflow:hidden;background:radial-gradient(circle at 50% 20%,#164e73,#071827 62%);box-shadow:inset 0 0 35px #2bb7ff18,0 10px 28px #0006}
 svg{position:absolute;inset:0;width:100%;height:100%}
-.side{border:1px solid var(--line);border-radius:20px;background:var(--panel);padding:11px}
-.card{border:1px solid #2d4b63;border-radius:14px;padding:10px;margin-bottom:9px;background:#ffffff05}
-.eq{font-family:Cambria Math,Georgia,serif;color:var(--gold);font-size:23px;line-height:1.55;text-align:center;font-weight:800;background:linear-gradient(180deg,#102c42,#081b2b);box-shadow:inset 0 0 0 1px #4aa8df55}
-.res{color:var(--green);font-size:17px;line-height:1.55;font-weight:850}
-.note{color:var(--muted);font-size:13px;line-height:1.45}
+.side{border:1px solid var(--line);border-radius:20px;background:var(--panel);padding:11px;display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.card{border:1px solid #2d4b63;border-radius:14px;padding:10px;margin-bottom:0;background:#ffffff05}
+.eq{grid-column:1/-1;font-family:Cambria Math,Georgia,serif;color:var(--formula);font-size:25px;line-height:1.55;text-align:center;font-weight:800;background:linear-gradient(180deg,#102c42,#081b2b);box-shadow:inset 0 0 0 1px #4aa8df55;text-shadow:0 0 10px #29b6f633}
+.res{color:var(--calc);font-size:17px;line-height:1.55;font-weight:850}
+.note{grid-column:1/-1;color:var(--muted);font-size:13px;line-height:1.45}
 label{display:flex;justify-content:space-between;gap:8px;font-weight:750;margin:7px 0}
 input[type=range]{width:100%}
 .wire{stroke:#f0f6fa;stroke-width:6;fill:none;stroke-linecap:round;stroke-linejoin:round}
-.resistor{fill:#ffcb57;stroke:#8a5712;stroke-width:3}
-.source{fill:#124d73;stroke:#68c9ff;stroke-width:3}
+.resistor{fill:#126fb5;stroke:#8bd4ff;stroke-width:3;filter:drop-shadow(0 0 5px #29b6f644)}
+.source{fill:#0b3653;stroke:#68c9ff;stroke-width:3;filter:drop-shadow(0 0 6px #29b6f655)}
 .meter{fill:#ffffff;stroke:#28b7ff;stroke-width:4}
 .meterText{fill:#12212d;font-size:16px;font-weight:900;text-anchor:middle}
-.lab{fill:#fff;font-size:18px;font-weight:850}.resLabel{fill:#ff4d4d;font-size:20px;font-weight:950}.resValue{fill:#ff4d4d;font-size:14px;font-weight:900;text-anchor:middle}.eqsvg{fill:#ffe45c;font-size:20px;font-weight:900;text-anchor:middle;font-family:Cambria Math,Georgia,serif}.shortFlash{fill:#ffe12f;font-size:52px;font-weight:900;text-anchor:middle;filter:drop-shadow(0 0 8px #ff7a00)}.shortText{fill:#ff6a6f;font-size:16px;font-weight:950;text-anchor:middle}
+.lab{fill:#fff;font-size:18px;font-weight:850}.resLabel{fill:#8bd4ff;font-size:20px;font-weight:950}.resValue{fill:#fff;font-size:14px;font-weight:900;text-anchor:middle}.eqsvg{fill:#29b6f6;font-size:20px;font-weight:900;text-anchor:middle;font-family:Cambria Math,Georgia,serif}.shortFlash{fill:#ffe12f;font-size:52px;font-weight:900;text-anchor:middle;filter:drop-shadow(0 0 8px #ff7a00)}.shortText{fill:#ff6a6f;font-size:16px;font-weight:950;text-anchor:middle}
 .small{fill:#c9d9e7;font-size:14px;font-weight:650}
 .node{fill:#e5edf2;stroke:#405361;stroke-width:2}
 .current{fill:#27d9ff;stroke:#fff;stroke-width:1.7;filter:drop-shadow(0 0 5px #27d9ff)}
-.ctxt{fill:#07111b;font-size:11px;font-weight:900;text-anchor:middle;dominant-baseline:middle}.electronDot{fill:#27d9ff;stroke:#fff;stroke-width:1.1;filter:drop-shadow(0 0 4px #27d9ff)}
+.ctxt{fill:#07111b;font-size:11px;font-weight:900;text-anchor:middle;dominant-baseline:middle}.currentFlow{fill:#27d9ff;stroke:#ffffff;stroke-width:1.1;filter:drop-shadow(0 0 6px #27d9ff)}
 .drop{fill:#122535;stroke:#67aef2;stroke-width:2}
 .dropTxt{fill:#eaf6ff;font-size:14px;font-weight:850;text-anchor:middle}
 .shortBtn{width:100%;padding:10px;border:1px solid #7c5555;background:#3b2023;color:#fff;border-radius:11px;font-weight:850;cursor:pointer}
 .shortBtn.on{background:#852f34;border-color:#ff7a80}
 .warn{color:#ff9ca1;font-weight:850}
 .ok{color:#71e29b;font-weight:850}
-@media(max-width:820px){.main{grid-template-columns:1fr}.tabs{grid-template-columns:1fr}.stage{min-height:530px}}
-.frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;line-height:1.05;margin:0 .18em}.frac .num{display:block;padding:0 .28em .12em;border-bottom:2px solid currentColor}.frac .den{display:block;padding:.12em .28em 0}.eqline{display:block;margin:6px 0}.checkFormula{font-family:Cambria Math,Georgia,serif;font-size:20px;font-weight:800;color:#ffe45c;text-align:center;line-height:1.55}
+@media(max-width:820px){.main{grid-template-columns:1fr}.tabs{grid-template-columns:1fr}.stage{min-height:530px}.side{grid-template-columns:1fr}.eq,.note{grid-column:1}}
+.frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;line-height:1.05;margin:0 .18em}.frac .num{display:block;padding:0 .28em .12em;border-bottom:2px solid currentColor}.frac .den{display:block;padding:.12em .28em 0}.eqline{display:block;margin:6px 0}.checkFormula{font-family:Cambria Math,Georgia,serif;font-size:20px;font-weight:800;color:#29b6f6;text-align:center;line-height:1.55}
 .checkTitle{color:#ffffff;font-weight:850;text-align:center;margin-bottom:4px}
 </style>
 </head>
@@ -51,21 +51,22 @@ input[type=range]{width:100%}
 <div class="sub">Сравнение на закона за пасивен клон и за цяла електрическа верига</div>
 
 <div class="tabs">
-<button class="tab" data-mode="branch">1. Пасивен клон (част от веригата)</button>
-<button class="tab on" data-mode="whole">2. Цяла електрическа верига</button>
+<button class="tab on" data-mode="branch">1. Пасивен клон (част от веригата)</button>
+<button class="tab" data-mode="whole">2. Цяла електрическа верига</button>
 </div>
 
 <div class="main">
 <section class="stage">
 <svg viewBox="0 0 800 610">
-<g id="branch" style="display: none;"><rect x="70" y="210" width="100" height="190" rx="14" class="source"></rect><text x="120" y="260" class="lab" text-anchor="middle">DC</text><text x="120" y="290" class="lab" text-anchor="middle">12 V</text><text x="120" y="198" class="lab" text-anchor="middle">+</text><text x="120" y="418" class="lab" text-anchor="middle">−</text><line x1="120" y1="210" x2="120" y2="135" class="wire"></line><line x1="120" y1="135" x2="235" y2="135" class="wire"></line><circle cx="285" cy="135" r="44" class="meter"></circle><text x="285" y="128" class="meterText" text-anchor="middle">A</text><text x="285" y="152" class="meterText" text-anchor="middle">0.120 A</text><line x1="329" y1="135" x2="390" y2="135" class="wire"></line><circle cx="390" cy="135" r="6" class="node"></circle><text x="390" y="110" class="lab" text-anchor="middle">a</text><line x1="390" y1="135" x2="430" y2="135" class="wire"></line><rect x="430" y="117" width="130" height="36" rx="5" class="resistor"></rect><line x1="560" y1="135" x2="600" y2="135" class="wire"></line><text x="495" y="103" class="resLabel" text-anchor="middle">R</text><text x="495" y="141" class="resValue" text-anchor="middle">100 Ω</text><circle cx="600" cy="135" r="6" class="node"></circle><text x="600" y="110" class="lab" text-anchor="middle">b</text><line x1="600" y1="135" x2="680" y2="135" class="wire"></line><line x1="680" y1="135" x2="680" y2="470" class="wire"></line><line x1="680" y1="470" x2="120" y2="470" class="wire"></line><line x1="120" y1="470" x2="120" y2="400" class="wire"></line><line x1="390" y1="135" x2="390" y2="300" class="wire"></line><line x1="600" y1="135" x2="600" y2="300" class="wire"></line><line x1="390" y1="300" x2="450" y2="300" class="wire"></line><circle cx="495" cy="300" r="44" class="meter"></circle><text x="495" y="293" class="meterText" text-anchor="middle">V</text><text x="495" y="317" class="meterText" text-anchor="middle">12.0 V</text><line x1="539" y1="300" x2="600" y2="300" class="wire"></line><text x="495" y="365" class="small" text-anchor="middle">Волтметърът е свързан паралелно на R</text><rect x="430" y="400" width="130" height="36" rx="8" class="drop"></rect><text x="495" y="423" class="dropTxt" text-anchor="middle">Uab = 12.0 V</text></g>
-<g id="whole" style=""><rect x="55" y="175" width="210" height="255" rx="18" class="source"></rect><text x="160" y="208" class="lab" text-anchor="middle">РЕАЛЕН ИЗТОЧНИК</text><circle cx="125" cy="285" r="42" fill="#ffffff" stroke="#28b7ff" stroke-width="4"></circle><text x="125" y="292" class="meterText" text-anchor="middle">E</text><text x="92" y="250" class="lab" text-anchor="middle">+</text><text x="92" y="330" class="lab" text-anchor="middle">−</text><line x1="125" y1="312" x2="125" y2="258" class="drop"></line><path d="M125 253 L118 266 L132 266 Z" fill="#ff626c"></path><text x="125" y="348" class="small" text-anchor="middle">12.0 V</text><line x1="105" y1="385" x2="145" y2="385" class="wire"></line><rect x="145" y="367" width="70" height="36" rx="5" class="resistor"></rect><line x1="215" y1="385" x2="255" y2="385" class="wire"></line><text x="180" y="353" class="resLabel" text-anchor="middle">r</text><text x="180" y="391" class="resValue" text-anchor="middle">1.0 Ω</text><text x="160" y="420" class="small" text-anchor="middle">вътрешно съпротивление</text><line x1="125" y1="243" x2="125" y2="230" class="wire"></line><line x1="125" y1="230" x2="265" y2="230" class="wire"></line><line x1="125" y1="327" x2="125" y2="385" class="wire"></line><line x1="255" y1="385" x2="265" y2="385" class="wire"></line><line x1="265" y1="385" x2="265" y2="485" class="wire"></line><line x1="265" y1="230" x2="355" y2="230" class="wire"></line><circle cx="405" cy="230" r="44" class="meter"></circle><text x="405" y="223" class="meterText" text-anchor="middle">A</text><text x="405" y="247" class="meterText" text-anchor="middle">2.00 A</text><line x1="449" y1="230" x2="520" y2="230" class="wire"></line><circle cx="520" cy="230" r="6" class="node"></circle><text x="520" y="205" class="lab" text-anchor="middle">a</text><line x1="520" y1="230" x2="555" y2="230" class="wire"></line><rect x="555" y="212" width="100" height="36" rx="5" class="resistor"></rect><line x1="655" y1="230" x2="695" y2="230" class="wire"></line><text x="605" y="198" class="resLabel" text-anchor="middle">R</text><text x="605" y="236" class="resValue" text-anchor="middle">5.0 Ω</text><circle cx="695" cy="230" r="6" class="node"></circle><text x="695" y="205" class="lab" text-anchor="middle">b</text><line x1="695" y1="230" x2="730" y2="230" class="wire"></line><line x1="730" y1="230" x2="730" y2="485" class="wire"></line><line x1="730" y1="485" x2="265" y2="485" class="wire"></line><rect x="535" y="310" width="130" height="36" rx="8" class="drop"></rect><text x="600" y="333" class="dropTxt" text-anchor="middle">UR = 10.00 V</text><rect x="95" y="435" width="130" height="36" rx="8" class="drop"></rect><text x="160" y="458" class="dropTxt" text-anchor="middle">Ur = 2.00 V</text><text x="485" y="520" class="lab" text-anchor="middle">Проверка:</text><text x="485" y="550" class="eqsvg" text-anchor="middle">E = UR + Ur = 10.00 V + 2.00 V = 12.00 V</text></g>
-<g id="markers"><circle cx="285.59200000000334" cy="230" r="5.3" class="electronDot"></circle><circle cx="353.09200000000334" cy="230" r="5.3" class="electronDot"></circle><circle cx="330.59200000000334" cy="230" r="5.3" class="electronDot"></circle><circle cx="308.09200000000334" cy="230" r="5.3" class="electronDot"></circle><circle cx="458.8548000000026" cy="230" r="5.3" class="electronDot"></circle><circle cx="512.1048000000027" cy="230" r="5.3" class="electronDot"></circle><circle cx="494.3548000000026" cy="230" r="5.3" class="electronDot"></circle><circle cx="476.6048000000026" cy="230" r="5.3" class="electronDot"></circle><circle cx="521.7080000000013" cy="230" r="5.3" class="electronDot"></circle><circle cx="547.9580000000013" cy="230" r="5.3" class="electronDot"></circle><circle cx="539.2080000000013" cy="230" r="5.3" class="electronDot"></circle><circle cx="530.4580000000013" cy="230" r="5.3" class="electronDot"></circle><circle cx="693.3520000000015" cy="230" r="5.3" class="electronDot"></circle><circle cx="683.3520000000015" cy="230" r="5.3" class="electronDot"></circle><circle cx="673.3520000000015" cy="230" r="5.3" class="electronDot"></circle><circle cx="663.3520000000015" cy="230" r="5.3" class="electronDot"></circle><circle cx="725.4080000000013" cy="230" r="5.3" class="electronDot"></circle><circle cx="716.6580000000013" cy="230" r="5.3" class="electronDot"></circle><circle cx="707.9080000000013" cy="230" r="5.3" class="electronDot"></circle><circle cx="699.1580000000013" cy="230" r="5.3" class="electronDot"></circle><circle cx="730" cy="428.5940000000096" r="5.3" class="electronDot"></circle><circle cx="730" cy="364.8440000000096" r="5.3" class="electronDot"></circle><circle cx="730" cy="301.0940000000096" r="5.3" class="electronDot"></circle><circle cx="730" cy="237.3440000000096" r="5.3" class="electronDot"></circle><circle cx="409.70799999998326" cy="485" r="5.3" class="electronDot"></circle><circle cx="525.9579999999833" cy="485" r="5.3" class="electronDot"></circle><circle cx="642.2079999999833" cy="485" r="5.3" class="electronDot"></circle><circle cx="293.45799999998326" cy="485" r="5.3" class="electronDot"></circle><circle cx="265" cy="425.11999999999637" r="5.3" class="electronDot"></circle><circle cx="265" cy="450.11999999999637" r="5.3" class="electronDot"></circle><circle cx="265" cy="475.11999999999637" r="5.3" class="electronDot"></circle><circle cx="265" cy="400.11999999999637" r="5.3" class="electronDot"></circle><circle cx="193.7679999999949" cy="230" r="5.3" class="electronDot"></circle><circle cx="228.7679999999949" cy="230" r="5.3" class="electronDot"></circle><circle cx="263.7679999999949" cy="230" r="5.3" class="electronDot"></circle><circle cx="158.7679999999949" cy="230" r="5.3" class="electronDot"></circle></g>
+<g id="branch" style=""><circle cx="120" cy="305" r="48" fill="#0b2941" stroke="#7fd4ff" stroke-width="4" filter="drop-shadow(0 0 8px #27d9ff66)"></circle><line x1="120" y1="327" x2="120" y2="284" stroke="#ffffff" stroke-width="4" stroke-linecap="round"></line><path d="M120 272 L109 289 L131 289 Z" fill="#27d9ff"></path><text x="181" y="294" class="lab" text-anchor="start">U</text><text x="181" y="320" class="small" text-anchor="start">12.0 V</text><line x1="120" y1="257" x2="120" y2="135" class="wire"></line><line x1="120" y1="135" x2="235" y2="135" class="wire"></line><circle cx="285" cy="135" r="44" class="meter"></circle><text x="285" y="128" class="meterText" text-anchor="middle">A</text><text x="285" y="152" class="meterText" text-anchor="middle">0.120 A</text><line x1="329" y1="135" x2="390" y2="135" class="wire"></line><circle cx="390" cy="135" r="6" class="node"></circle><text x="390" y="110" class="lab" text-anchor="middle">a</text><line x1="390" y1="135" x2="430" y2="135" class="wire"></line><rect x="430" y="117" width="130" height="36" rx="5" class="resistor"></rect><line x1="560" y1="135" x2="600" y2="135" class="wire"></line><text x="495" y="103" class="resLabel" text-anchor="middle">R</text><text x="495" y="141" class="resValue" text-anchor="middle">100 Ω</text><circle cx="600" cy="135" r="6" class="node"></circle><text x="600" y="110" class="lab" text-anchor="middle">b</text><line x1="600" y1="135" x2="680" y2="135" class="wire"></line><line x1="680" y1="135" x2="680" y2="470" class="wire"></line><line x1="680" y1="470" x2="120" y2="470" class="wire"></line><line x1="120" y1="470" x2="120" y2="353" class="wire"></line><path d="M205 135 L185 124 L185 146 Z" fill="#27d9ff"></path><text x="202" y="108" class="lab" text-anchor="middle">I</text><line x1="390" y1="135" x2="390" y2="300" class="wire"></line><line x1="600" y1="135" x2="600" y2="300" class="wire"></line><line x1="390" y1="300" x2="450" y2="300" class="wire"></line><circle cx="495" cy="300" r="44" class="meter"></circle><text x="495" y="293" class="meterText" text-anchor="middle">V</text><text x="495" y="317" class="meterText" text-anchor="middle">12.0 V</text><line x1="539" y1="300" x2="600" y2="300" class="wire"></line><text x="495" y="365" class="small" text-anchor="middle">Волтметърът е свързан паралелно на R</text><rect x="430" y="400" width="130" height="36" rx="8" class="drop"></rect><text x="495" y="423" class="dropTxt" text-anchor="middle">Uab = 12.0 V</text></g>
+<g id="whole" style="display: none;"><rect x="55" y="175" width="210" height="255" rx="18" class="source"></rect><text x="160" y="208" class="lab" text-anchor="middle">РЕАЛЕН ИЗТОЧНИК</text><circle cx="125" cy="285" r="42" fill="#ffffff" stroke="#28b7ff" stroke-width="4"></circle><text x="125" y="292" class="meterText" text-anchor="middle">E</text><text x="92" y="250" class="lab" text-anchor="middle">+</text><text x="92" y="330" class="lab" text-anchor="middle">−</text><line x1="125" y1="312" x2="125" y2="258" class="drop"></line><path d="M125 253 L118 266 L132 266 Z" fill="#ff626c"></path><text x="125" y="348" class="small" text-anchor="middle">12.0 V</text><line x1="105" y1="385" x2="145" y2="385" class="wire"></line><rect x="145" y="367" width="70" height="36" rx="5" class="resistor"></rect><line x1="215" y1="385" x2="255" y2="385" class="wire"></line><text x="180" y="353" class="resLabel" text-anchor="middle">r</text><text x="180" y="391" class="resValue" text-anchor="middle">1.0 Ω</text><text x="160" y="420" class="small" text-anchor="middle">вътрешно съпротивление</text><line x1="125" y1="243" x2="125" y2="230" class="wire"></line><line x1="125" y1="230" x2="265" y2="230" class="wire"></line><line x1="125" y1="327" x2="125" y2="385" class="wire"></line><line x1="255" y1="385" x2="265" y2="385" class="wire"></line><line x1="265" y1="385" x2="265" y2="485" class="wire"></line><line x1="265" y1="230" x2="355" y2="230" class="wire"></line><circle cx="405" cy="230" r="44" class="meter"></circle><text x="405" y="223" class="meterText" text-anchor="middle">A</text><text x="405" y="247" class="meterText" text-anchor="middle">2.00 A</text><line x1="449" y1="230" x2="520" y2="230" class="wire"></line><circle cx="520" cy="230" r="6" class="node"></circle><text x="520" y="205" class="lab" text-anchor="middle">a</text><line x1="520" y1="230" x2="555" y2="230" class="wire"></line><rect x="555" y="212" width="100" height="36" rx="5" class="resistor"></rect><line x1="655" y1="230" x2="695" y2="230" class="wire"></line><text x="605" y="198" class="resLabel" text-anchor="middle">R</text><text x="605" y="236" class="resValue" text-anchor="middle">5.0 Ω</text><circle cx="695" cy="230" r="6" class="node"></circle><text x="695" y="205" class="lab" text-anchor="middle">b</text><line x1="695" y1="230" x2="730" y2="230" class="wire"></line><line x1="730" y1="230" x2="730" y2="485" class="wire"></line><line x1="730" y1="485" x2="265" y2="485" class="wire"></line><rect x="535" y="310" width="130" height="36" rx="8" class="drop"></rect><text x="600" y="333" class="dropTxt" text-anchor="middle">UR = 10.00 V</text><rect x="95" y="435" width="130" height="36" rx="8" class="drop"></rect><text x="160" y="458" class="dropTxt" text-anchor="middle">Ur = 2.00 V</text><text x="485" y="520" class="lab" text-anchor="middle">Проверка:</text><text x="485" y="550" class="eqsvg" text-anchor="middle">E = UR + Ur = 10.00 V + 2.00 V = 12.00 V</text></g>
+<g id="markers"><path d="M 8 0 L -6 -5 L -6 5 Z" class="currentFlow" transform="translate(120 196.13419999996327) rotate(-90)"></path><path d="M 8 0 L -6 -5 L -6 5 Z" class="currentFlow" transform="translate(120 135.13419999996327) rotate(-90)"></path><path d="M 8 0 L -6 -5 L -6 5 Z" class="currentFlow" transform="translate(188.87350000003477 135) rotate(0)"></path><path d="M 8 0 L -6 -5 L -6 5 Z" class="currentFlow" transform="translate(131.37350000003477 135) rotate(0)"></path><path d="M 8 0 L -6 -5 L -6 5 Z" class="currentFlow" transform="translate(371.6329000000183 135) rotate(0)"></path><path d="M 8 0 L -6 -5 L -6 5 Z" class="currentFlow" transform="translate(341.1329000000183 135) rotate(0)"></path><path d="M 8 0 L -6 -5 L -6 5 Z" class="currentFlow" transform="translate(421.95600000001207 135) rotate(0)"></path><path d="M 8 0 L -6 -5 L -6 5 Z" class="currentFlow" transform="translate(401.95600000001207 135) rotate(0)"></path><path d="M 8 0 L -6 -5 L -6 5 Z" class="currentFlow" transform="translate(595.956000000012 135) rotate(0)"></path><path d="M 8 0 L -6 -5 L -6 5 Z" class="currentFlow" transform="translate(575.956000000012 135) rotate(0)"></path><path d="M 8 0 L -6 -5 L -6 5 Z" class="currentFlow" transform="translate(679.9120000000241 135) rotate(0)"></path><path d="M 8 0 L -6 -5 L -6 5 Z" class="currentFlow" transform="translate(639.9120000000241 135) rotate(0)"></path><path d="M 8 0 L -6 -5 L -6 5 Z" class="currentFlow" transform="translate(680 168.1315000001013) rotate(90)"></path><path d="M 8 0 L -6 -5 L -6 5 Z" class="currentFlow" transform="translate(680 335.6315000001013) rotate(90)"></path><path d="M 8 0 L -6 -5 L -6 5 Z" class="currentFlow" transform="translate(568.6159999998318 470) rotate(180)"></path><path d="M 8 0 L -6 -5 L -6 5 Z" class="currentFlow" transform="translate(288.61599999983184 470) rotate(180)"></path><path d="M 8 0 L -6 -5 L -6 5 Z" class="currentFlow" transform="translate(120 435.0286999999647) rotate(-90)"></path><path d="M 8 0 L -6 -5 L -6 5 Z" class="currentFlow" transform="translate(120 376.5286999999647) rotate(-90)"></path></g>
 </svg>
 </section>
 
 <aside class="side">
-<div id="branchControls" style="display: none;">
+<div class="card eq" id="formula"><span class="eqline">I = <span class="frac"><span class="num">U</span><span class="den">R</span></span></span><span class="eqline">U = R·I</span><span class="eqline">R = <span class="frac"><span class="num">U</span><span class="den">I</span></span></span></div>
+<div id="branchControls" style="">
  <div class="card">
   <label>Напрежение U <b id="uOut">12 V</b></label>
   <input id="U" type="range" min="1" max="24" step="1" value="12">
@@ -74,7 +75,7 @@ input[type=range]{width:100%}
  </div>
 </div>
 
-<div id="wholeControls" style="">
+<div id="wholeControls" style="display: none;">
  <div class="card">
   <label>ЕДН E <b id="eOut">12 V</b></label>
   <input id="E" type="range" min="1" max="24" step="1" value="12">
@@ -86,12 +87,9 @@ input[type=range]{width:100%}
  <div class="card"><button id="shortBtn" class="shortBtn">Късо съединение: ИЗКЛ.</button></div>
 </div>
 
-<div class="card eq" id="formula"><span class="eqline" style="font-size:25px">I = <span class="frac"><span class="num">E</span><span class="den">R + r</span></span></span>
- <span class="eqline">U<sub>R</sub> = I·R</span>
- <span class="eqline">U<sub>r</sub> = I·r</span>
- <span class="eqline">E = U<sub>R</sub> + U<sub>r</sub> = I(R + r)</span></div>
-<div class="card res" id="results">I = 2.000 A<br>U<sub>R</sub> = 10.00 V<br>U<sub>r</sub> = 2.00 V<br><span class="ok">E = U<sub>R</sub> + U<sub>r</sub></span></div>
-<div class="card note" id="explain">При натоварване част от ЕДН се пада върху вътрешното съпротивление r. Поради това клемното напрежение върху товара е по-малко от E.</div>
+
+<div class="card res" id="results">U<sub>ab</sub> = 12.0 V<br>R = 100.0 Ω<br><br>I = 12.0 / 100.0 = <b>0.1200 A</b></div>
+<div class="card note" id="explain">Сините движещи се стрелки показват посоката на условния електрически ток I – от положителния към отрицателния полюс във външната верига.</div>
 </aside>
 </div>
 </div>
@@ -124,58 +122,108 @@ function tag(g,x,y,text){
 function drawBranch(){
  const g=$("branch");g.innerHTML="";
  const U=+$("U").value,R=+$("R").value,I=U/R;
- // source
- let s=document.createElementNS(NS,"rect");s.setAttribute("x",70);s.setAttribute("y",210);s.setAttribute("width",100);s.setAttribute("height",190);s.setAttribute("rx",14);s.setAttribute("class","source");g.appendChild(s);
- txt(g,120,260,"DC","lab");txt(g,120,290,U+" V","lab");txt(g,120,198,"+","lab");txt(g,120,418,"−","lab");
- // circuit
- line(g,120,210,120,135);line(g,120,135,235,135);meter(g,285,135,"A",I.toFixed(3)+" A");line(g,329,135,390,135);
+
+ // ИЗТОЧНИК: чист учебников символ – кръг със стрелка
+ let sc=document.createElementNS(NS,"circle");
+ sc.setAttribute("cx",120);sc.setAttribute("cy",305);sc.setAttribute("r",48);
+ sc.setAttribute("fill","#0b2941");sc.setAttribute("stroke","#7fd4ff");sc.setAttribute("stroke-width","4");
+ sc.setAttribute("filter","drop-shadow(0 0 8px #27d9ff66)");g.appendChild(sc);
+
+ let shaft=document.createElementNS(NS,"line");
+ shaft.setAttribute("x1",120);shaft.setAttribute("y1",327);
+ shaft.setAttribute("x2",120);shaft.setAttribute("y2",284);
+ shaft.setAttribute("stroke","#ffffff");shaft.setAttribute("stroke-width","4");
+ shaft.setAttribute("stroke-linecap","round");g.appendChild(shaft);
+
+ let head=document.createElementNS(NS,"path");
+ head.setAttribute("d","M120 272 L109 289 L131 289 Z");
+ head.setAttribute("fill","#27d9ff");g.appendChild(head);
+
+ txt(g,181,294,"U","lab","start");
+ txt(g,181,320,U.toFixed(1)+" V","small","start");
+
+ // Проводници и измервателни уреди
+ line(g,120,257,120,135);
+ line(g,120,135,235,135);
+ meter(g,285,135,"A",I.toFixed(3)+" A");
+ line(g,329,135,390,135);
+
  circle(g,390,135,6,"node");txt(g,390,110,"a","lab");
  line(g,390,135,430,135);
- let rr=document.createElementNS(NS,"rect");rr.setAttribute("x",430);rr.setAttribute("y",117);rr.setAttribute("width",130);rr.setAttribute("height",36);rr.setAttribute("rx",5);rr.setAttribute("class","resistor");g.appendChild(rr);
+
+ let rr=document.createElementNS(NS,"rect");
+ rr.setAttribute("x",430);rr.setAttribute("y",117);rr.setAttribute("width",130);rr.setAttribute("height",36);
+ rr.setAttribute("rx",5);rr.setAttribute("class","resistor");g.appendChild(rr);
  line(g,560,135,600,135);
  txt(g,495,103,"R","resLabel");txt(g,495,141,R+" Ω","resValue");
+
  circle(g,600,135,6,"node");txt(g,600,110,"b","lab");
- line(g,600,135,680,135);line(g,680,135,680,470);line(g,680,470,120,470);line(g,120,470,120,400);
- // voltmeter parallel
- line(g,390,135,390,300);line(g,600,135,600,300);line(g,390,300,450,300);meter(g,495,300,"V",U.toFixed(1)+" V");line(g,539,300,600,300);
+ line(g,600,135,680,135);
+ line(g,680,135,680,470);
+ line(g,680,470,120,470);
+ line(g,120,470,120,353);
+
+ // Ясна посока на условния ток
+ let ia=document.createElementNS(NS,"path");
+ ia.setAttribute("d","M205 135 L185 124 L185 146 Z");
+ ia.setAttribute("fill","#27d9ff");g.appendChild(ia);
+ txt(g,202,108,"I","lab");
+
+ // Волтметър
+ line(g,390,135,390,300);line(g,600,135,600,300);line(g,390,300,450,300);
+ meter(g,495,300,"V",U.toFixed(1)+" V");line(g,539,300,600,300);
  txt(g,495,365,"Волтметърът е свързан паралелно на R","small");
  tag(g,495,420,"Uab = "+U.toFixed(1)+" V");
+
  $("formula").innerHTML=`<span class="eqline">I = <span class="frac"><span class="num">U</span><span class="den">R</span></span></span><span class="eqline">U = R·I</span><span class="eqline">R = <span class="frac"><span class="num">U</span><span class="den">I</span></span></span>`;
- $("results").innerHTML=`U<sub>ab</sub> = ${U.toFixed(1)} V<br>R = ${R.toFixed(1)} Ω<br>I = ${I.toFixed(4)} A`;
- $("explain").innerHTML="Пасивният клон е между точки a и b. Амперметърът измерва тока през клона, а волтметърът – напрежението U<sub>ab</sub> върху резистора.";
+ $("results").innerHTML=`U<sub>ab</sub> = ${U.toFixed(1)} V<br>R = ${R.toFixed(1)} Ω<br><br>I = ${U.toFixed(1)} / ${R.toFixed(1)} = <b>${I.toFixed(4)} A</b>`;
+ $("explain").innerHTML="Сините движещи се стрелки показват посоката на условния електрически ток I – от положителния към отрицателния полюс във външната верига.";
 }
+
 function drawWhole(){
  const g=$("whole");g.innerHTML="";
  const E=+$("E").value,ri=+$("ri").value,Rset=+$("Rw").value,R=shorted?0:Rset,I=E/(R+ri),Ur=I*ri,UR=I*R;
- // реален източник: ЕДН E + вътрешно съпротивление r
- let box=document.createElementNS(NS,"rect");
- box.setAttribute("x",55);box.setAttribute("y",175);box.setAttribute("width",210);box.setAttribute("height",255);
- box.setAttribute("rx",18);box.setAttribute("class","source");g.appendChild(box);
- txt(g,160,208,"РЕАЛЕН ИЗТОЧНИК","lab");
+ // Реален източник: идеален източник E (кръг със стрелка) + вътрешно съпротивление r
+ txt(g,160,190,"РЕАЛЕН ИЗТОЧНИК","lab");
 
  let ec=document.createElementNS(NS,"circle");
- ec.setAttribute("cx",125);ec.setAttribute("cy",285);ec.setAttribute("r",42);
- ec.setAttribute("fill","#ffffff");ec.setAttribute("stroke","#28b7ff");ec.setAttribute("stroke-width","4");g.appendChild(ec);
- txt(g,125,292,"E","meterText");
- txt(g,92,250,"+","lab");txt(g,92,330,"−","lab");
- line(g,125,312,125,258,"drop");
- let ah=document.createElementNS(NS,"path");ah.setAttribute("d","M125 253 L118 266 L132 266 Z");ah.setAttribute("fill","#ff626c");g.appendChild(ah);
- txt(g,125,348,E.toFixed(1)+" V","small");
+ ec.setAttribute("cx",125);ec.setAttribute("cy",285);ec.setAttribute("r",45);
+ ec.setAttribute("fill","#0b2941");ec.setAttribute("stroke","#7fd4ff");ec.setAttribute("stroke-width","4");
+ ec.setAttribute("filter","drop-shadow(0 0 8px #27d9ff66)");g.appendChild(ec);
 
- line(g,105,385,145,385);
+ let eshaft=document.createElementNS(NS,"line");
+ eshaft.setAttribute("x1",125);eshaft.setAttribute("y1",306);
+ eshaft.setAttribute("x2",125);eshaft.setAttribute("y2",268);
+ eshaft.setAttribute("stroke","#ffffff");eshaft.setAttribute("stroke-width","4");
+ eshaft.setAttribute("stroke-linecap","round");g.appendChild(eshaft);
+
+ let ehead=document.createElementNS(NS,"path");
+ ehead.setAttribute("d","M125 257 L114 274 L136 274 Z");
+ ehead.setAttribute("fill","#27d9ff");g.appendChild(ehead);
+
+ txt(g,180,277,"E","lab","start");
+ txt(g,180,301,E.toFixed(1)+" V","small","start");
+
+ // вътрешно съпротивление
+ line(g,125,330,125,385);line(g,125,385,145,385);
  let rrint=document.createElementNS(NS,"rect");
  rrint.setAttribute("x",145);rrint.setAttribute("y",367);rrint.setAttribute("width",70);rrint.setAttribute("height",36);
  rrint.setAttribute("rx",5);rrint.setAttribute("class","resistor");g.appendChild(rrint);
- line(g,215,385,255,385);
+ line(g,215,385,265,385);
  txt(g,180,353,"r","resLabel");
  txt(g,180,391,ri.toFixed(1)+" Ω","resValue");
- txt(g,160,420,"вътрешно съпротивление","small");
+ txt(g,180,420,"вътрешно съпротивление","small");
 
- line(g,125,243,125,230);line(g,125,230,265,230);
- line(g,125,327,125,385);line(g,255,385,265,385);line(g,265,385,265,485);
+ // горен и долен извод на реалния източник
+ line(g,125,240,125,230);line(g,125,230,265,230);
+ line(g,265,385,265,485);
 
  // outer loop
- line(g,265,230,355,230);meter(g,405,230,"A",I.toFixed(2)+" A");line(g,449,230,520,230);
+ line(g,265,230,355,230);
+  let ia=document.createElementNS(NS,"path");
+  ia.setAttribute("d","M330 230 L314 221 L314 239 Z");ia.setAttribute("fill","#29b6f6");g.appendChild(ia);
+  txt(g,330,207,"I","lab");
+  meter(g,405,230,"A",I.toFixed(2)+" A");line(g,449,230,520,230);
  circle(g,520,230,6,"node");txt(g,520,205,"a","lab");
  if(!shorted){
    line(g,520,230,555,230);
@@ -209,61 +257,58 @@ txt(g,485,550,`E = UR + Ur = ${UR.toFixed(2)} V + ${Ur.toFixed(2)} V = ${E.toFix
  <span class="eqline">E = U<sub>R</sub> + U<sub>r</sub> = I(R + r)</span>`;
  $("results").innerHTML=shorted ?
  `<span class="warn">РЕЖИМ НА КЪСО СЪЕДИНЕНИЕ</span><br>I<sub>k</sub> = ${I.toFixed(3)} A<br>U<sub>R</sub> = 0 V<br>U<sub>r</sub> = ${Ur.toFixed(2)} V` :
- `I = ${I.toFixed(3)} A<br>U<sub>R</sub> = ${UR.toFixed(2)} V<br>U<sub>r</sub> = ${Ur.toFixed(2)} V<br><span class="ok">E = U<sub>R</sub> + U<sub>r</sub></span>`;
+ `I = ${I.toFixed(3)} A<br>U<sub>R</sub> = ${UR.toFixed(2)} V<br>U<sub>r</sub> = ${Ur.toFixed(2)} V<br><span style="color:#ffffff">E = U<sub>R</sub> + U<sub>r</sub></span>`;
  $("explain").innerHTML=shorted ?
  "При късо съединение външното съпротивление е практически нула и токът се ограничава основно от вътрешното съпротивление на източника." :
- "При натоварване част от ЕДН се пада върху вътрешното съпротивление r. Поради това клемното напрежение върху товара е по-малко от E.";
+ "Сините движещи се стрелки показват посоката на условния електрически ток I. При натоварване част от ЕДН се пада върху вътрешното съпротивление r, поради което клемното напрежение върху товара е по-малко от E.";
 }
 function segPoint(a,b,t){
  return [a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t];
 }
 
+
+function flowArrow(g,a,b,t){
+ const p=segPoint(a,b,t);
+ const ang=Math.atan2(b[1]-a[1],b[0]-a[0])*180/Math.PI;
+ let tri=document.createElementNS(NS,"path");
+ tri.setAttribute("d","M 8 0 L -6 -5 L -6 5 Z");
+ tri.setAttribute("class","currentFlow");
+ tri.setAttribute("transform",`translate(${p[0]} ${p[1]}) rotate(${ang})`);
+ g.appendChild(tri);
+}
+
 function drawBranchElectrons(){
  const g=$("markers");g.innerHTML="";
  const U=+$("U").value,R=+$("R").value,I=U/R;
+ // Посока на условния ток: от + извода, през товара, към − извода
  const segs=[
-   [[120,210],[120,135]],[[120,135],[235,135]],[[329,135],[390,135]],
+   [[120,257],[120,135]],[[120,135],[235,135]],[[329,135],[390,135]],
    [[390,135],[430,135]],[[560,135],[600,135]],[[600,135],[680,135]],
-   [[680,135],[680,470]],[[680,470],[120,470]],[[120,470],[120,400]]
+   [[680,135],[680,470]],[[680,470],[120,470]],[[120,470],[120,353]]
  ];
- const speed=0.045+Math.min(0.115,I*0.18),perSeg=5;
+ const speed=0.035+Math.min(0.10,I*0.15), perSeg=2;
  for(let s=0;s<segs.length;s++){
    for(let k=0;k<perSeg;k++){
-     let q=(phase*speed+k/perSeg+s*.11)%1;q=1-q;
-     const p=segPoint(segs[s][0],segs[s][1],q);
-     circle(g,p[0],p[1],5.3,"electronDot");
+     let q=(phase*speed+k/perSeg+s*.10)%1;
+     flowArrow(g,segs[s][0],segs[s][1],q);
    }
  }
 }
 
-
 function drawWholeElectrons(){
  const g=$("markers");g.innerHTML="";
  const E=+$("E").value,ri=+$("ri").value,Rset=+$("Rw").value,R=shorted?0:Rset,I=E/(R+ri);
-
  const segs=[
-   [[265,230],[355,230]],      // before ammeter
-   [[449,230],[520,230]],      // after ammeter
-   [[520,230],[555,230]],      // to load
-   [[655,230],[695,230]],      // after load
-   [[695,230],[730,230]],
-   [[730,230],[730,485]],
-   [[730,485],[265,485]],
-   [[265,485],[265,385]],      // return to source block
-   [[265,230],[125,230]]       // source upper connection
+   [[265,230],[355,230]],[[449,230],[520,230]],
+   ...(shorted ? [[[520,230],[695,230]]] : [[[520,230],[555,230]],[[655,230],[695,230]]]),
+   [[695,230],[730,230]],[[730,230],[730,485]],[[730,485],[265,485]],
+   [[265,485],[265,385]]
  ];
- // If shorted, include the direct top segment across the short.
- if(shorted){
-   segs.push([[520,230],[695,230]]);
- }
-
- const speed=0.045+Math.min(0.115,I*0.18),perSeg=4;
+ const speed=0.035+Math.min(0.10,I*0.10), perSeg=2;
  for(let s=0;s<segs.length;s++){
    for(let k=0;k<perSeg;k++){
-     let q=(phase*speed+k/perSeg+s*.09)%1;
-     q=1-q; // electron motion opposite conventional current
-     const p=segPoint(segs[s][0],segs[s][1],q);
-     circle(g,p[0],p[1],5.3,"electronDot");
+     let q=(phase*speed+k/perSeg+s*.10)%1;
+     flowArrow(g,segs[s][0],segs[s][1],q);
    }
  }
 }

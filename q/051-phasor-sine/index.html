@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0051)file:///C:/Users/Rosi/Downloads/preview%20(10).html -->
+<!-- saved from url=(0085)file:///C:/Users/velichko.atanasov/Downloads/preview%20-%202026-08-29T104900.365.html -->
 <html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -155,12 +155,12 @@
   <div class="grid">
     <section class="panel">
       <div class="title">Въртящ се фазор (векторно представяне)</div>
-      <canvas id="phasor" width="553" height="520"></canvas>
+      <canvas id="phasor" width="786" height="650"></canvas>
     </section>
 
     <section class="panel">
       <div class="title">Синусоидална величина</div>
-      <canvas id="sine" width="681" height="520"></canvas>
+      <canvas id="sine" width="966" height="650"></canvas>
     </section>
   </div>
 
@@ -185,7 +185,7 @@
 
     <div class="panel small">
       <div class="title">Обяснение</div>
-      <p>Фазорът <b>Ū</b> се върти с ъглова скорост <b>ω</b>. Проекцията му върху въображаемата ос е пропорционална на моментната стойност <b>u(t)</b> при използваната синусова форма.</p>
+      <p>Фазорът <b>Ū</b> се върти с ъглова скорост <b>ω</b>. Проекцията му върху въображаемата ос е пропорционална на моментната стойност <b>u(t)</b> при използваната синусова форма.</p><p><b>Алгебричната форма</b> на въртящия се вектор се изменя с ъгъла <b>θ = ωt + φ</b>: <b>Ū(t) = U cosθ + jU sinθ</b>. Реалната и имагинерната съставка се променят непрекъснато при въртенето.</p>
       <p><span class="badge">U = 230 V</span>
          <span class="badge">Uₘ = 325.3 V</span>
          <span class="badge">f = 50 Hz</span>
@@ -194,15 +194,20 @@
   </div>
 
   <div class="formula">
-    u(t) = Uₘ sin(ωt + φ)
-    &nbsp;&nbsp; ↔ &nbsp;&nbsp;
-    Ū = U∠φ
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    U = Uₘ/√2<br><span style="font-size:16px;color:#475569">При синусова форма: u(t) ∝ Im{Ū(t)}; числената моментна стойност използва амплитудата Uₘ.</span>
-  </div>
-</div>
+     u(t) = Uₘ sin(ωt + φ)
+     &nbsp;&nbsp; ↔ &nbsp;&nbsp;
+     Ū(t) = U cos(ωt + φ) + jU sin(ωt + φ)
+     <br>
+     <span id="algValue" style="color:#0f4da8;font-weight:bold">Ū(t) = 199.2 + j115.0 V</span>
+     &nbsp;&nbsp;&nbsp;&nbsp;
+     U = Uₘ/√2<br>
+     <span style="font-size:16px;color:#475569">
+       Алгебричната форма представя фазора чрез проекциите му върху реалната и имагинерната ос.
+     </span>
+   </div>
+ </div>
 
-<script>
+ <script>
 const U = 230;
 const Um = U * Math.sqrt(2);
 const f = 50;
@@ -294,11 +299,17 @@ function drawPhasor(){
   pctx.restore();
   text(pctx,'ωt + φ',cx+82*Math.cos(th/2),cy-82*Math.sin(th/2),20,'#238823','center','Georgia');
 
-  text(pctx,'Ū = U ∠ φ',22,30,22,'#163f7a','left','Georgia');
+  
   text(pctx,'U = 230 V',22,62,17,'#222');
   text(pctx,'Uₘ = √2 U = 325.3 V',22,90,17,'#222');
   text(pctx,'(фазорът е по ефективна стойност)',22,114,14,'#666');
   text(pctx,'φ = 30°',22,140,17,'#238823');
+   const reNow=U*Math.cos(th), imNow=U*Math.sin(th);
+   const imSign=imNow>=0 ? '+' : '−';
+   text(pctx,`Ū(t) = ${reNow.toFixed(1)} ${imSign} j${Math.abs(imNow).toFixed(1)} V`,
+        22,h-22,17,'#163f7a');
+   
+   
 
   // rotation hint
   pctx.save();
@@ -385,6 +396,12 @@ function draw(){
   document.getElementById('instant').textContent=`u(t) = ${val.toFixed(1)} V`;
   document.getElementById('timeVal').textContent=simTime.toFixed(4);
   document.getElementById('phaseVal').textContent=((deg+360)%360).toFixed(1);
+   const theta=omega*simTime+phi;
+   const re=U*Math.cos(theta);
+   const im=U*Math.sin(theta);
+   const sign=im>=0 ? '+' : '−';
+   document.getElementById('algValue').textContent =
+     `Ū(t) = ${re.toFixed(1)} ${sign} j${Math.abs(im).toFixed(1)} V`;
 }
 
 function animate(stamp){
@@ -412,5 +429,6 @@ document.getElementById('showTrail').onchange=()=>{trail=[]; draw()};
 resizeAll();
 requestAnimationFrame(animate);
 </script>
+
 
 </body></html>

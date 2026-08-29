@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<!-- saved from url=(0051)file:///C:/Users/Rosi/Downloads/preview%20(14).html -->
+<!-- saved from url=(0085)file:///C:/Users/velichko.atanasov/Downloads/preview%20-%202026-08-29T130426.577.html -->
 <html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Анимация 53 – Последователен импеданс в RLC верига</title>
 <style>
 :root{
-  --blue:#174fa6; --blue2:#0f66c7; --red:#c9302c; --green:#17823b;
+  --blue:#006BFF; --blue2:#008CFF; --red:#c9302c; --green:#17823b;
   --purple:#7b3fb4; --ink:#172235; --line:#cad8eb; --bg:#f4f8fd;
 }
 *{box-sizing:border-box}
@@ -15,21 +15,25 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:
 h1{text-align:center;color:#153f7c;margin:4px 0 14px;font-size:30px}
 .grid{display:grid;grid-template-columns:300px 1.15fr 1fr;gap:12px}
 .card{border:1.5px solid var(--line);border-radius:13px;background:#fff;padding:12px}
-h2{margin:0 0 10px;color:#174d96;font-size:20px}
+h2{margin:0 0 10px;color:#006BFF;font-size:20px}
 .control{margin:11px 0}
 .control label{display:flex;justify-content:space-between;font-weight:700;margin-bottom:5px}
 input[type=range]{width:100%}
 button{padding:10px 15px;border-radius:9px;border:1px solid #a8bfdc;font-size:16px;cursor:pointer;background:#edf4fc}
-button.go{background:#1762bd;color:#fff;border:0}
+button.go{background:#006BFF;color:#fff;border:0}
 .row{display:flex;gap:8px;flex-wrap:wrap}
 canvas{width:100%;height:360px;display:block;background:#fff;border-radius:10px}
 .metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
 .metric{border:1px solid var(--line);border-radius:9px;padding:9px;text-align:center;background:#fbfdff}
-.metric b{display:block;color:#174d96;margin-bottom:4px}
+.metric b{display:block;color:#006BFF;margin-bottom:4px}
 .metric span{font-family:"Times New Roman";font-size:20px}
-.formula{margin-top:12px;border:1px solid #e4c76d;background:#fffaf0;border-radius:11px;padding:12px;text-align:center;font-family:"Times New Roman";font-size:27px}
+.formula{margin-top:12px;border:1px solid #9fc3ed;background:#f7fbff;border-radius:11px;padding:14px;text-align:center;font-family:"Cambria Math","Times New Roman",serif;font-size:30px;color:#006BFF;font-weight:700;line-height:1.6}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.02;margin:0 .12em}
+.frac .top{padding:0 .2em .08em;border-bottom:2px solid #006BFF}
+.frac .bottom{padding:.08em .2em 0}
+.mathblue{color:#006BFF}
 .status{margin-top:10px;padding:10px;border-radius:9px;text-align:center;font-weight:700}
-.ind{background:#eef5ff;color:#174d96}.cap{background:#fff1f1;color:#a92d29}.res{background:#eef9f0;color:#187338}
+.ind{background:#eef5ff;color:#006BFF}.cap{background:#fff1f1;color:#a92d29}.res{background:#eef9f0;color:#187338}
 .note{font-size:15px;line-height:1.45;margin-top:10px}
 @media(max-width:1050px){.grid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}canvas{height:320px}}
 </style>
@@ -43,8 +47,8 @@ canvas{width:100%;height:360px;display:block;background:#fff;border-radius:10px}
 <div class="card">
 <h2>Параметри</h2>
 <div class="control"><label>R <span id="Rv">40 Ω</span></label><input id="R" type="range" min="1" max="200" value="40"></div>
-<div class="control"><label>L <span id="Lv">0.081 H</span></label><input id="L" type="range" min="0" max="1" step="0.001" value="0.127"></div>
-<div class="control"><label>C <span id="Cv">0.0 µF</span></label><input id="C" type="range" min="0" max="500" step="0.1" value="79.6"></div>
+<div class="control"><label>L <span id="Lv">0.127 H</span></label><input id="L" type="range" min="0" max="1" step="0.001" value="0.127"></div>
+<div class="control"><label>C <span id="Cv">79.6 µF</span></label><input id="C" type="range" min="1" max="500" step="0.1" value="79.6"></div>
 <div class="control"><label>f <span id="fv">50 Hz</span></label><input id="f" type="range" min="10" max="200" value="50"></div>
 <div class="control"><label>U <span id="Uv">230 V</span></label><input id="U" type="range" min="24" max="400" value="230"></div>
 
@@ -54,30 +58,92 @@ canvas{width:100%;height:360px;display:block;background:#fff;border-radius:10px}
 <button id="reset">↻ Нулиране</button>
 </div>
 
-<div id="status" class="status ind">Индуктивен характер: токът изостава от напрежението</div>
-<div class="note"><b>Наблюдавай:</b> при промяна на L, C или f се изменят X<sub>L</sub>, X<sub>C</sub>, фазовият ъгъл и токът.<br><br><b>Учебно условие:</b> когато L = 0 H или C = 0 µF, съответният реактивен елемент се приема за изключен и приносът му е 0.</div>
+<div id="status" class="status res">Резонансен режим: XL ≈ XC, φ ≈ 0°, Z ≈ R</div>
+<div class="note"><b>Наблюдавай:</b> при промяна на L, C или f се изменят X<sub>L</sub>, X<sub>C</sub>, фазовият ъгъл и токът. При L = 0 H индуктивното реактивно съпротивление е X<sub>L</sub> = 0.</div>
 </div>
 
 <div class="card">
-<h2 style="text-align:center">Времеви зависимости</h2>
-<canvas id="wave" width="501" height="360"></canvas>
+<h2 style="text-align:center">Последователна RLC верига</h2>
+<svg id="rlcScheme" viewBox="0 0 760 235" style="width:100%;height:220px;display:block;margin-bottom:8px">
+  <defs>
+    <marker id="curArrow53" markerWidth="6" markerHeight="6" refX="5.2" refY="2.2" orient="auto">
+      <path d="M0 0L0 4.4L5.8 2.2z" fill="#00A8FF"></path>
+    </marker>
+  </defs>
 
+  <!-- AC source -->
+  <circle cx="78" cy="125" r="34" fill="none" stroke="#00A8FF" stroke-width="4"></circle>
+  <path d="M56 125 C62 107 69 107 75 125 C81 143 88 143 94 125" fill="none" stroke="#00A8FF" stroke-width="4" stroke-linecap="round"></path>
+  <text x="78" y="176" fill="#006BFF" font-size="16" font-weight="700" text-anchor="middle">U</text>
+
+  <!-- conductors -->
+  <path d="M78 91 V62 H205" fill="none" stroke="#d9e5ec" stroke-width="5" stroke-linecap="round"></path>
+
+  <!-- resistor -->
+  <rect x="205" y="44" width="105" height="36" rx="2" fill="none" stroke="#00A8FF" stroke-width="4"></rect>
+  <text x="257.5" y="31" fill="#006BFF" font-size="17" font-weight="700" text-anchor="middle">R</text>
+
+  <!-- lead to centered coil -->
+  <path d="M310 62 H367" fill="none" stroke="#d9e5ec" stroke-width="5" stroke-linecap="round"></path>
+
+  <!-- four-turn blue coil -->
+  <path d="M367 62
+           C367 38 386 38 386 62
+           C386 38 405 38 405 62
+           C405 38 424 38 424 62
+           C424 38 443 38 443 62" fill="none" stroke="#00A8FF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"></path>
+  <text x="405" y="24" fill="#006BFF" font-size="17" font-weight="700" text-anchor="middle">L</text>
+
+  <!-- lead to capacitor -->
+  <path d="M443 62 H500" fill="none" stroke="#d9e5ec" stroke-width="5" stroke-linecap="round"></path>
+
+  <!-- capacitor -->
+  <line x1="500" y1="34" x2="500" y2="90" stroke="#00A8FF" stroke-width="5"></line>
+  <line x1="530" y1="34" x2="530" y2="90" stroke="#00A8FF" stroke-width="5"></line>
+  <text x="515" y="24" fill="#006BFF" font-size="17" font-weight="700" text-anchor="middle">C</text>
+
+  <!-- return conductor -->
+  <path d="M530 62 H650 V185 H78 V159" fill="none" stroke="#d9e5ec" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"></path>
+
+  <!-- current arrow -->
+  <path d="M125 43 H175" fill="none" stroke="#00A8FF" stroke-width="3.5" marker-end="url(#curArrow53)"></path>
+  <text x="150" y="30" fill="#006BFF" font-size="17" font-weight="700" text-anchor="middle">I</text>
+
+  <!-- dynamic values -->
+  <text id="schemeR" x="257.5" y="102" fill="#6b7785" font-size="14" text-anchor="middle">40 Ω</text>
+  <text id="schemeL" x="405" y="102" fill="#6b7785" font-size="14" text-anchor="middle">0.127 H</text>
+  <text id="schemeC" x="515" y="112" fill="#6b7785" font-size="14" text-anchor="middle">79.6 µF</text>
+  <text id="schemeU" x="78" y="198" fill="#6b7785" font-size="14" text-anchor="middle">230 V</text>
+</svg>
+
+<h2 style="text-align:center;margin-top:4px">Времеви зависимости</h2>
+<canvas id="wave" width="733" height="450"></canvas>
+
+<div class="formula" style="font-size:25px;margin-bottom:10px">
+<span class="mathblue">X<sub>L</sub> = 2πfL</span>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<span class="mathblue">X<sub>C</sub> = </span>
+<span class="frac"><span class="top">1</span><span class="bottom">2πfC</span></span>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<span class="mathblue">I = </span>
+<span class="frac"><span class="top">U</span><span class="bottom">Z</span></span>
+</div>
 <div class="metrics">
-<div class="metric"><b>X<sub>L</sub></b><span id="xl">25.45 Ω</span></div>
-<div class="metric"><b>X<sub>C</sub></b><span id="xc">0.00 Ω</span></div>
-<div class="metric"><b>X = X<sub>L</sub> − X<sub>C</sub></b><span id="x">25.45 Ω</span></div>
-<div class="metric"><b>|Z|</b><span id="z">47.41 Ω</span></div>
-<div class="metric"><b>φ</b><span id="phi">32.46°</span></div>
-<div class="metric"><b>I</b><span id="i">4.851 A</span></div>
+<div class="metric"><b>X<sub>L</sub></b><span id="xl">39.90 Ω</span></div>
+<div class="metric"><b>X<sub>C</sub></b><span id="xc">39.99 Ω</span></div>
+<div class="metric"><b>X = X<sub>L</sub> − X<sub>C</sub></b><span id="x">-0.09 Ω</span></div>
+<div class="metric"><b>|Z|</b><span id="z">40.00 Ω</span></div>
+<div class="metric"><b>φ</b><span id="phi">-0.13°</span></div>
+<div class="metric"><b>I</b><span id="i">5.750 A</span></div>
 </div>
 
-<div class="formula">|Z| = √[ R² + (X<sub>L</sub> − X<sub>C</sub>)² ]</div>
+<div class="formula"><span class="mathblue">Z = √<span style="text-decoration:overline;text-decoration-thickness:2px">R² + (X<sub>L</sub> − X<sub>C</sub>)²</span></span></div>
 </div>
 
 <div class="card">
-<h2 style="text-align:center">Вектор на импеданса и фазори</h2>
-<canvas id="phasor" width="433" height="360"></canvas>
-<div class="formula" style="font-size:22px">Ż = R + j(X<sub>L</sub> − X<sub>C</sub>)</div>
+<h2 style="text-align:center">Импедансна и фазорна диаграма</h2>
+<canvas id="phasor" width="633" height="450"></canvas>
+<div class="formula"><span class="mathblue">Ż = R + j(X<sub>L</sub> − X<sub>C</sub>)</span></div>
 </div>
 
 </div>
@@ -101,7 +167,7 @@ function line(ctx,x1,y1,x2,y2,col='#111',w=1,dash=[]){
 function txt(ctx,t,x,y,s=16,col='#111',al='left'){
   ctx.save();ctx.font=s+'px Arial';ctx.fillStyle=col;ctx.textAlign=al;ctx.textBaseline='middle';ctx.fillText(t,x,y);ctx.restore();
 }
-function arrow(ctx,x1,y1,x2,y2,col='#174fa6',w=3){
+function arrow(ctx,x1,y1,x2,y2,col='#006BFF',w=3){
   line(ctx,x1,y1,x2,y2,col,w);
   const a=Math.atan2(y2-y1,x2-x1),m=10;
   ctx.fillStyle=col;ctx.beginPath();ctx.moveTo(x2,y2);
@@ -113,9 +179,7 @@ function vals(){
   const rv=+R.value, lv=+L.value, cv=+C.value*1e-6, fv=+f.value, uv=+U.value;
   const om=2*Math.PI*fv;
   const xl = lv === 0 ? 0 : om*lv;
-  // Учебно условие: C = 0 означава, че капацитивният елемент е изключен,
-  // следователно неговият принос към реактивното съпротивление е XC = 0.
-  const xc = cv === 0 ? 0 : 1/(om*cv);
+  const xc = 1/(om*cv);
   const x=xl-xc;
   const z=Math.hypot(rv,x), phi=Math.atan2(x,rv), i=uv/z;
   return {rv,lv,cv,fv,uv,om,xl,xc,x,z,phi,i};
@@ -126,6 +190,10 @@ function update(v){
   $('Cv').textContent=(v.cv*1e6).toFixed(1)+' µF';
   $('fv').textContent=v.fv.toFixed(0)+' Hz';
   $('Uv').textContent=v.uv.toFixed(0)+' V';
+  $('schemeR').textContent=v.rv.toFixed(0)+' Ω';
+  $('schemeL').textContent=v.lv.toFixed(3)+' H';
+  $('schemeC').textContent=(v.cv*1e6).toFixed(1)+' µF';
+  $('schemeU').textContent=v.uv.toFixed(0)+' V';
   $('xl').textContent=v.xl.toFixed(2)+' Ω';
   $('xc').textContent=v.xc.toFixed(2)+' Ω';
   $('x').textContent=v.x.toFixed(2)+' Ω';
@@ -161,10 +229,10 @@ function drawWave(){
     wc.stroke();wc.restore();
   }
 
-  curve(th=>ampU*Math.sin(th),'#174fa6',2.5);
+  curve(th=>ampU*Math.sin(th),'#006BFF',2.5);
   curve(th=>ampI*Math.sin(th+iShift),'#c9302c',2.2);
 
-  txt(wc,'u(t)',w-70,35,16,'#174fa6');
+  txt(wc,'u(t)',w-70,35,16,'#006BFF');
   txt(wc,'i(t)',w-70,58,16,'#c9302c');
   txt(wc,'φ = '+(v.phi*180/Math.PI).toFixed(1)+'°',left+100,top+18,15,'#444');
 }
@@ -183,18 +251,19 @@ function drawPh(){
   const ex=cx+v.rv*sc, ey=cy-v.x*sc;
   line(pc,cx,cy,ex,cy,'#c9302c',4);
   line(pc,ex,cy,ex,ey,'#7b3fb4',4);
-  arrow(pc,cx,cy,ex,ey,'#174fa6',4);
+  arrow(pc,cx,cy,ex,ey,'#006BFF',4);
 
   txt(pc,'R',cx+(ex-cx)/2,cy+18,16,'#c9302c','center');
   txt(pc,'jX',ex+10,(cy+ey)/2,16,'#7b3fb4');
-  txt(pc,'Ż',ex+10,ey-10,20,'#174fa6');
+  txt(pc,'Z',ex+10,ey-10,20,'#006BFF');
+   pc.save();pc.fillStyle='#006BFF';pc.beginPath();pc.arc(ex+16,ey-24,2.2,0,Math.PI*2);pc.fill();pc.restore();
   txt(pc,'φ = '+(v.phi*180/Math.PI).toFixed(1)+'°',cx+75,cy-25,16,'#333');
 
   const y2=h*.82,x2=w*.15,len=120,au=0,ai=-v.phi;
-  arrow(pc,x2,y2,x2+len*Math.cos(au),y2-len*Math.sin(au),'#174fa6',3);
-  txt(pc,'Ū',x2+len+8,y2,17,'#174fa6');
+  arrow(pc,x2,y2,x2+len*Math.cos(au),y2-len*Math.sin(au),'#006BFF',3);
+  txt(pc,'U̇',x2+len+8,y2,17,'#006BFF');
   arrow(pc,x2,y2,x2+len*Math.cos(ai),y2-len*Math.sin(ai),'#c9302c',3);
-  txt(pc,'Ī',x2+len*Math.cos(ai)+8,y2-len*Math.sin(ai),17,'#c9302c');
+  txt(pc,'İ',x2+len*Math.cos(ai)+8,y2-len*Math.sin(ai),17,'#c9302c');
 }
 function draw(){
   const v=vals(); update(v); drawWave(); drawPh();
@@ -219,5 +288,6 @@ function resize(){fit(wave,wc);fit(ph,pc);draw()}
 window.addEventListener('resize',resize);
 resize();requestAnimationFrame(loop);
 </script>
+
 
 </body></html>

@@ -1,9 +1,12 @@
 <!DOCTYPE html>
-<!-- saved from url=(0085)file:///C:/Users/velichko.atanasov/Downloads/preview%20-%202026-09-22T121839.836.html -->
+<!-- saved from url=(0085)file:///C:/Users/velichko.atanasov/Downloads/preview%20-%202026-09-23T212559.192.html -->
 <html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>QR-079 — Хистерезисна крива B–H</title>
+<title>QR-079 — Хистерезисна крива B–H | © Величко Атанасов</title>
+<meta name="author" content="Доц. д-р Величко Цветанов Атанасов">
+<meta name="copyright" content="© 2026 Доц. д-р Величко Цветанов Атанасов. Всички права запазени.">
+<meta name="rights" content="За възпроизвеждане, разпространение и изменение на тази интерактивна анимация е необходимо предварително писмено разрешение от автора.">
 <style>
 :root{
   --bg:#07111f;--panel:#0d1b2e;--line:#263a55;--text:#eef6ff;--muted:#a9bad0;
@@ -46,6 +49,8 @@ li{margin:6px 0}
 .stageItem strong{color:#dff7ff}.stageItem small{display:block;color:#8fb2d9;margin-top:3px}
 .stageItem.active{border-color:#ffd45a;box-shadow:0 0 0 2px rgba(255,212,90,.18) inset;background:linear-gradient(180deg,#13253d,#0b1727);color:#eef6ff}
 @media(max-width:950px){.grid{grid-template-columns:1fr}.controls,.kpis{grid-template-columns:1fr 1fr}}
+ .copyrightNotice{max-width:1260px;margin:14px auto 4px;padding:12px 16px;border-top:1px solid #29415e;color:#a9bad0;text-align:center;font-size:13px;line-height:1.55}
+ .copyrightNotice strong{color:#eef6ff}
 </style>
 </head>
 <body>
@@ -60,7 +65,7 @@ li{margin:6px 0}
     <button id="resetBtn" class="secondary">↺ Начало</button>
     <button id="slowerBtn" class="mini" title="Назад с 10% от хистерезисния цикъл">◀ −10%</button>
     <button id="fasterBtn" class="mini" title="Напред с 10% от хистерезисния цикъл">+10% ▶</button>
-    <span id="positionVal" class="positionBadge" aria-live="polite">Положение: 97%</span>
+    <span id="positionVal" class="positionBadge" aria-live="polite">Положение: 7%</span>
   </div>
 
   <div class="stepHint">Бутоните −10% и +10% <b>преместват работната точка с 10% от целия цикъл</b> и поставят анимацията на пауза, за да разгледате състоянието. Плъзгачът „Скорост“ определя скоростта при възпроизвеждане; позицията се измерва в проценти от <b>целия период</b>.</div>
@@ -80,15 +85,15 @@ li{margin:6px 0}
       <h2>2. Обяснение и изменение във времето</h2>
       <canvas id="time" width="520" height="230"></canvas>
       <div class="kpis">
-        <div class="kpi"><small>Текущо поле</small><b id="hNow">H = -0.17</b></div>
-        <div class="kpi"><small>Текуща индукция</small><b id="bNow">B = -0.88</b></div>
+        <div class="kpi"><small>Текущо поле</small><b id="hNow">H = 0.44</b></div>
+        <div class="kpi"><small>Текуща индукция</small><b id="bNow">B = 0.22</b></div>
         <div class="kpi"><small>Остатъчна индукция</small><b id="brVal">B<sub>r</sub> ≈ 0.73</b></div>
         <div class="kpi"><small>Коерцитивно поле</small><b id="hcVal">H<sub>c</sub> ≈ 0.34</b></div>
       </div>
-      <div id="stateBox">Част 5: H нараства и точката следва възходящия клон: B се увеличава.</div>
-      <div id="nextBox">Следва: Част 6 — От −Br към B = 0</div>
+      <div id="stateBox">Част 1: H нараства и точката следва възходящия клон: B се увеличава.</div>
+      <div id="nextBox">Следва: Част 2 — От +Bsat към +Br</div>
       <div id="stages">
-    <div class="stageItem ">
+    <div class="stageItem active">
       <strong>Част 1: От +Hc към положително насищане</strong>
       <small>Положителното H нараства; B нараства по възходящия клон до +Bsat.</small>
     </div>
@@ -104,7 +109,7 @@ li{margin:6px 0}
       <strong>Част 4: Към отрицателно насищане</strong>
       <small>Отрицателното H се усилва и B достига −Bsat при левия край на контура.</small>
     </div>
-    <div class="stageItem active">
+    <div class="stageItem ">
       <strong>Част 5: От −Bsat към −Br</strong>
       <small>Отрицателното H отслабва. При H = 0 остава −Br.</small>
     </div>
@@ -140,9 +145,18 @@ li{margin:6px 0}
     </div>
   </div>
   <div class="modelNote"><b>Учебен модел:</b> Кривата е схематична, не измерена характеристика на конкретен материал. Тя представя пълен, установен симетричен хистерезисен цикъл. При изменение на амплитудата на H реалният материал може да следва частични цикли, зависещи от предишната история на намагнитване — такива цикли не се изчисляват тук.</div>
+  <footer class="copyrightNotice" role="contentinfo">
+    <strong>© 2026 Доц. д-р Величко Цветанов Атанасов. Всички права запазени.</strong><br>
+    Авторска интерактивна учебна анимация. Разрешено е лично ползване за обучение.
+    Копиране, публикуване на други сайтове, разпространение, изменение или включване
+    в други издания изисква предварително писмено разрешение от автора.
+  </footer>
 </main>
 
 <script>
+/* © 2026 Доц. д-р Величко Цветанов Атанасов. Всички права запазени.
+ * Изходният код и графичният дизайн не се предоставят с лиценз за свободно
+ * копиране, разпространение или модифициране. */
 const loop = document.getElementById('loop'), lc = loop.getContext('2d');
 const timeC = document.getElementById('time'), tc = timeC.getContext('2d');
 const playBtn = document.getElementById('playBtn');

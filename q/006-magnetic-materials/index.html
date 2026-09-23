@@ -1,10 +1,13 @@
-<!doctype html>
-<html lang="bg">
-<head>
-<meta charset="utf-8">
+<!DOCTYPE html>
+<!-- saved from url=(0085)file:///C:/Users/velichko.atanasov/Downloads/preview%20-%202026-09-23T213613.998.html -->
+<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#07111f">
 <title>QR-006 · Магнитно поле и магнитни материали</title>
+<meta name="author" content="Доц. д-р Величко Цветанов Атанасов">
+<meta name="copyright" content="© 2026 Доц. д-р Величко Цветанов Атанасов. Всички права запазени.">
+<!-- © 2026 Доц. д-р Величко Цветанов Атанасов. Всички права запазени. Копиране, изменение и разпространение само с предварително писмено разрешение на автора. -->
 <style>
 :root{
  --bg:#07111f;--panel:#0d1b2e;--panel2:#091523;--text:#eef7ff;--muted:#9fb4cf;
@@ -39,6 +42,7 @@ select{width:100%;padding:10px;border-radius:11px;background:#0a1728;color:var(-
 .modebtn{padding:10px;border-radius:11px;border:1px solid var(--border);background:#ffffff0b;color:var(--text);font-weight:800;cursor:pointer}
 .modebtn.active{background:linear-gradient(135deg,var(--cyan),#7b8cff);color:#03111c}
 @media(max-width:960px){.grid{grid-template-columns:1fr}.modebar{grid-template-columns:1fr}}
+footer.copyright{max-width:1290px;margin:12px auto 18px;padding:14px;text-align:center;color:#9fb4cf;font:12px/1.6 Segoe UI,Arial,sans-serif;border-top:1px solid #ffffff22}
 </style>
 </head>
 <body>
@@ -55,58 +59,58 @@ select{width:100%;padding:10px;border-radius:11px;background:#0a1728;color:var(-
 <section class="card">
 <svg id="scene" viewBox="0 0 900 620">
 <defs>
-  <linearGradient id="magBody" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0" stop-color="#f7f7f7"/>
-    <stop offset=".25" stop-color="#b8c2cc"/>
-    <stop offset=".55" stop-color="#5e6975"/>
-    <stop offset=".8" stop-color="#cdd4da"/>
-    <stop offset="1" stop-color="#4a535d"/>
-  </linearGradient>
-  <linearGradient id="north" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#9a1010"/><stop offset=".45" stop-color="#f05252"/><stop offset="1" stop-color="#6d0808"/>
-  </linearGradient>
-  <linearGradient id="south" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#063377"/><stop offset=".45" stop-color="#3b8fff"/><stop offset="1" stop-color="#05245a"/>
-  </linearGradient>
-  <linearGradient id="sampleMetal" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#6b7580"/><stop offset=".35" stop-color="#d7dde2"/><stop offset=".65" stop-color="#747e89"/><stop offset="1" stop-color="#363d45"/>
-  </linearGradient>
-  <filter id="shadow"><feDropShadow dx="0" dy="7" stdDeviation="6" flood-opacity=".55"/></filter>
+  <lineargradient id="magBody" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#f7f7f7"></stop>
+    <stop offset=".25" stop-color="#b8c2cc"></stop>
+    <stop offset=".55" stop-color="#5e6975"></stop>
+    <stop offset=".8" stop-color="#cdd4da"></stop>
+    <stop offset="1" stop-color="#4a535d"></stop>
+  </lineargradient>
+  <lineargradient id="north" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#9a1010"></stop><stop offset=".45" stop-color="#f05252"></stop><stop offset="1" stop-color="#6d0808"></stop>
+  </lineargradient>
+  <lineargradient id="south" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#063377"></stop><stop offset=".45" stop-color="#3b8fff"></stop><stop offset="1" stop-color="#05245a"></stop>
+  </lineargradient>
+  <lineargradient id="sampleMetal" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#6b7580"></stop><stop offset=".35" stop-color="#d7dde2"></stop><stop offset=".65" stop-color="#747e89"></stop><stop offset="1" stop-color="#363d45"></stop>
+  </lineargradient>
+  <filter id="shadow"><fedropshadow dx="0" dy="7" stdDeviation="6" flood-opacity=".55"></fedropshadow></filter>
 </defs>
 
 <!-- field -->
-<g id="fieldLayer"></g>
+<g id="fieldLayer"><path d="M400 235 C500 247.6 550 247.6 620 235" fill="none" stroke="#4fd8ff" stroke-width="3.5500000000000003" opacity="0.6525000000000001"></path><path d="M400 260 C500 272.6 550 272.6 620 260" fill="none" stroke="#4fd8ff" stroke-width="3.5500000000000003" opacity="0.6525000000000001"></path><path d="M400 285 C500 297.6 550 297.6 620 285" fill="none" stroke="#4fd8ff" stroke-width="3.5500000000000003" opacity="0.6525000000000001"></path><path d="M400 325 C500 312.4 550 312.4 620 325" fill="none" stroke="#4fd8ff" stroke-width="3.5500000000000003" opacity="0.6525000000000001"></path><path d="M400 350 C500 337.4 550 337.4 620 350" fill="none" stroke="#4fd8ff" stroke-width="3.5500000000000003" opacity="0.6525000000000001"></path><path d="M400 375 C500 362.4 550 362.4 620 375" fill="none" stroke="#4fd8ff" stroke-width="3.5500000000000003" opacity="0.6525000000000001"></path><path d="M170 225 C330 170 520 170 650 225" fill="none" stroke="#4fd8ff" stroke-width="2" opacity="0.45"></path><path d="M170 385 C330 440 520 440 650 385" fill="none" stroke="#4fd8ff" stroke-width="2" opacity="0.45"></path><path d="M170 225 C330 135 520 135 650 225" fill="none" stroke="#4fd8ff" stroke-width="2" opacity="0.45"></path><path d="M170 385 C330 475 520 475 650 385" fill="none" stroke="#4fd8ff" stroke-width="2" opacity="0.45"></path></g>
 
 <!-- realistic bar magnet -->
-<g id="magnet" filter="url(#shadow)">
-  <rect x="105" y="225" width="300" height="160" rx="28" fill="url(#magBody)" stroke="#e9eef2" stroke-width="2"/>
-  <rect x="110" y="230" width="145" height="150" rx="24" fill="url(#north)"/>
-  <rect x="255" y="230" width="145" height="150" rx="24" fill="url(#south)"/>
-  <rect x="244" y="230" width="22" height="150" fill="#d6dbe0" opacity=".45"/>
+<g id="magnet" filter="url(#shadow)" transform="translate(-1.5 0)">
+  <rect x="105" y="225" width="300" height="160" rx="28" fill="url(#magBody)" stroke="#e9eef2" stroke-width="2"></rect>
+  <rect x="110" y="230" width="145" height="150" rx="24" fill="url(#north)"></rect>
+  <rect x="255" y="230" width="145" height="150" rx="24" fill="url(#south)"></rect>
+  <rect x="244" y="230" width="22" height="150" fill="#d6dbe0" opacity=".45"></rect>
   <text x="182" y="325" text-anchor="middle" font-size="66" font-weight="900" fill="#fff">N</text>
   <text x="327" y="325" text-anchor="middle" font-size="66" font-weight="900" fill="#fff">S</text>
-  <path d="M130 250 Q252 210 375 250" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="8"/>
+  <path d="M130 250 Q252 210 375 250" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="8"></path>
 </g>
 
 <!-- sample -->
 <g id="sample" filter="url(#shadow)">
-  <rect x="615" y="205" width="220" height="240" rx="20" fill="url(#sampleMetal)" stroke="#e8edf1" stroke-width="2"/>
-  <rect x="628" y="218" width="194" height="214" rx="14" fill="#252c35" stroke="#ffffff22"/>
+  <rect x="615" y="205" width="220" height="240" rx="20" fill="url(#sampleMetal)" stroke="#e8edf1" stroke-width="2"></rect>
+  <rect x="628" y="218" width="194" height="214" rx="14" fill="#252c35" stroke="#ffffff22"></rect>
   <text id="sampleTitle" x="725" y="185" text-anchor="middle" fill="#eef7ff" font-size="22" font-weight="800">Феромагнетик</text>
-  <g id="moments"></g>
-  <text id="materialTag" x="725" y="470" text-anchor="middle" fill="#ffd15c" font-size="19" font-weight="800">силно намагнитване</text>
+  <g id="moments"><g transform="translate(660 250) rotate(-40.725)"><line x1="-13" y1="0" x2="13" y2="0" stroke="#ffd15c" stroke-width="4" stroke-linecap="round"></line><polygon points="13,0 5,-5 5,5" fill="#ffd15c"></polygon></g><g transform="translate(704 250) rotate(-7.6925)"><line x1="-13" y1="0" x2="13" y2="0" stroke="#ffd15c" stroke-width="4" stroke-linecap="round"></line><polygon points="13,0 5,-5 5,5" fill="#ffd15c"></polygon></g><g transform="translate(748 250) rotate(25.34)"><line x1="-13" y1="0" x2="13" y2="0" stroke="#ffd15c" stroke-width="4" stroke-linecap="round"></line><polygon points="13,0 5,-5 5,5" fill="#ffd15c"></polygon></g><g transform="translate(792 250) rotate(-23.0775)"><line x1="-13" y1="0" x2="13" y2="0" stroke="#ffd15c" stroke-width="4" stroke-linecap="round"></line><polygon points="13,0 5,-5 5,5" fill="#ffd15c"></polygon></g><g transform="translate(660 281) rotate(9.955)"><line x1="-13" y1="0" x2="13" y2="0" stroke="#ffd15c" stroke-width="4" stroke-linecap="round"></line><polygon points="13,0 5,-5 5,5" fill="#ffd15c"></polygon></g><g transform="translate(704 281) rotate(-38.4625)"><line x1="-13" y1="0" x2="13" y2="0" stroke="#ffd15c" stroke-width="4" stroke-linecap="round"></line><polygon points="13,0 5,-5 5,5" fill="#ffd15c"></polygon></g><g transform="translate(748 281) rotate(-5.43)"><line x1="-13" y1="0" x2="13" y2="0" stroke="#ffd15c" stroke-width="4" stroke-linecap="round"></line><polygon points="13,0 5,-5 5,5" fill="#ffd15c"></polygon></g><g transform="translate(792 281) rotate(27.6025)"><line x1="-13" y1="0" x2="13" y2="0" stroke="#ffd15c" stroke-width="4" stroke-linecap="round"></line><polygon points="13,0 5,-5 5,5" fill="#ffd15c"></polygon></g><g transform="translate(660 312) rotate(-20.815)"><line x1="-13" y1="0" x2="13" y2="0" stroke="#ffd15c" stroke-width="4" stroke-linecap="round"></line><polygon points="13,0 5,-5 5,5" fill="#ffd15c"></polygon></g><g transform="translate(704 312) rotate(12.217500000000001)"><line x1="-13" y1="0" x2="13" y2="0" stroke="#ffd15c" stroke-width="4" stroke-linecap="round"></line><polygon points="13,0 5,-5 5,5" fill="#ffd15c"></polygon></g><g transform="translate(748 312) rotate(-36.2)"><line x1="-13" y1="0" x2="13" y2="0" stroke="#ffd15c" stroke-width="4" stroke-linecap="round"></line><polygon points="13,0 5,-5 5,5" fill="#ffd15c"></polygon></g><g transform="translate(792 312) rotate(-3.1675)"><line x1="-13" y1="0" x2="13" y2="0" stroke="#ffd15c" stroke-width="4" stroke-linecap="round"></line><polygon points="13,0 5,-5 5,5" fill="#ffd15c"></polygon></g><g transform="translate(660 343) rotate(29.865000000000002)"><line x1="-13" y1="0" x2="13" y2="0" stroke="#ffd15c" stroke-width="4" stroke-linecap="round"></line><polygon points="13,0 5,-5 5,5" fill="#ffd15c"></polygon></g><g transform="translate(704 343) rotate(-18.552500000000002)"><line x1="-13" y1="0" x2="13" y2="0" stroke="#ffd15c" stroke-width="4" stroke-linecap="round"></line><polygon points="13,0 5,-5 5,5" fill="#ffd15c"></polygon></g><g transform="translate(748 343) rotate(14.48)"><line x1="-13" y1="0" x2="13" y2="0" stroke="#ffd15c" stroke-width="4" stroke-linecap="round"></line><polygon points="13,0 5,-5 5,5" fill="#ffd15c"></polygon></g><g transform="translate(792 343) rotate(-33.9375)"><line x1="-13" y1="0" x2="13" y2="0" stroke="#ffd15c" stroke-width="4" stroke-linecap="round"></line><polygon points="13,0 5,-5 5,5" fill="#ffd15c"></polygon></g><g transform="translate(660 374) rotate(-0.905)"><line x1="-13" y1="0" x2="13" y2="0" stroke="#ffd15c" stroke-width="4" stroke-linecap="round"></line><polygon points="13,0 5,-5 5,5" fill="#ffd15c"></polygon></g><g transform="translate(704 374) rotate(32.1275)"><line x1="-13" y1="0" x2="13" y2="0" stroke="#ffd15c" stroke-width="4" stroke-linecap="round"></line><polygon points="13,0 5,-5 5,5" fill="#ffd15c"></polygon></g><g transform="translate(748 374) rotate(-16.29)"><line x1="-13" y1="0" x2="13" y2="0" stroke="#ffd15c" stroke-width="4" stroke-linecap="round"></line><polygon points="13,0 5,-5 5,5" fill="#ffd15c"></polygon></g><g transform="translate(792 374) rotate(16.7425)"><line x1="-13" y1="0" x2="13" y2="0" stroke="#ffd15c" stroke-width="4" stroke-linecap="round"></line><polygon points="13,0 5,-5 5,5" fill="#ffd15c"></polygon></g><g transform="translate(660 405) rotate(-31.675)"><line x1="-13" y1="0" x2="13" y2="0" stroke="#ffd15c" stroke-width="4" stroke-linecap="round"></line><polygon points="13,0 5,-5 5,5" fill="#ffd15c"></polygon></g><g transform="translate(704 405) rotate(1.3575)"><line x1="-13" y1="0" x2="13" y2="0" stroke="#ffd15c" stroke-width="4" stroke-linecap="round"></line><polygon points="13,0 5,-5 5,5" fill="#ffd15c"></polygon></g><g transform="translate(748 405) rotate(34.39)"><line x1="-13" y1="0" x2="13" y2="0" stroke="#ffd15c" stroke-width="4" stroke-linecap="round"></line><polygon points="13,0 5,-5 5,5" fill="#ffd15c"></polygon></g><g transform="translate(792 405) rotate(-14.0275)"><line x1="-13" y1="0" x2="13" y2="0" stroke="#ffd15c" stroke-width="4" stroke-linecap="round"></line><polygon points="13,0 5,-5 5,5" fill="#ffd15c"></polygon></g></g>
+  <text id="materialTag" x="725" y="470" text-anchor="middle" fill="#ffd15c" font-size="19" font-weight="800">силно доменно намагнитване</text>
 </g>
 
 <!-- qualitative arrows -->
 <g id="externalArrow">
-  <line x1="455" y1="505" x2="570" y2="505" stroke="#62dfa0" stroke-width="6"/>
-  <polygon points="570,505 550,493 550,517" fill="#62dfa0"/>
+  <line x1="455" y1="505" x2="570" y2="505" stroke="#62dfa0" stroke-width="6"></line>
+  <polygon points="570,505 550,493 550,517" fill="#62dfa0"></polygon>
   <text x="512" y="485" text-anchor="middle" fill="#62dfa0" font-size="19" font-weight="800">външно поле H</text>
 </g>
 <g id="mArrow">
-  <line id="mArrowLine" x1="665" y1="515" x2="780" y2="515" stroke="#ffd15c" stroke-width="6"/>
-  <polygon id="mArrowHead" points="780,515 760,503 760,527" fill="#ffd15c"/>
-  <text id="mArrowText" x="723" y="555" text-anchor="middle" fill="#ffd15c" font-size="18">намагнитеност M</text>
+  <line id="mArrowLine" x1="665" y1="515" x2="752.275" y2="515" stroke="#ffd15c" stroke-width="6"></line>
+  <polygon id="mArrowHead" points="752.275,515 732.275,503 732.275,527" fill="#ffd15c"></polygon>
+  <text id="mArrowText" x="723" y="555" text-anchor="middle" fill="#ffd15c" font-size="18">M по посока на H</text>
 </g>
 </svg>
 
@@ -136,7 +140,7 @@ select{width:100%;padding:10px;border-radius:11px;background:#0a1728;color:var(-
 
 <div class="metrics">
 <div class="metric"><span>Относителна сила на H</span><b id="hRead">0.45</b></div>
-<div class="metric"><span>Относителна намагнитеност M</span><b id="mRead">0.41</b></div>
+<div class="metric"><span>Относителна намагнитеност M</span><b id="mRead">0.53</b></div>
 <div class="metric"><span>Знак на χₘ</span><b id="chiRead">χₘ ≫ 0</b></div>
 <div class="metric"><span>Поведение на силовите линии</span><b id="fieldRead">силно се концентрират</b></div>
 </div>
@@ -145,12 +149,11 @@ select{width:100%;padding:10px;border-radius:11px;background:#0a1728;color:var(-
 <div class="formula"><b>M = χₘH</b><small>За линейни магнитни материали</small></div>
 <div class="formula"><b>μᵣ = 1 + χₘ</b><small>Относителна магнитна проницаемост</small></div>
 
-<div class="note" id="note">
-Феромагнитните материали имат доменна структура. При външно поле домените се ориентират силно по неговата посока и материалът се намагнитва значително.
-</div>
+<div class="note" id="note">Феромагнитните материали имат доменна структура. При външно поле домените се ориентират силно по неговата посока и материалът се намагнитва значително.</div>
 </section>
 </div>
 </main>
+<footer class="copyright">© 2026 Доц. д-р Величко Цветанов Атанасов. Всички права запазени.<br>Копиране, изменение и разпространение без предварително писмено разрешение на автора не са разрешени.</footer>
 
 <script>
 const NS="http://www.w3.org/2000/svg";
@@ -276,5 +279,5 @@ btns.forEach(b=>b.onclick=()=>{
 dist.addEventListener("input",update);
 update();
 </script>
-</body>
-</html>
+
+</body></html>

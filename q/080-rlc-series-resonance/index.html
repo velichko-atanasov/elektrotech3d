@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<!-- saved from url=(0082)file:///C:/Users/velichko.atanasov/Downloads/QR_RLC_rezonans_50Hz_bez_vurtene.html -->
+<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Резонанс в последователна RLC верига</title>
+<style>
+  :root{
+    --bg:#f6f8fb; --card:#ffffff; --ink:#152238; --muted:#5c6b80;
+    --accent:#2f6fed; --red:#d84a4a; --green:#2b9b62; --gold:#c78a16; --line:#d8e0ec;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+  header{padding:24px 28px 10px;text-align:center}
+  h1{margin:0;font-size:30px}
+  .sub{margin-top:6px;color:var(--muted);font-size:16px}
+  .wrap{max-width:1280px;margin:auto;padding:16px}
+  .grid{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 8px 24px rgba(25,50,90,.06)}
+  .controls{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px}
+  label{font-size:13px;color:var(--muted)}
+  input[type=range]{width:100%}
+  .value{font-weight:700;color:var(--ink)}
+  .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+  .metric{padding:12px;border:1px solid var(--line);border-radius:14px;background:#fbfcfe}
+  .metric b{display:block;font-size:20px;margin-top:3px}
+  .resonance{border:2px solid var(--green);background:#f2fbf6}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
+  svg{width:100%;height:auto}
+  canvas{width:100%;height:300px;border:1px solid var(--line);border-radius:12px;background:white}
+  .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  button{border:0;border-radius:12px;padding:10px 16px;font-weight:700;cursor:pointer;background:var(--accent);color:white}
+  button.secondary{background:#e9eef8;color:#23354f}
+  .note{margin-top:12px;padding:12px 14px;background:#fff8e8;border:1px solid #ecd6a4;border-radius:12px;font-size:14px}
+  .formula{font-family:"Cambria Math","Times New Roman",serif;font-size:18px}
+  .legend{font-size:13px;color:var(--muted);margin-top:8px}
+  .steps{display:grid;gap:12px}
+  .step{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fbfcfe}
+  .step h4{margin:0 0 8px;font-size:17px}
+  .step .eq{font-family:"Cambria Math","Times New Roman",serif;font-size:18px;line-height:1.55}
+  .step .result{margin-top:6px;font-weight:700;color:var(--accent)}
+  .step.active{border:2px solid var(--green);background:#f2fbf6}
+  @media(max-width:900px){.grid,.row{grid-template-columns:1fr}.controls{grid-template-columns:1fr 1fr}.metrics{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Резонанс в последователна RLC верига</h1>
+  <div class="sub">R = 40 Ω, L = 127,4 mH, C = 79,6 μF, U = 230 V</div>
+</header>
+
+<div class="wrap">
+  <div class="grid">
+    <div class="card">
+      <div class="controls">
+        <div><label>Честота f, Hz</label><input id="f" type="range" min="10" max="100" step="0.01" value="50"><div class="value"><span id="fv">50.0</span> Hz</div></div>
+        <div><label>R, Ω</label><input id="R" type="range" min="10" max="120" step="1" value="40"><div class="value"><span id="Rv">40</span> Ω</div></div>
+        <div><label>L, mH</label><input id="L" type="range" min="20" max="300" step="0.1" value="127.4"><div class="value"><span id="Lv">127.4</span> mH</div></div>
+        <div><label>C, μF</label><input id="C" type="range" min="20" max="200" step="0.1" value="79.6"><div class="value"><span id="Cv">79.6</span> μF</div></div>
+        <div><label>U, V</label><input id="U" type="range" min="50" max="400" step="1" value="230"><div class="value"><span id="Uv">230</span> V</div></div>
+      </div>
+
+      <svg viewBox="0 0 900 340" aria-label="Последователна RLC верига">
+        <defs>
+          <marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#d84a4a"></path></marker>
+          <marker id="arrL" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M10,0 L0,5 L10,10 z" fill="#d84a4a"></path></marker>
+        </defs>
+        <line x1="90" y1="90" x2="220" y2="90" stroke="#16253b" stroke-width="5"></line>
+        <rect x="220" y="68" width="120" height="44" rx="4" fill="#fff" stroke="#16253b" stroke-width="4"></rect>
+        <text x="280" y="58" text-anchor="middle" font-size="24">R = <tspan id="svgR">40</tspan> Ω</text>
+        <line x1="340" y1="90" x2="420" y2="90" stroke="#16253b" stroke-width="5"></line>
+        <path d="M420 90 c18 -34 36 -34 54 0 c18 -34 36 -34 54 0 c18 -34 36 -34 54 0 c18 -34 36 -34 54 0" fill="none" stroke="#16253b" stroke-width="4"></path>
+        <text x="530" y="58" text-anchor="middle" font-size="24">L = <tspan id="svgL">127.4</tspan> mH</text>
+        <line x1="636" y1="90" x2="710" y2="90" stroke="#16253b" stroke-width="5"></line>
+        <line x1="710" y1="52" x2="710" y2="128" stroke="#16253b" stroke-width="4"></line>
+        <line x1="735" y1="52" x2="735" y2="128" stroke="#16253b" stroke-width="4"></line>
+        <line x1="735" y1="90" x2="810" y2="90" stroke="#16253b" stroke-width="5"></line>
+        <text x="724" y="45" text-anchor="middle" font-size="24">C = <tspan id="svgC">79.6</tspan> μF</text>
+        <line x1="810" y1="90" x2="810" y2="250" stroke="#16253b" stroke-width="5"></line>
+        <line x1="810" y1="250" x2="90" y2="250" stroke="#16253b" stroke-width="5"></line>
+        <line x1="90" y1="90" x2="90" y2="145" stroke="#16253b" stroke-width="5"></line>
+        <circle cx="90" cy="195" r="50" fill="#fff" stroke="#16253b" stroke-width="4"></circle>
+        <text x="90" y="202" text-anchor="middle" font-size="24">~ <tspan id="svgU">230</tspan> V</text>
+        <line x1="90" y1="245" x2="90" y2="250" stroke="#16253b" stroke-width="5"></line>
+
+        <line id="currentArrow" x1="130" y1="145" x2="280" y2="145" stroke="#d84a4a" stroke-width="6" marker-end="url(#arrR)"></line>
+        <text x="205" y="176" text-anchor="middle" font-size="22" fill="#d84a4a">I</text>
+        <text x="450" y="330" text-anchor="middle" font-size="15" fill="#5c6b80">Стрелката показва избраната положителна посока на тока.</text>
+
+        <text x="450" y="295" text-anchor="middle" font-size="22" fill="#2f6fed">Последователна RLC верига</text>
+      </svg>
+
+      <div class="metrics">
+        <div class="metric"><span>ω</span><b><span id="omega">314.16</span> rad/s</b></div>
+        <div class="metric"><span>X<sub>L</sub></span><b><span id="XL">40.02</span> Ω</b></div>
+        <div class="metric"><span>X<sub>C</sub></span><b><span id="XC">39.99</span> Ω</b></div>
+        <div class="metric"><span>|Z|</span><b><span id="Z">40.00</span> Ω</b></div>
+        <div class="metric"><span>I</span><b><span id="I">5.75</span> A</b></div>
+        <div class="metric"><span>φ</span><b><span id="phi">0.05</span>°</b></div>
+        <div class="metric"><span>U<sub>L</sub></span><b><span id="UL">230.1</span> V</b></div>
+        <div class="metric"><span>U<sub>C</sub></span><b><span id="UC">229.9</span> V</b></div>
+      </div>
+
+      <div class="btns">
+        <button id="res" class="secondary">Към резонанс</button>
+        <button id="reset" class="secondary">Начални стойности</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">Фазорна диаграма</h3>
+      <svg id="phasor" viewBox="0 0 520 390">
+        <line x1="60" y1="195" x2="470" y2="195" stroke="#b7c2d3" stroke-width="2"></line>
+        <line x1="260" y1="350" x2="260" y2="40" stroke="#b7c2d3" stroke-width="2"></line>
+        <defs>
+          <marker id="pR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#d84a4a"></path></marker>
+          <marker id="pB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2f6fed"></path></marker>
+          <marker id="pG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2b9b62"></path></marker>
+        </defs>
+        <line id="vR" x1="260" y1="195" x2="409.9999418829427" y2="195" stroke="#d84a4a" stroke-width="5" marker-end="url(#pR)"></line>
+        <line id="vL" x1="260" y1="195" x2="260" y2="44.91046912651589" stroke="#2f6fed" stroke-width="5" marker-end="url(#pB)"></line>
+        <line id="vC" x1="260" y1="195" x2="260" y2="344.9574887824583" stroke="#c78a16" stroke-width="5" marker-end="url(#pG)"></line>
+        <line id="vU" x1="260" y1="195" x2="409.9999418829427" y2="194.86795790897418" stroke="#2b9b62" stroke-width="6" marker-end="url(#pG)"></line>
+        <text x="440" y="190" fill="#d84a4a" font-size="20">U_R</text>
+        <text x="270" y="70" fill="#2f6fed" font-size="20">U_L</text>
+        <text x="270" y="330" fill="#c78a16" font-size="20">U_C</text>
+        <text id="uLabel" x="417.9999418829427" y="186.86795790897418" fill="#2b9b62" font-size="20">U</text>
+      </svg>
+      <div id="status" class="note"><b>Близо до резонанс:</b> X<sub>L</sub> и X<sub>C</sub> са почти равни.</div>
+      <div class="formula" style="margin-top:12px">
+        ω₀ = 1/√(LC) &nbsp;&nbsp;&nbsp; f₀ = ω₀/(2π)
+      </div>
+      <div class="legend">При зададените стойности f₀ ≈ <span id="f0">49.98</span> Hz.</div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="card">
+      <h3 style="margin-top:0">Резонансна характеристика I(f)</h3>
+      <canvas id="chart" width="800" height="300"></canvas>
+      <div class="legend">Вертикалната линия показва текущата честота. Пикът е около резонансната честота.</div>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">Логика на задачата</h3>
+      <p><b>1.</b> Условие за резонанс: X<sub>L</sub> = X<sub>C</sub>.</p>
+      <p><b>2.</b> Следователно ω₀ = 1/√(LC).</p>
+      <p><b>3.</b> При резонанс: Z = R и I = U/R.</p>
+      <p><b>4.</b> За дадените параметри: f₀ ≈ 50 Hz и I ≈ 5,75 A.</p>
+      <div class="note">
+        В този конкретен пример качественият фактор е приблизително Q ≈ 1, затова напреженията върху L и C са около 230 V. По принцип при по-голям Q те могат значително да превишат захранващото напрежение.
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h3 style="margin-top:0">Изчисления стъпка по стъпка</h3>
+    <div class="steps">
+      <div class="step">
+        <h4>Стъпка 1. Условие за резонанс</h4>
+        <div class="eq">
+          X<sub>L</sub> = X<sub>C</sub><br>
+          ωL = 1/(ωC)
+        </div>
+        <div class="result">При резонанс индуктивното и капацитивното реактивно съпротивление се компенсират.</div>
+      </div>
+
+      <div class="step">
+        <h4>Стъпка 2. Определяне на резонансната ъглова честота</h4>
+        <div class="eq">
+          ω₀ = 1/√(LC)<br>
+          ω₀ = 1/√(<span id="stL">0.1274</span> · <span id="stC">0.0000796</span>)<br>
+          ω₀ = <span id="stOmega0">314.02</span> rad/s
+        </div>
+        <div class="result">Резонансната ъглова честота е приблизително 314 rad/s.</div>
+      </div>
+
+      <div class="step">
+        <h4>Стъпка 3. Определяне на резонансната честота</h4>
+        <div class="eq">
+          f₀ = ω₀/(2π)<br>
+          f₀ = <span id="stOmega02">314.02</span> / 6.283<br>
+          f₀ = <span id="stF0">49.98</span> Hz
+        </div>
+        <div class="result">Получената стойност е практически равна на мрежовата честота 50 Hz.</div>
+      </div>
+
+      <div class="step">
+        <h4>Стъпка 4. Проверка на реактивните съпротивления при резонанс</h4>
+        <div class="eq">
+          X<sub>L</sub> = ω₀L = <span id="stXL">40.01</span> Ω<br>
+          X<sub>C</sub> = 1/(ω₀C) = <span id="stXC">40.01</span> Ω
+        </div>
+        <div class="result">X<sub>L</sub> ≈ X<sub>C</sub>, следователно реактивните съставки взаимно се компенсират.</div>
+      </div>
+
+      <div class="step">
+        <h4>Стъпка 5. Импеданс при резонанс</h4>
+        <div class="eq">
+          Z = √(R² + (X<sub>L</sub> − X<sub>C</sub>)²)<br>
+          Z<sub>res</sub> = R = <span id="stR">40</span> Ω
+        </div>
+        <div class="result">При резонанс импедансът има минимална стойност.</div>
+      </div>
+
+      <div class="step active">
+        <h4>Стъпка 6. Ток при резонанс</h4>
+        <div class="eq">
+          I<sub>res</sub> = U/R<br>
+          I<sub>res</sub> = <span id="stU">230</span> / <span id="stR2">40</span><br>
+          I<sub>res</sub> = <span id="stIres">5.75</span> A
+        </div>
+        <div class="result">Токът е максимален и е във фаза със захранващото напрежение.</div>
+      </div>
+
+      <div class="step">
+        <h4>Стъпка 7. Напрежения върху L и C</h4>
+        <div class="eq">
+          U<sub>L</sub> = I<sub>res</sub>X<sub>L</sub> = <span id="stUL">230.0</span> V<br>
+          U<sub>C</sub> = I<sub>res</sub>X<sub>C</sub> = <span id="stUC">230.0</span> V
+        </div>
+        <div class="result">При резонанс фазорите на U<sub>L</sub> и U<sub>C</sub> са равни по големина и противоположни по посока, поради което се компенсират във векторната сума.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const el = id => document.getElementById(id);
+
+function calc(){
+  const f=+el('f').value, R=+el('R').value, Lm=+el('L').value, Cu=+el('C').value, U=+el('U').value;
+  const L=Lm/1000, C=Cu*1e-6, w=2*Math.PI*f;
+  const XL=w*L, XC=1/(w*C), X=XL-XC;
+  const Z=Math.sqrt(R*R+X*X), I=U/Z, phi=Math.atan2(X,R);
+  const f0=1/(2*Math.PI*Math.sqrt(L*C));
+  const UL=I*XL, UC=I*XC;
+  const w0=1/Math.sqrt(L*C);
+  const XL0=w0*L, XC0=1/(w0*C), Ires=U/R, UL0=Ires*XL0, UC0=Ires*XC0;
+
+  el('fv').textContent=f.toFixed(1); el('Rv').textContent=R.toFixed(0); el('Lv').textContent=Lm.toFixed(1);
+  el('Cv').textContent=Cu.toFixed(1); el('Uv').textContent=U.toFixed(0);
+  el('omega').textContent=w.toFixed(2); el('XL').textContent=XL.toFixed(2); el('XC').textContent=XC.toFixed(2);
+  el('Z').textContent=Z.toFixed(2); el('I').textContent=I.toFixed(2); el('phi').textContent=(phi*180/Math.PI).toFixed(2);
+  el('UL').textContent=UL.toFixed(1); el('UC').textContent=UC.toFixed(1); el('f0').textContent=f0.toFixed(2);
+  el('svgR').textContent=R.toFixed(0); el('svgL').textContent=Lm.toFixed(1); el('svgC').textContent=Cu.toFixed(1); el('svgU').textContent=U.toFixed(0);
+
+  // Dynamic calculation steps
+  el('stL').textContent=L.toFixed(4);
+  el('stC').textContent=C.toFixed(7);
+  el('stOmega0').textContent=w0.toFixed(2);
+  el('stOmega02').textContent=w0.toFixed(2);
+  el('stF0').textContent=f0.toFixed(2);
+  el('stXL').textContent=XL0.toFixed(2);
+  el('stXC').textContent=XC0.toFixed(2);
+  el('stR').textContent=R.toFixed(0);
+  el('stR2').textContent=R.toFixed(0);
+  el('stU').textContent=U.toFixed(0);
+  el('stIres').textContent=Ires.toFixed(2);
+  el('stUL').textContent=UL0.toFixed(1);
+  el('stUC').textContent=UC0.toFixed(1);
+
+  const isRes=Math.abs(X)<0.02;
+  const nearRes=!isRes && Math.abs(X)<0.5;
+  const s=el('status');
+  if(isRes){
+    s.className='note resonance';
+    s.innerHTML='<b>Резонанс:</b> X<sub>L</sub> ≈ X<sub>C</sub>, Z ≈ R, φ ≈ 0° и токът е максимален.';
+  } else if(nearRes){
+    s.className='note';
+    s.innerHTML='<b>Близо до резонанс:</b> X<sub>L</sub> и X<sub>C</sub> са почти равни.';
+  } else if(X>0){
+    s.className='note';
+    s.innerHTML='<b>Индуктивен режим:</b> X<sub>L</sub> > X<sub>C</sub>, токът изостава от напрежението.';
+  } else {
+    s.className='note';
+    s.innerHTML='<b>Капацитивен режим:</b> X<sub>C</sub> > X<sub>L</sub>, токът изпреварва напрежението.';
+  }
+
+  drawPhasor(U, I*R, UL, UC, phi);
+  drawChart(R,L,C,U,f);
+}
+
+function drawPhasor(U,UR,UL,UC,phi){
+  const sx=150/Math.max(U,UR,Math.abs(UL-UC),1);
+  el('vR').setAttribute('x2',260+UR*sx);
+  el('vL').setAttribute('y2',195-UL*sx);
+  el('vC').setAttribute('y2',195+UC*sx);
+  const ux=260+UR*sx, uy=195-(UL-UC)*sx;
+  el('vU').setAttribute('x2',ux); el('vU').setAttribute('y2',uy);
+  el('uLabel').setAttribute('x',ux+8); el('uLabel').setAttribute('y',uy-8);
+}
+
+function drawChart(R,L,C,U,fcur){
+  const c=el('chart'), ctx=c.getContext('2d');
+  const W=c.width,H=c.height,p=45;
+  ctx.clearRect(0,0,W,H);
+  ctx.strokeStyle='#cfd7e4';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(p,10);ctx.lineTo(p,H-p);ctx.lineTo(W-10,H-p);ctx.stroke();
+
+  let pts=[], maxI=0;
+  for(let f=10;f<=100;f+=0.25){
+    let w=2*Math.PI*f, X=w*L-1/(w*C), Z=Math.sqrt(R*R+X*X), I=U/Z;
+    pts.push([f,I]); maxI=Math.max(maxI,I);
+  }
+  ctx.strokeStyle='#2f6fed';ctx.lineWidth=3;ctx.beginPath();
+  pts.forEach((pt,i)=>{
+    let x=p+(pt[0]-10)/90*(W-p-20), y=H-p-pt[1]/maxI*(H-p-25);
+    i?ctx.lineTo(x,y):ctx.moveTo(x,y);
+  });ctx.stroke();
+
+  let xcur=p+(fcur-10)/90*(W-p-20);
+  ctx.strokeStyle='#d84a4a';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(xcur,15);ctx.lineTo(xcur,H-p);ctx.stroke();
+
+  ctx.fillStyle='#5c6b80';ctx.font='14px Segoe UI';
+  ctx.fillText('10 Hz',p-5,H-15);ctx.fillText('100 Hz',W-65,H-15);
+  ctx.fillText('I, A',8,20);
+  ctx.fillText(maxI.toFixed(2)+' A',5,35);
+}
+
+
+['f','R','L','C','U'].forEach(id=>el(id).addEventListener('input',calc));
+el('res').onclick=()=>{const L=+el('L').value/1000,C=+el('C').value*1e-6; el('f').value=(1/(2*Math.PI*Math.sqrt(L*C))).toFixed(2); calc();};
+el('reset').onclick=()=>{el('f').value=50;el('R').value=40;el('L').value=127.4;el('C').value=79.6;el('U').value=230;calc();};
+
+calc();
+</script>
+
+</body></html>

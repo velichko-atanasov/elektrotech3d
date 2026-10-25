@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0085)file:///C:/Users/velichko.atanasov/Downloads/preview%20-%202026-09-23T212559.192.html -->
+<!-- saved from url=(0075)file:///C:/Users/velichko.atanasov/Downloads/QR079_hysteresis_improved.html -->
 <html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -31,6 +31,10 @@ button.mini{padding:10px 12px;min-width:80px}
 .mode{display:flex;gap:8px;justify-content:center;align-items:center;margin:12px 0 4px;flex-wrap:wrap}
 .positionBadge{border:1px solid #5277a1;border-radius:10px;background:#081522;color:#ffd45a;padding:9px 12px;font-weight:700;min-width:145px;text-align:center}
 .stepHint{color:#b9cde5;text-align:center;font-size:14px;margin:8px auto 14px;max-width:950px;line-height:1.45}
+.keypoints{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:7px;margin:0 auto 14px;max-width:1060px}
+.pointBtn{padding:9px 7px;background:#0b1d31;color:#eaf5ff;border:1px solid #3b5f80;border-radius:10px;font-size:14px;font-weight:750}
+.pointBtn:hover{background:#123250}.pointBtn.active{background:#ffd45a;color:#07111f;border-color:#fff0a6;box-shadow:0 0 0 2px rgba(255,212,90,.16),0 0 18px rgba(255,212,90,.22)}
+.lossKey{color:#ffd45a;font-weight:700}
 .note{margin-top:10px;color:var(--muted);font-size:13px;text-align:center}
 .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
 .kpi{background:#081522;border:1px solid #29415e;border-radius:11px;padding:10px;text-align:center}
@@ -48,7 +52,8 @@ li{margin:6px 0}
 .stageItem{background:#081522;border:1px solid #29415e;border-radius:10px;padding:9px 11px;color:var(--muted);font-size:14px;transition:.18s ease}
 .stageItem strong{color:#dff7ff}.stageItem small{display:block;color:#8fb2d9;margin-top:3px}
 .stageItem.active{border-color:#ffd45a;box-shadow:0 0 0 2px rgba(255,212,90,.18) inset;background:linear-gradient(180deg,#13253d,#0b1727);color:#eef6ff}
-@media(max-width:950px){.grid{grid-template-columns:1fr}.controls,.kpis{grid-template-columns:1fr 1fr}}
+@media(max-width:950px){.grid{grid-template-columns:1fr}.controls,.kpis{grid-template-columns:1fr 1fr}.keypoints{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:560px){.keypoints{grid-template-columns:repeat(2,1fr)}}
  .copyrightNotice{max-width:1260px;margin:14px auto 4px;padding:12px 16px;border-top:1px solid #29415e;color:#a9bad0;text-align:center;font-size:13px;line-height:1.55}
  .copyrightNotice strong{color:#eef6ff}
 </style>
@@ -65,19 +70,29 @@ li{margin:6px 0}
     <button id="resetBtn" class="secondary">↺ Начало</button>
     <button id="slowerBtn" class="mini" title="Назад с 10% от хистерезисния цикъл">◀ −10%</button>
     <button id="fasterBtn" class="mini" title="Напред с 10% от хистерезисния цикъл">+10% ▶</button>
-    <span id="positionVal" class="positionBadge" aria-live="polite">Положение: 7%</span>
+    <span id="positionVal" class="positionBadge" aria-live="polite">Положение: 22%</span>
   </div>
 
   <div class="stepHint">Бутоните −10% и +10% <b>преместват работната точка с 10% от целия цикъл</b> и поставят анимацията на пауза, за да разгледате състоянието. Плъзгачът „Скорост“ определя скоростта при възпроизвеждане; позицията се измерва в проценти от <b>целия период</b>.</div>
+
+  <div class="keypoints" aria-label="Характерни точки на хистерезисния цикъл">
+    <button class="pointBtn active" data-point="bsatPos">+B<sub>sat</sub></button>
+    <button class="pointBtn" data-point="brPos">+B<sub>r</sub></button>
+    <button class="pointBtn" data-point="hcNeg">−H<sub>c</sub></button>
+    <button class="pointBtn" data-point="bsatNeg">−B<sub>sat</sub></button>
+    <button class="pointBtn" data-point="brNeg">−B<sub>r</sub></button>
+    <button class="pointBtn" data-point="hcPos">+H<sub>c</sub></button>
+  </div>
 
   <div class="grid">
     <section class="card">
       <h2>1. Хистерезисна крива</h2>
       <canvas id="loop" width="720" height="470"></canvas>
-      <div class="note">Червената точка показва моментното състояние на материала. Числата 1–6 показват последователността. H и B са показани в относителни (безразмерни) единици.</div>
+      <div class="note">Червената точка показва моментното състояние на материала. Числата 1–6 показват последователността. Оста по хоризонтала е H/Hₘₐₓ, а по вертикала — B/Bₛₐₜ.</div>
       <div class="legend">
         <div><span class="sw" style="background:#46d9ff"></span>Низходящ клон — H намалява</div>
         <div><span class="sw" style="background:#8f7cff"></span>Възходящ клон — H нараства</div>
+        <div style="grid-column:1/-1"><span class="sw" style="background:rgba(255,212,90,.32);height:10px"></span><span class="lossKey">Оцветена площ</span> — пропорционална на хистерезисните загуби за цикъл</div>
       </div>
     </section>
 
@@ -85,12 +100,12 @@ li{margin:6px 0}
       <h2>2. Обяснение и изменение във времето</h2>
       <canvas id="time" width="520" height="230"></canvas>
       <div class="kpis">
-        <div class="kpi"><small>Текущо поле</small><b id="hNow">H = 0.44</b></div>
-        <div class="kpi"><small>Текуща индукция</small><b id="bNow">B = 0.22</b></div>
-        <div class="kpi"><small>Остатъчна индукция</small><b id="brVal">B<sub>r</sub> ≈ 0.73</b></div>
-        <div class="kpi"><small>Коерцитивно поле</small><b id="hcVal">H<sub>c</sub> ≈ 0.34</b></div>
+        <div class="kpi"><small>Нормализирано поле</small><b id="hNow">H/H<sub>max</sub> = 0.98</b></div>
+        <div class="kpi"><small>Нормализирана индукция</small><b id="bNow">B/B<sub>sat</sub> = 1.00</b></div>
+        <div class="kpi"><small>Остатъчна индукция</small><b id="brVal">B<sub>r</sub>/B<sub>sat</sub> ≈ 0.74</b></div>
+        <div class="kpi"><small>Коерцитивно поле</small><b id="hcVal">H<sub>c</sub>/H<sub>max</sub> ≈ 0.34</b></div>
       </div>
-      <div id="stateBox">Част 1: H нараства и точката следва възходящия клон: B се увеличава.</div>
+      <div id="stateBox">Част 1: Работната точка е близо до насищане: индукцията се изменя сравнително слабо при по-нататъшно увеличаване на |H|.</div>
       <div id="nextBox">Следва: Част 2 — От +Bsat към +Br</div>
       <div id="stages">
     <div class="stageItem active">
@@ -132,7 +147,7 @@ li{margin:6px 0}
       <input id="speed" type="range" min="0.4" max="2.5" step="0.1" value="1.0">
     </div>
     <div class="control">
-      <label>Обхват на полето: <b>−1 ≤ H ≤ +1</b></label>
+      <label>Обхват на полето: <b>−1 ≤ H/H<sub>max</sub> ≤ +1</b></label>
       <div class="fixedInfo">Пълен цикъл с фиксирана амплитуда. Частични хистерезисни цикли не се моделират.</div>
     </div>
     <div class="control">
@@ -177,6 +192,7 @@ const hcVal = document.getElementById('hcVal');
 const stateBox = document.getElementById('stateBox');
 const nextBox = document.getElementById('nextBox');
 const stages = document.getElementById('stages');
+const pointBtns = [...document.querySelectorAll('.pointBtn')];
 
 let playing = true;
 let phase = 0;
@@ -245,8 +261,8 @@ function calcHc(){
   return -(lo+hi)/2;
 }
 const HC=calcHc();
-brVal.innerHTML = `B<sub>r</sub> ≈ ${BR.toFixed(2)}`;
-hcVal.innerHTML = `H<sub>c</sub> ≈ ${HC.toFixed(2)}`;
+brVal.innerHTML = `B<sub>r</sub>/B<sub>sat</sub> ≈ ${(BR/BSAT).toFixed(2)}`;
+hcVal.innerHTML = `H<sub>c</sub>/H<sub>max</sub> ≈ ${(HC/HMAX).toFixed(2)}`;
 
 function pxX(x){ return 95 + (x + 1.15) / 2.3 * 525; }
 function pxY(y){ return 395 - (y + 1.15) / 2.3 * 325; }
@@ -285,8 +301,8 @@ function drawLoopAxes(){
   const x0=pxX(0), y0=pxY(0);
   arrow(lc,95,y0,640,y0,'#91a5bb');
   arrow(lc,x0,395,x0,20,'#91a5bb');
-  drawText(lc,'H',646,y0+6,'#eef6ff',20,'left');
-  drawText(lc,'B',x0-7,22,'#eef6ff',20,'right');
+  drawText(lc,'H/Hₘₐₓ',642,y0+6,'#eef6ff',17,'left');
+  drawText(lc,'B/Bₛₐₜ',x0-7,22,'#eef6ff',17,'right');
 
   const yBsat=pxY(BSAT),yBr=pxY(BR),yMBr=pxY(-BR),yMBsat=pxY(-BSAT);
   const xHc=pxX(HC),xMHc=pxX(-HC);
@@ -296,17 +312,34 @@ function drawLoopAxes(){
   line(lc,95,yMBr,620,yMBr,'#35597d',1,[4,6]);
   line(lc,xHc,40,xHc,395,'#35597d',1,[4,6]);
   line(lc,xMHc,40,xMHc,395,'#35597d',1,[4,6]);
-  drawText(lc,'+Bsat',x0-11,yBsat-5,'#7db7ff',16,'right');
-  drawText(lc,'+Br',x0-11,yBr-5,'#7db7ff',16,'right');
-  drawText(lc,'−Br',x0-11,yMBr+17,'#7db7ff',16,'right');
-  drawText(lc,'−Bsat',x0-11,yMBsat+17,'#7db7ff',16,'right');
-  drawText(lc,'+Hc',xHc,y0+21,'#7db7ff',16,'center');
-  drawText(lc,'−Hc',xMHc,y0+21,'#7db7ff',16,'center');
-  drawText(lc,'Относителни стойности',614,452,'#a9bad0',13,'right');
+  drawText(lc,'+Bₛₐₜ',x0-11,yBsat-5,'#7db7ff',16,'right');
+  drawText(lc,'+Bᵣ',x0-11,yBr-5,'#7db7ff',16,'right');
+  drawText(lc,'−Bᵣ',x0-11,yMBr+17,'#7db7ff',16,'right');
+  drawText(lc,'−Bₛₐₜ',x0-11,yMBsat+17,'#7db7ff',16,'right');
+  drawText(lc,'+Hc/Hₘₐₓ',xHc,y0+21,'#7db7ff',14,'center');
+  drawText(lc,'−Hc/Hₘₐₓ',xMHc,y0+21,'#7db7ff',14,'center');
+  drawText(lc,'Нормализирани стойности',614,452,'#a9bad0',13,'right');
 }
 
 function drawLoopCurves(){
-  // Строго ограничен пълен цикъл в рамките на ±Hmax.
+  // Оцветената площ между двата клона е пропорционална на хистерезисните загуби.
+  lc.save();
+  lc.beginPath();
+  for(let i=0;i<=240;i++){
+    const x=-HMAX+i*(2*HMAX/240), y=descendingBranch(x), X=pxX(x), Y=pxY(y);
+    i?lc.lineTo(X,Y):lc.moveTo(X,Y);
+  }
+  for(let i=240;i>=0;i--){
+    const x=-HMAX+i*(2*HMAX/240), y=ascendingBranch(x);
+    lc.lineTo(pxX(x),pxY(y));
+  }
+  lc.closePath();
+  const lossGrad=lc.createLinearGradient(pxX(-.8),pxY(.8),pxX(.8),pxY(-.8));
+  lossGrad.addColorStop(0,'rgba(255,212,90,.08)');
+  lossGrad.addColorStop(.5,'rgba(255,212,90,.18)');
+  lossGrad.addColorStop(1,'rgba(255,160,90,.08)');
+  lc.fillStyle=lossGrad;lc.fill();lc.restore();
+
   lc.beginPath();
   for(let i=0;i<=240;i++){
     const x=-HMAX+i*(2*HMAX/240), y=descendingBranch(x), X=pxX(x), Y=pxY(y);
@@ -320,6 +353,9 @@ function drawLoopCurves(){
     i?lc.lineTo(X,Y):lc.moveTo(X,Y);
   }
   lc.strokeStyle='#8f7cff'; lc.lineWidth=4; lc.stroke();
+
+  // Надписът е качествен: площта е пропорционална на енергията за цикъл.
+  drawText(lc,'площ ∝ хистерезисни загуби',pxX(0),pxY(0)+5,'rgba(255,225,130,.82)',13,'center');
 
   // Върху низходящия клон H намалява (отдясно наляво), по възходящия H нараства.
   arrow(lc,pxX(-0.62),pxY(descendingBranch(-0.62)),pxX(-0.76),pxY(descendingBranch(-0.76)),'#46d9ff');
@@ -366,17 +402,20 @@ function getStateMessage(h,b,increasing){
 }
 
 function drawCurrentPoint(h,b,showGuides){
-  const x=pxX(h), y=pxY(b);
+  const x=pxX(h), y=pxY(b), bn=b/BSAT;
   if(showGuides){
     line(lc,x,pxY(0),x,y,'#ffd45a',1.7,[6,5]);
     line(lc,pxX(0),y,x,y,'#ffd45a',1.7,[6,5]);
   }
-  lc.fillStyle='#ff6262'; lc.beginPath(); lc.arc(x,y,8,0,Math.PI*2); lc.fill();
-  lc.strokeStyle='white'; lc.lineWidth=2; lc.stroke();
-  const xLabel=x>535?x-14:x+14;
+  lc.save();
+  lc.beginPath();lc.arc(x,y,16,0,Math.PI*2);lc.fillStyle='rgba(255,98,98,.14)';lc.fill();
+  lc.shadowBlur=18;lc.shadowColor='rgba(255,98,98,.95)';
+  lc.fillStyle='#ff6262';lc.beginPath();lc.arc(x,y,10,0,Math.PI*2);lc.fill();
+  lc.shadowBlur=0;lc.strokeStyle='white';lc.lineWidth=2.4;lc.stroke();lc.restore();
+  const xLabel=x>535?x-16:x+16;
   const align=x>535?'right':'left';
-  drawText(lc,`H = ${h.toFixed(2)}`,xLabel,y-15,'#ffd45a',15,align);
-  drawText(lc,`B = ${b.toFixed(2)}`,xLabel,y+20,'#ffd45a',15,align);
+  drawText(lc,`H/Hₘₐₓ = ${h.toFixed(2)}`,xLabel,y-18,'#ffd45a',14,align);
+  drawText(lc,`B/Bₛₐₜ = ${bn.toFixed(2)}`,xLabel,y+22,'#ffd45a',14,align);
 }
 
 function drawTimePlot(){
@@ -386,7 +425,7 @@ function drawTimePlot(){
   for(let i=0;i<=6;i++){ const y=T+H*i/6; line(tc,L,y,L+W,y,'#18304a',1); }
   line(tc,L,mid,L+W,mid,'#91a5bb',2);
   line(tc,L,T,L,T+H,'#91a5bb',2);
-  drawText(tc,'H / B',13,16,'#eef6ff',14);
+  drawText(tc,'норм. H / B',8,16,'#eef6ff',13);
   drawText(tc,'t / T',L+W+3,mid+17,'#eef6ff',12);
   // Рисува се един пълен период, а не последните 180 видео кадъра:
   // така мащабът остава верен и при пауза или преместване със стъпка 10%.
@@ -395,7 +434,7 @@ function drawTimePlot(){
     for(let i=0;i<=360;i++){
       const u=i/360, a=TWO_PI*u;
       const h=HMAX*Math.sin(a),b=getB(h,Math.cos(a)>=0);
-      const v=which==='h'?h:b;
+      const v=which==='h'?h:b/BSAT;
       const x=L+u*W,y=mid-v*.42*H;
       i?tc.lineTo(x,y):tc.moveTo(x,y);
     }
@@ -406,14 +445,45 @@ function drawTimePlot(){
   const u=((((phase%TWO_PI)+TWO_PI)%TWO_PI)/TWO_PI);
   const x=L+u*W,h=HMAX*Math.sin(phase),b=getB(h,Math.cos(phase)>=0);
   line(tc,x,T,x,T+H,'#d2dfec',1.5,[5,4]);
-  for(const p of [{v:h,c:'#68e0a0'},{v:b,c:'#ffd45a'}]){
+  for(const p of [{v:h,c:'#68e0a0'},{v:b/BSAT,c:'#ffd45a'}]){
     tc.beginPath();tc.arc(x,mid-p.v*.42*H,5,0,TWO_PI);
     tc.fillStyle=p.c;tc.fill();
   }
-  drawText(tc,'H(t)',L+18,T+18,'#68e0a0',14);
-  drawText(tc,'B(t)',L+74,T+18,'#ffd45a',14);
+  drawText(tc,'H/Hₘₐₓ',L+18,T+18,'#68e0a0',13);
+  drawText(tc,'B/Bₛₐₜ',L+92,T+18,'#ffd45a',13);
   drawText(tc,'0',L,mid+17,'#91a5bb',12,'center');
   drawText(tc,'T',L+W,T+H+18,'#91a5bb',12,'center');
+}
+
+function characteristicPhase(name){
+  const a=Math.asin(HC/HMAX);
+  const phases={
+    bsatPos:Math.PI/2,
+    brPos:Math.PI,
+    hcNeg:Math.PI+a,
+    bsatNeg:3*Math.PI/2,
+    brNeg:0,
+    hcPos:a
+  };
+  return phases[name] ?? 0;
+}
+function goToCharacteristic(name){
+  phase=characteristicPhase(name);
+  playing=false;playBtn.textContent='▶ Старт';render();
+}
+function updatePointButtons(h,b,increasing){
+  const epsH=.025,epsB=.035;
+  pointBtns.forEach(btn=>{
+    const name=btn.dataset.point;
+    let active=false;
+    if(name==='bsatPos') active=h>.975&&b>0;
+    else if(name==='brPos') active=Math.abs(h)<epsH&&b>0;
+    else if(name==='hcNeg') active=Math.abs(h+HC)<epsH&&Math.abs(b)<epsB;
+    else if(name==='bsatNeg') active=h<-.975&&b<0;
+    else if(name==='brNeg') active=Math.abs(h)<epsH&&b<0;
+    else if(name==='hcPos') active=Math.abs(h-HC)<epsH&&Math.abs(b)<epsB;
+    btn.classList.toggle('active',active);
+  });
 }
 
 function render(){
@@ -425,8 +495,9 @@ function render(){
   const nextDef=stageDefs.find(s=>s.id===stage.next);
 
   positionVal.textContent=`Положение: ${positionPercent()}%`;
-  hNow.textContent=`H = ${h.toFixed(2)}`;
-  bNow.textContent=`B = ${b.toFixed(2)}`;
+  hNow.innerHTML=`H/H<sub>max</sub> = ${h.toFixed(2)}`;
+  bNow.innerHTML=`B/B<sub>sat</sub> = ${(b/BSAT).toFixed(2)}`;
+  updatePointButtons(h,b,increasing);
   stateBox.textContent=focus.value==='1' ? `Част ${currentDef.id}: ${getStateMessage(h,b,increasing)}` : `Текуща област: ${currentDef.short}`;
   nextBox.textContent=`Следва: Част ${nextDef.id} — ${nextDef.short}`;
   renderStageList(stage.id);
@@ -451,6 +522,7 @@ playBtn.onclick = () => { playing = !playing; playBtn.textContent = playing ? '�
 resetBtn.onclick = () => { phase = 0; render(); };
 slowerBtn.addEventListener('click', () => stepCycle(-1));
 fasterBtn.addEventListener('click', () => stepCycle(+1));
+pointBtns.forEach(btn=>btn.addEventListener('click',()=>goToCharacteristic(btn.dataset.point)));
 
 render();
 requestAnimationFrame(frame);

@@ -1,144 +1,873 @@
 <!DOCTYPE html>
-<!-- saved from url=(0050)file:///C:/Users/Rosi/Downloads/preview%20(6).html -->
-<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html lang="bg">
+<head>
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="Величко Атанасов">
 <title>QR-044 – Закон на Ленц</title>
 <style>
-*{box-sizing:border-box} body{margin:0;background:#f3f6fa;font-family:Arial,sans-serif;color:#17345f}
-.wrap{max-width:1150px;margin:auto;padding:16px} h1{text-align:center;margin:4px}.sub{text-align:center;color:#65758a}
-.grid{display:grid;grid-template-columns:1fr 300px;gap:14px}.stage,.card{background:#fff;border:1px solid #c9d5e3;border-radius:14px}
-.stage{position:relative;min-height:610px;overflow:hidden} canvas{width:100%;height:610px;display:block}
-.card{padding:13px;margin-bottom:10px;line-height:1.45}.formula{text-align:center;font:700 23px Cambria,serif;margin:10px}
-.controls{display:flex;gap:7px;flex-wrap:wrap}.controls button{flex:1;min-width:80px;padding:10px;border:1px solid #9fb2c8;border-radius:9px;background:white;font-weight:700;color:#17345f;cursor:pointer}
-.controls button.on{background:#e9f3ff;border-color:#2876ca}.readout{font-size:18px}.pos{color:#16863b}.neg{color:#b82c2c}
-@media(max-width:850px){.grid{grid-template-columns:1fr}.stage,canvas{min-height:530px;height:530px}}
-</style></head>
-<body><div class="wrap">
-<h1>QR-044 – Закон на Ленц</h1>
-<p class="sub">Посока на индуцирания ток при изменение на магнитния поток</p>
-<div class="grid"><div class="stage"><canvas id="c" width="802" height="610"></canvas></div><div>
-<div class="card"><b>Избери движение на магнита</b><div class="controls" style="margin-top:10px">
-<button id="tow" class="on">↓ Приближава</button><button id="stop">■ Неподвижен</button><button id="away">↑ Отдалечава</button></div></div>
-<div class="card readout"><b>Магнитен поток:</b> <span id="flux">нараства</span><br><b>dΦ/dt:</b> <span id="rate">&gt; 0</span><br><b>Индуцирана ЕДС:</b> <span id="emf">e ≠ 0</span><br><b>Галванометър:</b> <span id="galv">отклонение в едната посока</span></div>
-<div class="card">
-<h3>Математически израз</h3>
-<div class="formula">e = −N · dΦ/dt</div>
-<div style="font-size:14px"><b>e</b> – индуцирана ЕДС [V]; <b>N</b> – брой навивки; <b>Φ</b> – магнитен поток [Wb].<br><br>
-Отрицателният знак „−“ показва, че посоката на индуцирания ток е такава, че създаденото от него магнитно поле <b>се противопоставя на изменението</b> на магнитния поток.</div>
+:root{
+  --ink:#17345f;--muted:#61748a;--line:#cfdae6;
+  --blue:#2876ca;--green:#168653;--paper:#fff;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:#eef3f8;color:var(--ink);
+  font:16px/1.5 Arial,Helvetica,sans-serif;
+}
+.wrap{max-width:1280px;margin:auto;padding:18px}
+header{text-align:center;margin:0 0 18px}
+.tag{
+  font-size:12px;letter-spacing:1.4px;
+  color:var(--blue);font-weight:700;
+}
+h1{font-size:clamp(28px,4vw,40px);margin:4px 0}
+.subtitle{margin:0;color:var(--muted)}
+.layout{
+  display:grid;grid-template-columns:minmax(0,1fr) 330px;
+  gap:16px;align-items:start;
+}
+.card,.experiment{
+  background:var(--paper);border:1px solid var(--line);
+  border-radius:16px;box-shadow:0 6px 22px #17345f08;
+}
+.card{padding:16px;margin-bottom:13px}
+h2{font-size:17px;margin:0 0 12px}
+.board{overflow-x:auto;border-radius:16px 16px 0 0}
+canvas{
+  display:block;width:100%;height:auto;min-width:620px;
+  background:#fff;
+}
+.legend{
+  display:flex;flex-wrap:wrap;gap:8px 18px;
+  padding:12px 16px;border-top:1px solid var(--line);
+  font-size:13px;
+}
+.legend span{display:inline-flex;gap:7px;align-items:center}
+.legend i{width:18px;height:4px;border-radius:3px}
+.result{
+  padding:15px 17px;background:#edf7f2;
+  border-top:1px solid #c7dfd2;
+  border-radius:0 0 16px 16px;
+  color:#175b3d;min-height:82px;font-size:15px;
+}
+.buttons{display:flex;flex-wrap:wrap;gap:7px}
+button{
+  font:inherit;font-size:13px;font-weight:700;
+  color:var(--ink);background:#f7fafe;
+  border:1px solid #b7c9da;border-radius:9px;
+  padding:10px 9px;cursor:pointer;
+}
+.buttons button{flex:1;min-width:90px}
+button:hover{background:#e6eff9}
+button[aria-pressed="true"]{
+  color:#fff;background:#246bb3;border-color:#246bb3;
+}
+button:focus-visible,input:focus-visible{
+  outline:3px solid #eeb849;outline-offset:3px;
+}
+.secondary{margin-top:8px}
+.secondary button{font-size:12px}
+.control{display:block;margin-top:17px;font-size:14px}
+.control>span{
+  display:flex;justify-content:space-between;
+  align-items:center;gap:8px;
+}
+.control output{font-weight:700;color:var(--blue)}
+input[type="range"]{
+  display:block;width:100%;margin:10px 0 0;
+  accent-color:var(--blue);
+}
+.readout>div{
+  display:flex;justify-content:space-between;gap:12px;
+  padding:8px 0;border-bottom:1px solid #e4ebf2;
+  font-size:14px;
+}
+.readout>div:last-child{border:0}
+.readout b{text-align:right}
+.direction{
+  margin-top:12px;padding:11px;background:#edf7f2;
+  border-radius:9px;color:#17603e;font-size:14px;
+}
+.direction strong{display:block;margin-top:4px}
+.formula{
+  text-align:center;
+  font:700 27px Cambria,"Times New Roman",serif;
+  margin:13px 0;
+}
+.law{font-size:16px;line-height:1.6}
+.law strong{color:#17603e}
+.small{font-size:12px;color:var(--muted)}
+details{margin-top:14px}
+summary{cursor:pointer;font-size:13px;font-weight:700}
+details p{font-size:13px;color:var(--muted)}
+footer{
+  text-align:center;border-top:1px solid var(--line);
+  margin-top:18px;padding:14px 6px;color:#536b84;
+  font-size:13px;
+}
+.mobile-hint{display:none}
+@media(max-width:950px){
+  .layout{grid-template-columns:1fr}
+  aside{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  aside .card{margin:0}
+  aside .law-card{grid-column:1/-1}
+}
+@media(max-width:650px){
+  .wrap{padding:10px}
+  aside{grid-template-columns:1fr}
+  aside .law-card{grid-column:auto}
+  .subtitle{font-size:14px}
+  .mobile-hint{
+    display:block;margin:0;padding:7px 12px;
+    font-size:12px;color:var(--muted);
+  }
+  .legend{font-size:12px}
+}
+</style>
+</head>
+
+<body>
+<div class="wrap">
+  <header>
+    <div class="tag">QR-044 · ЕЛЕКТРОМАГНИТНА ИНДУКЦИЯ</div>
+    <h1>Закон на Ленц</h1>
+    <p class="subtitle">
+      Магнитът се движи. Бобината противодейства на изменението.
+    </p>
+  </header>
+
+  <main class="layout">
+    <section class="experiment" aria-label="Интерактивен опит">
+      <div class="board">
+        <canvas id="scene" width="900" height="640"
+          aria-label="Магнит, затворена бобина, галванометър
+          и посока на индуцирания ток">
+          Интерактивен опит за закона на Ленц.
+        </canvas>
+      </div>
+      <p class="mobile-hint">
+        На тесен екран плъзни схемата хоризонтално.
+      </p>
+      <div class="legend">
+        <span><i style="background:#2876ca"></i>Външно поле</span>
+        <span><i style="background:#168653"></i>Индуцирано поле и ток</span>
+        <span><i style="background:#c47a17"></i>Сила върху магнита</span>
+      </div>
+      <div class="result" id="result" role="status"></div>
+    </section>
+
+    <aside>
+      <section class="card">
+        <h2>Управление на опита</h2>
+        <div class="buttons">
+          <button id="tow" type="button">↓ Приближи</button>
+          <button id="hold" type="button">■ Неподвижен</button>
+          <button id="away" type="button">↑ Отдалечи</button>
+        </div>
+        <div class="buttons secondary">
+          <button id="auto" type="button">↕ Автоматично</button>
+          <button id="flip" type="button">⇅ Обърни N / S</button>
+          <button id="reset" type="button">↺ Отначало</button>
+        </div>
+
+        <label class="control">
+          <span>Скорост на движение
+            <output id="speedOut">1×</output>
+          </span>
+          <input id="speed" type="range" min="0.25" max="2"
+            step="0.25" value="1">
+        </label>
+
+        <label class="control">
+          <span>Брой навивки N
+            <output id="turnsOut">150</output>
+          </span>
+          <input id="turns" type="range" min="50" max="300"
+            step="50" value="150">
+        </label>
+
+        <p class="small">
+          „Неподвижен“ спира магнита, а не замразява
+          показанието на галванометъра.
+        </p>
+      </section>
+
+      <section class="card">
+        <h2>Какво се наблюдава?</h2>
+        <div class="readout">
+          <div><span>Движение</span><b id="movement"></b></div>
+          <div><span>Полюс към бобината</span><b id="pole"></b></div>
+          <div><span>|Φ<sub>вън</sub>|</span><b id="flux"></b></div>
+          <div><span>dΦ<sub>вън</sub>/dt</span><b id="rate"></b></div>
+          <div><span>Индуцирана ЕДС e</span><b id="emf"></b></div>
+          <div><span>Горен полюс на бобината</span><b id="coilPole"></b></div>
+        </div>
+        <div class="direction">
+          Токът, гледан от страната на магнита:
+          <strong id="direction"></strong>
+        </div>
+      </section>
+
+      <section class="card law-card">
+        <h2>Защо токът сменя посоката?</h2>
+        <div class="formula">
+          e = −N · dΦ<sub>вън</sub>/dt
+        </div>
+        <p class="law">
+          Магнитното поле на индуцирания ток
+          <strong>се противопоставя на изменението</strong>
+          на външния магнитен поток — не непременно
+          на самото външно поле.
+        </p>
+
+        <details>
+          <summary>Означения и допускания</summary>
+          <p>
+            Φ<sub>вън</sub> е външният магнитен поток през
+            една навивка. Приема се еднакъв поток през
+            всички навивки.
+          </p>
+          <p>
+            Положителната нормала n е нагоре, към магнита.
+            Положителният ток е обратно на часовниковата
+            стрелка, гледан от страната на магнита.
+          </p>
+          <p>
+            Използван е качествен модел с постоянно
+            съпротивление и пренебрежим преходен процес L/R:
+            I ≈ e/R. Отклонението на стрелката е относително,
+            а не измерване в ампери или волтове.
+          </p>
+          <p>
+            Навивките и полевите линии са показани схематично.
+            Зелените стрелки означават посока на условния
+            положителен ток, а не движение на електрони.
+            Обръщането на магнита задава нова конфигурация;
+            самото завъртане не се моделира.
+          </p>
+        </details>
+      </section>
+    </aside>
+  </main>
+
+  <footer>
+    © 2026 Величко Атанасов. Всички права запазени.
+  </footer>
 </div>
-<div class="card">
-<h3>Закон на Ленц</h3>
-<b>Индуцираният ток има такава посока, че създаденото от него магнитно поле се противопоставя на изменението на магнитния поток, което е предизвикало този ток.</b>
-<p style="margin-bottom:0">При нарастване на външния магнитен поток индуцираното магнитно поле се стреми да противодейства на нарастването, а при намаляване – да се противопостави на намаляването и да запази първоначалното състояние.</p>
-</div>
-<div class="card"><b>Наблюдавай:</b><br>
-При приближаване на магнита Φ нараства и възниква ЕДС. При отдалечаване Φ намалява и полярността на ЕДС се обръща. При неподвижен магнит dΦ/dt = 0 и e = 0.<br><br>
-По-бързото движение означава по-голяма |dΦ/dt| и следователно по-голяма |e|.
-</div>
-</div></div></div>
+
 <script>
-const cv=document.getElementById('c'),x=cv.getContext('2d');let W,H,dpr=1,t=0,last=0,mode='tow',magY=.17;
-function resize(){let r=cv.getBoundingClientRect();dpr=Math.min(2,devicePixelRatio||1);cv.width=r.width*dpr;cv.height=r.height*dpr;x.setTransform(dpr,0,0,dpr,0,0);W=r.width;H=r.height}addEventListener('resize',resize);
-function rr(a,b,w,h,r,col){x.fillStyle=col;x.beginPath();x.roundRect(a,b,w,h,r);x.fill()}
-function txt(s,a,b,size=16,col='#17345f'){x.fillStyle=col;x.font='bold '+size+'px Arial';x.textAlign='center';x.fillText(s,a,b)}
-function arrow(a,b,c,d,col){let A=Math.atan2(d-b,c-a);x.strokeStyle=col;x.fillStyle=col;x.lineWidth=3;x.beginPath();x.moveTo(a,b);x.lineTo(c,d);x.stroke();x.beginPath();x.moveTo(c,d);x.lineTo(c-9*Math.cos(A-.5),d-9*Math.sin(A-.5));x.lineTo(c-9*Math.cos(A+.5),d-9*Math.sin(A+.5));x.fill()}
-function coil(cx,top,w,h,n){
- // Реалистична цилиндрична бобина с макара и медна намотка
- let bodyW=w*.58, flangeW=w*.78;
- let bodyX=cx-bodyW/2;
+(() => {
+  "use strict";
 
- // сянка
- let sh=x.createRadialGradient(cx,top+h*.56,8,cx,top+h*.56,w*.58);
- sh.addColorStop(0,'rgba(35,45,55,.20)');
- sh.addColorStop(1,'rgba(35,45,55,0)');
- x.fillStyle=sh;x.beginPath();x.ellipse(cx,top+h+15,w*.56,16,0,0,Math.PI*2);x.fill();
+  const $ = id => document.getElementById(id);
+  const canvas = $("scene");
+  const ctx = canvas.getContext("2d");
 
- // цилиндрична макара
- let bg=x.createLinearGradient(bodyX,0,bodyX+bodyW,0);
- bg.addColorStop(0,'#b8c2cc'); bg.addColorStop(.16,'#edf2f6');
- bg.addColorStop(.50,'#ffffff'); bg.addColorStop(.84,'#d8e0e7'); bg.addColorStop(1,'#929eaa');
- x.fillStyle=bg;x.strokeStyle='#697785';x.lineWidth=2;
- x.beginPath();x.roundRect(bodyX,top-5,bodyW,h+10,8);x.fill();x.stroke();
+  if (!ctx) {
+    $("result").textContent =
+      "Браузърът не поддържа рисуването на тази анимация.";
+    return;
+  }
 
- // фланци на макарата
- for(const yy of [top-8,top+h+8]){
-   let fg=x.createLinearGradient(cx-flangeW/2,0,cx+flangeW/2,0);
-   fg.addColorStop(0,'#7e8a96');fg.addColorStop(.25,'#e9eef2');fg.addColorStop(.50,'#fdfefe');
-   fg.addColorStop(.78,'#c6d0d9');fg.addColorStop(1,'#77838f');
-   x.fillStyle=fg;x.strokeStyle='#667381';x.lineWidth=2;
-   x.beginPath();x.ellipse(cx,yy,flangeW/2,12,0,0,Math.PI*2);x.fill();x.stroke();
- }
+  const C = {
+    ink:"#17345f",
+    muted:"#647990",
+    blue:"#2876ca",
+    green:"#168653",
+    orange:"#c47a17",
+    wire:"#536476"
+  };
 
- // непрекъснато усещане за медна намотка
- for(let i=0;i<n;i++){
-   let yy=top+i*h/(n-1);
-   let copper=x.createLinearGradient(cx-w/2,yy,cx+w/2,yy);
-   copper.addColorStop(0,'#6f3211');
-   copper.addColorStop(.18,'#b75b1d');
-   copper.addColorStop(.48,'#f3a64f');
-   copper.addColorStop(.68,'#ca6a25');
-   copper.addColorStop(1,'#733511');
+  let p = 0.18;
+  let mode = "tow";
+  let pole = "S";
+  let speed = 1;
+  let turns = 150;
+  let phase = Math.acos(1 - 2*p);
+  let currentPhase = 0;
+  let previousTime = null;
 
-   x.lineWidth=8.5;x.strokeStyle='#623012';
-   x.beginPath();x.ellipse(cx,yy,w/2,9.5,0,0,Math.PI*2);x.stroke();
+  if (
+    window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  ) {
+    mode = "stop";
+  }
 
-   x.lineWidth=5.8;x.strokeStyle=copper;
-   x.beginPath();x.ellipse(cx,yy,w/2,8.1,0,0,Math.PI*2);x.stroke();
+  const clamp = (v,a,b) => Math.max(a,Math.min(b,v));
+  const sign = v => Math.abs(v)<1e-7 ? 0 : Math.sign(v);
 
-   // светъл отблясък само по предната половина
-   x.lineWidth=1.8;x.strokeStyle='rgba(255,219,164,.9)';
-   x.beginPath();x.ellipse(cx,yy-1,w*.47,6.2,0,0,Math.PI);x.stroke();
- }
+  function setText(id, value) {
+    const element = $(id);
+    if (element.textContent !== value) {
+      element.textContent = value;
+    }
+  }
 
- // краища на намотката
- x.strokeStyle='#a6531d';x.lineWidth=5;x.lineCap='round';
- x.beginPath();x.moveTo(cx-w/2,top+2);x.bezierCurveTo(cx-w*.61,top,cx-w*.67,top-9,cx-w*.75,top-18);x.stroke();
- x.beginPath();x.moveTo(cx+w/2,top+h-2);x.bezierCurveTo(cx+w*.61,top+h,cx+w*.67,top+h+9,cx+w*.75,top+h+18);x.stroke();
- x.lineCap='butt';
-}
-function draw(){
- x.clearRect(0,0,W,H);let cx=W*.45, coilTop=H*.57, coilH=H*.24;
- // coil and circuit
- coil(cx,coilTop,W*.25,coilH,12);x.strokeStyle='#34495e';x.lineWidth=3;x.beginPath();x.moveTo(cx-W*.125,coilTop+coilH);x.lineTo(W*.17,H*.88);x.lineTo(W*.17,H*.78);x.stroke();x.beginPath();x.moveTo(cx+W*.125,coilTop+coilH);x.lineTo(W*.73,H*.88);x.lineTo(W*.73,H*.78);x.stroke();
- // galvanometer
- x.fillStyle='#f7f3df';x.strokeStyle='#384b60';x.lineWidth=3;x.beginPath();x.arc(W*.73,H*.72,45,Math.PI,0);x.fill();x.stroke();x.beginPath();x.moveTo(W*.73,H*.72);let ang = mode==='tow' ? -2.05 : mode==='away' ? -1.10 : -1.57;x.lineTo(W*.73+35*Math.cos(ang),H*.72+35*Math.sin(ang));x.strokeStyle='#c52d2d';x.stroke();txt('G',W*.73,H*.75,17);
- // magnet
- let my=H*magY,mw=W*.10,mh=H*.22;rr(cx-mw/2,my,mw,mh,5,'#d9dde2');rr(cx-mw/2,my,mw,mh/2,4,'#c93636');rr(cx-mw/2,my+mh/2,mw,mh/2,4,'#376db1');txt('N',cx,my+mh*.27,19,'white');txt('S',cx,my+mh*.76,19,'white');
- if(mode==='tow')arrow(cx+mw*.9,my+mh*.25,cx+mw*.9,my+mh*.48,'#17863b'); if(mode==='away')arrow(cx+mw*.9,my+mh*.48,cx+mw*.9,my+mh*.25,'#2876ca');
- // field lines / animated flux
- let strength=Math.max(.15,1-(coilTop-(my+mh))/(H*.55)); for(let j=-3;j<=3;j++){let spread=j*W*.035;x.strokeStyle='rgba(36,116,201,'+(0.20+.5*strength)+')';x.lineWidth=2;x.beginPath();x.moveTo(cx,my+mh);x.bezierCurveTo(cx+spread*.35,my+mh+H*.10,cx+spread,coilTop-H*.04,cx+spread,coilTop+coilH*.15);x.stroke()}
- for(let i=0;i<14;i++){let u=(i/14+t*.18)%1, yy=coilTop+u*coilH*.82;let xx=cx+Math.sin(i*2.1)*W*.045;x.fillStyle='#20a85a';x.beginPath();x.arc(xx,yy,4,0,7);x.fill()}
- txt('Магнитен поток Φ',cx,coilTop-H*.055,18);
- txt(mode==='stop'?'dΦ/dt = 0 → e = 0':'dΦ/dt ≠ 0 → e ≠ 0',cx,H*.96,19,mode==='stop'?'#555':'#17345f');
-}
-function updateText(){let F=flux,R=rate,E=emf,G=galv;if(mode==='tow'){F.textContent='нараства';R.textContent='> 0';E.textContent='e ≠ 0';G.textContent='отклонение в едната посока'}else if(mode==='away'){F.textContent='намалява';R.textContent='< 0';E.textContent='e ≠ 0';G.textContent='отклонение в обратната посока'}else{F.textContent='постоянен';R.textContent='= 0';E.textContent='e = 0';G.textContent='нула'}}
-const towBtn=document.getElementById('tow');
-const stopBtn=document.getElementById('stop');
-const awayBtn=document.getElementById('away');
+  function resize() {
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    canvas.width = Math.round(900*dpr);
+    canvas.height = Math.round(640*dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
 
-function set(m){
-  mode=m;
-  [towBtn,stopBtn,awayBtn].forEach(b=>b.classList.remove('on'));
-  if(m==='tow') towBtn.classList.add('on');
-  else if(m==='stop') stopBtn.classList.add('on');
-  else if(m==='away') awayBtn.classList.add('on');
-  updateText();
-}
-towBtn.onclick=()=>set('tow');
-stopBtn.onclick=()=>set('stop');
-awayBtn.onclick=()=>set('away');
-function loop(ts){
- let dt=Math.min(.03,(ts-last)/1000||0);last=ts;
- if(mode!=='stop') t+=dt;
- if(mode==='tow'){
-   magY += dt*0.08;
-   if(magY>.39) magY=.17;
- }else if(mode==='away'){
-   magY -= dt*0.08;
-   if(magY<.17) magY=.39;
- }
- draw();
- requestAnimationFrame(loop);
-}
-resize();updateText();requestAnimationFrame(loop);
-</script></body></html>
+  function box(x,y,w,h,r,fill,stroke) {
+    ctx.beginPath();
+    ctx.moveTo(x+r,y);
+    ctx.arcTo(x+w,y,x+w,y+h,r);
+    ctx.arcTo(x+w,y+h,x,y+h,r);
+    ctx.arcTo(x,y+h,x,y,r);
+    ctx.arcTo(x,y,x+w,y,r);
+    ctx.closePath();
+
+    if (fill) {
+      ctx.fillStyle=fill;
+      ctx.fill();
+    }
+
+    if (stroke) {
+      ctx.strokeStyle=stroke;
+      ctx.lineWidth=1.5;
+      ctx.stroke();
+    }
+  }
+
+  function text(s,x,y,size=18,color=C.ink,weight=600) {
+    ctx.fillStyle=color;
+    ctx.font=weight+" "+size+"px Arial";
+    ctx.textAlign="center";
+    ctx.textBaseline="alphabetic";
+    ctx.fillText(s,x,y);
+  }
+
+  function line(points,color=C.wire,width=3) {
+    ctx.beginPath();
+    ctx.moveTo(points[0][0],points[0][1]);
+
+    for (let i=1;i<points.length;i++) {
+      ctx.lineTo(points[i][0],points[i][1]);
+    }
+
+    ctx.strokeStyle=color;
+    ctx.lineWidth=width;
+    ctx.lineJoin="round";
+    ctx.lineCap="round";
+    ctx.stroke();
+  }
+
+  function arrow(x1,y1,x2,y2,color,width=4,head=10) {
+    const a=Math.atan2(y2-y1,x2-x1);
+
+    line([[x1,y1],[x2,y2]],color,width);
+
+    ctx.beginPath();
+    ctx.moveTo(x2,y2);
+    ctx.lineTo(
+      x2-head*Math.cos(a-.48),
+      y2-head*Math.sin(a-.48)
+    );
+    ctx.lineTo(
+      x2-head*Math.cos(a+.48),
+      y2-head*Math.sin(a+.48)
+    );
+    ctx.closePath();
+    ctx.fillStyle=color;
+    ctx.fill();
+  }
+
+  function circle(x,y,r,fill,stroke) {
+    ctx.beginPath();
+    ctx.arc(x,y,r,0,Math.PI*2);
+
+    if (fill) {
+      ctx.fillStyle=fill;
+      ctx.fill();
+    }
+
+    if (stroke) {
+      ctx.strokeStyle=stroke;
+      ctx.lineWidth=2;
+      ctx.stroke();
+    }
+  }
+
+  function model(v) {
+    // Положителната нормала е към магнита.
+    const externalSign = pole==="S" ? 1 : -1;
+
+    // Нормализиран качествен модел на потока през една навивка.
+    const fluxMagnitude = .15+.35*p+.5*p*p;
+    const rate = externalSign*(.35+p)*v;
+    const emf = -(turns/150)*rate;
+    const iSign = sign(emf);
+
+    return {
+      v,
+      externalSign,
+      fluxMagnitude,
+      rate,
+      emf,
+      iSign,
+      coilPole: iSign>0 ? "N" : iSign<0 ? "S" : "—"
+    };
+  }
+
+  function buttons() {
+    const values = {
+      tow:"tow",
+      hold:"stop",
+      away:"away",
+      auto:"auto"
+    };
+
+    for (const [id,value] of Object.entries(values)) {
+      const pressed=String(mode===value);
+      if ($(id).getAttribute("aria-pressed") !== pressed) {
+        $(id).setAttribute("aria-pressed",pressed);
+      }
+    }
+  }
+
+  function show(m) {
+    const moving=sign(m.v);
+
+    setText("movement",
+      moving>0 ? "Приближаване" :
+      moving<0 ? "Отдалечаване" : "Неподвижен"
+    );
+
+    setText("pole",pole);
+
+    setText("flux",
+      moving>0 ? "Нараства" :
+      moving<0 ? "Намалява" : "Постоянен"
+    );
+
+    setText("rate",
+      sign(m.rate)>0 ? "> 0" :
+      sign(m.rate)<0 ? "< 0" : "= 0"
+    );
+
+    setText("emf",
+      m.iSign>0 ? "> 0" :
+      m.iSign<0 ? "< 0" : "= 0"
+    );
+
+    setText("coilPole",m.coilPole);
+
+    setText("direction",
+      m.iSign>0 ? "Обратно на часовниковата стрелка" :
+      m.iSign<0 ? "По часовниковата стрелка" :
+      "Няма индуциран ток"
+    );
+
+    let explanation;
+
+    if (!m.iSign) {
+      explanation =
+        "Магнитът е неподвижен: външното магнитно поле остава, " +
+        "но потокът не се изменя. В този модел e = 0 и I = 0.";
+    } else {
+      const repulsion=m.coilPole===pole;
+
+      explanation =
+        (repulsion ? "Отблъскване. " : "Привличане. ") +
+        "Към полюс "+pole+" на магнита бобината образува полюс "+
+        m.coilPole+". " +
+        (moving>0
+          ? "Индуцираното поле противодейства на нарастването на потока."
+          : "Индуцираното поле поддържа намаляващия поток.");
+    }
+
+    setText("result",explanation);
+    buttons();
+  }
+
+  function draw(m) {
+    ctx.clearRect(0,0,900,640);
+
+    // Фон на опитната постановка.
+    ctx.save();
+
+    for (let x=50;x<560;x+=40) {
+      line([[x,60],[x,575]],"#edf2f6",1);
+    }
+
+    for (let y=60;y<580;y+=40) {
+      line([[50,y],[550,y]],"#edf2f6",1);
+    }
+
+    ctx.restore();
+
+    text("ПОСТОЯНЕН МАГНИТ",300,38,17);
+    text("Положителна нормала",93,122,13,C.muted);
+    arrow(93,215,93,155,C.muted,2,8);
+    text("n (+)",93,145,16,C.muted);
+
+    const my=65+130*p;
+    const cx=300;
+    const magnetHeight=126;
+
+    // Външното поле остава и при неподвижен магнит.
+    ctx.save();
+    ctx.strokeStyle=C.blue;
+    ctx.lineWidth=2;
+    ctx.globalAlpha=.20+.48*m.fluxMagnitude;
+
+    for (let j=-2;j<=2;j++) {
+      ctx.beginPath();
+      ctx.moveTo(cx+j*10,my+magnetHeight);
+      ctx.bezierCurveTo(
+        cx+j*20,my+magnetHeight+45,
+        cx+j*28,340,
+        cx+j*29,445
+      );
+      ctx.stroke();
+    }
+
+    ctx.restore();
+
+    // Долният полюс на магнита е насочен към бобината.
+    const topPole=pole==="S" ? "N" : "S";
+    const poleColor=s=>s==="N" ? "#cb4143" : "#386fb5";
+
+    ctx.save();
+    ctx.shadowColor="#17345f22";
+    ctx.shadowBlur=14;
+    ctx.shadowOffsetY=6;
+    box(262,my,76,magnetHeight,9,"#dce5ee");
+    ctx.restore();
+
+    ctx.fillStyle=poleColor(topPole);
+    ctx.fillRect(264,my+2,72,61);
+
+    ctx.fillStyle=poleColor(pole);
+    ctx.fillRect(264,my+63,72,61);
+
+    box(262,my,76,magnetHeight,9,null,"#52657a");
+    line([[273,my+7],[273,my+119]],"#ffffff44",3);
+
+    text(topPole,300,my+41,27,"#fff",700);
+    text(pole,300,my+104,27,"#fff",700);
+
+    if (sign(m.v)) {
+      const s=sign(m.v);
+      const mid=my+63;
+
+      arrow(375,mid-25*s,375,mid+25*s,C.blue,4,11);
+      text("v",397,mid+6,22,C.blue);
+
+      // Силата противодейства на движението.
+      arrow(225,mid+25*s,225,mid-25*s,C.orange,4,11);
+      text("F",202,mid+6,22,C.orange);
+    }
+
+    // Затворена верига през галванометъра.
+    line([
+      [210,370],
+      [150,370],
+      [150,588],
+      [780,588],
+      [780,518]
+    ]);
+
+    line([
+      [390,491],
+      [500,491],
+      [500,518],
+      [620,518]
+    ]);
+
+    // Макара.
+    const bobbin=ctx.createLinearGradient(225,0,375,0);
+    bobbin.addColorStop(0,"#9caab7");
+    bobbin.addColorStop(.25,"#edf2f6");
+    bobbin.addColorStop(.5,"#fff");
+    bobbin.addColorStop(1,"#a8b7c4");
+
+    box(230,360,140,148,8,bobbin,"#7a8b9b");
+
+    for (const y of [359,509]) {
+      ctx.beginPath();
+      ctx.ellipse(300,y,106,14,0,0,Math.PI*2);
+      ctx.fillStyle=bobbin;
+      ctx.fill();
+      ctx.strokeStyle="#7a8b9b";
+      ctx.lineWidth=2;
+      ctx.stroke();
+    }
+
+    // Навивките са показани схематично.
+    const copper=ctx.createLinearGradient(210,0,390,0);
+    copper.addColorStop(0,"#77370f");
+    copper.addColorStop(.25,"#c47732");
+    copper.addColorStop(.5,"#ffd39a");
+    copper.addColorStop(.75,"#cc7a35");
+    copper.addColorStop(1,"#71320e");
+
+    for (let i=0;i<12;i++) {
+      const y=370+i*11;
+      ctx.beginPath();
+      ctx.ellipse(300,y,90,10,0,0,Math.PI*2);
+      ctx.strokeStyle="#713b1d";
+      ctx.lineWidth=8;
+      ctx.stroke();
+      ctx.strokeStyle=copper;
+      ctx.lineWidth=5.5;
+      ctx.stroke();
+    }
+
+    circle(210,370,4,"#a9612c");
+    circle(390,491,4,"#a9612c");
+
+    // Посока на тока по предната страна на навивките.
+    if (m.iSign) {
+      for (let i=0;i<3;i++) {
+        const y=390+i*33;
+        arrow(
+          300-19*m.iSign,y,
+          300+19*m.iSign,y,
+          C.green,4,9
+        );
+      }
+
+      text("Горен полюс: "+m.coilPole,300,344,18,C.green);
+    } else {
+      text("Без индуциран полюс",300,344,17,C.muted);
+    }
+
+    text("Затворена бобина · N = "+turns,300,548,18);
+    text(
+      "Веригата е затворена през галванометъра",
+      450,622,15,C.muted
+    );
+
+    // Външно поле.
+    text("B външно",85,353,16,C.blue);
+
+    if (m.externalSign>0) {
+      arrow(85,470,85,390,C.blue,5,12);
+    } else {
+      arrow(85,390,85,470,C.blue,5,12);
+    }
+
+    text(
+      m.externalSign>0 ? "нагоре" : "надолу",
+      85,494,14,C.blue
+    );
+
+    // Индуцирано поле.
+    text("B индуцирано",478,353,16,C.green);
+
+    if (m.iSign>0) {
+      arrow(478,462,478,388,C.green,5,12);
+    } else if (m.iSign<0) {
+      arrow(478,388,478,462,C.green,5,12);
+    } else {
+      text("0",478,430,30,C.muted);
+    }
+
+    // Изглед от страната на магнита.
+    box(585,72,230,250,15,"#f5faf7","#c8dfd2");
+    text("ПОСОКА НА ТОКА",700,101,17);
+    text("Поглед от страната на магнита",700,125,13,C.muted);
+
+    circle(700,207,59,null,"#bdc8d1");
+    circle(700,207,52,null,m.iSign ? C.green : "#aab8c5");
+
+    text(
+      m.iSign>0 ? "I > 0" : m.iSign<0 ? "I < 0" : "I = 0",
+      700,214,22,m.iSign ? C.green : C.muted
+    );
+
+    if (m.iSign) {
+      const direction=-m.iSign;
+
+      for (let k=0;k<3;k++) {
+        const a=currentPhase+k*Math.PI*2/3;
+        const px=700+52*Math.cos(a);
+        const py=207+52*Math.sin(a);
+        const dx=-Math.sin(a)*direction;
+        const dy=Math.cos(a)*direction;
+
+        arrow(
+          px-dx*8,py-dy*8,
+          px+dx*8,py+dy*8,
+          C.green,4,10
+        );
+      }
+    }
+
+    text(
+      m.iSign>0 ? "Обратно на часовника" :
+      m.iSign<0 ? "По часовника" : "Няма ток",
+      700,291,17,m.iSign ? C.green : C.muted
+    );
+
+    // Галванометър.
+    box(600,375,200,153,17,"#f7f3e5","#7c8c9a");
+    text("Галванометър",700,400,18);
+
+    const gx=700;
+    const gy=480;
+    const r=57;
+
+    ctx.beginPath();
+    ctx.arc(gx,gy,r,Math.PI,Math.PI*2);
+    ctx.strokeStyle="#51667a";
+    ctx.lineWidth=2;
+    ctx.stroke();
+
+    for (let i=0;i<=10;i++) {
+      const a=Math.PI+i*Math.PI/10;
+      const inner=r-(i%5===0 ? 10 : 6);
+
+      line([
+        [gx+inner*Math.cos(a),gy+inner*Math.sin(a)],
+        [gx+r*Math.cos(a),gy+r*Math.sin(a)]
+      ],"#51667a",1.5);
+    }
+
+    text("−",645,500,20);
+    text("0",700,418,15);
+    text("+",755,500,20);
+
+    // Коригиран обхват за всички налични настройки.
+    // Отклонението остава линейно спрямо изчислената ЕДС.
+    const deflection=clamp(m.emf/1.4,-1,1);
+    const needleAngle=-Math.PI/2+deflection*1.45;
+
+    line([
+      [gx,gy],
+      [
+        gx+49*Math.cos(needleAngle),
+        gy+49*Math.sin(needleAngle)
+      ]
+    ],"#c23f43",3);
+
+    circle(gx,gy,5,"#35485b");
+    circle(620,518,5,C.wire);
+    circle(780,518,5,C.wire);
+
+    text("Относително отклонение",700,552,13,C.muted);
+  }
+
+  function command(value) {
+    // Повторното натискане на активния режим
+    // не променя фазата или посоката на движение.
+    if (value===mode) return;
+
+    if (value==="auto") {
+      phase=Math.acos(clamp(1-2*p,-1,1));
+
+      if (mode==="away") {
+        phase=2*Math.PI-phase;
+      }
+    }
+
+    mode=value;
+    buttons();
+  }
+
+  $("tow").addEventListener("click",()=>command("tow"));
+  $("hold").addEventListener("click",()=>command("stop"));
+  $("away").addEventListener("click",()=>command("away"));
+  $("auto").addEventListener("click",()=>command("auto"));
+
+  $("flip").addEventListener("click",()=>{
+    mode="stop";
+    pole=pole==="S" ? "N" : "S";
+
+    const m=model(0);
+    show(m);
+    draw(m);
+  });
+
+  $("reset").addEventListener("click",()=>{
+    p=.18;
+    mode="stop";
+    pole="S";
+    speed=1;
+    turns=150;
+    currentPhase=0;
+    phase=Math.acos(1-2*p);
+
+    $("speed").value="1";
+    $("turns").value="150";
+
+    setText("speedOut","1×");
+    setText("turnsOut","150");
+
+    const m=model(0);
+    show(m);
+    draw(m);
+  });
+
+  $("speed").addEventListener("input",event=>{
+    speed=Number(event.target.value);
+    setText("speedOut",speed.toLocaleString("bg-BG")+"×");
+  });
+
+  $("turns").addEventListener("input",event=>{
+    turns=Number(event.target.value);
+    setText("turnsOut",String(turns));
+  });
+
+  function frame(timestamp) {
+    const dt=previousTime===null
+      ? 0
+      : Math.min(.04,Math.max(0,(timestamp-previousTime)/1000));
+
+    previousTime=timestamp;
+
+    let v=0;
+
+    if (mode==="auto") {
+      phase=(phase+.7*speed*dt)%(2*Math.PI);
+      p=(1-Math.cos(phase))/2;
+      v=.35*speed*Math.sin(phase);
+    } else if (mode==="tow") {
+      v=.16*speed;
+      p+=v*dt;
+
+      if (p>=1) {
+        p=1;
+        v=0;
+        mode="stop";
+      }
+    } else if (mode==="away") {
+      v=-.16*speed;
+      p+=v*dt;
+
+      if (p<=0) {
+        p=0;
+        v=0;
+        mode="stop";
+      }
+    }
+
+    const m=model(v);
+
+    currentPhase-=m.emf*dt*6;
+
+    show(m);
+    draw(m);
+
+    requestAnimationFrame(frame);
+  }
+
+  window.addEventListener("resize",resize);
+
+  document.addEventListener("visibilitychange",()=>{
+    previousTime=null;
+  });
+
+  resize();
+  show(model(0));
+  draw(model(0));
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

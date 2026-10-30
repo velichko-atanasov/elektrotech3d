@@ -1,182 +1,1171 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="bg">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="Величко Атанасов">
 <title>QR-010 · Самоиндукция</title>
 <style>
-:root{--bg:#07111f;--panel:#0d1b2e;--text:#eef7ff;--muted:#9fb4cf;--cyan:#4fd8ff;--green:#63e59a;--yellow:#ffd15c;--red:#ff625f;--bd:#ffffff22}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% 0,#17395f 0,transparent 35%),var(--bg);color:var(--text);font-family:Segoe UI,Arial,sans-serif}
-main{max-width:1300px;margin:auto;padding:14px}header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #4fd8ff44;padding:8px 0 14px}
-.brand{display:flex;gap:12px;align-items:center}.logo{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;font-size:24px;font-weight:900;color:#03111c;background:linear-gradient(135deg,var(--cyan),#a16cff)}
-h1,h2,p{margin:0}.muted{color:var(--muted);line-height:1.45}.badge{border:1px solid var(--bd);padding:6px 10px;border-radius:999px}
-.grid{display:grid;grid-template-columns:1.2fr .8fr;gap:18px;margin-top:18px}.card{background:linear-gradient(180deg,#0d1b2e,#091523);border:1px solid var(--bd);border-radius:24px;padding:16px;box-shadow:0 18px 50px #0008}
-svg,canvas{width:100%;display:block}.wirePlus{stroke:#e53935}.wireReturn{stroke:#2580d9}.wireDischarge{stroke:#2580d9}.controls{display:grid;gap:11px}.control,.metric,.formula,.note{border:1px solid var(--bd);border-radius:13px;background:#ffffff07;padding:11px}
-.control label{display:flex;justify-content:space-between;margin-bottom:7px}input[type=range]{width:100%;accent-color:var(--cyan)}
-.buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px}.buttons button{border:0;border-radius:13px;padding:13px;font-weight:800;font-size:1rem;cursor:pointer}.on{background:var(--green);color:#062013}.off{background:var(--red);color:white}
-.metrics{display:grid;grid-template-columns:1fr 1fr;gap:9px}.metric span{display:block;color:var(--muted);font-size:.78rem}.metric b{display:block;margin-top:4px;font-size:1.05rem}
-.formula{text-align:center;border-color:#4fd8ff55}.formula b{font-size:1.08rem}.note{border-left:4px solid var(--yellow);line-height:1.45}
-.chartTitle{text-align:center;color:var(--muted);margin:8px 0 3px}
-@media(max-width:960px){.grid{grid-template-columns:1fr}}
-</style></head>
-<body><main>
-<header><div class="brand"><div class="logo">L</div><div><h1>QR-010 · Самоиндукция</h1><p class="muted">Преходен процес в RL верига при включване и изключване</p></div></div><span class="badge">ElectroTech 3D</span></header>
+:root {
+  --bg:#071321;
+  --panel:#102540;
+  --line:#355472;
+  --ink:#f0f7ff;
+  --muted:#b4c9db;
+  --cyan:#43d1ff;
+  --green:#51e5a1;
+  --yellow:#ffd36b;
+  --red:#ff7671;
+}
+* {box-sizing:border-box}
+body {
+  margin:0;
+  font:15px/1.5 Arial,Helvetica,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+}
+.wrap {max-width:1440px;margin:auto;padding:16px}
+header {text-align:center;margin-bottom:17px}
+h1 {
+  font-size:clamp(28px,4vw,40px);
+  margin:3px 0 5px;
+}
+h2 {font-size:19px;margin:0 0 12px}
+.subtitle {margin:0;color:var(--muted)}
+.layout {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 320px;
+  gap:15px;
+  align-items:start;
+}
+.panel {
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:15px;
+  overflow:hidden;
+}
+.pad {padding:16px}
+aside {display:grid;gap:13px}
+#circuit,#coilScene {width:100%;height:auto;display:block}
+.canvas-wrap {min-width:0}
+.chart-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:13px;
+}
+.chart-panel {padding:12px}
+.chart-panel h2 {font-size:16px;text-align:center}
+canvas {width:100%;height:auto;display:block}
+button,select,input {font:inherit}
+button {
+  padding:11px;
+  border-radius:9px;
+  border:1px solid #7191b4;
+  background:#27577f;
+  color:white;
+  font-weight:700;
+  cursor:pointer;
+}
+button:hover {filter:brightness(1.13)}
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline:3px solid var(--yellow);
+  outline-offset:3px;
+}
+.buttons {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+#btnOn {background:#18794e}
+#btnOff {background:#a64241}
+#btnReset {background:#465b73}
+.control {display:block;margin:15px 0}
+.control > span {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+}
+.control output {font-weight:bold;color:var(--cyan)}
+input[type=range] {
+  display:block;
+  width:100%;
+  margin-top:10px;
+  accent-color:var(--cyan);
+}
+select {
+  width:100%;
+  margin-top:8px;
+  background:#081a2e;
+  color:white;
+  border:1px solid #6683a0;
+  border-radius:8px;
+  padding:9px;
+}
+.metrics {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+.metric {
+  padding:10px;
+  border:1px solid var(--line);
+  background:#0a1c30;
+  border-radius:9px;
+}
+.metric span {
+  display:block;
+  font-size:12px;
+  color:var(--muted);
+}
+.metric b {
+  display:block;
+  margin-top:5px;
+  font-size:17px;
+  font-variant-numeric:tabular-nums;
+}
+.message {
+  padding:14px 16px;
+  border-top:1px solid var(--line);
+  background:#102e30;
+  color:#dafff0;
+  min-height:78px;
+}
+.formulas {
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
+  margin-top:13px;
+}
+.formula {
+  padding:12px;
+  text-align:center;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#102540;
+  font:21px Cambria,"Times New Roman",serif;
+}
+.formula small {
+  display:block;
+  font:12px/1.4 Arial,sans-serif;
+  color:var(--muted);
+  margin-top:7px;
+}
+.small {font-size:12px;color:var(--muted);line-height:1.6}
+.state {
+  color:var(--green);
+  font-weight:bold;
+}
+.details {
+  margin-top:13px;
+  padding:16px;
+  line-height:1.65;
+}
+details summary {cursor:pointer;font-weight:bold}
+footer {
+  margin-top:19px;
+  padding:15px;
+  text-align:center;
+  border-top:1px solid var(--line);
+  color:#b9d2e8;
+  font-size:13px;
+}
+@media(max-width:980px) {
+  .layout {grid-template-columns:minmax(0,1fr)}
+}
+@media(max-width:700px) {
+  .chart-grid {grid-template-columns:1fr}
+  .formulas {grid-template-columns:1fr 1fr}
+  .wrap {padding:9px}
+}
+</style>
+</head>
 
-<div class="grid">
-<section class="card">
-<svg viewBox="0 0 900 520">
+<body>
+<div class="wrap">
+<header>
+  <h1>QR-010 · Самоиндукция</h1>
+  <p class="subtitle">
+    Преходни процеси при включване и изключване на RL верига
+  </p>
+</header>
+
+<div class="layout">
+
+<main>
+<section class="panel">
+<svg id="circuit" viewBox="0 0 940 480"
+ role="img" aria-label="Електрическа схема с източник,
+ двупозиционен превключвател, резистор и бобина">
 <defs>
- <linearGradient id="bat" x1="0" x2="1"><stop stop-color="#242c34"/><stop offset=".5" stop-color="#11161c"/><stop offset="1" stop-color="#394550"/></linearGradient>
- <linearGradient id="cu"><stop stop-color="#74300d"/><stop offset=".32" stop-color="#ff9b3d"/><stop offset=".6" stop-color="#8c390c"/><stop offset="1" stop-color="#ffd09b"/></linearGradient>
- <filter id="glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
- <marker id="arrR" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#ff625f"/></marker>
+  <marker id="arrGreen" markerWidth="9" markerHeight="9"
+   refX="8" refY="3" orient="auto">
+    <path d="M0 0 L8 3 L0 6Z" fill="#51e5a1"/>
+  </marker>
 </defs>
 
-<!-- circuit -->
-<path d="M140 158 V125 H350" class="wirePlus" stroke-width="7" fill="none"/>
-<path d="M490 125 H730" class="wirePlus" stroke-width="7" fill="none"/>
-<path d="M730 125 V410 H140 V285" class="wireReturn" stroke-width="7" fill="none"/>
-<!-- discharge path: when the source is disconnected, L discharges through R in a closed loop -->
-<path id="dischargePath" d="M350 125 C350 92 405 82 490 125" class="wireDischarge"
-      stroke-width="7" fill="none" opacity="0" stroke-dasharray="10 8"/>
-<!-- switch -->
-<circle cx="350" cy="125" r="8" fill="#eef7ff"/><circle cx="490" cy="125" r="8" fill="#eef7ff"/>
-<line id="switchArm" x1="350" y1="125" x2="480" y2="75" stroke="#ffd15c" stroke-width="9" stroke-linecap="round"/>
-<text x="420" y="55" fill="#ffd15c" font-size="20" font-weight="800">K</text>
+<text x="470" y="33" text-anchor="middle"
+ fill="#e4f4ff" font-size="23" font-weight="bold">
+  RL ВЕРИГА С ПРЕВКЛЮЧВАТЕЛ
+</text>
 
-<!-- battery -->
-<rect x="95" y="175" width="90" height="110" rx="15" fill="url(#bat)" stroke="#dbe6ef" stroke-width="3"/>
-<rect x="117" y="158" width="46" height="18" rx="4" fill="#6e7882"/>
-<line x1="140" y1="158" x2="140" y2="125" class="wirePlus" stroke-width="7"/>
-<circle cx="140" cy="158" r="6" fill="#ff625f"/>
-<line x1="140" y1="285" x2="140" y2="410" class="wireReturn" stroke-width="7"/>
-<circle cx="140" cy="285" r="6" fill="#4fd8ff"/>
-<text x="140" y="222" text-anchor="middle" fill="#eef7ff" font-size="18" font-weight="800">U</text>
-<text x="165" y="160" fill="#ff625f" font-size="25" font-weight="900">+</text>
-<text x="165" y="290" fill="#4fd8ff" font-size="28" font-weight="900">−</text>
+<!-- Източник -->
+<path id="supplyWire"
+ d="M120 227 V130 H265"
+ fill="none" stroke="#ff7671" stroke-width="7"/>
 
-<!-- inductor -->
-<g id="coil"></g>
-<text x="610" y="245" fill="#eef7ff" font-size="22" font-weight="900">L</text>
-<!-- magnetic field -->
-<g id="field" fill="none" stroke="#4fd8ff" stroke-width="4" opacity=".15" filter="url(#glow)">
- <ellipse cx="610" cy="250" rx="105" ry="145"/><ellipse cx="610" cy="250" rx="135" ry="175"/><ellipse cx="610" cy="250" rx="165" ry="205"/>
-</g>
-<text x="610" y="42" text-anchor="middle" fill="#4fd8ff" font-size="18" font-weight="800">Магнитен поток Φ</text>
+<circle cx="120" cy="273" r="46"
+ fill="#122c49" stroke="#d0e4f5" stroke-width="3"/>
 
-<!-- current arrow -->
-<line id="iarrow" x1="190" y1="125" x2="285" y2="125" stroke="#ff625f" stroke-width="7" marker-end="url(#arrR)"/>
-<text x="235" y="105" fill="#ff625f" font-size="20" font-weight="900">i</text>
-<!-- induced voltage -->
-<text x="795" y="230" fill="#ffd15c" font-size="18" font-weight="800">e<tspan baseline-shift="sub" font-size="13">L</tspan></text>
-<text id="polTop" x="770" y="180" fill="#ffd15c" font-size="26" font-weight="900">−</text>
-<text id="polBot" x="770" y="335" fill="#ffd15c" font-size="26" font-weight="900">+</text>
+<text id="sourceVoltage" x="120" y="266"
+ text-anchor="middle" fill="#fff"
+ font-size="22" font-weight="bold">24 V</text>
+<text x="120" y="290" text-anchor="middle"
+ fill="#b9ddf5" font-size="17">DC</text>
 
-<text id="stateText" x="450" y="480" text-anchor="middle" fill="#63e59a" font-size="21" font-weight="900">Натиснете „Включване“</text>
+<text x="172" y="229" fill="#ff8d84" font-size="24">+</text>
+<text x="172" y="328" fill="#8ccaff" font-size="28">−</text>
+
+<path d="M120 319 V415 H830"
+ fill="none" stroke="#4796d9" stroke-width="7"/>
+
+<!-- Изключващият контакт е свързан към общия проводник -->
+<path id="offBranch"
+ d="M265 310 V415"
+ fill="none" stroke="#4796d9" stroke-width="7"/>
+
+<!-- Контакти на двупозиционен превключвател -->
+<circle cx="265" cy="130" r="10"
+ fill="#e8f3ff"/>
+<circle cx="265" cy="310" r="10"
+ fill="#e8f3ff"/>
+<circle cx="370" cy="220" r="10"
+ fill="#e8f3ff"/>
+
+<line id="switchArm"
+ x1="370" y1="220"
+ x2="265" y2="310"
+ stroke="#ffd36b" stroke-width="10"
+ stroke-linecap="round"/>
+
+<text x="195" y="100" fill="#a4edbd"
+ font-size="17" font-weight="bold">ВКЛ.</text>
+<text x="197" y="293" fill="#ffd36b"
+ font-size="17" font-weight="bold">РАЗРЯД</text>
+<text x="349" y="167" fill="#ffd36b"
+ font-size="18" font-weight="bold">K</text>
+
+<!-- Резистор и индуктивност са свързани последователно -->
+<path d="M370 220 H450"
+ fill="none" stroke="#dceaf6" stroke-width="7"/>
+
+<rect x="450" y="200" width="106" height="40"
+ fill="#254d70" stroke="#e1ecf4" stroke-width="3"/>
+
+<text x="503" y="227" text-anchor="middle"
+ fill="white" font-size="22" font-weight="bold">R</text>
+
+<path d="M556 220 H646"
+ fill="none" stroke="#dceaf6" stroke-width="7"/>
+
+<!-- Класически символ на индуктивност -->
+<path
+ d="M646 220
+ C646 177 678 177 678 220
+ C678 177 710 177 710 220
+ C710 177 742 177 742 220
+ C742 177 774 177 774 220
+ C774 177 806 177 806 220"
+ fill="none" stroke="#f2ad58"
+ stroke-width="8" stroke-linecap="round"/>
+
+<text x="727" y="159" text-anchor="middle"
+ fill="#ffd49a" font-size="22" font-weight="bold">L</text>
+
+<path d="M806 220 H830 V415"
+ fill="none" stroke="#dceaf6" stroke-width="7"/>
+
+<!-- Полярност на напрежението на бобината -->
+<text id="coilPlusLeft" x="630" y="285"
+ fill="#ffd36b" font-size="29" font-weight="bold"></text>
+<text id="coilPlusRight" x="813" y="285"
+ fill="#ffd36b" font-size="29" font-weight="bold"></text>
+
+<text x="727" y="311" text-anchor="middle"
+ fill="#ffd36b" font-size="17">
+  uL = L · di/dt
+</text>
+
+<text x="728" y="335" text-anchor="middle"
+ fill="#b9d1e6" font-size="16">
+  eL = −uL
+</text>
+
+<!-- Посока на условния ток -->
+<line x1="577" y1="174" x2="632" y2="174"
+ stroke="#51e5a1" stroke-width="5"
+ marker-end="url(#arrGreen)"/>
+
+<text x="602" y="154" text-anchor="middle"
+ fill="#51e5a1" font-size="21" font-weight="bold">i</text>
+
+<!-- Скритите геометрични пътища се използват за маркерите -->
+<path id="onRoute"
+ d="M120 227 V130 H265 L370 220 H830
+ V415 H120 V319"
+ fill="none" stroke="none"/>
+
+<path id="offRoute"
+ d="M265 310 L370 220 H830 V415 H265 V310"
+ fill="none" stroke="none"/>
+
+<g id="currentDots"></g>
+
+<text id="switchState"
+ x="470" y="460" text-anchor="middle"
+ fill="#51e5a1" font-size="20" font-weight="bold">
+  Начално състояние
+</text>
 </svg>
 
-<div class="chartTitle">Изменение на тока i(t)</div>
-<canvas id="chart" width="850" height="240"></canvas>
+<div class="message" id="explanation" role="status">
+  Избери „Включване“, за да започне нарастването на тока.
+</div>
 </section>
 
-<section class="card controls">
-<div><h2>Управление на RL веригата</h2><p class="muted">Променете параметрите и наблюдавайте как индуктивността забавя изменението на тока.</p></div>
-<div class="buttons"><button class="on" id="btnOn">Включване</button><button class="off" id="btnOff">Изключване</button></div>
-<div class="control"><label>Напрежение U <b id="uval">12 V</b></label><input id="U" type="range" min="3" max="24" value="12" step="1"></div>
-<div class="control"><label>Съпротивление R <b id="rval">12 Ω</b></label><input id="R" type="range" min="4" max="30" value="12" step="1"></div>
-<div class="control"><label>Брой навивки N <b id="nval">300</b></label><input id="N" type="range" min="100" max="1000" value="300" step="25"></div>
-<div class="control"><label>Магнитна сърцевина <b id="coreval">Феромагнитна</b></label>
-<select id="core" style="width:100%;padding:10px;border-radius:10px;background:#0a1728;color:#eef7ff;border:1px solid #ffffff33">
-<option value="air">Въздушна</option>
-<option value="iron" selected>Феромагнитна</option>
-</select></div>
-<div class="metric" style="border:2px solid #ffd15c"><span>САМОИНДУКТИВНОСТ — променя се с N и μᵣ</span><b id="lval" style="font-size:1.35rem;color:#ffd15c">L = — H</b></div>
+<section class="panel" style="margin-top:13px">
+<div class="pad">
+<h2>Магнитно поле и запасена енергия</h2>
+
+<svg id="coilScene" viewBox="0 0 870 220"
+ role="img" aria-label="Пространствен изглед на намотката">
+
+<defs>
+ <linearGradient id="copper3D">
+  <stop offset="0" stop-color="#743711"/>
+  <stop offset=".5" stop-color="#ffd293"/>
+  <stop offset="1" stop-color="#8e491a"/>
+ </linearGradient>
+
+ <marker id="bArrow" markerWidth="9" markerHeight="9"
+  refX="8" refY="3" orient="auto">
+  <path d="M0 0 L8 3 L0 6Z" fill="#43d1ff"/>
+ </marker>
+</defs>
+
+<g id="magneticField" opacity=".08">
+ <path d="M238 112 C325 22 568 22 654 112
+ C568 200 325 200 238 112"
+ fill="none" stroke="#43d1ff" stroke-width="3"/>
+
+ <path d="M258 112 C350 50 545 50 635 112
+ C545 176 350 176 258 112"
+ fill="none" stroke="#43d1ff" stroke-width="2"/>
+
+ <line x1="310" y1="112" x2="601" y2="112"
+ stroke="#43d1ff" stroke-width="5"
+ marker-end="url(#bArrow)"/>
+
+ <g id="fieldParticles"></g>
+</g>
+
+<g id="turns3d"></g>
+
+<text x="445" y="27" text-anchor="middle"
+ font-size="17" fill="#d5e9fb">
+ Намотка · пространствен изглед
+</text>
+
+<text x="445" y="211" text-anchor="middle"
+ font-size="15" fill="#b9d1e6">
+ Полето намалява заедно с тока при разряд.
+</text>
+</svg>
 
 <div class="metrics">
- <div class="metric"><span>Ток</span><b id="ival">i = 0.00 A</b></div>
- <div class="metric"><span>Самоиндукционна ЕДС</span><b id="eval">eL = 0.00 V</b></div>
- <div class="metric"><span>Времеконстанта</span><b id="tau">τ = 0.050 s</b></div>
- <div class="metric"><span>Установен ток</span><b id="imax">I∞ = 1.00 A</b></div>
+ <div class="metric">
+   <span>Магнитна енергия</span>
+   <b id="energy">0,00 mJ</b>
+ </div>
+ <div class="metric">
+   <span>Мощност върху R</span>
+   <b id="power">0,00 W</b>
+ </div>
+</div>
+</div>
+</section>
+
+<div class="chart-grid">
+<section class="panel chart-panel">
+<h2>Изменение на тока i(t)</h2>
+<canvas id="chartI" width="760" height="230"></canvas>
+</section>
+
+<section class="panel chart-panel">
+<h2>Самоиндукционна ЕДС eL(t)</h2>
+<canvas id="chartE" width="760" height="230"></canvas>
+</section>
 </div>
 
-<div class="formula"><b>L ≈ μ₀ μᵣ N² S / l<sub>m</sub></b></div>
-<div class="formula"><b>e<sub>L</sub> = −L · di/dt</b></div>
-<div class="formula"><b>τ = L/R</b></div>
-<div class="formula"><b>Включване: i(t) = (U/R)(1 − e<sup>−t/τ</sup>)</b></div>
-<div class="formula"><b>Изключване: i(t) = I₀e<sup>−t/τ</sup></b></div>
-<div class="note" id="note">При включване токът не нараства мигновено. Самоиндукционната ЕДС се противопоставя на нарастването му.</div>
-<div class="note">Учебен линеен модел: геометрията е фиксирана (S = 2.5 cm², lₘ = 0.35 m). При промяна на N индуктивността L се преизчислява в реално време по зависимостта L ∝ N². Изборът на сърцевина променя μᵣ и съответно L. Не се отчита магнитно насищане.</div>
+<div class="formulas">
+ <div class="formula">
+  e<sub>L</sub> = −L · di/dt
+  <small>Самоиндукционна ЕДС</small>
+ </div>
+ <div class="formula">
+  τ = L/R
+  <small>Времеконстанта</small>
+ </div>
+ <div class="formula">
+  i(t) = (U/R)(1−e<sup>−t/τ</sup>)
+  <small>Включване от нулев ток</small>
+ </div>
+ <div class="formula">
+  W<sub>L</sub> = ½Li²
+  <small>Запасена магнитна енергия</small>
+ </div>
+</div>
+
+</main>
+
+<aside>
+<section class="panel pad">
+<h2>Управление</h2>
+
+<div class="buttons">
+ <button id="btnOn">Включване</button>
+ <button id="btnOff">Изключване</button>
+ <button id="btnPause">■ Пауза</button>
+ <button id="btnReset">↺ Нулиране</button>
+</div>
+
+<label class="control">
+ <span>Напрежение U <output id="uRead">24 V</output></span>
+ <input type="range" id="U" min="6" max="24" value="24">
+</label>
+
+<label class="control">
+ <span>Съпротивление R <output id="rRead">12 Ω</output></span>
+ <input type="range" id="R" min="4" max="30" value="12">
+</label>
+
+<label class="control">
+ <span>Брой навивки N <output id="nRead">300</output></span>
+ <input type="range" id="N" min="100" max="1000"
+  step="25" value="300">
+</label>
+
+<label class="control">
+ <span>Магнитна сърцевина</span>
+ <select id="core">
+   <option value="air">Въздушна</option>
+   <option value="iron" selected>Феромагнитна</option>
+ </select>
+</label>
+
+<label class="control">
+ <span>
+   Скорост на анимацията
+   <output id="speedRead">1×</output>
+ </span>
+ <input type="range" id="speed"
+  min=".25" max="2" value="1" step=".25">
+</label>
+
+<p class="small">
+  Промяната на електрическите параметри започва
+  нов опит от нулев ток.
+</p>
 </section>
-</div></main>
+
+<section class="panel pad">
+<h2>Показания</h2>
+
+<div class="metrics">
+ <div class="metric">
+   <span>Индуктивност L</span>
+   <b id="lRead">—</b>
+ </div>
+ <div class="metric">
+   <span>Времеконстанта τ</span>
+   <b id="tauRead">—</b>
+ </div>
+ <div class="metric">
+   <span>Ток i</span>
+   <b id="iRead">—</b>
+ </div>
+ <div class="metric">
+   <span>ЕДС eL</span>
+   <b id="eRead">—</b>
+ </div>
+ <div class="metric">
+   <span>Напрежение uL</span>
+   <b id="vRead">—</b>
+ </div>
+ <div class="metric">
+   <span>Установен ток U/R</span>
+   <b id="imaxRead">—</b>
+ </div>
+</div>
+
+<p style="margin:12px 0 3px">
+ Учебно време: <b id="timeRead">0,00 ms</b>
+</p>
+<p style="margin:0">
+ Изминали времеконстанти:
+ <b id="tauCount">0,00 τ</b>
+</p>
+
+<p class="small">
+  Десет секунди анимация приблизително съответстват
+  на пет времеконстанти при скорост 1×.
+</p>
+</section>
+
+<section class="panel pad">
+<h2>Състояние</h2>
+<p id="stateText" class="state">Веригата е в покой.</p>
+<p class="small" style="margin-top:10px">
+  Изключването не прекъсва веднага тока.
+  Превключвателят отделя източника и затваря
+  разрядния контур през R и L.
+</p>
+</section>
+</aside>
+
+</div>
+
+<section class="panel details">
+<h2>Физично обяснение</h2>
+
+<p>
+ <b>При включване</b> токът постепенно нараства.
+ Самоиндукционната ЕДС се противопоставя на
+ нарастването му. При включване от нулев ток
+ e<sub>L</sub> е отрицателна спрямо приетата
+ посока на тока.
+</p>
+
+<p>
+ <b>При изключване</b> източникът се отделя,
+ но превключвателят осигурява затворен път
+ през резистора и бобината.
+ Запасената магнитна енергия се отдава
+ и токът постепенно намалява.
+ Самоиндукционната ЕДС тогава поддържа
+ тока в същата посока.
+</p>
+
+<p>
+ <b>Важно:</b> самоиндукционната ЕДС
+ e<sub>L</sub> = −Ldi/dt и напрежението
+ на изводите на идеалната бобина
+ u<sub>L</sub> = Ldi/dt имат противоположни
+ знаци при използваните означения.
+</p>
+
+<details>
+ <summary>Учебни допускания</summary>
+
+ <p>
+   Индуктивността е изчислена с
+   L ≈ μ₀ μ<sub>eff</sub> N² S / l<sub>m</sub>,
+   където S = 2,5 cm²,
+   l<sub>m</sub> = 0,35 m,
+   μ<sub>eff</sub> = 1 за въздушната и
+   μ<sub>eff</sub> = 120 за феромагнитната сърцевина.
+   Стойностите са учебни, а не измерени
+   характеристики на конкретна бобина.
+ </p>
+
+ <p>
+   Използва се линеен модел с постоянно L,
+   без магнитно насищане, хистерезис,
+   паразитни капацитети и комутационни пренапрежения.
+   Съпротивлението R обхваща съпротивлението
+   на разрядната верига.
+ </p>
+
+ <p>
+   В графиките хоризонталната координата е
+   t/τ. В числовите показания времето е реалното
+   време на модела, а движението е умишлено
+   забавено за учебни цели.
+ </p>
+
+ <p>
+   Движещите се маркери показват условната
+   посока на електрическия ток, а не
+   реалната скорост на електроните.
+ </p>
+</details>
+</section>
+
+<footer>
+ © 2026 Величко Атанасов. Всички права запазени.
+</footer>
+
+</div>
 
 <script>
-const NS="http://www.w3.org/2000/svg",$=x=>document.getElementById(x);
-const coil=$("coil");
-function drawCoil(){
-  coil.innerHTML="";
-  const turns=+N.value;
-  const loops=Math.max(5,Math.min(18,Math.round(5+(turns-100)/900*13)));
-  const y0=145, span=225, dy=span/(loops-1);
-  for(let k=0;k<loops;k++){
-    let y=y0+k*dy;
-    let p=document.createElementNS(NS,"path");
-    p.setAttribute("d",`M570 ${y} C530 ${y} 530 ${y+14} 570 ${y+14} H650 C690 ${y+14} 690 ${y} 650 ${y}`);
-    p.setAttribute("fill","none");
-    p.setAttribute("stroke","url(#cu)");
-    p.setAttribute("stroke-width","8");
-    p.setAttribute("stroke-linecap","round");
-    coil.appendChild(p);
+(() => {
+"use strict";
+
+const $ = id => document.getElementById(id);
+const NS = "http://www.w3.org/2000/svg";
+
+const mu0 = 4 * Math.PI * 1e-7;
+const A = 2.5e-4;
+const lm = 0.35;
+
+let mode = "idle";
+let i = 0;
+let initialI = 0;
+let s = 0;
+let eL = 0;
+let paused = false;
+let previousTime = null;
+let motionPhase = 0;
+let plot = [];
+
+const dots = [];
+const fieldDots = [];
+
+function fmt(v,d=2) {
+  return v.toLocaleString("bg-BG",{
+    minimumFractionDigits:d,
+    maximumFractionDigits:d
+  });
+}
+
+function params() {
+  const U = Number($("U").value);
+  const R = Number($("R").value);
+  const N = Number($("N").value);
+
+  const mueff = $("core").value === "iron" ? 120 : 1;
+  const L = mu0 * mueff * N * N * A / lm;
+
+  return {
+    U,R,N,L,
+    tau:L/R,
+    maxI:U/R
+  };
+}
+
+function energy(p) {
+  return 0.5*p.L*i*i;
+}
+
+function setText(id,value) {
+  if ($(id).textContent !== value) {
+    $(id).textContent = value;
   }
 }
-const U=$("U"),R=$("R"),N=$("N"),core=$("core"),ctx=$("chart").getContext("2d");
-let mode="idle",i=0,i0=0,t=0,last=performance.now(),history=[];
-function calcL(){
-  const mu0=4*Math.PI*1e-7;
-  const turns=+N.value;
-  const A=2.5e-4;     // 2.5 cm² effective magnetic cross-section
-  const lm=0.35;        // 35 cm effective magnetic path
-  const mur=(core.value==="iron") ? 120 : 1;
-  return mu0*mur*turns*turns*A/lm;
-}
-function params(){return {u:+U.value,r:+R.value,l:calcL(),n:+N.value}}
-function labels(){
-  let p=params();
-  $("uval").textContent=p.u+" V";
-  $("rval").textContent=p.r+" Ω";
-  $("nval").textContent=p.n;
-  $("coreval").textContent=core.value==="iron"?"Феромагнитна":"Въздушна";
-  $("lval").textContent = p.l >= 0.01 ? "L = "+p.l.toFixed(4)+" H" : "L = "+(p.l*1000).toFixed(3)+" mH";
-  $("tau").textContent="τ = "+(p.l/p.r).toFixed(3)+" s";
-  $("imax").textContent="I∞ = "+(p.u/p.r).toFixed(2)+" A";
-  drawCoil();
-  $("stateText").setAttribute("data-core", core.value);
-}
-[U,R,N].forEach(x=>x.addEventListener("input",labels));
-core.addEventListener("change",labels);
-labels();
-drawCoil();
 
-$("btnOn").onclick=()=>{mode="on";t=0;i0=i;history=[];$("switchArm").setAttribute("x2","485");$("switchArm").setAttribute("y2","125");$("dischargePath").setAttribute("opacity","0");$("stateText").textContent="Включване: токът нараства";$("stateText").setAttribute("fill","#63e59a");$("note").textContent="При включване di/dt > 0 и eL < 0: самоиндукционната ЕДС се противопоставя на нарастването на тока.";};
-$("btnOff").onclick=()=>{mode="off";t=0;i0=i;history=[];$("switchArm").setAttribute("x2","480");$("switchArm").setAttribute("y2","75");$("dischargePath").setAttribute("opacity","1");$("stateText").textContent="Изключване: токът намалява";$("stateText").setAttribute("fill","#ff625f");$("note").textContent="При изключване източникът се отделя, а намотката се разрежда през затворения контур с R. Тогава di/dt < 0 и eL > 0: самоиндукционната ЕДС поддържа тока в същата посока.";};
+// Движещи се точки по затворената верига.
+for(let k=0;k<12;k++) {
+  const dot = document.createElementNS(NS,"circle");
+  dot.setAttribute("r","5");
+  dot.setAttribute("fill","#51e5a1");
+  dot.setAttribute("stroke","#effff6");
+  dot.setAttribute("stroke-width","1.3");
+  $("currentDots").appendChild(dot);
+  dots.push(dot);
+}
 
-function drawChart(){
- let w=850,h=240;ctx.clearRect(0,0,w,h);ctx.strokeStyle="#ffffff33";ctx.lineWidth=1;
- for(let x=50;x<w-15;x+=100){ctx.beginPath();ctx.moveTo(x,15);ctx.lineTo(x,h-35);ctx.stroke()}
- for(let y=25;y<h-30;y+=45){ctx.beginPath();ctx.moveTo(50,y);ctx.lineTo(w-15,y);ctx.stroke()}
- ctx.strokeStyle="#eef7ff";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(50,15);ctx.lineTo(50,h-35);ctx.lineTo(w-15,h-35);ctx.stroke();
- ctx.fillStyle="#9fb4cf";ctx.font="14px Segoe UI";ctx.fillText("i",25,25);ctx.fillText("t",w-25,h-15);
- let maxI=Math.max(.2,+U.value/+R.value,i0, ...history.map(v=>v.i));
- ctx.strokeStyle="#4fd8ff";ctx.lineWidth=4;ctx.beginPath();
- history.forEach((v,k)=>{let x=50+(w-75)*(k/Math.max(1,history.length-1));let y=(h-35)-(h-60)*(v.i/maxI);k?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.stroke();
+// Пространствен изглед на намотката.
+for(let k=0;k<14;k++) {
+  const x=241+k*30;
+
+  const ellipse=document.createElementNS(NS,"ellipse");
+  ellipse.setAttribute("cx",x);
+  ellipse.setAttribute("cy","112");
+  ellipse.setAttribute("rx","21");
+  ellipse.setAttribute("ry","59");
+  ellipse.setAttribute("fill","none");
+  ellipse.setAttribute("stroke","url(#copper3D)");
+  ellipse.setAttribute("stroke-width","7");
+
+  $("turns3d").appendChild(ellipse);
 }
-function animate(now){
- let dt=Math.min(.04,(now-last)/1000);last=now;let p=params(),tau=p.l/p.r,di=0,e=0;t+=dt;
- if(mode==="on"){let target=p.u/p.r;i=target+(i0-target)*Math.exp(-t/tau);di=(p.u-p.r*i)/p.l;e=-p.l*di}
- else if(mode==="off"){i=i0*Math.exp(-t/tau);di=-i/tau;e=-p.l*di;if(i<.002)i=0}
- $("ival").textContent="i = "+i.toFixed(3)+" A";$("eval").textContent="eL = "+e.toFixed(2)+" V";
- let norm=Math.min(1,i/Math.max(.01,p.u/p.r));$("field").setAttribute("opacity",(0.08+.82*norm).toFixed(2));$("field").setAttribute("stroke-width",(2+5*norm).toFixed(1));$("iarrow").setAttribute("opacity",(0.15+.85*norm).toFixed(2));
- if(e<-.02){$("polTop").textContent="−";$("polBot").textContent="+"}else if(e>.02){$("polTop").textContent="+";$("polBot").textContent="−"}else{$("polTop").textContent="";$("polBot").textContent=""}
- if(mode!=="idle"){history.push({i});if(history.length>180)history.shift()}
- drawChart();requestAnimationFrame(animate)
+
+for(let k=0;k<6;k++) {
+  const dot=document.createElementNS(NS,"circle");
+  dot.setAttribute("r","4.5");
+  dot.setAttribute("fill","#77e7ff");
+  $("fieldParticles").appendChild(dot);
+  fieldDots.push(dot);
 }
+
+const onPath=$("onRoute");
+const offPath=$("offRoute");
+const onLength=onPath.getTotalLength();
+const offLength=offPath.getTotalLength();
+
+function setSwitch() {
+  const isOn=mode==="on";
+
+  $("switchArm").setAttribute("x2","265");
+  $("switchArm").setAttribute(
+    "y2",isOn ? "130" : "310"
+  );
+
+  $("supplyWire").setAttribute(
+    "opacity",isOn ? "1" : ".36"
+  );
+
+  $("offBranch").setAttribute(
+    "opacity",isOn ? ".40" : "1"
+  );
+
+  $("switchState").textContent=isOn
+    ? "ИЗТОЧНИКЪТ Е ВКЛЮЧЕН"
+    : mode==="off"
+      ? "ИЗТОЧНИКЪТ Е ОТДЕЛЕН · РАЗРЯД ПРЕЗ R–L"
+      : "НАЧАЛНО СЪСТОЯНИЕ · ТОК НЯМА";
+
+  $("switchState").setAttribute(
+    "fill",isOn ? "#51e5a1" : "#ffd36b"
+  );
+}
+
+function updateDots(dt,p) {
+  const active=mode!=="idle" && i>0.003;
+  const path=mode==="on" ? onPath : offPath;
+  const length=mode==="on" ? onLength : offLength;
+
+  const relative=Math.min(1,
+    i/Math.max(p.maxI,initialI,0.01)
+  );
+
+  if(active && !paused) {
+    motionPhase=(
+      motionPhase+dt*(0.04+relative*0.18)
+    )%1;
+  }
+
+  dots.forEach((dot,k)=>{
+    dot.style.display=active ? "" : "none";
+
+    if(active) {
+      const position=(
+        motionPhase+k/dots.length
+      )%1;
+
+      const point=path.getPointAtLength(
+        position*length
+      );
+
+      dot.setAttribute("cx",point.x);
+      dot.setAttribute("cy",point.y);
+      dot.setAttribute(
+        "opacity",0.35+0.65*relative
+      );
+    }
+  });
+}
+
+function updateCoil(dt,p) {
+  const relative=Math.min(
+    1,i/Math.max(p.maxI,initialI,.01)
+  );
+
+  $("magneticField").setAttribute(
+    "opacity",(.06+.90*relative).toFixed(3)
+  );
+
+  fieldDots.forEach((dot,k)=>{
+    dot.style.display=i>.003 ? "" : "none";
+
+    const fraction=(
+      motionPhase+k/fieldDots.length
+    )%1;
+
+    dot.setAttribute(
+      "cx",310+290*fraction
+    );
+    dot.setAttribute("cy","112");
+  });
+}
+
+function updateReadings(p) {
+  $("uRead").textContent=fmt(p.U,0)+" V";
+  $("rRead").textContent=fmt(p.R,0)+" Ω";
+  $("nRead").textContent=String(p.N);
+
+  $("speedRead").textContent=
+    fmt(Number($("speed").value),2)+"×";
+
+  $("sourceVoltage").textContent=
+    fmt(p.U,0)+" V";
+
+  $("lRead").textContent=
+    fmt(p.L*1000,3)+" mH";
+
+  $("tauRead").textContent=
+    fmt(p.tau*1000,3)+" ms";
+
+  $("iRead").textContent=
+    fmt(i,3)+" A";
+
+  $("eRead").textContent=
+    (eL>0?"+":"")+fmt(eL,3)+" V";
+
+  $("vRead").textContent=
+    fmt(-eL,3)+" V";
+
+  $("imaxRead").textContent=
+    fmt(p.maxI,3)+" A";
+
+  $("energy").textContent=
+    fmt(energy(p)*1000,3)+" mJ";
+
+  $("power").textContent=
+    fmt(i*i*p.R,3)+" W";
+
+  $("timeRead").textContent=
+    fmt(s*p.tau*1000,3)+" ms";
+
+  $("tauCount").textContent=
+    fmt(s,2)+" τ";
+
+  const vL=-eL;
+
+  $("coilPlusLeft").textContent=
+    vL>.01 ? "+" : vL<-.01 ? "−" : "";
+
+  $("coilPlusRight").textContent=
+    vL>.01 ? "−" : vL<-.01 ? "+" : "";
+
+  $("btnPause").textContent=paused
+    ? "▶ Продължи"
+    : "■ Пауза";
+}
+
+function updateExplanation() {
+  let state;
+  let explanation;
+
+  if(mode==="idle") {
+    state="Веригата е в покой.";
+    explanation=
+      "Избери „Включване“. Превключвателят ще свърже " +
+      "източника към последователната RL верига.";
+  } else if(mode==="on") {
+    state=s>5.9
+      ? "Токът е практически установен."
+      : "Включване: токът нараства.";
+
+    explanation=
+      "Източникът подава енергия. Бобината се " +
+      "противопоставя на нарастването на тока. " +
+      "Самоиндукционната ЕДС е отрицателна, " +
+      "а магнитната енергия нараства.";
+  } else {
+    state=i<.005
+      ? "Бобината е отдала почти цялата енергия."
+      : "Разряд: бобината поддържа тока.";
+
+    explanation=
+      "Източникът е отделен. Разрядният контакт " +
+      "затваря веригата през R и L. Токът продължава " +
+      "в същата посока, но намалява. " +
+      "Самоиндукционната ЕДС е положителна " +
+      "и поддържа тока до изчерпване на енергията.";
+  }
+
+  setText("stateText",state);
+  setText("explanation",explanation);
+}
+
+function graph(canvasId,key,p) {
+  const canvas=$(canvasId);
+  const ctx=canvas.getContext("2d");
+  const w=canvas.width;
+  const h=canvas.height;
+
+  const l=60,r=w-18,t=19,b=h-40;
+  const pw=r-l,ph=b-t;
+
+  ctx.clearRect(0,0,w,h);
+  ctx.fillStyle="#102540";
+  ctx.fillRect(0,0,w,h);
+
+  const bipolar=key==="e";
+  const scale=bipolar
+    ? Math.max(p.U,p.R*initialI,0.5)*1.12
+    : Math.max(p.maxI,initialI,.02)*1.12;
+
+  const low=bipolar ? -scale : 0;
+  const high=scale;
+
+  function y(value) {
+    return b-(value-low)/(high-low)*ph;
+  }
+
+  ctx.font="12px Arial";
+  ctx.lineWidth=1;
+
+  for(let k=0;k<=6;k++) {
+    const x=l+pw*k/6;
+
+    ctx.strokeStyle="#ffffff1c";
+    ctx.beginPath();
+    ctx.moveTo(x,t);
+    ctx.lineTo(x,b);
+    ctx.stroke();
+
+    ctx.fillStyle="#b4c9db";
+    ctx.fillText(String(k),x-4,b+18);
+  }
+
+  for(let k=0;k<=4;k++) {
+    const value=low+(high-low)*k/4;
+    const yy=y(value);
+
+    ctx.strokeStyle="#ffffff1c";
+    ctx.beginPath();
+    ctx.moveTo(l,yy);
+    ctx.lineTo(r,yy);
+    ctx.stroke();
+
+    ctx.fillStyle="#b4c9db";
+    ctx.fillText(
+      fmt(value,1),
+      5,yy+4
+    );
+  }
+
+  ctx.strokeStyle="#d3e4f3";
+  ctx.lineWidth=1.5;
+  ctx.beginPath();
+  ctx.moveTo(l,t);
+  ctx.lineTo(l,b);
+  ctx.lineTo(r,b);
+  ctx.stroke();
+
+  // Нулева линия при графиката за ЕДС.
+  if(bipolar) {
+    ctx.strokeStyle="#ffd36b80";
+    ctx.beginPath();
+    ctx.moveTo(l,y(0));
+    ctx.lineTo(r,y(0));
+    ctx.stroke();
+  }
+
+  ctx.fillStyle="#b4c9db";
+  ctx.fillText("t / τ",r-20,h-11);
+  ctx.fillText(
+    bipolar ? "V" : "A",
+    8,14
+  );
+
+  if(plot.length===0) return;
+
+  ctx.strokeStyle=bipolar
+    ? "#ffd36b" : "#43d1ff";
+
+  ctx.lineWidth=3.3;
+  ctx.beginPath();
+
+  plot.forEach((point,k)=>{
+    const x=l+pw*Math.min(6,point.s)/6;
+    const yy=y(point[key]);
+
+    if(k===0) ctx.moveTo(x,yy);
+    else ctx.lineTo(x,yy);
+  });
+
+  ctx.stroke();
+
+  const last=plot[plot.length-1];
+  const xx=l+pw*Math.min(6,last.s)/6;
+  const yy=y(last[key]);
+
+  ctx.beginPath();
+  ctx.arc(xx,yy,4.5,0,Math.PI*2);
+  ctx.fillStyle=bipolar
+    ? "#ffd36b" : "#43d1ff";
+  ctx.fill();
+}
+
+function render(dt=0) {
+  const p=params();
+
+  setSwitch();
+  updateReadings(p);
+  updateExplanation();
+  updateDots(dt,p);
+  updateCoil(dt,p);
+
+  graph("chartI","i",p);
+  graph("chartE","e",p);
+}
+
+function addPoint() {
+  const p=params();
+
+  plot.push({
+    s,
+    i,
+    e:eL
+  });
+
+  if(plot.length>1000) plot.shift();
+}
+
+function turnOn() {
+  const p=params();
+
+  initialI=i;
+  mode="on";
+  s=0;
+  paused=false;
+
+  eL=-(p.U-p.R*i);
+  plot=[];
+  addPoint();
+
+  render();
+}
+
+function turnOff() {
+  const p=params();
+
+  initialI=i;
+  mode="off";
+  s=0;
+  paused=false;
+
+  eL=p.R*i;
+  plot=[];
+  addPoint();
+
+  render();
+}
+
+function reset() {
+  mode="idle";
+  i=0;
+  initialI=0;
+  s=0;
+  eL=0;
+  paused=false;
+  motionPhase=0;
+  plot=[];
+  previousTime=null;
+
+  render();
+}
+
+$("btnOn").addEventListener("click",turnOn);
+$("btnOff").addEventListener("click",turnOff);
+
+$("btnReset").addEventListener("click",reset);
+
+$("btnPause").addEventListener("click",()=>{
+  paused=!paused;
+  render();
+});
+
+["U","R","N"].forEach(id=>{
+  $(id).addEventListener("input",reset);
+});
+
+$("core").addEventListener("change",reset);
+
+$("speed").addEventListener("input",()=>{
+  render();
+});
+
+document.addEventListener("visibilitychange",()=>{
+  previousTime=null;
+});
+
+function animate(now) {
+  const dt=previousTime===null
+    ? 0
+    : Math.min(.04,
+       Math.max(0,(now-previousTime)/1000)
+      );
+
+  previousTime=now;
+
+  if(!paused &&
+     !document.hidden &&
+     mode!=="idle") {
+
+    const p=params();
+    const speed=Number($("speed").value);
+
+    if(s<6) {
+      // Забавен учебен ход:
+      // 1 реална секунда ≈ 0,5 времеконстанти.
+      s=Math.min(6,s+dt*0.5*speed);
+
+      if(mode==="on") {
+        i=p.maxI+
+          (initialI-p.maxI)*Math.exp(-s);
+
+        eL=-(p.U-p.R*i);
+      } else {
+        i=initialI*Math.exp(-s);
+        eL=p.R*i;
+      }
+
+      const last=plot[plot.length-1];
+
+      if(!last ||
+         s-last.s>=.025 ||
+         s===6) {
+        addPoint();
+      }
+    }
+  }
+
+  render(
+    !paused && !document.hidden ? dt : 0
+  );
+
+  requestAnimationFrame(animate);
+}
+
+// Проверка на основните зависимости.
+function selfCheck() {
+  const p=params();
+  const eps=1e-8;
+
+  for(const x of [0,.5,1,2,4,6]) {
+    const ion=p.maxI*(1-Math.exp(-x));
+    const eon=-(p.U-p.R*ion);
+
+    const ioff=p.maxI*Math.exp(-x);
+    const eoff=p.R*ioff;
+
+    if(eon>eps || eoff< -eps) {
+      console.error(
+        "Грешка при проверката на знаците."
+      );
+      return false;
+    }
+  }
+
+  return true;
+}
+
+if(!selfCheck()) {
+  $("explanation").textContent=
+    "Внимание: проверката на модела не премина.";
+}
+
+reset();
 requestAnimationFrame(animate);
-</script></body></html>
+
+})();
+</script>
+</body>
+</html>

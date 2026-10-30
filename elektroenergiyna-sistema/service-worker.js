@@ -1,4 +1,4 @@
-const CACHE = 'ees-bulgaria-pwa-v66-fix1';
+const CACHE = 'ees-bulgaria-pwa-v66-fix2';
 const APP_SHELL = [
   './',
   './index.html',

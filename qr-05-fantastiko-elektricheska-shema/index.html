@@ -2,21 +2,23 @@
 <html lang="bg">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-<title>Фантастико – електрическа система на магазина</title>
+<title>Фантастико – електрическа система и диагностика</title>
 
 <style>
 
 :root{
     --blue:#0b6ea8;
-    --dark:#15364e;
-    --red:#e33b32;
-    --orange:#f39a1e;
-    --green:#1b9b5f;
-    --cyan:#16a9c8;
-    --violet:#7a42c7;
-    --line:#cad7df;
+    --dark:#16384e;
+    --red:#d83b33;
+    --green:#188e57;
+    --orange:#ef941d;
+    --cyan:#149ebe;
+    --violet:#7445b8;
+    --yellow:#efb82e;
+    --line:#c8d5dc;
+    --bg:#edf3f6;
 }
 
 *{
@@ -26,23 +28,20 @@
 body{
     margin:0;
     font-family:Segoe UI,Arial,sans-serif;
-    background:#edf3f6;
+    background:var(--bg);
     color:var(--dark);
 }
 
 .page{
-    width:100%;
+    max-width:1900px;
+    margin:auto;
     padding:12px;
 }
 
 header{
-    max-width:1900px;
-    margin:auto;
-    padding:18px 22px;
-
     background:linear-gradient(90deg,#07598a,#1684b9);
-
-    color:white;
+    color:#fff;
+    padding:18px 22px;
     border-radius:14px;
 }
 
@@ -53,329 +52,428 @@ header h1{
 
 header p{
     margin:6px 0 0;
-    font-size:17px;
 }
 
-/* ==========================================
-   ОСНОВНИ БУТОНИ
-========================================== */
+/* ================================
+   ГЛАВНИ БУТОНИ
+================================ */
 
-.toolbar{
-    max-width:1900px;
-    margin:12px auto 0;
-
-    display:grid;
-    grid-template-columns:repeat(7,1fr);
-    gap:7px;
+.mainToolbar{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin:11px 0;
 }
 
-.topic{
-    min-height:60px;
-
-    padding:8px;
-
-    border:1px solid #b7cbd7;
-    border-radius:9px;
-
-    background:white;
+.btn{
+    border:1px solid #adc0ca;
+    background:#fff;
     color:var(--dark);
 
-    font-weight:800;
-    font-size:14px;
+    padding:10px 15px;
+    border-radius:8px;
 
+    font-weight:800;
     cursor:pointer;
 }
 
-.topic:hover{
-    background:#edf7fb;
+.btn:hover{
+    background:#edf6fa;
 }
 
-.topic.active{
+.btn.active{
     background:var(--blue);
     color:white;
     border-color:var(--blue);
 }
 
-
-/* ==========================================
-   УПРАВЛЕНИЕ НА МАЩАБА
-========================================== */
-
-.zoomBar{
-    max-width:1900px;
-    margin:9px auto;
-
-    display:flex;
-    align-items:center;
-    gap:7px;
-    flex-wrap:wrap;
+.btn.red{
+    background:var(--red);
+    color:#fff;
+    border-color:var(--red);
 }
 
-.zoomButton{
-    padding:9px 15px;
-
-    border:1px solid #a8bcc7;
-    border-radius:8px;
-
-    background:white;
-    color:var(--dark);
-
-    font-weight:800;
-    font-size:15px;
-
-    cursor:pointer;
-}
-
-.zoomButton:hover{
-    background:#e9f4f9;
-}
-
-.zoomLabel{
-    padding:8px 12px;
-    background:#fff;
-    border:1px solid var(--line);
-    border-radius:8px;
-
-    font-weight:800;
-    min-width:75px;
-    text-align:center;
+.btn.green{
+    background:var(--green);
+    color:#fff;
+    border-color:var(--green);
 }
 
 
-/* ==========================================
-   ГОЛЯМ РАБОТЕН ЕКРАН
-========================================== */
+/* ================================
+   STORE VIEW
+================================ */
+
+#storeView{
+    display:block;
+}
 
 .stageShell{
-    max-width:1900px;
-    margin:auto;
-
-    height:72vh;
-    min-height:650px;
+    height:70vh;
+    min-height:620px;
 
     overflow:auto;
 
-    background:#dbe5ea;
+    background:#dce6eb;
 
-    border:2px solid #9fb5c0;
+    border:2px solid #9eb4bf;
     border-radius:12px;
-
-    box-shadow:0 7px 25px rgba(20,55,75,.15);
 }
-
-/* Това е най-важната промяна:
-   схемата вече е голяма, не се свива автоматично */
 
 .canvas{
     position:relative;
-
     width:1900px;
-
-    margin:0;
-
     background:white;
 }
 
 .canvas img{
     width:100%;
     height:auto;
-
     display:block;
 }
 
-/* SVG анимацията стои точно върху снимката */
+.zoomBar{
+    display:flex;
+    gap:7px;
+    align-items:center;
+    flex-wrap:wrap;
+    margin-bottom:8px;
+}
 
-.overlay{
-    position:absolute;
+.zoomValue{
+    min-width:75px;
+    text-align:center;
+    background:white;
+    border:1px solid var(--line);
+    padding:9px;
+    border-radius:8px;
+    font-weight:800;
+}
 
-    left:0;
-    top:0;
 
+/* ================================
+   ГРТ
+================================ */
+
+#grtView{
+    display:none;
+}
+
+.grtCard{
+    background:white;
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:15px;
+}
+
+.grtCard h2{
+    margin:0 0 5px;
+}
+
+.subtitle{
+    color:#5c7482;
+    margin-bottom:13px;
+}
+
+.grtScheme{
     width:100%;
-    height:100%;
+    min-width:1050px;
+}
 
-    pointer-events:none;
+.grtScroll{
+    overflow:auto;
+    border:1px solid var(--line);
+    background:#fcfefe;
+    border-radius:10px;
 }
 
 
-/* ==========================================
-   АНИМИРАНИ ТОКОВИ ПЪТИЩА
-========================================== */
+/* класическа схема */
 
-.route{
+.wire{
+    stroke:#111;
+    stroke-width:4;
     fill:none;
-
-    stroke-width:9;
-    stroke-linecap:round;
-    stroke-linejoin:round;
-
-    stroke-dasharray:18 15;
-
-    opacity:0;
-
-    filter:drop-shadow(0 0 4px currentColor);
 }
 
-.route.show{
-    opacity:.95;
-
-    animation:flow 1s linear infinite;
+.bus{
+    stroke:#111;
+    stroke-width:8;
 }
 
-@keyframes flow{
-
-    to{
-        stroke-dashoffset:-66;
-    }
-
+.breaker{
+    fill:#fff;
+    stroke:#111;
+    stroke-width:3;
 }
 
-
-/* ==========================================
-   МАРКИРАНЕ НА ЗОНИ
-========================================== */
-
-.zone{
-    fill:none;
-
-    stroke-width:9;
-
-    opacity:0;
+.feeder{
+    cursor:pointer;
 }
 
-.zone.show{
-
-    opacity:.95;
-
-    animation:pulse 1.2s ease-in-out infinite;
+.feeder:hover .breaker{
+    fill:#e8f5fb;
 }
 
-@keyframes pulse{
+.feeder.selected .breaker{
+    fill:#dff2fb;
+    stroke:var(--blue);
+    stroke-width:5;
+}
+
+.feeder.fault .breaker{
+    fill:#ffe6e3;
+    stroke:var(--red);
+    stroke-width:6;
+    animation:faultPulse 1s infinite;
+}
+
+@keyframes faultPulse{
 
     0%,100%{
-        stroke-width:8;
+        opacity:1;
     }
 
     50%{
-        stroke-width:15;
+        opacity:.45;
     }
+}
 
+.svgText{
+    font-family:Segoe UI,Arial,sans-serif;
+    fill:#142f40;
+}
+
+.breakerText{
+    font-weight:800;
+    font-size:18px;
+}
+
+.smallText{
+    font-size:15px;
+}
+
+.phase{
+    font-weight:900;
+    font-size:18px;
 }
 
 
-/* ==========================================
-   ИНФОРМАЦИОНЕН БЛОК
-========================================== */
+/* ================================
+   ИЗМЕРВАТЕЛНИ ТОЧКИ
+================================ */
 
-.infoPanel{
-    max-width:1900px;
-    margin:12px auto 0;
+.testPoint{
+    cursor:pointer;
+}
 
+.testPoint circle{
+    fill:#fff;
+    stroke:var(--blue);
+    stroke-width:4;
+}
+
+.testPoint text{
+    fill:var(--blue);
+    font-weight:900;
+    font-size:14px;
+}
+
+.testPoint:hover circle{
+    fill:#dff3fc;
+}
+
+
+/* ================================
+   ИНФОРМАЦИОННИ ПАНЕЛИ
+================================ */
+
+.bottomGrid{
     display:grid;
-    grid-template-columns:1.4fr .6fr;
+    grid-template-columns:1.1fr .9fr;
     gap:10px;
+    margin-top:10px;
 }
 
 .info{
-    padding:15px 18px;
-
-    background:white;
-
+    background:#fff;
     border:1px solid var(--line);
     border-left:6px solid var(--blue);
-
+    padding:14px 17px;
     border-radius:10px;
-
-    line-height:1.55;
+    line-height:1.5;
 }
 
-.info h2{
-    margin:0 0 8px;
-    font-size:23px;
+.info h2,
+.info h3{
+    margin-top:0;
 }
 
-.info ul{
-    margin:8px 0 0 20px;
+.measureBox{
+    background:#eff8fc;
+    border-left-color:var(--cyan);
 }
 
-.question{
-    padding:15px 18px;
+.safety{
+    background:#fff6da;
+    border:1px solid #e2cc71;
+    border-left:6px solid var(--yellow);
 
-    background:#fff6d7;
-
-    border:1px solid #e5d382;
-    border-left:6px solid #f0b429;
-
-    border-radius:10px;
-
-    line-height:1.55;
-}
-
-.question h3{
-    margin:0 0 8px;
+    padding:13px 16px;
+    border-radius:9px;
+    margin-top:10px;
 }
 
 
-/* ==========================================
-   ЛЕГЕНДА
-========================================== */
+/* ================================
+   АВАРИЕН ТРЕНАЖОР
+================================ */
 
-.legend{
-    max-width:1900px;
-    margin:10px auto 0;
+#faultPanel{
+    display:none;
 
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-
-    gap:8px;
-}
-
-.legend div{
-    padding:9px;
+    margin-top:10px;
 
     background:white;
+    border:2px solid #d1dce2;
+    border-radius:12px;
+    padding:15px;
+}
 
-    border:1px solid var(--line);
+.faultTitle{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    align-items:center;
+
+    border-bottom:1px solid var(--line);
+    padding-bottom:10px;
+}
+
+.faultTitle h2{
+    margin:0;
+    color:var(--red);
+}
+
+.scenario{
+    margin-top:12px;
+    padding:14px;
+
+    background:#fff0ed;
+    border-left:6px solid var(--red);
     border-radius:8px;
 
-    text-align:center;
+    font-size:18px;
+    line-height:1.5;
+}
 
-    font-size:13px;
+.answers{
+    display:grid;
+    gap:8px;
+    margin-top:12px;
+}
+
+.answer{
+    text-align:left;
+    padding:11px 13px;
+
+    border:1px solid #b8c9d2;
+    border-radius:8px;
+    background:#fff;
+
+    font-weight:700;
+    cursor:pointer;
+}
+
+.answer:hover{
+    background:#edf7fb;
+}
+
+.answer.correct{
+    background:#e7f7ee;
+    border-color:#71be93;
+    color:#12663d;
+}
+
+.answer.wrong{
+    background:#ffebe8;
+    border-color:#d99c96;
+    color:#922a23;
+}
+
+.feedback{
+    display:none;
+
+    margin-top:11px;
+    padding:12px;
+
+    border-radius:8px;
+    line-height:1.5;
+}
+
+.feedback.good{
+    display:block;
+    background:#e8f8ef;
+    border-left:5px solid var(--green);
+}
+
+.feedback.bad{
+    display:block;
+    background:#fff0ed;
+    border-left:5px solid var(--red);
+}
+
+
+/* ================================
+   DIAGNOSTIC STEPS
+================================ */
+
+.steps{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:8px;
+    margin-top:12px;
+}
+
+.step{
+    padding:11px;
+    border:1px solid var(--line);
+    border-radius:9px;
+    background:#f8fbfc;
+    text-align:center;
     font-weight:750;
 }
 
-footer{
-    text-align:center;
+.step.active{
+    background:#e4f4fb;
+    border-color:#75b7d8;
+}
 
-    margin:15px 0 5px;
-
-    color:#647b89;
-
-    font-size:13px;
+.step.done{
+    background:#e8f7ee;
+    border-color:#81c49d;
 }
 
 
-/* ==========================================
-   МОБИЛЕН РЕЖИМ
-========================================== */
+/* ================================
+   FOOTER
+================================ */
 
-@media(max-width:1000px){
+footer{
+    text-align:center;
+    margin:16px 0 5px;
+    color:#657b88;
+    font-size:13px;
+}
 
-    .toolbar{
-        grid-template-columns:repeat(2,1fr);
-    }
+@media(max-width:950px){
 
-    .infoPanel{
+    .bottomGrid{
         grid-template-columns:1fr;
     }
 
-    .legend{
+    .steps{
         grid-template-columns:1fr 1fr;
-    }
-
-    .stageShell{
-        height:65vh;
-        min-height:500px;
     }
 
 }
@@ -392,94 +490,92 @@ footer{
 <header>
 
 <h1>
-Фантастико – електрическата система на магазина
+Фантастико – електрическа система и диагностика
 </h1>
 
 <p>
-Интерактивна учебна схема на основните електрически кръгове
+Учебен модел на електрическите кръгове в голям хранителен магазин
 </p>
 
 </header>
 
 
 
-<!-- ==========================================
-     ТОКОВИ КРЪГОВЕ
-========================================== -->
+<div class="mainToolbar">
 
-<div class="toolbar">
+<button
+id="storeButton"
+class="btn active"
+onclick="showStore()">
 
-<button class="topic active" data-mode="supply">
-1. Захранване и ГРТ
+🏪 Магазин
+
 </button>
 
-<button class="topic" data-mode="lighting">
-2. Осветление
+
+<button
+id="grtButton"
+class="btn"
+onclick="showGRT()">
+
+⚡ Еднолинейна схема на ГРТ
+
 </button>
 
-<button class="topic" data-mode="cooling">
-3. Хладилни кръгове
+
+<button
+class="btn red"
+onclick="startFault()">
+
+⚠ Симулация на авария
+
 </button>
 
-<button class="topic" data-mode="hvac">
-4. Вентилация / климатизация
-</button>
 
-<button class="topic" data-mode="pos">
-5. Каси / POS / IT
-</button>
+<button
+class="btn"
+onclick="resetTraining()">
 
-<button class="topic" data-mode="backup">
-6. UPS / резервно захранване
-</button>
+↺ Нормален режим
 
-<button class="topic" data-mode="safety">
-7. Аварийни системи
 </button>
 
 </div>
 
 
 
-<!-- ==========================================
-     МАЩАБ
-========================================== -->
+<!-- ================================================= -->
+<!-- МАГАЗИН -->
+<!-- ================================================= -->
+
+<div id="storeView">
+
 
 <div class="zoomBar">
 
-<button
-class="zoomButton"
-onclick="zoomOut()">
+<button class="btn" onclick="zoomOut()">
 − Намали
 </button>
 
-<button
-class="zoomButton"
-onclick="zoomIn()">
+<button class="btn" onclick="zoomIn()">
 + Увеличи
 </button>
 
-<button
-class="zoomButton"
-onclick="fitScreen()">
+<button class="btn" onclick="fitScreen()">
 По екрана
 </button>
 
-<button
-class="zoomButton"
-onclick="normalSize()">
+<button class="btn" onclick="normalSize()">
 100 %
 </button>
 
-<button
-class="zoomButton"
-onclick="fullScreen()">
+<button class="btn" onclick="fullScreen()">
 ⛶ Цял екран
 </button>
 
 <div
-id="zoomLabel"
-class="zoomLabel">
+id="zoomValue"
+class="zoomValue">
 
 100 %
 
@@ -487,11 +583,6 @@ class="zoomLabel">
 
 </div>
 
-
-
-<!-- ==========================================
-     ГОЛЯМА СХЕМА
-========================================== -->
 
 <div
 id="stageShell"
@@ -501,325 +592,673 @@ class="stageShell">
 id="canvas"
 class="canvas">
 
-
 <img
-id="mainImage"
 src="supermarket_electrical_schematic_and_floor_plan.png"
-alt="Електрическа схема на магазин Фантастико">
+alt="Учебна електрическа схема на магазин Фантастико">
 
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- ================================================= -->
+<!-- ГРТ -->
+<!-- ================================================= -->
+
+<div id="grtView">
+
+<div class="grtCard">
+
+<h2>
+Еднолинейна схема на главно разпределително табло – ГРТ
+</h2>
+
+<div class="subtitle">
+Учебна опростена схема – натиснете върху токов кръг или точка за измерване.
+</div>
+
+
+<div class="grtScroll">
 
 <svg
-class="overlay"
-viewBox="0 0 1664 936"
-preserveAspectRatio="none">
+id="grtScheme"
+class="grtScheme"
+viewBox="0 0 1500 760">
 
 
-<!-- ==================================
-     1. ЗАХРАНВАНЕ И ГРТ
-================================== -->
+<!-- ВХОД -->
 
-<path
-id="route-supply-1"
-class="route"
-stroke="#e33b32"
-
-d="
-M20 135
-H150
-H275
-H405
-H505
-H1320
-"
-/>
+<text
+x="70"
+y="60"
+class="svgText breakerText">
+Захранване 3×400/230 V
+</text>
 
 
 <path
-id="route-supply-2"
-class="route"
-stroke="#e33b32"
-
-d="
-M505 155
-H1320
-"
+class="wire"
+d="M170 85 V140"
 />
 
+
+<!-- Q0 -->
 
 <rect
-id="zone-supply"
-class="zone"
-
-x="480"
-y="70"
-
-width="960"
-height="160"
-
-rx="18"
-
-stroke="#e33b32"
+x="115"
+y="140"
+width="110"
+height="65"
+rx="4"
+class="breaker"
 />
 
+<text
+x="170"
+y="168"
+text-anchor="middle"
+class="svgText breakerText">
+Q0
+</text>
 
-
-<!-- ==================================
-     2. ОСВЕТЛЕНИЕ
-================================== -->
-
-<path
-id="route-lighting-1"
-class="route"
-stroke="#f39a1e"
-
-d="
-M65 265
-V345
-H440
-V625
-"
-/>
+<text
+x="170"
+y="190"
+text-anchor="middle"
+class="svgText smallText">
+Главен
+</text>
 
 
 <path
-id="route-lighting-2"
-class="route"
-stroke="#f39a1e"
-
-d="
-M440 625
-H1030
-"
+class="wire"
+d="M170 205 V265"
 />
 
+
+<!-- TEST POINT 1 -->
+
+<g
+class="testPoint"
+onclick="measurePoint('TP1')">
+
+<circle
+cx="205"
+cy="235"
+r="18"
+/>
+
+<text
+x="205"
+y="240"
+text-anchor="middle">
+TP1
+</text>
+
+</g>
+
+
+<!-- ШИНА -->
+
+<line
+x1="170"
+y1="265"
+x2="1380"
+y2="265"
+class="bus"
+/>
+
+
+<text x="250" y="245" class="svgText phase">
+L1 L2 L3 N PE
+</text>
+
+
+<!-- ================================================= -->
+<!-- QF1 ОСВЕТЛЕНИЕ -->
+<!-- ================================================= -->
+
+<g
+id="f-light"
+class="feeder"
+onclick="selectFeeder('light')">
+
+<path
+class="wire"
+d="M320 265 V330"
+/>
 
 <rect
-id="zone-lighting"
-class="zone"
-
-x="345"
-y="490"
-
-width="620"
-height="335"
-
-rx="22"
-
-stroke="#f39a1e"
+x="270"
+y="330"
+width="100"
+height="60"
+rx="4"
+class="breaker"
 />
 
+<text
+x="320"
+y="357"
+text-anchor="middle"
+class="svgText breakerText">
+QF1
+</text>
 
-
-<!-- ==================================
-     3. ХЛАДИЛНИ КРЪГОВЕ
-================================== -->
-
-<path
-id="route-cooling-1"
-class="route"
-stroke="#16a9c8"
-
-d="
-M830 265
-V415
-H1050
-V650
-"
-/>
+<text
+x="320"
+y="380"
+text-anchor="middle"
+class="svgText smallText">
+Осветление
+</text>
 
 
 <path
-id="route-cooling-2"
-class="route"
-stroke="#16a9c8"
-
-d="
-M930 265
-V505
-H1280
-V650
-"
+class="wire"
+d="M320 390 V560"
 />
 
+<text
+x="320"
+y="595"
+text-anchor="middle"
+class="svgText breakerText">
+Осветление
+</text>
+
+<text
+x="320"
+y="620"
+text-anchor="middle"
+class="svgText smallText">
+търговска зала
+</text>
+
+</g>
+
+
+<g
+class="testPoint"
+onclick="measurePoint('TP2')">
+
+<circle
+cx="350"
+cy="445"
+r="18"
+/>
+
+<text
+x="350"
+y="450"
+text-anchor="middle">
+TP2
+</text>
+
+</g>
+
+
+
+<!-- ================================================= -->
+<!-- QF2 ХЛАДИЛНИ -->
+<!-- ================================================= -->
+
+<g
+id="f-cold"
+class="feeder"
+onclick="selectFeeder('cold')">
+
+<path
+class="wire"
+d="M500 265 V330"
+/>
 
 <rect
-id="zone-cooling"
-class="zone"
-
-x="870"
-y="480"
-
-width="425"
-height="300"
-
-rx="22"
-
-stroke="#16a9c8"
+x="450"
+y="330"
+width="100"
+height="60"
+rx="4"
+class="breaker"
 />
 
+<text
+x="500"
+y="357"
+text-anchor="middle"
+class="svgText breakerText">
+QF2
+</text>
 
-
-<!-- ==================================
-     4. HVAC
-================================== -->
-
-<path
-id="route-hvac-1"
-class="route"
-stroke="#1b9b5f"
-
-d="
-M735 265
-V420
-H785
-V585
-"
-/>
-
-
-<rect
-id="zone-hvac"
-class="zone"
-
-x="710"
-y="470"
-
-width="235"
-height="150"
-
-rx="20"
-
-stroke="#1b9b5f"
-/>
-
-
-
-<!-- ==================================
-     5. POS / IT
-================================== -->
-
-<path
-id="route-pos-1"
-class="route"
-stroke="#1678d2"
-
-d="
-M410 265
-V515
-H615
-V745
-"
-/>
+<text
+x="500"
+y="380"
+text-anchor="middle"
+class="svgText smallText">
+Хладилни
+</text>
 
 
 <path
-id="route-pos-2"
-class="route"
-stroke="#1678d2"
-
-d="
-M345 265
-V495
-H420
-"
+class="wire"
+d="M500 390 V560"
 />
 
+<text
+x="500"
+y="595"
+text-anchor="middle"
+class="svgText breakerText">
+Фризери
+</text>
 
-<rect
-id="zone-pos"
-class="zone"
+<text
+x="500"
+y="620"
+text-anchor="middle"
+class="svgText smallText">
+хладилни витрини
+</text>
 
-x="375"
-y="660"
+</g>
 
-width="540"
-height="190"
 
-rx="20"
+<g
+class="testPoint"
+onclick="measurePoint('TP3')">
 
-stroke="#1678d2"
+<circle
+cx="530"
+cy="445"
+r="18"
 />
 
-
-
-<!-- ==================================
-     6. UPS
-================================== -->
-
-<path
-id="route-backup-1"
-class="route"
-stroke="#7a42c7"
-
-d="
-M1435 265
-V410
-H1350
-V675
-"
-/>
-
-
-<path
-id="route-backup-2"
-class="route"
-stroke="#7a42c7"
-
-d="
-M1350 675
-H1160
-"
-/>
-
-
-<rect
-id="zone-backup"
-class="zone"
-
-x="1260"
-y="395"
-
-width="345"
-height="430"
-
-rx="22"
-
-stroke="#7a42c7"
-/>
-
-
-
-<!-- ==================================
-     7. АВАРИЙНИ СИСТЕМИ
-================================== -->
-
-<path
-id="route-safety-1"
-class="route"
-stroke="#e33b32"
-
-d="
-M585 265
-V440
-H900
-"
-/>
-
-
-<rect
-id="zone-safety"
-class="zone"
-
+<text
 x="530"
-y="225"
+y="450"
+text-anchor="middle">
+TP3
+</text>
 
-width="280"
-height="255"
+</g>
 
-rx="20"
 
-stroke="#e33b32"
+
+<!-- ================================================= -->
+<!-- QF3 HVAC -->
+<!-- ================================================= -->
+
+<g
+id="f-hvac"
+class="feeder"
+onclick="selectFeeder('hvac')">
+
+<path
+class="wire"
+d="M680 265 V330"
 />
+
+<rect
+x="630"
+y="330"
+width="100"
+height="60"
+rx="4"
+class="breaker"
+/>
+
+<text
+x="680"
+y="357"
+text-anchor="middle"
+class="svgText breakerText">
+QF3
+</text>
+
+<text
+x="680"
+y="380"
+text-anchor="middle"
+class="svgText smallText">
+ОВК
+</text>
+
+<path
+class="wire"
+d="M680 390 V560"
+/>
+
+<text
+x="680"
+y="595"
+text-anchor="middle"
+class="svgText breakerText">
+Вентилация
+</text>
+
+<text
+x="680"
+y="620"
+text-anchor="middle"
+class="svgText smallText">
+климатизация
+</text>
+
+</g>
+
+
+
+<!-- ================================================= -->
+<!-- QF4 POS -->
+<!-- ================================================= -->
+
+<g
+id="f-pos"
+class="feeder"
+onclick="selectFeeder('pos')">
+
+<path
+class="wire"
+d="M860 265 V330"
+/>
+
+<rect
+x="810"
+y="330"
+width="100"
+height="60"
+rx="4"
+class="breaker"
+/>
+
+<text
+x="860"
+y="357"
+text-anchor="middle"
+class="svgText breakerText">
+QF4
+</text>
+
+<text
+x="860"
+y="380"
+text-anchor="middle"
+class="svgText smallText">
+POS / IT
+</text>
+
+<path
+class="wire"
+d="M860 390 V560"
+/>
+
+<text
+x="860"
+y="595"
+text-anchor="middle"
+class="svgText breakerText">
+Каси
+</text>
+
+<text
+x="860"
+y="620"
+text-anchor="middle"
+class="svgText smallText">
+IT / комуникации
+</text>
+
+</g>
+
+
+
+<!-- ================================================= -->
+<!-- QF5 КОНТАКТИ -->
+<!-- ================================================= -->
+
+<g
+id="f-sockets"
+class="feeder"
+onclick="selectFeeder('sockets')">
+
+<path
+class="wire"
+d="M1040 265 V330"
+/>
+
+<rect
+x="990"
+y="330"
+width="100"
+height="60"
+rx="4"
+class="breaker"
+/>
+
+<text
+x="1040"
+y="357"
+text-anchor="middle"
+class="svgText breakerText">
+QF5
+</text>
+
+<text
+x="1040"
+y="380"
+text-anchor="middle"
+class="svgText smallText">
+Контакти
+</text>
+
+<path
+class="wire"
+d="M1040 390 V560"
+/>
+
+<text
+x="1040"
+y="595"
+text-anchor="middle"
+class="svgText breakerText">
+Контактни
+</text>
+
+<text
+x="1040"
+y="620"
+text-anchor="middle"
+class="svgText smallText">
+кръгове
+</text>
+
+</g>
+
+
+
+<!-- ================================================= -->
+<!-- QF6 АВАРИЙНИ -->
+<!-- ================================================= -->
+
+<g
+id="f-safety"
+class="feeder"
+onclick="selectFeeder('safety')">
+
+<path
+class="wire"
+d="M1200 265 V330"
+/>
+
+<rect
+x="1150"
+y="330"
+width="100"
+height="60"
+rx="4"
+class="breaker"
+/>
+
+<text
+x="1200"
+y="357"
+text-anchor="middle"
+class="svgText breakerText">
+QF6
+</text>
+
+<text
+x="1200"
+y="380"
+text-anchor="middle"
+class="svgText smallText">
+Аварийни
+</text>
+
+<path
+class="wire"
+d="M1200 390 V560"
+/>
+
+<text
+x="1200"
+y="595"
+text-anchor="middle"
+class="svgText breakerText">
+Пожароизв.
+</text>
+
+<text
+x="1200"
+y="620"
+text-anchor="middle"
+class="svgText smallText">
+авар. осветление
+</text>
+
+</g>
+
+
+
+<!-- ================================================= -->
+<!-- UPS -->
+<!-- ================================================= -->
+
+<g
+id="f-ups"
+class="feeder"
+onclick="selectFeeder('ups')">
+
+<path
+class="wire"
+d="M1360 265 V330"
+/>
+
+<rect
+x="1310"
+y="330"
+width="100"
+height="60"
+rx="4"
+class="breaker"
+/>
+
+<text
+x="1360"
+y="357"
+text-anchor="middle"
+class="svgText breakerText">
+QF7
+</text>
+
+<text
+x="1360"
+y="380"
+text-anchor="middle"
+class="svgText smallText">
+UPS
+</text>
+
+<path
+class="wire"
+d="M1360 390 V445"
+/>
+
+
+<rect
+x="1310"
+y="445"
+width="100"
+height="75"
+rx="6"
+fill="#f1e9ff"
+stroke="#7445b8"
+stroke-width="3"
+/>
+
+<text
+x="1360"
+y="477"
+text-anchor="middle"
+class="svgText breakerText">
+UPS
+</text>
+
+<text
+x="1360"
+y="500"
+text-anchor="middle"
+class="svgText smallText">
+резервно
+</text>
+
+
+<path
+class="wire"
+d="M1360 520 V560"
+/>
+
+<text
+x="1360"
+y="595"
+text-anchor="middle"
+class="svgText breakerText">
+Критични
+</text>
+
+<text
+x="1360"
+y="620"
+text-anchor="middle"
+class="svgText smallText">
+консуматори
+</text>
+
+</g>
+
+
+<!-- ЛЕГЕНДА -->
+
+<text
+x="85"
+y="690"
+class="svgText smallText">
+
+TP = учебна точка за измерване
+
+</text>
+
+<text
+x="85"
+y="720"
+class="svgText smallText">
+
+Схемата е опростен учебен модел, а не реална проектна схема на конкретен магазин.
+
+</text>
 
 
 </svg>
@@ -828,63 +1267,42 @@ stroke="#e33b32"
 
 </div>
 
+</div>
 
 
-<!-- ==========================================
-     ОБЯСНЕНИЕ
-========================================== -->
 
-<div class="infoPanel">
+<!-- ================================================= -->
+<!-- ИНФОРМАЦИЯ -->
+<!-- ================================================= -->
+
+<div class="bottomGrid">
 
 
 <div
-id="info"
+id="infoBox"
 class="info">
 
 <h2>
-1. Захранване и главно разпределително табло
+Учебен модел
 </h2>
 
-Електрическата енергия постъпва в магазина през
-електромерното табло, главния прекъсвач и защитата от
-пренапрежение, след което достига до
-<strong>главното разпределително табло – ГРТ.</strong>
+Изберете <strong>еднолинейната схема на ГРТ</strong>,
+след което натиснете върху конкретен токов кръг.
 
-<ul>
-
-<li>
-от ГРТ започват отделните токови кръгове;
-</li>
-
-<li>
-разпределят се фазите L1, L2 и L3;
-</li>
-
-<li>
-използват се N и PE шини;
-</li>
-
-<li>
-при обща повреда проверката започва от захранването и ГРТ.
-</li>
-
-</ul>
+Ще видите предназначението му и основната логика при диагностика.
 
 </div>
 
 
 <div
-id="question"
-class="question">
+id="measureBox"
+class="info measureBox">
 
 <h3>
-Практически въпрос
+Точки за измерване
 </h3>
 
-Ако няма захранване към целия магазин,
-<strong>
-откъде трябва да започне проверката?
-</strong>
+Натиснете върху <strong>TP1, TP2 или TP3</strong> в схемата.
 
 </div>
 
@@ -893,25 +1311,101 @@ class="question">
 
 
 
-<div class="legend">
+<div class="safety">
 
-<div>
-🟠 Осветление
-</div>
-
-<div>
-🔵 Контакти / POS / IT
-</div>
-
-<div>
-🟦 Хладилно оборудване
-</div>
-
-<div>
-🟢 Вентилация / климатизация
-</div>
+<strong>Важно за обучението:</strong>
+работата вътре в електрически табла и измерванията по части под напрежение
+се извършват само от лица с необходимата квалификация и при спазване
+на правилата за безопасност. При обезопасяване трябва да се отчитат
+и резервните източници на захранване.
 
 </div>
+
+
+
+<!-- ================================================= -->
+<!-- АВАРИЕН ТРЕНАЖОР -->
+<!-- ================================================= -->
+
+<div id="faultPanel">
+
+
+<div class="faultTitle">
+
+<h2>
+⚠ Симулация на авария
+</h2>
+
+<button
+class="btn red"
+onclick="nextFault()">
+
+Нова авария
+
+</button>
+
+</div>
+
+
+<div
+id="scenario"
+class="scenario">
+
+</div>
+
+
+<div class="steps">
+
+<div id="step1" class="step active">
+1. Определи симптома
+</div>
+
+<div id="step2" class="step">
+2. Определи токовия кръг
+</div>
+
+<div id="step3" class="step">
+3. Провери захранването
+</div>
+
+<div id="step4" class="step">
+4. Локализирай повредата
+</div>
+
+</div>
+
+
+<div
+id="answers"
+class="answers">
+</div>
+
+
+<div
+id="feedback"
+class="feedback">
+</div>
+
+
+<button
+class="btn"
+style="margin-top:10px"
+onclick="showDiagnosis()">
+
+Покажи правилната последователност
+
+</button>
+
+
+<div
+id="diagnosis"
+class="info"
+style="display:none;margin-top:10px">
+</div>
+
+
+</div>
+
 
 
 <footer>
@@ -920,382 +1414,41 @@ class="question">
 
 </footer>
 
-
 </div>
 
 
 
 <script>
 
-/* ==========================================
-   ТЕКСТОВЕ
-========================================== */
+/* =====================================================
+   ИЗГЛЕД
+===================================================== */
 
-const data={
+function showStore(){
 
+document.getElementById("storeView").style.display="block";
+document.getElementById("grtView").style.display="none";
 
-supply:{
-
-title:
-"1. Захранване и главно разпределително табло",
-
-text:
-`
-Електрическата енергия постъпва през
-електромерното табло, главния прекъсвач
-и защитата от пренапрежение и достига до
-<strong>главното разпределително табло – ГРТ.</strong>
-
-<ul>
-
-<li>проверяват се L1, L2 и L3;</li>
-
-<li>проверяват се N и PE;</li>
-
-<li>от ГРТ се захранват отделните токови кръгове;</li>
-
-<li>при общо отпадане проверката започва от захранването и ГРТ.</li>
-
-</ul>
-`,
-
-question:
-"Ако няма електрозахранване към целия магазин, откъде трябва да започне проверката?"
-
-},
-
-
-
-lighting:{
-
-title:
-"2. Осветителни токови кръгове",
-
-text:
-`
-Осветлението на магазина е разделено на отделни токови кръгове.
-
-<ul>
-
-<li>търговска зала;</li>
-
-<li>склад;</li>
-
-<li>помощни помещения;</li>
-
-<li>външно осветление;</li>
-
-<li>аварийно осветление.</li>
-
-</ul>
-
-При повреда се проверяват автоматичният прекъсвач,
-наличието на напрежение, проводниците и крайните осветители.
-`,
-
-question:
-"Ако само една част от осветлението не работи, необходимо ли е да проверяваме главното захранване?"
-
-},
-
-
-
-cooling:{
-
-title:
-"3. Хладилни токови кръгове",
-
-text:
-`
-Хладилното оборудване е критична част от електрическата система на магазина.
-
-<ul>
-
-<li>хладилни витрини;</li>
-
-<li>вертикални хладилници;</li>
-
-<li>фризери;</li>
-
-<li>компресори;</li>
-
-<li>хладилна машина;</li>
-
-<li>управляващи вериги.</li>
-
-</ul>
-
-Продължително отпадане на тези консуматори може да доведе
-до повишаване на температурата и загуба на хранителни продукти.
-`,
-
-question:
-"Ако един фризер не работи, а всички останали работят, от коя точка бихте започнали диагностиката?"
-
-},
-
-
-
-hvac:{
-
-title:
-"4. Вентилация и климатизация",
-
-text:
-`
-Вентилационните и климатичните системи са отделни силови консуматори.
-
-При диагностика се проверяват:
-
-<ul>
-
-<li>захранващият токов кръг;</li>
-
-<li>автоматичният прекъсвач;</li>
-
-<li>контакторите;</li>
-
-<li>двигателите;</li>
-
-<li>управляващите сигнали.</li>
-
-</ul>
-`,
-
-question:
-"Има напрежение към таблото, но вентилаторът не работи. Каква трябва да бъде следващата проверка?"
-
-},
-
-
-
-pos:{
-
-title:
-"5. Каси, POS терминали и IT",
-
-text:
-`
-Касовата зона включва:
-
-<ul>
-
-<li>касови апарати;</li>
-
-<li>POS терминали;</li>
-
-<li>компютри;</li>
-
-<li>монитори;</li>
-
-<li>мрежово и комуникационно оборудване.</li>
-
-</ul>
-
-Част от тези консуматори може да бъде свързана към UPS.
-`,
-
-question:
-"Една каса не работи, но съседните каси работят. Къде е по-вероятно да се намира повредата?"
-
-},
-
-
-
-backup:{
-
-title:
-"6. UPS и резервно захранване",
-
-text:
-`
-Резервните източници поддържат определени критични консуматори.
-
-<ul>
-
-<li>UPS;</li>
-
-<li>резервен генератор;</li>
-
-<li>аварийно осветление;</li>
-
-<li>комуникационни системи;</li>
-
-<li>част от системите за сигурност.</li>
-
-</ul>
-
-<strong>
-При обезопасяване трябва винаги да се отчита възможността
-за подаване на напрежение от резервен или алтернативен източник.
-</strong>
-`,
-
-question:
-"Основният прекъсвач е изключен. Означава ли това непременно, че навсякъде в магазина няма напрежение?"
-
-},
-
-
-
-safety:{
-
-title:
-"7. Аварийни и защитни системи",
-
-text:
-`
-Към системите за безопасност могат да се отнесат:
-
-<ul>
-
-<li>аварийно осветление;</li>
-
-<li>пожароизвестяване;</li>
-
-<li>камери;</li>
-
-<li>охранителни системи;</li>
-
-<li>контрол на достъпа.</li>
-
-</ul>
-
-Тези системи имат важна функция и не трябва да се изключват
-без да се отчете предназначението им.
-`,
-
-question:
-"Защо пожароизвестяването и аварийното осветление не трябва да се разглеждат като обикновени консуматори?"
-
-}
-
-};
-
-
-
-/* ==========================================
-   ИЗБОР НА ТОКОВ КРЪГ
-========================================== */
-
-function clearSelection(){
-
-document
-.querySelectorAll(".route")
-.forEach(
-item=>item.classList.remove("show")
-);
-
-
-document
-.querySelectorAll(".zone")
-.forEach(
-item=>item.classList.remove("show")
-);
-
-
-document
-.querySelectorAll(".topic")
-.forEach(
-item=>item.classList.remove("active")
-);
+document.getElementById("storeButton").classList.add("active");
+document.getElementById("grtButton").classList.remove("active");
 
 }
 
 
+function showGRT(){
 
-function selectMode(mode){
+document.getElementById("storeView").style.display="none";
+document.getElementById("grtView").style.display="block";
 
-clearSelection();
-
-
-document
-.querySelectorAll(
-`[id^="route-${mode}"]`
-)
-.forEach(
-
-item=>item.classList.add("show")
-
-);
-
-
-const zone=
-document.getElementById(
-"zone-"+mode
-);
-
-
-if(zone){
-
-zone.classList.add("show");
+document.getElementById("grtButton").classList.add("active");
+document.getElementById("storeButton").classList.remove("active");
 
 }
 
 
-const button=
-document.querySelector(
-`.topic[data-mode="${mode}"]`
-);
-
-
-if(button){
-
-button.classList.add("active");
-
-}
-
-
-const d=
-data[mode];
-
-
-document
-.getElementById("info")
-.innerHTML=
-
-"<h2>"+
-d.title+
-"</h2>"+
-d.text;
-
-
-document
-.getElementById("question")
-.innerHTML=
-
-"<h3>Практически въпрос</h3>"+
-d.question;
-
-}
-
-
-
-document
-.querySelectorAll(".topic")
-.forEach(
-
-button=>{
-
-button.addEventListener(
-
-"click",
-
-()=>selectMode(
-button.dataset.mode
-)
-
-);
-
-}
-
-);
-
-
-
-/* ==========================================
-   МАЩАБ
-========================================== */
+/* =====================================================
+   ZOOM
+===================================================== */
 
 let zoom=1;
 
@@ -1310,69 +1463,48 @@ function applyZoom(){
 canvas.style.width=
 (baseWidth*zoom)+"px";
 
-
-document
-.getElementById("zoomLabel")
+document.getElementById("zoomValue")
 .textContent=
-
-Math.round(
-zoom*100
-)+" %";
+Math.round(zoom*100)+" %";
 
 }
-
 
 
 function zoomIn(){
 
-zoom+=0.15;
-
-if(zoom>2.0){
-zoom=2.0;
-}
-
+zoom=Math.min(2,zoom+0.15);
 applyZoom();
 
 }
-
 
 
 function zoomOut(){
 
-zoom-=0.15;
-
-if(zoom<0.45){
-zoom=0.45;
-}
-
+zoom=Math.max(.45,zoom-.15);
 applyZoom();
 
 }
-
 
 
 function normalSize(){
 
 zoom=1;
-
 applyZoom();
 
 }
-
 
 
 function fitScreen(){
 
-const container=
+const stage=
 document.getElementById("stageShell");
 
 zoom=
-container.clientWidth/baseWidth;
+stage.clientWidth/baseWidth;
 
 applyZoom();
 
 }
-
 
 
 function fullScreen(){
@@ -1380,14 +1512,11 @@ function fullScreen(){
 const stage=
 document.getElementById("stageShell");
 
-
 if(!document.fullscreenElement){
 
 stage.requestFullscreen();
 
-}
-
-else{
+}else{
 
 document.exitFullscreen();
 
@@ -1396,17 +1525,651 @@ document.exitFullscreen();
 }
 
 
+/* =====================================================
+   ТОКОВИ КРЪГОВЕ
+===================================================== */
 
-/* ==========================================
-   НАЧАЛО
-========================================== */
+const feederInfo={
+
+light:{
+
+title:"QF1 – Осветление",
+
+text:`
+Захранва осветителните кръгове на магазина.
+
+При локална повреда се проверява конкретният кръг,
+а не се приема автоматично, че проблемът е в главното захранване.
+`
+
+},
+
+cold:{
+
+title:"QF2 – Хладилни консуматори",
+
+text:`
+Захранва фризери, хладилни витрини и свързаното хладилно оборудване.
+
+Това е критичен токов кръг, защото продължителното прекъсване
+може да доведе до повишаване на температурата на продуктите.
+`
+
+},
+
+hvac:{
+
+title:"QF3 – Вентилация и климатизация",
+
+text:`
+Захранва ОВК оборудването.
+
+При наличие на напрежение след защитата проверката продължава
+към контактори, управляващи вериги и самия двигател или агрегат.
+`
+
+},
+
+pos:{
+
+title:"QF4 – Каси, POS и IT",
+
+text:`
+Захранва касови системи и IT оборудване.
+
+Когато една каса не работи, а останалите работят,
+повредата най-често трябва да се търси в локалния токов кръг
+или крайния консуматор.
+`
+
+},
+
+sockets:{
+
+title:"QF5 – Контактни кръгове",
+
+text:`
+Захранва общите контактни излази.
+
+Проверяват се защитата, напрежението на изхода,
+връзките и конкретният контакт или консуматор.
+`
+
+},
+
+safety:{
+
+title:"QF6 – Аварийни и защитни системи",
+
+text:`
+Захранва системи, свързани с безопасността.
+
+Изключването им трябва да се извършва само когато е допустимо
+и след като е отчетена функцията им за безопасност.
+`
+
+},
+
+ups:{
+
+title:"QF7 – UPS и резервно захранване",
+
+text:`
+UPS може да продължи да подава напрежение към определени консуматори
+дори когато основното захранване е отпаднало.
+
+Това е особено важно при обезопасяване на работното място.
+`
+
+}
+
+};
+
+
+
+function clearFeeders(){
+
+document
+.querySelectorAll(".feeder")
+.forEach(
+f=>f.classList.remove("selected")
+);
+
+}
+
+
+function selectFeeder(name){
+
+clearFeeders();
+
+document
+.getElementById("f-"+name)
+.classList.add("selected");
+
+const d=
+feederInfo[name];
+
+document.getElementById("infoBox")
+.innerHTML=
+"<h2>"+d.title+"</h2>"+d.text;
+
+}
+
+
+
+/* =====================================================
+   ИЗМЕРВАТЕЛНИ ТОЧКИ
+===================================================== */
+
+function measurePoint(point){
+
+let text="";
+
+
+if(point==="TP1"){
+
+text=`
+<h3>TP1 – вход / главна шина</h3>
+
+В нормален режим за стандартна трифазна система
+очакваните номинални стойности са приблизително:
+
+<ul>
+
+<li>L1–L2 ≈ 400 V;</li>
+<li>L2–L3 ≈ 400 V;</li>
+<li>L3–L1 ≈ 400 V;</li>
+<li>L–N ≈ 230 V.</li>
+
+</ul>
+
+Това е учебна ориентировъчна стойност.
+`;
+
+}
+
+
+if(point==="TP2"){
+
+text=`
+<h3>TP2 – след QF1</h3>
+
+При включен и изправен QF1 трябва да има напрежение
+към осветителния токов кръг.
+
+Ако на шината има напрежение, но след QF1 няма,
+проверката се насочва към защитния апарат и състоянието на кръга.
+`;
+
+}
+
+
+if(point==="TP3"){
+
+text=`
+<h3>TP3 – след QF2</h3>
+
+При включена и изправна защита трябва да има захранване
+към хладилния токов кръг.
+
+Ако има напрежение след QF2, но конкретен фризер не работи,
+повредата трябва да се локализира по-надолу по веригата.
+`;
+
+}
+
+
+document.getElementById("measureBox")
+.innerHTML=text;
+
+}
+
+
+
+/* =====================================================
+   АВАРИИ
+===================================================== */
+
+const faults=[
+
+{
+
+feeder:"light",
+
+scenario:
+"Част от осветлението в търговската зала не работи, но останалата част от магазина има захранване.",
+
+answers:[
+
+"Проверявам веднага главния прекъсвач Q0.",
+
+"Определям кой осветителен кръг е засегнат и проверявам неговата защита.",
+
+"Изключвам целия магазин."
+
+],
+
+correct:1,
+
+feedback:
+"Правилно. Когато само една зона е засегната, първо се локализира конкретният токов кръг.",
+
+diagnosis:
+`
+<strong>Примерна последователност:</strong>
+
+<ol>
+
+<li>Определя се точно коя зона не работи.</li>
+
+<li>Установява се кой токов кръг я захранва.</li>
+
+<li>Проверява се състоянието на съответния защитен апарат.</li>
+
+<li>При необходимост и от квалифицирано лице се проверява наличието на напрежение.</li>
+
+<li>Проверката продължава към проводници, връзки, ключове и осветители.</li>
+
+</ol>
+`
+
+},
+
+
+{
+
+feeder:"cold",
+
+scenario:
+"Един фризер не работи, но останалите фризери и хладилни витрини работят нормално.",
+
+answers:[
+
+"Търся проблема директно в главния прекъсвач.",
+
+"Проверявам локалното захранване и конкретния кръг на фризера.",
+
+"Приемам, че липсва една фаза на целия магазин."
+
+],
+
+correct:1,
+
+feedback:
+"Правилно. Когато останалите хладилни консуматори работят, повредата вероятно е локална.",
+
+diagnosis:
+`
+<strong>Примерна последователност:</strong>
+
+<ol>
+
+<li>Проверява се дали проблемът е само в един фризер.</li>
+
+<li>Проверява се локалната защита или захранващият му кръг.</li>
+
+<li>Установява се има ли напрежение до съоръжението.</li>
+
+<li>Ако има захранване, проверката продължава към управляващата и хладилната система.</li>
+
+</ol>
+`
+
+},
+
+
+{
+
+feeder:"pos",
+
+scenario:
+"Една каса няма захранване, но всички съседни каси работят.",
+
+answers:[
+
+"Проверявам локалния контакт и захранването на конкретната каса.",
+
+"Изключвам Q0.",
+
+"Проверявам първо хладилната система."
+
+],
+
+correct:0,
+
+feedback:
+"Правилно. При единичен отказ проверката започва от локалното захранване на засегнатия консуматор.",
+
+diagnosis:
+`
+<strong>Примерна последователност:</strong>
+
+<ol>
+
+<li>Проверява се дали останалите каси работят.</li>
+
+<li>Проверява се локалният контакт или разклонение.</li>
+
+<li>Проверява се захранващият кабел и блокът на касата.</li>
+
+<li>Едва при по-широк проблем се преминава към разпределителното табло.</li>
+
+</ol>
+`
+
+},
+
+
+{
+
+feeder:"hvac",
+
+scenario:
+"Вентилационният агрегат не стартира, но към таблото има захранване.",
+
+answers:[
+
+"Проверявам управляващата верига, контактора и захранването към двигателя.",
+
+"Сменям веднага двигателя.",
+
+"Изключвам осветителните кръгове."
+
+],
+
+correct:0,
+
+feedback:
+"Правилно. Наличието на захранване в таблото не означава автоматично, че двигателят получава правилно захранване и команда.",
+
+diagnosis:
+`
+<strong>Примерна последователност:</strong>
+
+<ol>
+
+<li>Проверява се защитата на ОВК кръга.</li>
+
+<li>Проверява се има ли команда за включване.</li>
+
+<li>Проверява се контакторът.</li>
+
+<li>Проверява се захранването към двигателя.</li>
+
+<li>След това се проверява самият двигател.</li>
+
+</ol>
+`
+
+},
+
+
+{
+
+feeder:"ups",
+
+scenario:
+"Главният прекъсвач Q0 е изключен, но част от касовото и комуникационното оборудване продължава да работи.",
+
+answers:[
+
+"Приемам, че таблото е напълно обезточено.",
+
+"Проверявам за UPS или друг резервен източник.",
+
+"Включвам Q0 отново."
+
+],
+
+correct:1,
+
+feedback:
+"Правилно. Изключването на основния източник не доказва липса на напрежение при наличие на резервно захранване.",
+
+diagnosis:
+`
+<strong>Ключов извод:</strong>
+
+<ol>
+
+<li>Определят се всички възможни източници на захранване.</li>
+
+<li>Основният източник се изключва и обезопасява.</li>
+
+<li>UPS или друг резервен източник също се отчита и обезопасява според конкретната система.</li>
+
+<li>Проверява се за отсъствие на напрежение преди работа.</li>
+
+</ol>
+`
+
+}
+
+];
+
+
+let faultIndex=-1;
+
+
+function startFault(){
+
+document.getElementById("faultPanel")
+.style.display="block";
+
+showGRT();
+
+nextFault();
+
+document.getElementById("faultPanel")
+.scrollIntoView({
+behavior:"smooth",
+block:"start"
+});
+
+}
+
+
+function nextFault(){
+
+faultIndex++;
+
+if(faultIndex>=faults.length){
+faultIndex=0;
+}
+
+const f=
+faults[faultIndex];
+
+
+document.querySelectorAll(".feeder")
+.forEach(
+x=>x.classList.remove("fault","selected")
+);
+
+
+document.getElementById("f-"+f.feeder)
+.classList.add("fault");
+
+
+document.getElementById("scenario")
+.innerHTML=
+"<strong>Ситуация:</strong><br>"+f.scenario;
+
+
+const answers=
+document.getElementById("answers");
+
+answers.innerHTML="";
+
+
+f.answers.forEach(
+(text,index)=>{
+
+const b=
+document.createElement("button");
+
+b.className="answer";
+
+b.textContent=text;
+
+b.onclick=
+()=>answerFault(index,b);
+
+answers.appendChild(b);
+
+});
+
+
+document.getElementById("feedback")
+.className="feedback";
+
+document.getElementById("feedback")
+.innerHTML="";
+
+
+document.getElementById("diagnosis")
+.style.display="none";
+
+
+document.querySelectorAll(".step")
+.forEach(
+(x,i)=>{
+
+x.classList.remove("done","active");
+
+if(i===0){
+x.classList.add("active");
+}
+
+});
+
+}
+
+
+function answerFault(index,button){
+
+const f=
+faults[faultIndex];
+
+
+document.querySelectorAll(".answer")
+.forEach(
+x=>x.classList.remove("correct","wrong")
+);
+
+
+const feedback=
+document.getElementById("feedback");
+
+
+if(index===f.correct){
+
+button.classList.add("correct");
+
+feedback.className=
+"feedback good";
+
+feedback.innerHTML=
+"<strong>✓ Правилен избор.</strong><br>"+f.feedback;
+
+
+document.getElementById("step1")
+.classList.add("done");
+
+document.getElementById("step1")
+.classList.remove("active");
+
+document.getElementById("step2")
+.classList.add("active");
+
+}
+
+else{
+
+button.classList.add("wrong");
+
+feedback.className=
+"feedback bad";
+
+feedback.innerHTML=
+"<strong>Не е най-добрият първи ход.</strong><br>Опитайте отново да локализирате проблема според симптомите.";
+
+}
+
+}
+
+
+function showDiagnosis(){
+
+const f=
+faults[faultIndex];
+
+if(!f){
+return;
+}
+
+
+const d=
+document.getElementById("diagnosis");
+
+d.style.display="block";
+
+d.innerHTML=
+"<h3>Правилна диагностична логика</h3>"+
+f.diagnosis;
+
+
+document.querySelectorAll(".step")
+.forEach(
+x=>x.classList.add("done")
+);
+
+}
+
+
+
+/* =====================================================
+   RESET
+===================================================== */
+
+function resetTraining(){
+
+document.getElementById("faultPanel")
+.style.display="none";
+
+document.querySelectorAll(".feeder")
+.forEach(
+x=>x.classList.remove("fault","selected")
+);
+
+document.getElementById("infoBox")
+.innerHTML=
+`
+<h2>Учебен модел</h2>
+
+Изберете токов кръг от еднолинейната схема или стартирайте
+<strong>„Симулация на авария“</strong>.
+`;
+
+document.getElementById("measureBox")
+.innerHTML=
+`
+<h3>Точки за измерване</h3>
+
+Натиснете TP1, TP2 или TP3.
+`;
+
+showStore();
+
+}
+
+
+
+/* START */
 
 applyZoom();
 
-selectMode("supply");
-
 </script>
-
 
 </body>
 </html>

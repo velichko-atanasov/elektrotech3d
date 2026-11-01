@@ -14,6 +14,8 @@
   --green:#168d56;
   --yellow:#efb62d;
   --violet:#7445b8;
+  --cyan:#169fbe;
+  --orange:#ef941d;
   --line:#c9d7df;
   --bg:#edf3f6;
 }
@@ -49,7 +51,9 @@ header p{
   margin:6px 0 0;
 }
 
-/* БУТОНИ */
+/* =========================
+   БУТОНИ
+========================= */
 
 .toolbar{
   display:flex;
@@ -85,7 +89,9 @@ button.danger{
   color:white;
 }
 
-/* АВАРИИ */
+/* =========================
+   ИЗБОР НА АВАРИЯ
+========================= */
 
 .faultSelector{
   display:grid;
@@ -103,6 +109,10 @@ button.danger{
   color:#9a2921;
   border:3px solid var(--red);
 }
+
+/* =========================
+   БАНЕР ЗА АВАРИЯ
+========================= */
 
 #faultBanner{
   display:none;
@@ -128,7 +138,9 @@ button.danger{
   font-size:18px;
 }
 
-/* ОСНОВНО РАЗПОЛОЖЕНИЕ */
+/* =========================
+   ОСНОВНО РАЗПОЛОЖЕНИЕ
+========================= */
 
 .mainLayout{
   display:grid;
@@ -141,7 +153,9 @@ button.danger{
   min-width:0;
 }
 
-/* КОМЕНТАРИ */
+/* =========================
+   КОМЕНТАРИ
+========================= */
 
 .commentPanel{
   background:white;
@@ -194,7 +208,9 @@ button.danger{
   margin:6px 0;
 }
 
-/* СНИМКА НА МАГАЗИНА */
+/* =====================================================
+   СХЕМА НА МАГАЗИНА
+===================================================== */
 
 #storeView{
   display:none;
@@ -227,16 +243,73 @@ button.danger{
 }
 
 .canvas{
+  position:relative;
   width:1900px;
   background:white;
 }
 
 .canvas img{
   width:100%;
+  height:auto;
   display:block;
 }
 
-/* ГРТ */
+/* движение върху снимката */
+
+.storeFlowOverlay{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+}
+
+.storeFlowLine{
+  fill:none;
+  stroke-width:5;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  opacity:.28;
+}
+
+.storeDot{
+  stroke:#fff;
+  stroke-width:2;
+}
+
+.storeDotGreen{
+  fill:#18a65f;
+  filter:drop-shadow(0 0 6px #18a65f);
+}
+
+.storeDotOrange{
+  fill:#ef941d;
+  filter:drop-shadow(0 0 6px #ef941d);
+}
+
+.storeDotBlue{
+  fill:#159fbe;
+  filter:drop-shadow(0 0 6px #159fbe);
+}
+
+.storeDotPos{
+  fill:#1678d2;
+  filter:drop-shadow(0 0 6px #1678d2);
+}
+
+.storeDotRed{
+  fill:#d9362e;
+  filter:drop-shadow(0 0 6px #d9362e);
+}
+
+.storeDotPurple{
+  fill:#7445b8;
+  filter:drop-shadow(0 0 6px #7445b8);
+}
+
+/* =====================================================
+   ГРТ
+===================================================== */
 
 #grtView{
   display:block;
@@ -275,7 +348,9 @@ button.danger{
   display:block;
 }
 
-/* СХЕМА */
+/* =========================
+   ЕДНОЛИНЕЙНА СХЕМА
+========================= */
 
 .wire{
   fill:none;
@@ -360,31 +435,27 @@ button.danger{
   font-weight:900;
 }
 
-.feeder{
-  cursor:pointer;
-}
-
-/* ======================================================
-   ДВИЖЕНИЕ НА ЕЛЕКТРИЧЕСКАТА ЕНЕРГИЯ
-====================================================== */
+/* =========================
+   ДВИЖЕНИЕ В ГРТ
+========================= */
 
 .energyDot{
   fill:#18a65f;
-  stroke:#ffffff;
+  stroke:#fff;
   stroke-width:2;
   filter:drop-shadow(0 0 5px #18a65f);
 }
 
 .energyDot2{
   fill:#58d58d;
-  stroke:#ffffff;
+  stroke:#fff;
   stroke-width:2;
   filter:drop-shadow(0 0 5px #18a65f);
 }
 
 .upsDot{
   fill:#8151d0;
-  stroke:#ffffff;
+  stroke:#fff;
   stroke-width:2;
   filter:drop-shadow(0 0 6px #7445b8);
 }
@@ -398,11 +469,9 @@ button.danger{
   opacity:0;
 }
 
-.flowGroup.dim{
-  opacity:.15;
-}
-
-/* ИНФОРМАЦИЯ */
+/* =========================
+   ДИАГНОСТИКА
+========================= */
 
 .diagnostic{
   margin-top:10px;
@@ -456,6 +525,10 @@ button.danger{
   border-left:5px solid var(--red);
 }
 
+/* =========================
+   БЕЗОПАСНОСТ
+========================= */
+
 .safety{
   margin-top:10px;
   padding:12px 15px;
@@ -472,12 +545,19 @@ footer{
 }
 
 @media(max-width:1100px){
-  .mainLayout{grid-template-columns:1fr}
-  .faultSelector{grid-template-columns:1fr 1fr}
+  .mainLayout{
+    grid-template-columns:1fr;
+  }
+
+  .faultSelector{
+    grid-template-columns:1fr 1fr;
+  }
 }
 
 @media(max-width:650px){
-  .faultSelector{grid-template-columns:1fr}
+  .faultSelector{
+    grid-template-columns:1fr;
+  }
 }
 </style>
 </head>
@@ -493,19 +573,19 @@ footer{
 
 <div class="toolbar">
 
-<button id="grtButton" class="active" onclick="showGRT()">
+<button id="grtButton" class="active">
 ⚡ ГРТ и диагностика
 </button>
 
-<button id="storeButton" onclick="showStore()">
+<button id="storeButton">
 🏪 Схема на магазина
 </button>
 
-<button onclick="normalMode()">
+<button id="normalButton">
 ✓ Нормален режим
 </button>
 
-<button class="danger" onclick="nextFault()">
+<button id="nextFaultButton" class="danger">
 ⚠ Следваща авария
 </button>
 
@@ -513,19 +593,19 @@ footer{
 
 <div class="faultSelector">
 
-<button id="faultPhaseBtn" class="faultButton" onclick="activateFault('phase')">
+<button id="faultPhaseBtn" class="faultButton">
 1. Липса на фаза L2
 </button>
 
-<button id="faultBreakerBtn" class="faultButton" onclick="activateFault('breaker')">
+<button id="faultBreakerBtn" class="faultButton">
 2. Сработил QF2
 </button>
 
-<button id="faultRcdBtn" class="faultButton" onclick="activateFault('rcd')">
+<button id="faultRcdBtn" class="faultButton">
 3. Сработила ДТЗ
 </button>
 
-<button id="faultUpsBtn" class="faultButton" onclick="activateFault('ups')">
+<button id="faultUpsBtn" class="faultButton">
 4. Работа от UPS
 </button>
 
@@ -542,31 +622,241 @@ footer{
 
 <div class="workspace">
 
-<!-- СНИМКА -->
+<!-- =================================================
+     СХЕМА НА МАГАЗИНА
+================================================= -->
 
 <div id="storeView">
 
 <div class="zoomBar">
-<button onclick="zoomOut()">− Намали</button>
-<button onclick="zoomIn()">+ Увеличи</button>
-<button onclick="fitScreen()">По екрана</button>
-<button onclick="normalZoom()">100 %</button>
-<div id="zoomValue" class="zoomValue">100 %</div>
+
+<button id="zoomOutButton">− Намали</button>
+<button id="zoomInButton">+ Увеличи</button>
+<button id="fitButton">По екрана</button>
+<button id="normalZoomButton">100 %</button>
+
+<div id="zoomValue" class="zoomValue">
+100 %
+</div>
+
 </div>
 
 <div id="stage" class="stage">
+
 <div id="canvas" class="canvas">
 
 <img
 src="supermarket_electrical_schematic_and_floor_plan.png"
 alt="Електрическа схема на магазин Фантастико">
 
+<!-- ДВИЖЕНИЕ ВЪРХУ СНИМКАТА -->
+
+<svg
+class="storeFlowOverlay"
+viewBox="0 0 1664 936"
+preserveAspectRatio="none">
+
+<!-- ОСНОВНО ЗАХРАНВАНЕ -->
+
+<path
+d="M25 135 H145 H270 H405 H505 H1325"
+class="storeFlowLine"
+stroke="#18a65f"/>
+
+<circle r="8" class="storeDot storeDotGreen">
+<animateMotion
+dur="5s"
+repeatCount="indefinite"
+path="M25 135 H145 H270 H405 H505 H1325"/>
+</circle>
+
+<circle r="7" class="storeDot storeDotGreen">
+<animateMotion
+dur="5s"
+begin="-1.7s"
+repeatCount="indefinite"
+path="M25 135 H145 H270 H405 H505 H1325"/>
+</circle>
+
+<circle r="7" class="storeDot storeDotGreen">
+<animateMotion
+dur="5s"
+begin="-3.4s"
+repeatCount="indefinite"
+path="M25 135 H145 H270 H405 H505 H1325"/>
+</circle>
+
+
+<!-- ОСВЕТЛЕНИЕ -->
+
+<path
+d="M65 265 V345 H440 V625 H1030"
+class="storeFlowLine"
+stroke="#ef941d"/>
+
+<circle r="8" class="storeDot storeDotOrange">
+<animateMotion
+dur="5s"
+repeatCount="indefinite"
+path="M65 265 V345 H440 V625 H1030"/>
+</circle>
+
+<circle r="7" class="storeDot storeDotOrange">
+<animateMotion
+dur="5s"
+begin="-2.5s"
+repeatCount="indefinite"
+path="M65 265 V345 H440 V625 H1030"/>
+</circle>
+
+
+<!-- ХЛАДИЛНИ ВИТРИНИ -->
+
+<path
+d="M830 265 V415 H1050 V650"
+class="storeFlowLine"
+stroke="#169fbe"/>
+
+<circle r="8" class="storeDot storeDotBlue">
+<animateMotion
+dur="4s"
+repeatCount="indefinite"
+path="M830 265 V415 H1050 V650"/>
+</circle>
+
+<circle r="7" class="storeDot storeDotBlue">
+<animateMotion
+dur="4s"
+begin="-2s"
+repeatCount="indefinite"
+path="M830 265 V415 H1050 V650"/>
+</circle>
+
+
+<!-- ФРИЗЕРИ -->
+
+<path
+d="M930 265 V505 H1280 V650"
+class="storeFlowLine"
+stroke="#169fbe"/>
+
+<circle r="8" class="storeDot storeDotBlue">
+<animateMotion
+dur="4.4s"
+repeatCount="indefinite"
+path="M930 265 V505 H1280 V650"/>
+</circle>
+
+<circle r="7" class="storeDot storeDotBlue">
+<animateMotion
+dur="4.4s"
+begin="-2.2s"
+repeatCount="indefinite"
+path="M930 265 V505 H1280 V650"/>
+</circle>
+
+
+<!-- ВЕНТИЛАЦИЯ И КЛИМАТИЗАЦИЯ -->
+
+<path
+d="M735 265 V420 H785 V585"
+class="storeFlowLine"
+stroke="#18a65f"/>
+
+<circle r="8" class="storeDot storeDotGreen">
+<animateMotion
+dur="3.5s"
+repeatCount="indefinite"
+path="M735 265 V420 H785 V585"/>
+</circle>
+
+<circle r="7" class="storeDot storeDotGreen">
+<animateMotion
+dur="3.5s"
+begin="-1.75s"
+repeatCount="indefinite"
+path="M735 265 V420 H785 V585"/>
+</circle>
+
+
+<!-- КАСИ / POS / IT -->
+
+<path
+d="M410 265 V515 H615 V745"
+class="storeFlowLine"
+stroke="#1678d2"/>
+
+<circle r="8" class="storeDot storeDotPos">
+<animateMotion
+dur="4s"
+repeatCount="indefinite"
+path="M410 265 V515 H615 V745"/>
+</circle>
+
+<circle r="7" class="storeDot storeDotPos">
+<animateMotion
+dur="4s"
+begin="-2s"
+repeatCount="indefinite"
+path="M410 265 V515 H615 V745"/>
+</circle>
+
+
+<!-- АВАРИЙНИ СИСТЕМИ -->
+
+<path
+d="M585 265 V440 H900"
+class="storeFlowLine"
+stroke="#d9362e"/>
+
+<circle r="8" class="storeDot storeDotRed">
+<animateMotion
+dur="3.8s"
+repeatCount="indefinite"
+path="M585 265 V440 H900"/>
+</circle>
+
+<circle r="7" class="storeDot storeDotRed">
+<animateMotion
+dur="3.8s"
+begin="-1.9s"
+repeatCount="indefinite"
+path="M585 265 V440 H900"/>
+</circle>
+
+
+<!-- UPS -->
+
+<path
+d="M1435 265 V410 H1350 V675 H1160"
+class="storeFlowLine"
+stroke="#7445b8"/>
+
+<circle r="8" class="storeDot storeDotPurple">
+<animateMotion
+dur="4.5s"
+repeatCount="indefinite"
+path="M1435 265 V410 H1350 V675 H1160"/>
+</circle>
+
+<circle r="7" class="storeDot storeDotPurple">
+<animateMotion
+dur="4.5s"
+begin="-2.25s"
+repeatCount="indefinite"
+path="M1435 265 V410 H1350 V675 H1160"/>
+</circle>
+
+</svg>
+
 </div>
 </div>
 
 </div>
 
-<!-- ГРТ -->
+<!-- =================================================
+     ГРТ
+================================================= -->
 
 <div id="grtView">
 
@@ -577,8 +867,8 @@ alt="Електрическа схема на магазин Фантастик�
 <h2>Еднолинейна схема на ГРТ</h2>
 
 <p>
-Движещите се зелени точки показват посоката на захранването.
-При резервно захранване потокът от UPS е показан в лилаво.
+Зелените движещи се точки показват нормалното захранване.
+При UPS резервният поток е показан в лилаво.
 </p>
 
 </div>
@@ -587,16 +877,17 @@ alt="Електрическа схема на магазин Фантастик�
 
 <svg id="grtSvg" viewBox="0 0 1500 790">
 
-<!-- ЗАХРАНВАНЕ -->
-
 <text x="45" y="55" class="txt large">
 Захранване 3×400/230 V
 </text>
 
 <!-- ФАЗИ -->
 
-<rect id="phaseL1Box"
-x="45" y="78" width="130" height="55" rx="8"
+<rect
+id="phaseL1Box"
+x="45" y="78"
+width="130" height="55"
+rx="8"
 class="phaseOK"/>
 
 <text x="110" y="101" text-anchor="middle" class="txt large">
@@ -609,8 +900,11 @@ x="110" y="123" text-anchor="middle" class="txt small">
 </text>
 
 
-<rect id="phaseL2Box"
-x="185" y="78" width="130" height="55" rx="8"
+<rect
+id="phaseL2Box"
+x="185" y="78"
+width="130" height="55"
+rx="8"
 class="phaseOK"/>
 
 <text x="250" y="101" text-anchor="middle" class="txt large">
@@ -623,8 +917,11 @@ x="250" y="123" text-anchor="middle" class="txt small">
 </text>
 
 
-<rect id="phaseL3Box"
-x="325" y="78" width="130" height="55" rx="8"
+<rect
+id="phaseL3Box"
+x="325" y="78"
+width="130" height="55"
+rx="8"
 class="phaseOK"/>
 
 <text x="390" y="101" text-anchor="middle" class="txt large">
@@ -642,7 +939,9 @@ x="390" y="123" text-anchor="middle" class="txt small">
 <path class="wire" d="M160 145 V205"/>
 
 <rect id="q0"
-x="105" y="205" width="110" height="65" rx="5"
+x="105" y="205"
+width="110" height="65"
+rx="5"
 class="breaker"/>
 
 <text x="160" y="232" text-anchor="middle" class="txt large">
@@ -650,13 +949,15 @@ Q0
 </text>
 
 <text id="q0State"
-x="160" y="255" text-anchor="middle" class="txt stateText">
+x="160" y="255"
+text-anchor="middle"
+class="txt stateText">
 ON
 </text>
 
 <path class="wire" d="M160 270 V320"/>
 
-<!-- MAIN BUS -->
+<!-- ШИНА -->
 
 <line
 x1="160" y1="320"
@@ -667,9 +968,7 @@ class="bus"/>
 L1 • L2 • L3 • N • PE
 </text>
 
-<!-- ===================================================
-     ДВИЖЕНИЕ ОТ МРЕЖАТА КЪМ ШИНАТА
-=================================================== -->
+<!-- ОСНОВНО ДВИЖЕНИЕ -->
 
 <g id="flowMain" class="flowGroup">
 
@@ -700,7 +999,7 @@ path="M160 145 V320 H1390"/>
 
 <!-- TP1 -->
 
-<g class="measurePoint" onclick="measurement('TP1')">
+<g id="tp1" class="measurePoint">
 
 <circle cx="215" cy="350" r="18"/>
 
@@ -710,18 +1009,14 @@ TP1
 
 </g>
 
-
-<!-- ===================================================
-     QF1 ОСВЕТЛЕНИЕ
-=================================================== -->
-
-<g class="feeder">
+<!-- QF1 -->
 
 <path class="wire" d="M330 320 V385"/>
 
 <rect
 x="280" y="385"
-width="100" height="60" rx="4"
+width="100" height="60"
+rx="4"
 class="breaker"/>
 
 <text x="330" y="412" text-anchor="middle" class="txt large">
@@ -738,44 +1033,35 @@ QF1
 Осветление
 </text>
 
-</g>
-
 <g id="flowLight" class="flowGroup">
 
 <circle r="7" class="energyDot">
-
 <animateMotion
 dur="1.8s"
 repeatCount="indefinite"
 path="M330 320 V630"/>
-
 </circle>
 
 <circle r="6" class="energyDot2">
-
 <animateMotion
 dur="1.8s"
 begin="-0.9s"
 repeatCount="indefinite"
 path="M330 320 V630"/>
-
 </circle>
 
 </g>
 
 
-<!-- ===================================================
-     QF2 ХЛАДИЛНИ
-=================================================== -->
-
-<g class="feeder" onclick="selectFeeder('cold')">
+<!-- QF2 -->
 
 <path class="wire" d="M500 320 V385"/>
 
 <rect
 id="qf2"
 x="450" y="385"
-width="100" height="60" rx="4"
+width="100" height="60"
+rx="4"
 class="breaker"/>
 
 <text x="500" y="412" text-anchor="middle" class="txt large">
@@ -799,34 +1085,28 @@ ON
 Хладилни витрини
 </text>
 
-</g>
-
 <g id="flowCold" class="flowGroup">
 
 <circle r="7" class="energyDot">
-
 <animateMotion
 dur="1.7s"
 repeatCount="indefinite"
 path="M500 320 V630"/>
-
 </circle>
 
 <circle r="6" class="energyDot2">
-
 <animateMotion
 dur="1.7s"
 begin="-0.85s"
 repeatCount="indefinite"
 path="M500 320 V630"/>
-
 </circle>
 
 </g>
 
 <!-- TP2 -->
 
-<g class="measurePoint" onclick="measurement('TP2')">
+<g id="tp2" class="measurePoint">
 
 <circle cx="535" cy="520" r="18"/>
 
@@ -837,15 +1117,14 @@ TP2
 </g>
 
 
-<!-- ===================================================
-     QF3 HVAC
-=================================================== -->
+<!-- QF3 -->
 
 <path class="wire" d="M670 320 V385"/>
 
 <rect
 x="620" y="385"
-width="100" height="60" rx="4"
+width="100" height="60"
+rx="4"
 class="breaker"/>
 
 <text x="670" y="412" text-anchor="middle" class="txt large">
@@ -862,40 +1141,34 @@ QF3
 Вентилация
 </text>
 
-
 <g id="flowHvac" class="flowGroup">
 
 <circle r="7" class="energyDot">
-
 <animateMotion
 dur="1.9s"
 repeatCount="indefinite"
 path="M670 320 V630"/>
-
 </circle>
 
 <circle r="6" class="energyDot2">
-
 <animateMotion
 dur="1.9s"
 begin="-0.95s"
 repeatCount="indefinite"
 path="M670 320 V630"/>
-
 </circle>
 
 </g>
 
 
-<!-- ===================================================
-     QF4 POS
-=================================================== -->
+<!-- QF4 -->
 
 <path class="wire" d="M840 320 V385"/>
 
 <rect
 x="790" y="385"
-width="100" height="60" rx="4"
+width="100" height="60"
+rx="4"
 class="breaker"/>
 
 <text x="840" y="412" text-anchor="middle" class="txt large">
@@ -912,40 +1185,34 @@ POS / IT
 Каси / IT
 </text>
 
-
 <g id="flowPos" class="flowGroup">
 
 <circle r="7" class="energyDot">
-
 <animateMotion
 dur="1.7s"
 repeatCount="indefinite"
 path="M840 320 V630"/>
-
 </circle>
 
 <circle r="6" class="energyDot2">
-
 <animateMotion
 dur="1.7s"
 begin="-0.85s"
 repeatCount="indefinite"
 path="M840 320 V630"/>
-
 </circle>
 
 </g>
 
 
-<!-- ===================================================
-     QF5 + ДТЗ
-=================================================== -->
+<!-- QF5 + ДТЗ -->
 
 <path class="wire" d="M1010 320 V385"/>
 
 <rect
 x="960" y="385"
-width="100" height="60" rx="4"
+width="100" height="60"
+rx="4"
 class="breaker"/>
 
 <text x="1010" y="412" text-anchor="middle" class="txt large">
@@ -961,15 +1228,15 @@ QF5
 <rect
 id="rcd"
 x="950" y="490"
-width="120" height="70" rx="5"
+width="120" height="70"
+rx="5"
 class="protection"/>
 
 <text x="1010" y="518" text-anchor="middle" class="txt large">
 ДТЗ
 </text>
 
-<text
-id="rcdState"
+<text id="rcdState"
 x="1010" y="543"
 text-anchor="middle"
 class="txt stateText">
@@ -982,48 +1249,37 @@ ON
 Контакти
 </text>
 
-
-<!-- движение преди ДТЗ -->
-
 <g id="flowSocketsBefore" class="flowGroup">
 
 <circle r="7" class="energyDot">
-
 <animateMotion
 dur="1.3s"
 repeatCount="indefinite"
 path="M1010 320 V515"/>
-
 </circle>
 
 </g>
-
-
-<!-- движение след ДТЗ -->
 
 <g id="flowSocketsAfter" class="flowGroup">
 
 <circle r="7" class="energyDot">
-
 <animateMotion
 dur="1.3s"
 repeatCount="indefinite"
 path="M1010 550 V630"/>
-
 </circle>
 
 </g>
 
 
-<!-- ===================================================
-     QF6 SAFETY
-=================================================== -->
+<!-- QF6 -->
 
 <path class="wire" d="M1180 320 V385"/>
 
 <rect
 x="1130" y="385"
-width="100" height="60" rx="4"
+width="100" height="60"
+rx="4"
 class="breaker"/>
 
 <text x="1180" y="412" text-anchor="middle" class="txt large">
@@ -1040,30 +1296,26 @@ QF6
 Сигурност
 </text>
 
-
 <g id="flowSafety" class="flowGroup">
 
 <circle r="7" class="energyDot">
-
 <animateMotion
 dur="1.8s"
 repeatCount="indefinite"
 path="M1180 320 V630"/>
-
 </circle>
 
 </g>
 
 
-<!-- ===================================================
-     UPS
-=================================================== -->
+<!-- UPS -->
 
 <path class="wire" d="M1350 320 V385"/>
 
 <rect
 x="1300" y="385"
-width="100" height="60" rx="4"
+width="100" height="60"
+rx="4"
 class="breaker"/>
 
 <text x="1350" y="412" text-anchor="middle" class="txt large">
@@ -1079,7 +1331,8 @@ UPS
 <rect
 id="upsBox"
 x="1290" y="485"
-width="120" height="80" rx="6"
+width="120" height="80"
+rx="6"
 fill="#eee7fa"
 stroke="#7445b8"
 stroke-width="3"/>
@@ -1088,8 +1341,7 @@ stroke-width="3"/>
 UPS
 </text>
 
-<text
-id="upsState"
+<text id="upsState"
 x="1350" y="543"
 text-anchor="middle"
 class="txt stateText">
@@ -1102,23 +1354,18 @@ STANDBY
 Критични товари
 </text>
 
-<!-- Нормален поток към UPS -->
-
 <g id="flowUpsNormal" class="flowGroup">
 
 <circle r="7" class="energyDot">
-
 <animateMotion
 dur="1.7s"
 repeatCount="indefinite"
 path="M1350 320 V630"/>
-
 </circle>
 
 </g>
 
-
-<!-- РЕЗЕРВЕН ПОТОК ОТ UPS КЪМ POS -->
+<!-- UPS резервен поток към POS -->
 
 <path
 d="M1350 590 H900 V630"
@@ -1127,44 +1374,35 @@ class="wire"/>
 <g id="flowUpsBackup" class="flowGroup off">
 
 <circle r="8" class="upsDot">
-
 <animateMotion
 dur="2s"
 repeatCount="indefinite"
 path="M1350 530 V590 H900 V630"/>
-
 </circle>
 
 <circle r="7" class="upsDot">
-
 <animateMotion
 dur="2s"
 begin="-0.7s"
 repeatCount="indefinite"
 path="M1350 530 V590 H900 V630"/>
-
 </circle>
 
 <circle r="7" class="upsDot">
-
 <animateMotion
 dur="2s"
 begin="-1.4s"
 repeatCount="indefinite"
 path="M1350 530 V590 H900 V630"/>
-
 </circle>
 
 </g>
-
 
 <text
 x="55"
 y="745"
 class="txt small">
-
-Учебен модел. Реалната схема на конкретния обект се определя от проекта и действителното изпълнение.
-
+Учебен модел. Реалната схема се определя от проекта на конкретния обект.
 </text>
 
 </svg>
@@ -1173,8 +1411,6 @@ class="txt small">
 </div>
 </div>
 
-
-<!-- ВЪПРОС -->
 
 <div class="diagnostic">
 
@@ -1207,6 +1443,7 @@ class="txt small">
 
 </div>
 
+
 <div class="commentBlock warning">
 
 <strong>Какво проверяваме?</strong>
@@ -1222,6 +1459,7 @@ class="txt small">
 
 </div>
 
+
 <div class="commentBlock danger">
 
 <strong>Внимавайте!</strong>
@@ -1232,6 +1470,7 @@ class="txt small">
 
 </div>
 
+
 <div class="commentBlock good">
 
 <strong>Ключов извод</strong>
@@ -1241,6 +1480,7 @@ class="txt small">
 </div>
 
 </div>
+
 
 <div class="commentBlock">
 
@@ -1274,9 +1514,71 @@ class="txt small">
 
 <script>
 
-/* ============================
-   VIEW
-============================ */
+/* =========================
+   ЕЛЕМЕНТИ
+========================= */
+
+const grtView = document.getElementById("grtView");
+const storeView = document.getElementById("storeView");
+
+const grtButton = document.getElementById("grtButton");
+const storeButton = document.getElementById("storeButton");
+
+const canvas = document.getElementById("canvas");
+const stage = document.getElementById("stage");
+const zoomValue = document.getElementById("zoomValue");
+
+const faultBanner = document.getElementById("faultBanner");
+const faultTitle = document.getElementById("faultTitle");
+const faultSubtitle = document.getElementById("faultSubtitle");
+
+const phaseL1Box = document.getElementById("phaseL1Box");
+const phaseL2Box = document.getElementById("phaseL2Box");
+const phaseL3Box = document.getElementById("phaseL3Box");
+
+const phaseL1Value = document.getElementById("phaseL1Value");
+const phaseL2Value = document.getElementById("phaseL2Value");
+const phaseL3Value = document.getElementById("phaseL3Value");
+
+const q0 = document.getElementById("q0");
+const q0State = document.getElementById("q0State");
+
+const qf2 = document.getElementById("qf2");
+const qf2State = document.getElementById("qf2State");
+
+const rcd = document.getElementById("rcd");
+const rcdState = document.getElementById("rcdState");
+
+const upsState = document.getElementById("upsState");
+
+const diagnosticQuestion =
+document.getElementById("diagnosticQuestion");
+
+const answers =
+document.getElementById("answers");
+
+const feedback =
+document.getElementById("feedback");
+
+const commentObservation =
+document.getElementById("commentObservation");
+
+const commentSteps =
+document.getElementById("commentSteps");
+
+const commentWarning =
+document.getElementById("commentWarning");
+
+const commentConclusion =
+document.getElementById("commentConclusion");
+
+const measurementComment =
+document.getElementById("measurementComment");
+
+
+/* =========================
+   ИЗГЛЕДИ
+========================= */
 
 function showGRT(){
 
@@ -1297,32 +1599,36 @@ function showStore(){
 }
 
 
-/* ============================
+/* =========================
    ZOOM
-============================ */
+========================= */
 
 let zoom=1;
 const baseWidth=1900;
 
 function applyZoom(){
 
-  canvas.style.width=(baseWidth*zoom)+"px";
+  canvas.style.width=
+  (baseWidth*zoom)+"px";
 
   zoomValue.textContent=
   Math.round(zoom*100)+" %";
 }
 
 function zoomIn(){
+
   zoom=Math.min(2,zoom+.15);
   applyZoom();
 }
 
 function zoomOut(){
+
   zoom=Math.max(.45,zoom-.15);
   applyZoom();
 }
 
 function normalZoom(){
+
   zoom=1;
   applyZoom();
 }
@@ -1336,9 +1642,9 @@ function fitScreen(){
 }
 
 
-/* ============================
-   FLOW CONTROL
-============================ */
+/* =========================
+   ДВИЖЕНИЕ В ГРТ
+========================= */
 
 const normalFlows=[
   "flowMain",
@@ -1372,34 +1678,43 @@ function resetFlows(){
 }
 
 
-/* ============================
-   COMMENTS
-============================ */
+/* =========================
+   КОМЕНТАРИ
+========================= */
 
-function comments(obs,steps,warn,conclusion){
+function comments(
+  observation,
+  steps,
+  warning,
+  conclusion
+){
 
-  commentObservation.innerHTML=obs;
+  commentObservation.innerHTML=
+  observation;
 
   commentSteps.innerHTML="";
 
-  steps.forEach(s=>{
+  steps.forEach(step=>{
 
-    const li=document.createElement("li");
+    const li=
+    document.createElement("li");
 
-    li.innerHTML=s;
+    li.innerHTML=step;
 
     commentSteps.appendChild(li);
   });
 
-  commentWarning.innerHTML=warn;
+  commentWarning.innerHTML=
+  warning;
 
-  commentConclusion.innerHTML=conclusion;
+  commentConclusion.innerHTML=
+  conclusion;
 }
 
 
-/* ============================
-   NORMAL MODE
-============================ */
+/* =========================
+   НОРМАЛЕН РЕЖИМ
+========================= */
 
 function normalMode(){
 
@@ -1407,7 +1722,8 @@ function normalMode(){
 
   faultBanner.classList.remove("show");
 
-  document.querySelectorAll(".faultButton")
+  document
+  .querySelectorAll(".faultButton")
   .forEach(x=>x.classList.remove("active"));
 
   phaseL1Box.setAttribute("class","phaseOK");
@@ -1452,96 +1768,105 @@ function normalMode(){
   "Изберете една от четирите аварии.";
 
   answers.innerHTML="";
+
   feedback.style.display="none";
 }
 
 
-/* ============================
-   FAULT DATA
-============================ */
+/* =========================
+   АВАРИИ
+========================= */
 
 const faults={
 
 phase:{
 
- title:"⚠ АВАРИЯ: ЛИПСВА ФАЗА L2",
+  title:
+  "⚠ АВАРИЯ: ЛИПСВА ФАЗА L2",
 
- subtitle:
- "L1 и L3 са налични, но L2–N = 0 V.",
+  subtitle:
+  "L1 и L3 са налични, но L2–N = 0 V.",
 
- question:
- "Какво трябва да установим първо?",
+  question:
+  "Какво трябва да установим първо?",
 
- answers:[
-  "Къде се губи L2 – преди или след главния апарат.",
-  "Сменям всички консуматори на L2.",
-  "Включвам и изключвам Q0 няколко пъти."
- ],
+  answers:[
+    "Къде се губи L2 – преди или след главния апарат.",
+    "Сменям всички консуматори на L2.",
+    "Включвам и изключвам Q0 няколко пъти."
+  ],
 
- correct:0
+  correct:0
 },
 
 breaker:{
 
- title:"⚠ АВАРИЯ: QF2 Е СРАБОТИЛ",
+  title:
+  "⚠ АВАРИЯ: QF2 Е СРАБОТИЛ",
 
- subtitle:
- "Хладилният токов кръг е изключен.",
+  subtitle:
+  "Хладилният токов кръг е изключен.",
 
- question:
- "Какво е правилното действие?",
+  question:
+  "Какво е правилното действие?",
 
- answers:[
-  "Веднага включвам QF2.",
-  "Установявам причината за сработването.",
-  "Изключвам осветлението."
- ],
+  answers:[
+    "Веднага включвам QF2.",
+    "Установявам причината за сработването.",
+    "Изключвам осветлението."
+  ],
 
- correct:1
+  correct:1
 },
 
 rcd:{
 
- title:"⚠ АВАРИЯ: СРАБОТИЛА ДТЗ",
+  title:
+  "⚠ АВАРИЯ: СРАБОТИЛА ДТЗ",
 
- subtitle:
- "Контактният кръг след ДТЗ е без напрежение.",
+  subtitle:
+  "Контактният кръг след ДТЗ е без напрежение.",
 
- question:
- "Коя причина трябва да имаме предвид?",
+  question:
+  "Коя причина трябва да имаме предвид?",
 
- answers:[
-  "Възможна утечка или диференциален ток.",
-  "Задължително липсва L2.",
-  "Главният прекъсвач е повреден."
- ],
+  answers:[
+    "Възможна утечка или диференциален ток.",
+    "Задължително липсва L2.",
+    "Главният прекъсвач е повреден."
+  ],
 
- correct:0
+  correct:0
 },
 
 ups:{
 
- title:"⚠ АВАРИЯ: Q0 Е OFF, НО UPS РАБОТИ",
+  title:
+  "⚠ АВАРИЯ: Q0 Е OFF, НО UPS РАБОТИ",
 
- subtitle:
- "Част от критичните товари продължават да бъдат захранени.",
+  subtitle:
+  "Част от критичните товари продължават да бъдат захранени.",
 
- question:
- "Какъв е основният извод?",
+  question:
+  "Какъв е основният извод?",
 
- answers:[
-  "Цялата инсталация е обезточена.",
-  "Трябва да се отчете и резервният източник.",
-  "UPS не е електрически източник."
- ],
+  answers:[
+    "Цялата инсталация е обезточена.",
+    "Трябва да се отчете и резервният източник.",
+    "UPS не е електрически източник."
+  ],
 
- correct:1
+  correct:1
 }
 
 };
 
-
-const order=["phase","breaker","rcd","ups"];
+const faultOrder=[
+  "phase",
+  "breaker",
+  "rcd",
+  "ups"
+];
 
 let faultNumber=-1;
 let currentFault=null;
@@ -1551,11 +1876,13 @@ function nextFault(){
 
   faultNumber++;
 
-  if(faultNumber>=order.length){
+  if(faultNumber>=faultOrder.length){
     faultNumber=0;
   }
 
-  activateFault(order[faultNumber]);
+  activateFault(
+    faultOrder[faultNumber]
+  );
 }
 
 
@@ -1569,20 +1896,22 @@ function activateFault(type){
 
   faultBanner.classList.add("show");
 
-  faultTitle.textContent=data.title;
-  faultSubtitle.textContent=data.subtitle;
+  faultTitle.textContent=
+  data.title;
 
+  faultSubtitle.textContent=
+  data.subtitle;
 
-  const buttonsMap={
-   phase:"faultPhaseBtn",
-   breaker:"faultBreakerBtn",
-   rcd:"faultRcdBtn",
-   ups:"faultUpsBtn"
+  const buttonMap={
+    phase:"faultPhaseBtn",
+    breaker:"faultBreakerBtn",
+    rcd:"faultRcdBtn",
+    ups:"faultUpsBtn"
   };
 
-  document.getElementById(buttonsMap[type])
+  document
+  .getElementById(buttonMap[type])
   .classList.add("active");
-
 
   if(type==="phase"){
     faultPhase();
@@ -1604,25 +1933,29 @@ function activateFault(type){
 }
 
 
-/* ============================
-   ЛИПСА НА ФАЗА
-============================ */
+/* =========================
+   ЛИПСВА ФАЗА
+========================= */
 
 function faultPhase(){
 
-  phaseL2Box.setAttribute("class","phaseFault");
+  phaseL2Box.setAttribute(
+    "class",
+    "phaseFault"
+  );
 
-  phaseL2Value.textContent="0 V";
+  phaseL2Value.textContent=
+  "0 V";
 
   comments(
 
     "L1 и L3 са налични, но <strong>L2 = 0 V</strong>. Част от консуматорите могат да продължат да работят.",
 
     [
-     "Потвърдете измерването.",
-     "Проверете L2 на входа.",
-     "Проследете фазата през Q0.",
-     "Определете кои товари са засегнати."
+      "Потвърдете измерването.",
+      "Проверете L2 на входа.",
+      "Проследете фазата през Q0.",
+      "Определете кои товари са засегнати."
     ],
 
     "Липсата на фаза може да бъде опасна за трифазни двигатели.",
@@ -1633,104 +1966,104 @@ function faultPhase(){
 }
 
 
-/* ============================
+/* =========================
    QF2
-============================ */
+========================= */
 
 function faultBreaker(){
 
   qf2.classList.add("trip");
-  qf2State.textContent="OFF";
 
-  /* движението по QF2 спира */
+  qf2State.textContent=
+  "OFF";
 
   hideFlow("flowCold");
 
   comments(
 
-    "QF2 е сработил. Вижда се, че <strong>движението на енергията към фризерите е спряло</strong>.",
+    "QF2 е сработил. Движението на енергията към фризерите и хладилните витрини е спряло.",
 
     [
-     "Определете кои консуматори са спрели.",
-     "Проверете състоянието на QF2.",
-     "Установете причината за сработването.",
-     "Едва след това се допуска възстановяване."
+      "Определете кои консуматори са спрели.",
+      "Проверете състоянието на QF2.",
+      "Установете причината за сработването.",
+      "Едва след това възстановете захранването."
     ],
 
     "Не включвайте автоматичния прекъсвач многократно без установена причина.",
 
-    "Сработилият прекъсвач е симптом, а не самата причина за повредата."
+    "Сработилият автоматичен прекъсвач е симптом, а не самата причина."
 
   );
 }
 
 
-/* ============================
-   RCD
-============================ */
+/* =========================
+   ДТЗ
+========================= */
 
 function faultRCD(){
 
   rcd.classList.add("trip");
-  rcdState.textContent="OFF";
 
-  /* пред ДТЗ има движение, след нея спира */
+  rcdState.textContent=
+  "OFF";
 
   showFlow("flowSocketsBefore");
-
   hideFlow("flowSocketsAfter");
 
   comments(
 
-    "Захранването достига до ДТЗ, но <strong>след нея движението е спряло</strong>.",
+    "Енергията достига до ДТЗ, но след нея потокът е прекъснат.",
 
     [
-     "Определете кои консуматори са след ДТЗ.",
-     "Проверете за повреден консуматор.",
-     "Имайте предвид възможна утечка към PE.",
-     "Отстранете причината преди възстановяване."
+      "Определете кои консуматори са след ДТЗ.",
+      "Проверете за повреден консуматор.",
+      "Имайте предвид възможна утечка към PE.",
+      "Отстранете причината преди възстановяване."
     ],
 
-    "ДТЗ и автоматичният прекъсвач не изпълняват еднаква защитна функция.",
+    "ДТЗ и автоматичният прекъсвач не изпълняват една и съща защитна функция.",
 
-    "Сработила ДТЗ насочва вниманието към диференциален ток или утечка."
+    "Сработила ДТЗ насочва вниманието към възможен диференциален ток или утечка."
 
   );
 }
 
 
-/* ============================
+/* =========================
    UPS
-============================ */
+========================= */
 
 function faultUPS(){
 
   q0.classList.add("trip");
-  q0State.textContent="OFF";
 
-  /* всички основни потоци спират */
+  q0State.textContent=
+  "OFF";
 
-  normalFlows.forEach(hideFlow);
+  normalFlows.forEach(
+    hideFlow
+  );
 
-  /* UPS става активен */
-
-  upsState.textContent="ACTIVE";
+  upsState.textContent=
+  "ACTIVE";
 
   showFlow("flowUpsBackup");
 
   comments(
 
-    "Основното захранване е прекъснато и зеленото движение е спряло. <strong>Лилавият поток показва резервното захранване от UPS.</strong>",
+    "Основното захранване е прекъснато. Зеленият поток е спрял, но лилавото движение показва резервното захранване от UPS.",
 
     [
-     "Определете кои товари се захранват от UPS.",
-     "Идентифицирайте всички източници.",
-     "Обезопасете Q0.",
-     "Обезопасете и резервния източник.",
-     "Проверете за отсъствие на напрежение."
+      "Определете кои товари се захранват от UPS.",
+      "Идентифицирайте всички източници.",
+      "Обезопасете Q0.",
+      "Обезопасете и резервния източник.",
+      "Проверете за отсъствие на напрежение."
     ],
 
-    "Q0 = OFF не означава непременно, че всички части на системата са без напрежение.",
+    "Q0 = OFF не означава непременно, че всички части са без напрежение.",
 
     "При обезопасяване трябва да бъдат отчетени всички основни, резервни и алтернативни източници."
 
@@ -1738,66 +2071,91 @@ function faultUPS(){
 }
 
 
-/* ============================
-   QUESTIONS
-============================ */
+/* =========================
+   ВЪПРОСИ
+========================= */
 
 function buildQuestion(data){
 
-  diagnosticQuestion.textContent=data.question;
+  diagnosticQuestion.textContent=
+  data.question;
 
   answers.innerHTML="";
 
-  data.answers.forEach((text,index)=>{
+  data.answers.forEach(
+    (text,index)=>{
 
-    const b=document.createElement("button");
+      const button=
+      document.createElement("button");
 
-    b.className="answer";
-    b.textContent=text;
+      button.className=
+      "answer";
 
-    b.onclick=
-    ()=>checkAnswer(index,b);
+      button.textContent=
+      text;
 
-    answers.appendChild(b);
+      button.addEventListener(
+        "click",
+        ()=>checkAnswer(index,button)
+      );
 
-  });
+      answers.appendChild(button);
+    }
+  );
 
-  feedback.style.display="none";
+  feedback.style.display=
+  "none";
 }
 
 
-function checkAnswer(index,button){
+function checkAnswer(
+  index,
+  button
+){
 
-  const data=faults[currentFault];
+  const data=
+  faults[currentFault];
 
-  document.querySelectorAll(".answer")
-  .forEach(x=>x.classList.remove("correct","wrong"));
+  document
+  .querySelectorAll(".answer")
+  .forEach(
+    element=>
+    element.classList.remove(
+      "correct",
+      "wrong"
+    )
+  );
 
   if(index===data.correct){
 
-    button.classList.add("correct");
+    button.classList.add(
+      "correct"
+    );
 
-    feedback.className="good";
+    feedback.className=
+    "good";
 
     feedback.innerHTML=
-    "<strong>✓ Правилно.</strong> Следвайте диагностиката последователно.";
+    "<strong>✓ Правилно.</strong> Продължете диагностиката последователно.";
 
   }else{
 
-    button.classList.add("wrong");
+    button.classList.add(
+      "wrong"
+    );
 
-    feedback.className="bad";
+    feedback.className=
+    "bad";
 
     feedback.innerHTML=
     "<strong>Не е най-добрият първи избор.</strong> Анализирайте показаното състояние на схемата.";
-
   }
 }
 
 
-/* ============================
-   MEASUREMENTS
-============================ */
+/* =========================
+   ИЗМЕРВАНИЯ
+========================= */
 
 function measurement(point){
 
@@ -1828,7 +2186,6 @@ function measurement(point){
     }
   }
 
-
   if(point==="TP2"){
 
     if(currentFault==="breaker"){
@@ -1852,25 +2209,108 @@ function measurement(point){
 }
 
 
-/* ============================
-   FEEDER INFO
-============================ */
+/* =========================
+   СЪБИТИЯ
+========================= */
 
-function selectFeeder(type){
+grtButton.addEventListener(
+  "click",
+  showGRT
+);
 
-  const text={
+storeButton.addEventListener(
+  "click",
+  showStore
+);
 
-   cold:
-   "QF2 – хладилни консуматори: фризери и хладилни витрини."
+document
+.getElementById("normalButton")
+.addEventListener(
+  "click",
+  normalMode
+);
 
-  };
+document
+.getElementById("nextFaultButton")
+.addEventListener(
+  "click",
+  nextFault
+);
 
-  measurementComment.innerHTML=
-  text[type] || "";
-}
+document
+.getElementById("faultPhaseBtn")
+.addEventListener(
+  "click",
+  ()=>activateFault("phase")
+);
+
+document
+.getElementById("faultBreakerBtn")
+.addEventListener(
+  "click",
+  ()=>activateFault("breaker")
+);
+
+document
+.getElementById("faultRcdBtn")
+.addEventListener(
+  "click",
+  ()=>activateFault("rcd")
+);
+
+document
+.getElementById("faultUpsBtn")
+.addEventListener(
+  "click",
+  ()=>activateFault("ups")
+);
+
+document
+.getElementById("zoomOutButton")
+.addEventListener(
+  "click",
+  zoomOut
+);
+
+document
+.getElementById("zoomInButton")
+.addEventListener(
+  "click",
+  zoomIn
+);
+
+document
+.getElementById("fitButton")
+.addEventListener(
+  "click",
+  fitScreen
+);
+
+document
+.getElementById("normalZoomButton")
+.addEventListener(
+  "click",
+  normalZoom
+);
+
+document
+.getElementById("tp1")
+.addEventListener(
+  "click",
+  ()=>measurement("TP1")
+);
+
+document
+.getElementById("tp2")
+.addEventListener(
+  "click",
+  ()=>measurement("TP2")
+);
 
 
-/* START */
+/* =========================
+   НАЧАЛО
+========================= */
 
 applyZoom();
 normalMode();

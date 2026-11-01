@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>QR-02.1 – Правилник за безопасност до 1000 V</title>
+
+<style>
+:root{
+    --blue:#126fa6;
+    --dark:#15364e;
+    --green:#249b61;
+    --red:#d83e33;
+    --orange:#ed8e25;
+    --yellow:#f5c836;
+    --purple:#7253ae;
+    --line:#c9d6df;
+    --light:#f4f8fb;
+}
+
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    font-family:Segoe UI,Arial,sans-serif;
+    background:linear-gradient(#eaf3f8,#f9fbfd);
+    color:var(--dark);
+}
+
+.page{
+    max-width:1180px;
+    margin:auto;
+    padding:16px;
+}
+
+.header{
+    background:linear-gradient(90deg,#07588f,#1584bd);
+    color:white;
+    padding:20px 24px;
+    border-radius:17px 17px 0 0;
+}
+
+.header h1{
+    margin:0;
+    font-size:clamp(22px,3vw,34px);
+}
+
+.header p{
+    margin:7px 0 0;
+    font-size:17px;
+}
+
+.intro{
+    margin-top:16px;
+    padding:14px 17px;
+    background:white;
+    border:1px solid var(--line);
+    border-radius:14px;
+    line-height:1.5;
+}
+
+.layout{
+    display:grid;
+    grid-template-columns:.65fr 1.35fr;
+    gap:16px;
+    margin-top:16px;
+}
+
+.card{
+    background:white;
+    border:1px solid var(--line);
+    border-radius:15px;
+    padding:15px;
+    box-shadow:0 7px 22px rgba(15,50,75,.07);
+}
+
+h2,h3{
+    margin-top:0;
+}
+
+/* БУТОНИ */
+
+.menu{
+    display:grid;
+    gap:9px;
+}
+
+.topic{
+    position:relative;
+    width:100%;
+    min-height:58px;
+
+    padding:9px 10px 9px 52px;
+
+    text-align:left;
+
+    border:1px solid #b9cad5;
+    border-radius:10px;
+
+    background:white;
+    color:var(--dark);
+
+    font-size:15px;
+    font-weight:750;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.topic:hover{
+    background:#edf6fb;
+}
+
+.topic.active{
+    color:white;
+    background:var(--blue);
+    border-color:var(--blue);
+}
+
+.number{
+    position:absolute;
+    left:10px;
+    top:50%;
+    transform:translateY(-50%);
+
+    width:30px;
+    height:30px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+
+    background:#1879b0;
+    color:white;
+
+    font-weight:900;
+}
+
+/* ИНФОРМАЦИЯ */
+
+.display{
+    min-height:510px;
+    position:relative;
+}
+
+.placeholder{
+    padding:35px 20px;
+    text-align:center;
+    color:#60788b;
+}
+
+.info{
+    display:none;
+}
+
+.info.show{
+    display:block;
+    animation:appear .25s ease;
+}
+
+@keyframes appear{
+    from{opacity:0;transform:translateY(7px)}
+    to{opacity:1;transform:none}
+}
+
+.info h2{
+    font-size:clamp(22px,2.7vw,31px);
+    margin-bottom:10px;
+}
+
+.article{
+    display:inline-block;
+
+    margin-bottom:12px;
+    padding:5px 10px;
+
+    background:#e8f3fa;
+    color:#0b6395;
+
+    border-radius:999px;
+
+    font-weight:800;
+}
+
+.rule{
+    margin:12px 0;
+    padding:12px 14px;
+
+    background:#edf6fc;
+
+    border-left:5px solid var(--blue);
+    border-radius:7px;
+
+    line-height:1.5;
+}
+
+.warning{
+    margin:12px 0;
+    padding:12px 14px;
+
+    background:#fff0ed;
+
+    border-left:5px solid var(--red);
+    border-radius:7px;
+
+    color:#98241c;
+
+    font-weight:800;
+    line-height:1.45;
+}
+
+.good{
+    margin:12px 0;
+    padding:12px 14px;
+
+    background:#edfff3;
+
+    border-left:5px solid var(--green);
+    border-radius:7px;
+
+    line-height:1.5;
+}
+
+ul{
+    line-height:1.55;
+}
+
+/* СХЕМА */
+
+.diagram{
+    margin:18px 0;
+    padding:15px;
+
+    background:#f7fafc;
+
+    border:1px solid var(--line);
+    border-radius:12px;
+}
+
+.line{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    flex-wrap:wrap;
+
+    font-weight:800;
+}
+
+.block{
+    padding:10px 13px;
+    border:2px solid #aabdc9;
+    border-radius:9px;
+    background:white;
+}
+
+.arrow{
+    font-size:25px;
+    color:var(--blue);
+}
+
+/* PDF */
+
+.pdfBox{
+    margin-top:16px;
+    padding:16px;
+
+    background:#fff7d7;
+    border:1px solid #dec85c;
+    border-radius:12px;
+
+    text-align:center;
+}
+
+.pdfButton{
+    display:inline-block;
+
+    margin-top:8px;
+    padding:11px 18px;
+
+    text-decoration:none;
+
+    background:#126fa6;
+    color:white;
+
+    border-radius:9px;
+
+    font-weight:800;
+}
+
+.pdfButton:hover{
+    background:#07598c;
+}
+
+.footerNote{
+    margin-top:12px;
+    font-size:13px;
+    color:#657b8b;
+    line-height:1.4;
+}
+
+footer{
+    text-align:center;
+    margin-top:17px;
+    color:#60758a;
+    font-size:13px;
+}
+
+@media(max-width:800px){
+    .layout{
+        grid-template-columns:1fr;
+    }
+
+    .display{
+        min-height:auto;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+<div class="header">
+<h1>⚡ QR-02.1 – Правилник за безопасност до 1000 V</h1>
+
+<p>
+Най-важните правила за безопасна работа по електрообзавеждането
+</p>
+</div>
+
+
+<div class="intro">
+
+<strong>
+Правилник за безопасност и здраве при работа по
+електрообзавеждането с напрежение до 1000 V
+</strong>
+
+<br><br>
+
+Изберете тема от менюто.
+Анимацията представя само най-важните принципи за обучението.
+За пълните изисквания използвайте официалния текст на правилника.
+
+</div>
+
+
+<div class="layout">
+
+<!-- ЛЯВО МЕНЮ -->
+
+<section class="card">
+
+<h3>Основни теми</h3>
+
+<div class="menu">
+
+
+<button class="topic" data-id="scope">
+<span class="number">1</span>
+Обхват и отговорности
+</button>
+
+
+<button class="topic" data-id="groups">
+<span class="number">2</span>
+Квалификационни групи
+</button>
+
+
+<button class="topic" data-id="off">
+<span class="number">3</span>
+Изключване на напрежението
+</button>
+
+
+<button class="topic" data-id="lock">
+<span class="number">4</span>
+Обезопасяване
+</button>
+
+
+<button class="topic" data-id="test">
+<span class="number">5</span>
+Проверка за отсъствие на напрежение
+</button>
+
+
+<button class="topic" data-id="earth">
+<span class="number">6</span>
+Заземяване и сигнализация
+</button>
+
+
+</div>
+
+
+<div class="pdfBox">
+
+<strong>
+📘 Пълен текст на правилника
+</strong>
+
+<br>
+
+<a
+class="pdfButton"
+href="pravilnik.pdf"
+target="_blank">
+
+Отвори правилника PDF
+
+</a>
+
+</div>
+
+</section>
+
+
+<!-- ДЯСНА ИНФОРМАЦИЯ -->
+
+<section class="card display">
+
+
+<div id="placeholder" class="placeholder">
+
+<h2>Изберете тема</h2>
+
+Натиснете един от шестте бутона вляво.
+
+</div>
+
+
+<!-- 1 -->
+
+<div id="scope" class="info">
+
+<h2>1. Обхват и отговорности</h2>
+
+<div class="article">
+Чл. 1–4
+</div>
+
+<p>
+Правилникът определя минималните изисквания
+за безопасна работа по електрообзавеждане
+с напрежение до 1000 V.
+</p>
+
+<div class="rule">
+
+Прилага се при техническа експлоатация,
+оперативно обслужване, ремонт,
+реконструкция и модернизация
+на действащо електрообзавеждане.
+
+</div>
+
+<p>
+Изискванията се отнасят както за собствения персонал,
+така и за външни фирми, когато работят
+по електрообзавеждането на потребителя.
+</p>
+
+<div class="warning">
+
+Правилникът определя минималните изисквания.
+Работодателят може да въведе допълнителни
+мерки за безопасност.
+
+</div>
+
+</div>
+
+
+<!-- 2 -->
+
+<div id="groups" class="info">
+
+<h2>2. Квалификационни групи</h2>
+
+<div class="article">
+Чл. 8, 12–15
+</div>
+
+<p>
+Необходимата квалификационна група зависи
+от длъжността, вида на работата и риска.
+</p>
+
+<div class="diagram">
+
+<div class="line">
+
+<div class="block">
+I група
+<br>
+основни знания
+</div>
+
+<div class="arrow">→</div>
+
+<div class="block">
+II група
+<br>
+начинаещи / под ръководство
+</div>
+
+<div class="arrow">→</div>
+
+<div class="block">
+III група
+<br>
+самостоятелна работа
+</div>
+
+</div>
+
+</div>
+
+<div class="good">
+
+За първа група са необходими основни знания
+за опасностите от електрически ток,
+правилата за безопасност и първа помощ.
+
+</div>
+
+<div class="warning">
+
+Самостоятелното извършване на електротехническа работа
+изисква съответната квалификация,
+предвидена за конкретната дейност.
+
+</div>
+
+</div>
+
+
+<!-- 3 -->
+
+<div id="off" class="info">
+
+<h2>3. Изключване на напрежението</h2>
+
+<div class="article">
+Чл. 131
+</div>
+
+<div class="rule">
+
+<strong>
+Напрежението се изключва от всички страни
+на тоководещите части, по които ще се работи.
+</strong>
+
+</div>
+
+<div class="diagram">
+
+<div class="line">
+
+<div class="block">
+Захранване 1
+</div>
+
+<div class="arrow">✕</div>
+
+<div class="block">
+РАБОТЕН УЧАСТЪК
+</div>
+
+<div class="arrow">✕</div>
+
+<div class="block">
+Захранване 2
+</div>
+
+</div>
+
+</div>
+
+<p>
+Когато в схемата има предпазители,
+се предприемат и предвидените в правилника
+мерки по тяхното изваждане.
+</p>
+
+<div class="warning">
+
+Изключването на един прекъсвач
+не означава непременно,
+че всички части на таблото са без напрежение.
+
+</div>
+
+</div>
+
+
+<!-- 4 -->
+
+<div id="lock" class="info">
+
+<h2>4. Обезопасяване срещу повторно включване</h2>
+
+<div class="article">
+Чл. 131 и чл. 134
+</div>
+
+<p>
+След изключване трябва да бъде предотвратено
+повторното подаване на напрежение към работното място.
+</p>
+
+<div class="rule">
+
+Обезопасяват се ключове, бутони,
+ръкохватки и други органи,
+чрез които може отново да бъде подадено напрежение.
+
+</div>
+
+<div class="diagram">
+
+<div class="line">
+
+<div class="block">
+0 / OFF
+</div>
+
+<div class="arrow">→</div>
+
+<div class="block">
+🔒 БЛОКИРАНЕ
+</div>
+
+<div class="arrow">→</div>
+
+<div class="block">
+НЕ ВКЛЮЧВАЙ!
+<br>
+РАБОТЯТ ХОРА
+</div>
+
+</div>
+
+</div>
+
+<div class="warning">
+
+Никой не трябва да може случайно
+или неправомерно да възстанови захранването.
+
+</div>
+
+</div>
+
+
+<!-- 5 -->
+
+<div id="test" class="info">
+
+<h2>5. Проверка за отсъствие на напрежение</h2>
+
+<div class="article">
+Чл. 141–143
+</div>
+
+<div class="rule">
+
+Непосредствено преди работа се проверява
+за отсъствие на напрежение
+на тоководещите части,
+по които ще се работи.
+
+</div>
+
+<div class="diagram">
+
+<div class="line">
+
+<div class="block">
+ИЗКЛЮЧЕНО
+</div>
+
+<div class="arrow">→</div>
+
+<div class="block">
+ИЗПРАВЕН УРЕД
+</div>
+
+<div class="arrow">→</div>
+
+<div class="block">
+0 V ✓
+</div>
+
+</div>
+
+</div>
+
+<div class="warning">
+
+Положението „OFF“ на прекъсвача
+не заменя измерването.
+
+</div>
+
+<p>
+Постоянно включените стационарни волтметри
+не се приемат сами по себе си като средство,
+с което се доказва отсъствието на напрежение.
+</p>
+
+</div>
+
+
+<!-- 6 -->
+
+<div id="earth" class="info">
+
+<h2>6. Заземяване и сигнализация</h2>
+
+<div class="article">
+Чл. 134 и чл. 145
+</div>
+
+<p>
+Когато за конкретната работа е предвидено
+използване на преносими заземители,
+те се поставят съобразно изискванията на правилника.
+</p>
+
+<div class="rule">
+
+Преносимите заземители се присъединяват
+към всички фази от страните,
+от които може да се подаде напрежение,
+включително при възможност за обратна трансформация.
+
+</div>
+
+<div class="diagram">
+
+<div class="line">
+
+<div class="block">
+ПРОВЕРКА
+<br>
+0 V
+</div>
+
+<div class="arrow">→</div>
+
+<div class="block">
+⏚ ЗАЗЕМЯВАНЕ
+</div>
+
+<div class="arrow">→</div>
+
+<div class="block">
+⚠ СИГНАЛИЗАЦИЯ
+</div>
+
+</div>
+
+</div>
+
+<div class="warning">
+
+Заземяването не се поставя преди
+проверката за отсъствие на напрежение.
+
+</div>
+
+</div>
+
+
+</section>
+
+</div>
+
+
+<footer>
+
+© Величко Атанасов • QR-02.1 • Учебна интерактивна анимация
+
+</footer>
+
+</div>
+
+
+<script>
+
+const buttons =
+document.querySelectorAll(".topic");
+
+const infos =
+document.querySelectorAll(".info");
+
+const placeholder =
+document.getElementById("placeholder");
+
+
+buttons.forEach(button=>{
+
+button.addEventListener("click",()=>{
+
+const id =
+button.dataset.id;
+
+
+/* бутони */
+
+buttons.forEach(b=>
+b.classList.remove("active")
+);
+
+button.classList.add("active");
+
+
+/* секции */
+
+infos.forEach(info=>
+info.classList.remove("show")
+);
+
+
+placeholder.style.display="none";
+
+
+document
+.getElementById(id)
+.classList.add("show");
+
+});
+
+});
+
+</script>
+
+</body>
+</html>

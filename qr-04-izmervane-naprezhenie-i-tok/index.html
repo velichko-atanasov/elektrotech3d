@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Измерване на напрежение и ток</title>
+
+<style>
+:root{
+  --blue:#0b6ea8;
+  --blue2:#0a4e77;
+  --green:#1a9b5f;
+  --red:#d93b33;
+  --yellow:#f0b429;
+  --dark:#163447;
+  --light:#eef5f8;
+  --line:#c9d8e2;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Segoe UI, Arial, sans-serif;
+  background:linear-gradient(#e8f2f7,#f8fbfd);
+  color:var(--dark);
+}
+
+.page{
+  max-width:1250px;
+  margin:auto;
+  padding:16px;
+}
+
+.header{
+  background:linear-gradient(90deg,#085789,#1685bb);
+  color:white;
+  padding:20px 24px;
+  border-radius:18px;
+  box-shadow:0 8px 24px rgba(14,62,95,.15);
+}
+
+.header h1{
+  margin:0;
+  font-size:clamp(24px,3vw,36px);
+}
+
+.header p{
+  margin:7px 0 0;
+  font-size:16px;
+}
+
+.layout{
+  display:grid;
+  grid-template-columns:340px 1fr;
+  gap:16px;
+  margin-top:16px;
+}
+
+.card{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:16px;
+  box-shadow:0 6px 18px rgba(18,51,71,.07);
+}
+
+.sidebar{
+  padding:16px;
+}
+
+.sidebar h2{
+  margin:0 0 12px;
+  font-size:20px;
+}
+
+.modeBtn{
+  width:100%;
+  display:block;
+  margin-bottom:10px;
+  padding:12px 14px;
+  border:1px solid #b9ccd8;
+  border-radius:11px;
+  background:white;
+  color:var(--dark);
+  text-align:left;
+  font-weight:800;
+  font-size:15px;
+  cursor:pointer;
+  transition:.18s;
+}
+
+.modeBtn:hover{
+  background:#edf7fb;
+}
+
+.modeBtn.active{
+  background:var(--blue);
+  color:white;
+  border-color:var(--blue);
+}
+
+.control{
+  margin-top:16px;
+  padding:12px;
+  background:#f6fafc;
+  border:1px solid var(--line);
+  border-radius:12px;
+}
+
+.control label{
+  display:block;
+  font-weight:800;
+  margin-bottom:8px;
+}
+
+.control input[type="range"]{
+  width:100%;
+}
+
+.valueBox{
+  margin-top:6px;
+  font-size:15px;
+  font-weight:700;
+  color:#36556a;
+}
+
+.summary{
+  margin-top:16px;
+  padding:12px;
+  border-radius:12px;
+  background:#eef7fc;
+  border-left:5px solid var(--blue);
+  line-height:1.5;
+}
+
+.summary.warning{
+  background:#fff1ee;
+  border-left-color:var(--red);
+  color:#8c241d;
+}
+
+.main{
+  padding:16px;
+}
+
+.scene{
+  border:1px solid var(--line);
+  border-radius:15px;
+  overflow:hidden;
+  background:#f8fbfd;
+}
+
+.sceneTitle{
+  padding:12px 14px;
+  background:#e6f1f7;
+  font-weight:850;
+}
+
+svg{
+  width:100%;
+  height:auto;
+  display:block;
+}
+
+.pathBase{
+  fill:none;
+  stroke:#45687e;
+  stroke-width:6;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.energy{
+  fill:none;
+  stroke:var(--red);
+  stroke-width:7;
+  stroke-dasharray:9 10;
+  stroke-linecap:round;
+  opacity:.95;
+  filter:drop-shadow(0 0 4px rgba(255,80,80,.55));
+  animation:flow 1s linear infinite;
+}
+
+.energy.off{
+  opacity:.18;
+  animation:none;
+}
+
+@keyframes flow{
+  to{stroke-dashoffset:-38}
+}
+
+.highlight{
+  fill:none;
+  stroke:#f0b429;
+  stroke-width:8;
+  opacity:0;
+  filter:drop-shadow(0 0 5px rgba(240,180,41,.8));
+  transition:.25s;
+}
+
+.highlight.show{
+  opacity:1;
+}
+
+.meterGlow{
+  opacity:0;
+  transition:.25s;
+}
+
+.meterGlow.show{
+  opacity:1;
+}
+
+.noteBox{
+  margin-top:14px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.note{
+  padding:12px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:white;
+}
+
+.note strong{
+  display:block;
+  margin-bottom:7px;
+  font-size:16px;
+}
+
+.readings{
+  margin-top:14px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+
+.reading{
+  padding:12px;
+  background:#f7fafc;
+  border:1px solid var(--line);
+  border-radius:12px;
+  text-align:center;
+}
+
+.reading .label{
+  font-size:13px;
+  color:#5e7687;
+  margin-bottom:5px;
+}
+
+.reading .val{
+  font-size:23px;
+  font-weight:900;
+  color:var(--blue2);
+}
+
+.formula{
+  margin-top:14px;
+  padding:12px;
+  background:#eef8f2;
+  border-left:5px solid var(--green);
+  border-radius:10px;
+  line-height:1.5;
+  font-size:15px;
+}
+
+.footer{
+  text-align:center;
+  margin-top:16px;
+  color:#667c8d;
+  font-size:13px;
+}
+
+@media(max-width:900px){
+  .layout{grid-template-columns:1fr}
+  .noteBox{grid-template-columns:1fr}
+  .readings{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="header">
+    <h1>Измерване на електрическо напрежение и ток</h1>
+    <p>Интерактивна учебна анимация: волтметър и амперметър</p>
+  </div>
+
+  <div class="layout">
+
+    <aside class="card sidebar">
+      <h2>Изберете режим</h2>
+
+      <button id="modeV" class="modeBtn active">1. Измерване на напрежение</button>
+      <button id="modeA" class="modeBtn">2. Измерване на ток</button>
+
+      <div class="control">
+        <label for="voltageSlider">Захранващо напрежение U = <span id="uValText">12.0</span> V</label>
+        <input id="voltageSlider" type="range" min="0" max="24" step="0.5" value="12">
+        <div class="valueBox">Променя напрежението на източника.</div>
+      </div>
+
+      <div class="control">
+        <label for="resSlider">Съпротивление R = <span id="rValText">6.0</span> Ω</label>
+        <input id="resSlider" type="range" min="1" max="20" step="0.5" value="6">
+        <div class="valueBox">Променя съпротивлението на консуматора.</div>
+      </div>
+
+      <div id="summaryBox" class="summary">
+        <strong>Режим: Измерване на напрежение</strong><br><br>
+        Волтметърът се свързва <strong>паралелно</strong> към елемента, върху който се измерва напрежението.
+      </div>
+    </aside>
+
+    <main class="card main">
+      <div class="scene">
+        <div class="sceneTitle">Електрическа схема и начин на свързване</div>
+
+        <svg viewBox="0 0 930 500" aria-label="Схема за измерване на напрежение и ток">
+          
+          <!-- BASE CIRCUIT -->
+          <path class="pathBase" d="M120 100 H260" />
+          <path class="pathBase" d="M410 100 H610" />
+          <path class="pathBase" d="M750 100 H820 V350 H120 V100" />
+
+          <!-- ENERGY PATH -->
+          <path id="energyPath" class="energy" d="M120 100 H260 M410 100 H610 M750 100 H820 V350 H120 V100" />
+
+          <!-- DC SOURCE -->
+          <line x1="95" y1="70" x2="95" y2="130" stroke="#1e3d51" stroke-width="5"/>
+          <line x1="120" y1="55" x2="120" y2="145" stroke="#1e3d51" stroke-width="9"/>
+          <text x="75" y="55" font-size="17" font-weight="800" fill="#163447">Източник</text>
+          <text x="80" y="170" font-size="17" font-weight="800" fill="#163447">U</text>
+          <text x="97" y="170" font-size="15" fill="#163447">=</text>
+          <text id="sourceLabel" x="115" y="170" font-size="17" font-weight="800" fill="#0b6ea8">12.0 V</text>
+
+          <!-- AMMETER -->
+          <circle id="ammeterCircle" cx="335" cy="100" r="52" fill="white" stroke="#8daab9" stroke-width="3"/>
+          <text x="335" y="89" text-anchor="middle" font-size="26" font-weight="900" fill="#17384d">A</text>
+          <text id="ammeterValue" x="335" y="118" text-anchor="middle" font-size="16" font-weight="800" fill="#0b6ea8">2.00 A</text>
+          <circle id="ammeterGlow" class="meterGlow" cx="335" cy="100" r="63" fill="none" stroke="#f0b429" stroke-width="7"/>
+
+          <!-- RESISTOR -->
+          <rect x="610" y="72" width="140" height="56" rx="10" fill="white" stroke="#8daab9" stroke-width="3"/>
+          <path d="M625 100 l12 -18 l14 36 l14 -36 l14 36 l14 -36 l14 36 l14 -36 l12 18"
+                fill="none" stroke="#1d3f53" stroke-width="4" stroke-linejoin="round" />
+          <text x="680" y="60" text-anchor="middle" font-size="16" font-weight="800" fill="#163447">Консуматор / R</text>
+          <text id="resLabel" x="680" y="155" text-anchor="middle" font-size="16" font-weight="800" fill="#0b6ea8">R = 6.0 Ω</text>
+
+          <!-- VOLTMETER BRANCH -->
+          <path class="pathBase" d="M610 100 V230 H750 V100" />
+          <circle id="voltmeterCircle" cx="680" cy="230" r="52" fill="white" stroke="#8daab9" stroke-width="3"/>
+          <text x="680" y="219" text-anchor="middle" font-size="26" font-weight="900" fill="#17384d">V</text>
+          <text id="voltmeterValue" x="680" y="248" text-anchor="middle" font-size="16" font-weight="800" fill="#0b6ea8">12.0 V</text>
+          <circle id="voltmeterGlow" class="meterGlow show" cx="680" cy="230" r="63" fill="none" stroke="#f0b429" stroke-width="7"/>
+
+          <!-- VOLT HIGHLIGHT -->
+          <path id="voltHighlight" class="highlight show" d="M610 100 V230 H750 V100" />
+
+          <!-- CURRENT HIGHLIGHT -->
+          <circle id="ampHighlight" class="highlight" cx="335" cy="100" r="66" />
+
+          <!-- labels -->
+          <text x="252" y="73" font-size="14" font-weight="700" fill="#677f8e">последователно</text>
+          <text x="725" y="288" font-size="14" font-weight="700" fill="#677f8e">паралелно</text>
+
+        </svg>
+      </div>
+
+      <div class="readings">
+        <div class="reading">
+          <div class="label">Напрежение</div>
+          <div class="val" id="readingU">12.0 V</div>
+        </div>
+
+        <div class="reading">
+          <div class="label">Ток</div>
+          <div class="val" id="readingI">2.00 A</div>
+        </div>
+
+        <div class="reading">
+          <div class="label">Съпротивление</div>
+          <div class="val" id="readingR">6.0 Ω</div>
+        </div>
+      </div>
+
+      <div id="formulaBox" class="formula">
+        Използваме закона на Ом: <strong>I = U / R</strong>.<br>
+        При U = 12.0 V и R = 6.0 Ω получаваме I = 2.00 A.
+      </div>
+
+      <div class="noteBox">
+        <div class="note">
+          <strong>Измерване на напрежение</strong>
+          Волтметърът се свързва <strong>паралелно</strong> между двете точки,
+          между които искаме да измерим напрежението.
+        </div>
+
+        <div class="note">
+          <strong>Измерване на ток</strong>
+          Амперметърът се свързва <strong>последователно</strong> във веригата,
+          така че целият ток да преминава през него.
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <div class="footer">
+    © Величко Атанасов • Учебна интерактивна анимация
+  </div>
+</div>
+
+<script>
+let mode = "V";
+
+const modeVBtn = document.getElementById("modeV");
+const modeABtn = document.getElementById("modeA");
+
+const voltageSlider = document.getElementById("voltageSlider");
+const resSlider = document.getElementById("resSlider");
+
+const uValText = document.getElementById("uValText");
+const rValText = document.getElementById("rValText");
+
+const sourceLabel = document.getElementById("sourceLabel");
+const ammeterValue = document.getElementById("ammeterValue");
+const voltmeterValue = document.getElementById("voltmeterValue");
+const resLabel = document.getElementById("resLabel");
+
+const readingU = document.getElementById("readingU");
+const readingI = document.getElementById("readingI");
+const readingR = document.getElementById("readingR");
+
+const formulaBox = document.getElementById("formulaBox");
+const summaryBox = document.getElementById("summaryBox");
+
+const ampHighlight = document.getElementById("ampHighlight");
+const voltHighlight = document.getElementById("voltHighlight");
+const ammeterGlow = document.getElementById("ammeterGlow");
+const voltmeterGlow = document.getElementById("voltmeterGlow");
+const energyPath = document.getElementById("energyPath");
+
+function calc(){
+  const U = parseFloat(voltageSlider.value);
+  const R = parseFloat(resSlider.value);
+  const I = R > 0 ? U / R : 0;
+
+  uValText.textContent = U.toFixed(1);
+  rValText.textContent = R.toFixed(1);
+
+  sourceLabel.textContent = U.toFixed(1) + " V";
+  resLabel.textContent = "R = " + R.toFixed(1) + " Ω";
+
+  ammeterValue.textContent = I.toFixed(2) + " A";
+  voltmeterValue.textContent = U.toFixed(1) + " V";
+
+  readingU.textContent = U.toFixed(1) + " V";
+  readingI.textContent = I.toFixed(2) + " A";
+  readingR.textContent = R.toFixed(1) + " Ω";
+
+  formulaBox.innerHTML =
+    'Използваме закона на Ом: <strong>I = U / R</strong>.<br>' +
+    'При U = ' + U.toFixed(1) + ' V и R = ' + R.toFixed(1) +
+    ' Ω получаваме I = ' + I.toFixed(2) + ' A.';
+
+  if(U === 0){
+    energyPath.classList.add("off");
+  }else{
+    energyPath.classList.remove("off");
+  }
+}
+
+function setModeV(){
+  mode = "V";
+  modeVBtn.classList.add("active");
+  modeABtn.classList.remove("active");
+
+  voltHighlight.classList.add("show");
+  voltmeterGlow.classList.add("show");
+
+  ampHighlight.classList.remove("show");
+  ammeterGlow.classList.remove("show");
+
+  summaryBox.className = "summary";
+  summaryBox.innerHTML =
+    "<strong>Режим: Измерване на напрежение</strong><br><br>" +
+    "Волтметърът се свързва <strong>паралелно</strong> към консуматора. " +
+    "Той измерва разликата в потенциалите между две точки.";
+}
+
+function setModeA(){
+  mode = "A";
+  modeABtn.classList.add("active");
+  modeVBtn.classList.remove("active");
+
+  voltHighlight.classList.remove("show");
+  voltmeterGlow.classList.remove("show");
+
+  ampHighlight.classList.add("show");
+  ammeterGlow.classList.add("show");
+
+  summaryBox.className = "summary";
+  summaryBox.innerHTML =
+    "<strong>Режим: Измерване на ток</strong><br><br>" +
+    "Амперметърът се свързва <strong>последователно</strong> във веригата. " +
+    "През него преминава целият ток на веригата.";
+}
+
+modeVBtn.addEventListener("click", setModeV);
+modeABtn.addEventListener("click", setModeA);
+
+voltageSlider.addEventListener("input", calc);
+resSlider.addEventListener("input", calc);
+
+calc();
+setModeV();
+</script>
+
+</body>
+</html>

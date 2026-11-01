@@ -1,0 +1,2067 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>QR-01 – Безопасна работа по електрическа инсталация</title>
+
+<style>
+
+:root{
+    --blue:#116fa6;
+    --dark:#15364e;
+    --green:#279c62;
+    --red:#d83d32;
+    --orange:#ef8e21;
+    --yellow:#ffd43b;
+    --purple:#7254af;
+    --line:#c8d5de;
+    --muted:#617688;
+}
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    background:linear-gradient(#e9f2f7,#f9fbfc);
+    font-family:Segoe UI,Arial,sans-serif;
+    color:var(--dark);
+}
+
+.page{
+    max-width:1220px;
+    margin:auto;
+    padding:16px;
+}
+
+/* ================= HEADER ================= */
+
+.header{
+    background:linear-gradient(90deg,#07568e,#1885bc);
+    color:white;
+    padding:18px 22px;
+    border-radius:16px 16px 0 0;
+}
+
+.header h1{
+    margin:0;
+    font-size:clamp(22px,3vw,34px);
+}
+
+.header p{
+    margin:6px 0 0;
+    font-size:17px;
+}
+
+.layout{
+    display:grid;
+    grid-template-columns:1.42fr .58fr;
+    gap:16px;
+    margin-top:16px;
+}
+
+.card{
+    background:white;
+    border:1px solid var(--line);
+    border-radius:15px;
+    padding:15px;
+    box-shadow:0 7px 22px rgba(15,50,75,.08);
+}
+
+.top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-bottom:10px;
+}
+
+#currentStep{
+    font-size:20px;
+    font-weight:800;
+}
+
+.status{
+    padding:7px 13px;
+    border-radius:999px;
+    border:1px solid #b8c8d4;
+    background:white;
+    font-weight:800;
+}
+
+.status.off{
+    background:#eafff1;
+    border-color:#52ae75;
+    color:#087039;
+}
+
+/* ==========================================================
+   СНИМКА
+   ========================================================== */
+
+.scene{
+    position:relative;
+    width:100%;
+    overflow:hidden;
+    border:1px solid #bacbd6;
+    border-radius:13px;
+    background:#dce7ed;
+}
+
+.scene img{
+    width:100%;
+    height:auto;
+    display:block;
+    user-select:none;
+}
+
+/* overlay */
+
+.overlay{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+}
+
+/* ==========================================================
+   ДВИЖЕНИЕ ПО ПРОВОДНИЦИТЕ
+   ========================================================== */
+
+#energyFlow{
+    opacity:1;
+    transition:opacity .5s ease;
+}
+
+#energyFlow.off{
+    opacity:0;
+}
+
+/* ==========================================================
+   ПОДЧЕРТАВАНЕ НА ЕЛЕМЕНТИ
+   ========================================================== */
+
+.focus{
+    position:absolute;
+    opacity:0;
+    pointer-events:none;
+
+    border:4px solid #ffd631;
+    border-radius:14px;
+
+    box-shadow:
+        0 0 0 5px rgba(255,214,49,.17),
+        0 0 32px rgba(255,201,0,.9);
+
+    transition:.3s;
+}
+
+.focus.show{
+    opacity:1;
+    animation:pulseFocus 1s infinite;
+}
+
+@keyframes pulseFocus{
+
+    50%{
+        box-shadow:
+            0 0 0 11px rgba(255,214,49,.08),
+            0 0 44px rgba(255,201,0,1);
+    }
+
+}
+
+/*
+Позициите са върху качената снимка.
+При нужда могат после леко да се донастроят.
+*/
+
+#focusSwitch{
+    left:24%;
+    top:29%;
+    width:12%;
+    height:15%;
+}
+
+#focusLock{
+    left:31%;
+    top:64%;
+    width:22%;
+    height:20%;
+}
+
+#focusTester{
+    left:27%;
+    top:42%;
+    width:18%;
+    height:23%;
+}
+
+#focusPPE{
+    left:1%;
+    top:9%;
+    width:34%;
+    height:70%;
+}
+
+#focusBarrier{
+    left:57%;
+    top:74%;
+    width:41%;
+    height:15%;
+}
+
+/* ==========================================================
+   ГОЛЯМО ИНФОРМАЦИОННО ПОЛЕ ВЪРХУ СНИМКАТА
+   ========================================================== */
+
+.bigMessage{
+    position:absolute;
+
+    left:4%;
+    right:4%;
+    top:50%;
+
+    transform:translateY(-50%) scale(.94);
+
+    z-index:20;
+
+    background:rgba(255,255,255,.97);
+
+    border:4px solid var(--blue);
+    border-radius:17px;
+
+    padding:20px 22px;
+
+    box-shadow:0 12px 40px rgba(0,35,60,.28);
+
+    opacity:0;
+    visibility:hidden;
+
+    transition:.3s;
+}
+
+.bigMessage.show{
+    opacity:1;
+    visibility:visible;
+    transform:translateY(-50%) scale(1);
+}
+
+.bigMessage.red{
+    border-color:var(--red);
+}
+
+.bigMessage.green{
+    border-color:var(--green);
+}
+
+.bigMessage.orange{
+    border-color:var(--orange);
+}
+
+.bigMessage.purple{
+    border-color:var(--purple);
+}
+
+.bigMessage h2{
+    margin:0 0 10px;
+    font-size:clamp(22px,3.3vw,36px);
+    line-height:1.1;
+}
+
+.bigMessage p{
+    margin:8px 0;
+    font-size:clamp(15px,1.8vw,19px);
+    line-height:1.4;
+}
+
+.bigMessage .veryImportant{
+    margin-top:12px;
+    padding:10px 12px;
+
+    border-radius:9px;
+
+    background:#fff0ed;
+    color:#9c2119;
+
+    font-weight:900;
+
+    font-size:clamp(16px,2vw,21px);
+}
+
+.bigMessage .rule{
+    margin-top:10px;
+    padding:9px 12px;
+
+    background:#edf6fc;
+    border-left:5px solid var(--blue);
+
+    font-weight:700;
+}
+
+/* затваряне само информационно */
+
+.closeMessage{
+    position:absolute;
+    right:10px;
+    top:8px;
+
+    width:36px;
+    height:36px;
+
+    border:0;
+    border-radius:50%;
+
+    background:#e8eef2;
+
+    color:#17374f;
+
+    font-size:23px;
+    font-weight:700;
+
+    cursor:pointer;
+}
+
+/* ==========================================================
+   0 V
+   ========================================================== */
+
+.zero{
+    position:absolute;
+
+    left:39%;
+    top:53%;
+
+    transform:translate(-50%,-50%) scale(.7);
+
+    opacity:0;
+
+    padding:9px 16px;
+
+    color:#087038;
+    background:#effff4;
+
+    border:3px solid #2da661;
+    border-radius:999px;
+
+    font-size:24px;
+    font-weight:900;
+
+    box-shadow:0 0 30px rgba(30,205,95,.85);
+
+    transition:.3s;
+}
+
+.zero.show{
+    opacity:1;
+
+    transform:
+        translate(-50%,-50%)
+        scale(1);
+}
+
+/* ==========================================================
+   ОБЕЗОПАСЯВАНЕ НА АПАРАТА
+   ========================================================== */
+
+.lockSymbol{
+    position:absolute;
+
+    left:31%;
+    top:62%;
+
+    padding:8px 11px;
+
+    color:white;
+    background:#cf382e;
+
+    border:2px solid white;
+    border-radius:9px;
+
+    font-size:13px;
+    font-weight:900;
+
+    opacity:0;
+
+    transition:.3s;
+}
+
+.lockSymbol.show{
+    opacity:1;
+
+    animation:lockPulse 1s infinite;
+}
+
+@keyframes lockPulse{
+
+    50%{
+        filter:brightness(1.35);
+    }
+
+}
+
+/* ==========================================================
+   ЛПС / ОГРАЖДАНЕ
+   ========================================================== */
+
+.smallLabel{
+    position:absolute;
+
+    padding:7px 10px;
+
+    color:white;
+
+    border-radius:8px;
+
+    font-weight:800;
+
+    opacity:0;
+
+    transition:.3s;
+}
+
+.smallLabel.show{
+    opacity:1;
+}
+
+#ppeLabel{
+    left:3%;
+    top:8%;
+
+    background:rgba(13,105,165,.95);
+}
+
+#barrierLabel{
+    right:3%;
+    bottom:10%;
+
+    background:rgba(111,77,177,.96);
+}
+
+/* ==========================================================
+   ТЕКСТ ПОД СНИМКАТА
+   ========================================================== */
+
+.description{
+    min-height:92px;
+
+    margin-top:12px;
+    padding:12px;
+
+    border:1px solid var(--line);
+    border-radius:11px;
+}
+
+.description strong{
+    font-size:18px;
+}
+
+#feedback{
+    margin-top:7px;
+
+    font-weight:800;
+    color:#087139;
+}
+
+/* ==========================================================
+   ДЯСНА ЧАСТ
+   ========================================================== */
+
+.controls{
+    display:grid;
+    gap:12px;
+}
+
+h3{
+    margin:0 0 12px;
+}
+
+.stepButtons{
+    display:grid;
+    gap:9px;
+}
+
+button.step{
+    position:relative;
+
+    width:100%;
+    min-height:55px;
+
+    padding:9px 10px 9px 46px;
+
+    border:1px solid #bacbd6;
+    border-radius:10px;
+
+    background:white;
+    color:var(--dark);
+
+    text-align:left;
+
+    font-size:15px;
+    font-weight:750;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+button.step:hover{
+    background:#edf6fb;
+}
+
+button.step.active{
+    color:white;
+
+    background:var(--blue);
+
+    border-color:var(--blue);
+}
+
+button.step.completed{
+    border-color:#54ae77;
+
+    background:#ecfff3;
+}
+
+button.step.completed::after{
+    content:"✓";
+
+    position:absolute;
+
+    right:12px;
+
+    font-size:22px;
+
+    color:#168249;
+}
+
+.number{
+    position:absolute;
+
+    left:9px;
+    top:50%;
+
+    transform:translateY(-50%);
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    width:28px;
+    height:28px;
+
+    color:white;
+
+    background:#1475ad;
+
+    border-radius:50%;
+}
+
+.reset{
+    width:100%;
+    min-height:44px;
+
+    margin-top:12px;
+
+    background:#f5f8fa;
+
+    border:1px solid #b9cad5;
+    border-radius:9px;
+
+    color:var(--dark);
+
+    font-weight:800;
+
+    cursor:pointer;
+}
+
+.warning{
+    padding:12px;
+
+    background:#fff7ce;
+
+    border:1px solid #dfc75b;
+    border-radius:10px;
+
+    line-height:1.45;
+}
+
+footer{
+    margin-top:15px;
+
+    text-align:center;
+
+    color:var(--muted);
+
+    font-size:13px;
+}
+
+/* responsive */
+
+@media(max-width:850px){
+
+    .layout{
+        grid-template-columns:1fr;
+    }
+
+    .bigMessage{
+        left:2%;
+        right:2%;
+
+        padding:15px;
+    }
+
+}
+</style>
+</head>
+
+
+<body>
+
+<div class="page">
+
+
+<div class="header">
+
+<h1>
+⚡ QR-01 – Безопасна работа по електрическа инсталация
+</h1>
+
+<p>
+Основна последователност преди започване на работа
+</p>
+
+</div>
+
+
+<div class="layout">
+
+
+<!-- ==========================================================
+     ЛЯВА ЧАСТ
+     ========================================================== -->
+
+<section class="card">
+
+
+<div class="top">
+
+<div id="currentStep">
+
+Изходно състояние – електрическото табло е под напрежение
+
+</div>
+
+
+<div id="powerStatus"
+     class="status">
+
+Захранване: ВКЛ.
+
+</div>
+
+</div>
+
+
+
+<div class="scene">
+
+
+<!-- ВАШАТА СНИМКА -->
+
+<img
+    src="image(20261101-063939).png"
+    alt="Безопасна работа по електрическа инсталация">
+
+
+
+<!-- ДВИЖЕНИЕ ВЪРХУ ПРОВОДНИЦИТЕ -->
+
+<svg
+    class="overlay"
+    viewBox="0 0 589 442"
+    preserveAspectRatio="none">
+
+
+<defs>
+
+<filter id="glow">
+
+<feGaussianBlur
+    stdDeviation="2.5"
+    result="blur"/>
+
+<feMerge>
+
+<feMergeNode in="blur"/>
+
+<feMergeNode in="SourceGraphic"/>
+
+</feMerge>
+
+</filter>
+
+</defs>
+
+
+
+<g id="energyFlow">
+
+
+<!-- L -->
+
+<path
+d="
+M170 93
+C183 112 190 133 194 155
+C199 179 202 198 206 216
+"
+
+fill="none"
+stroke="#ffbb19"
+stroke-width="5"
+stroke-linecap="round"
+stroke-dasharray="8 12"
+filter="url(#glow)">
+
+<animate
+attributeName="stroke-dashoffset"
+values="0;-42"
+dur="1s"
+repeatCount="indefinite"/>
+
+</path>
+
+
+<path
+d="
+M194 93
+C204 114 210 136 213 158
+C217 180 220 198 224 215
+"
+
+fill="none"
+stroke="#ff8f19"
+stroke-width="5"
+stroke-linecap="round"
+stroke-dasharray="8 12"
+filter="url(#glow)">
+
+<animate
+attributeName="stroke-dashoffset"
+values="0;-42"
+dur="1.15s"
+repeatCount="indefinite"/>
+
+</path>
+
+
+<!-- PE -->
+
+<path
+d="
+M151 94
+C156 118 159 139 161 161
+C163 184 164 200 167 215
+"
+
+fill="none"
+stroke="#38d86a"
+stroke-width="5"
+stroke-linecap="round"
+stroke-dasharray="8 12"
+filter="url(#glow)">
+
+<animate
+attributeName="stroke-dashoffset"
+values="0;-42"
+dur="1.2s"
+repeatCount="indefinite"/>
+
+</path>
+
+
+<!-- N -->
+
+<path
+d="
+M286 94
+C292 117 295 140 297 162
+C299 185 301 201 303 215
+"
+
+fill="none"
+stroke="#278fff"
+stroke-width="5"
+stroke-linecap="round"
+stroke-dasharray="8 12"
+filter="url(#glow)">
+
+<animate
+attributeName="stroke-dashoffset"
+values="0;-42"
+dur="1.25s"
+repeatCount="indefinite"/>
+
+</path>
+
+
+</g>
+
+
+
+<!-- ПРОВЕРКА -->
+
+<g id="probeGlow"
+   opacity="0">
+
+<circle
+
+cx="205"
+cy="215"
+r="19"
+
+fill="none"
+
+stroke="#ffe03b"
+stroke-width="7"
+
+filter="url(#glow)">
+
+<animate
+attributeName="r"
+values="15;28;15"
+dur=".8s"
+repeatCount="indefinite"/>
+
+<animate
+attributeName="opacity"
+values=".35;1;.35"
+dur=".8s"
+repeatCount="indefinite"/>
+
+</circle>
+
+</g>
+
+
+</svg>
+
+
+
+<!-- ПОДЧЕРТАВАНЕ -->
+
+<div
+id="focusSwitch"
+class="focus">
+</div>
+
+
+<div
+id="focusLock"
+class="focus">
+</div>
+
+
+<div
+id="focusTester"
+class="focus">
+</div>
+
+
+<div
+id="focusPPE"
+class="focus">
+</div>
+
+
+<div
+id="focusBarrier"
+class="focus">
+</div>
+
+
+
+<!-- ДОПЪЛНИТЕЛНИ ЕФЕКТИ -->
+
+<div
+id="zeroIndicator"
+class="zero">
+
+0 V ✓
+
+</div>
+
+
+<div
+id="lockSymbol"
+class="lockSymbol">
+
+🔒 НЕ ВКЛЮЧВАЙ!
+<br>
+РАБОТЯТ ХОРА
+
+</div>
+
+
+<div
+id="ppeLabel"
+class="smallLabel">
+
+ЛПС:
+каска • очила • ръкавици • защитни обувки
+
+</div>
+
+
+<div
+id="barrierLabel"
+class="smallLabel">
+
+ОГРАДЕНО И ОБОЗНАЧЕНО
+
+</div>
+
+
+
+<!-- ==========================================================
+     ГОЛЯМО СЪОБЩЕНИЕ
+     ========================================================== -->
+
+<div
+id="bigMessage"
+class="bigMessage">
+
+
+<button
+id="closeMessage"
+class="closeMessage">
+
+×
+
+</button>
+
+
+<div id="bigMessageContent">
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+<div class="description">
+
+<strong id="instructionTitle">
+
+Започнете с „1. Изключване“
+
+</strong>
+
+
+<div id="instructionText">
+
+Преди започване на работа трябва да бъде определена
+електрическата верига и всички възможни източници на захранване.
+
+</div>
+
+
+<div id="feedback">
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+<!-- ==========================================================
+     ДЯСНА ЧАСТ
+     ========================================================== -->
+
+<aside class="controls">
+
+
+<section class="card">
+
+<h3>
+Основни действия
+</h3>
+
+
+<div class="stepButtons">
+
+
+<button
+class="step"
+data-step="0">
+
+<span class="number">
+1
+</span>
+
+Изключване на напрежението
+
+</button>
+
+
+
+<button
+class="step"
+data-step="1">
+
+<span class="number">
+2
+</span>
+
+Обезопасяване срещу повторно включване
+
+</button>
+
+
+
+<button
+class="step"
+data-step="2">
+
+<span class="number">
+3
+</span>
+
+Проверка за отсъствие на напрежение
+
+</button>
+
+
+
+<button
+class="step"
+data-step="3">
+
+<span class="number">
+4
+</span>
+
+ЛПС и подходящи инструменти
+
+</button>
+
+
+
+<button
+class="step"
+data-step="4">
+
+<span class="number">
+5
+</span>
+
+Ограждане и сигнализация
+
+</button>
+
+
+</div>
+
+
+<button
+id="resetBtn"
+class="reset">
+
+↺ Върни анимацията в началото
+
+</button>
+
+
+</section>
+
+
+
+<div class="warning">
+
+<strong>
+Важно
+</strong>
+
+<br><br>
+
+Изключването на един прекъсвач
+не доказва само по себе си,
+че мястото на работа е без напрежение.
+
+<br><br>
+
+Преди започване на работа задължително се извършва
+<strong>проверка за отсъствие на напрежение</strong>.
+
+</div>
+
+
+</aside>
+
+
+</div>
+
+
+
+<footer>
+
+© Величко Атанасов
+• Учебна интерактивна анимация
+
+</footer>
+
+
+</div>
+
+
+
+<script>
+
+/* ==========================================================
+   STATE
+   ========================================================== */
+
+let completed=-1;
+
+
+const state={
+
+powerOff:false,
+
+locked:false,
+
+tested:false,
+
+ppe:false,
+
+barrier:false
+
+};
+
+
+const $ =
+selector =>
+document.querySelector(selector);
+
+
+
+/* ==========================================================
+   ПОМОЩНИ ФУНКЦИИ
+   ========================================================== */
+
+function clearFocus(){
+
+document
+.querySelectorAll(".focus")
+.forEach(
+el=>el.classList.remove("show")
+);
+
+}
+
+
+
+function focus(id){
+
+clearFocus();
+
+document
+.getElementById(id)
+.classList.add("show");
+
+}
+
+
+
+function showMessage(
+html,
+colourClass=""
+){
+
+const box=
+$("#bigMessage");
+
+
+box.className=
+"bigMessage show "
++
+colourClass;
+
+
+$("#bigMessageContent")
+.innerHTML=
+html;
+
+}
+
+
+
+function hideMessage(){
+
+$("#bigMessage")
+.classList.remove("show");
+
+}
+
+
+
+$("#closeMessage")
+.addEventListener(
+"click",
+hideMessage
+);
+
+
+
+function updateButtons(){
+
+document
+.querySelectorAll(
+"[data-step]"
+)
+.forEach(
+(btn,index)=>{
+
+btn.classList.remove(
+"active",
+"completed"
+);
+
+
+if(index <= completed){
+
+btn.classList.add(
+"completed"
+);
+
+}
+
+}
+);
+
+}
+
+
+
+/* ==========================================================
+   СТЪПКА 1
+   ========================================================== */
+
+function step1(){
+
+completed=
+Math.max(
+completed,
+0
+);
+
+
+state.powerOff=true;
+
+
+/*
+ДВИЖЕНИЕТО СПИРА НЕЗАБАВНО
+*/
+
+$("#energyFlow")
+.classList.add("off");
+
+
+$("#powerStatus")
+.innerHTML=
+"Захранване: ИЗКЛ.";
+
+
+$("#powerStatus")
+.classList.add("off");
+
+
+$("#currentStep")
+.innerHTML=
+"Стъпка 1 – Изключване на напрежението";
+
+
+focus(
+"focusSwitch"
+);
+
+
+$("#instructionTitle")
+.innerHTML=
+"1. Изключване на напрежението";
+
+
+$("#instructionText")
+.innerHTML=
+"Напрежението се изключва от всички страни, от които е възможно подаването му към мястото на работа.";
+
+
+$("#feedback")
+.innerHTML=
+"✓ Движението по проводниците е спряно.";
+
+
+/*
+ГОЛЯМО СЪОБЩЕНИЕ
+*/
+
+showMessage(
+
+`
+
+<h2>
+⚡ ИЗКЛЮЧВАНЕ НА НАПРЕЖЕНИЕТО
+</h2>
+
+<p>
+<strong>
+Напрежението се изключва от всички страни,
+от които е възможно подаването му към мястото на работа.
+</strong>
+</p>
+
+<div class="rule">
+
+Проверяват се всички възможни източници на захранване –
+основно захранване, резервно захранване,
+обратни връзки и други възможни посоки,
+ако съществуват в конкретната инсталация.
+
+</div>
+
+<div class="veryImportant">
+
+⚠ ВНИМАНИЕ:
+Изключването на работния участък
+НЕ означава непременно,
+че цялото електрическо табло е без напрежение.
+
+</div>
+
+<p>
+
+В таблото могат да останат части,
+които продължават да бъдат под напрежение.
+До тях не трябва да се допуска приближаване
+или случаен допир.
+
+</p>
+
+<p>
+
+След изключването задължително се преминава
+към обезопасяване срещу повторно включване
+и проверка за отсъствие на напрежение.
+
+</p>
+
+`,
+"red"
+
+);
+
+
+updateButtons();
+
+}
+
+
+
+/* ==========================================================
+   СТЪПКА 2 – ОБЕЗОПАСЯВАНЕ
+   ========================================================== */
+
+function step2(){
+
+if(completed < 0){
+
+showMessage(
+
+`
+
+<h2>
+⚠ ПЪРВО ИЗКЛЮЧЕТЕ НАПРЕЖЕНИЕТО
+</h2>
+
+<p>
+Не може да се премине към обезопасяване,
+преди да бъде изпълнено изключването.
+</p>
+
+`,
+"red"
+);
+
+return;
+
+}
+
+
+completed=
+Math.max(
+completed,
+1
+);
+
+
+state.locked=true;
+
+
+$("#currentStep")
+.innerHTML=
+"Стъпка 2 – Обезопасяване срещу повторно включване";
+
+
+focus(
+"focusLock"
+);
+
+
+$("#lockSymbol")
+.classList.add("show");
+
+
+$("#instructionTitle")
+.innerHTML=
+"2. Обезопасяване срещу повторно включване";
+
+
+$("#instructionText")
+.innerHTML=
+"Обезопасяват се всички устройства, чрез които може отново да бъде подадено напрежение към мястото на работа.";
+
+
+$("#feedback")
+.innerHTML=
+"✓ Органите за включване са блокирани и обозначени.";
+
+
+showMessage(
+
+`
+
+<h2>
+🔒 КАКВО ТОЧНО СЕ ОБЕЗОПАСЯВА?
+</h2>
+
+<p>
+
+Обезопасяват се
+<strong>
+всички органи, чрез които може да се подаде напрежение
+към мястото на работа.
+</strong>
+
+</p>
+
+<div class="rule">
+
+<strong>Това може да включва:</strong>
+
+<br><br>
+
+• главен прекъсвач;<br>
+
+• автоматични прекъсвачи;<br>
+
+• разединители и ключове;<br>
+
+• ръкохватки и бутони за управление;<br>
+
+• предпазители – когато това е приложимо;<br>
+
+• дистанционно управление и управляващо захранване,
+когато такова съществува.
+
+</div>
+
+<div class="veryImportant">
+
+🔒 БЛОКИРАЙ В ИЗКЛЮЧЕНО ПОЛОЖЕНИЕ
+
+<br>
+
+„НЕ ВКЛЮЧВАЙ! РАБОТЯТ ХОРА!“
+
+</div>
+
+<p>
+
+Когато конструкцията позволява,
+апаратът се заключва или блокира в изключено положение.
+
+</p>
+
+<p>
+
+Предупредителната табела се поставя така,
+че друго лице да не може по невнимание
+да възстанови захранването.
+
+</p>
+
+`,
+"orange"
+
+);
+
+
+updateButtons();
+
+}
+
+
+
+/* ==========================================================
+   СТЪПКА 3 – ПРОВЕРКА
+   ========================================================== */
+
+function step3(){
+
+if(completed < 1){
+
+showMessage(
+
+`
+
+<h2>
+⚠ НЕ Е ИЗПЪЛНЕНО ОБЕЗОПАСЯВАНЕТО
+</h2>
+
+<p>
+Преди проверката трябва да бъдат изпълнени
+изключването и обезопасяването срещу повторно включване.
+</p>
+
+`,
+"red"
+);
+
+return;
+
+}
+
+
+completed=
+Math.max(
+completed,
+2
+);
+
+
+state.tested=true;
+
+
+$("#currentStep")
+.innerHTML=
+"Стъпка 3 – Проверка за отсъствие на напрежение";
+
+
+focus(
+"focusTester"
+);
+
+
+$("#probeGlow")
+.setAttribute(
+"opacity","1"
+);
+
+
+$("#zeroIndicator")
+.classList.add(
+"show"
+);
+
+
+$("#instructionTitle")
+.innerHTML=
+"3. Проверка за отсъствие на напрежение";
+
+
+$("#instructionText")
+.innerHTML=
+"Проверката се извършва с подходящ и предварително проверен уред на изводите и точките, по които ще се работи.";
+
+
+$("#feedback")
+.innerHTML=
+"✓ Проверено е отсъствие на напрежение: 0 V.";
+
+
+showMessage(
+
+`
+
+<h2>
+🔍 ПРОВЕРКА ЗА ОТСЪСТВИЕ НА НАПРЕЖЕНИЕ
+</h2>
+
+<p>
+
+Не се разчита само на положението
+<strong>„ИЗКЛЮЧЕНО“</strong>
+на прекъсвача.
+
+</p>
+
+<div class="rule">
+
+Проверява се за отсъствие на напрежение
+на изводите на изключения апарат
+или на захранваното съоръжение,
+в точките, по които ще се работи.
+
+</div>
+
+<p>
+
+При трифазна система се проверяват
+всички съответни фазови проводници,
+както и необходимите комбинации
+според конкретната схема.
+
+</p>
+
+<div class="veryImportant">
+
+0 V трябва да бъде установено с ИЗПРАВЕН уред.
+
+</div>
+
+<p>
+
+Работоспособността на указателя/уреда
+се проверява преди използването му.
+
+</p>
+
+`,
+"green"
+
+);
+
+
+updateButtons();
+
+}
+
+
+
+/* ==========================================================
+   СТЪПКА 4 – ЛПС
+   ========================================================== */
+
+function step4(){
+
+if(completed < 2){
+
+showMessage(
+
+`
+
+<h2>
+⚠ ПЪРВО ПРОВЕРЕТЕ ЗА ОТСЪСТВИЕ НА НАПРЕЖЕНИЕ
+</h2>
+
+`,
+"red"
+);
+
+return;
+
+}
+
+
+completed=
+Math.max(
+completed,
+3
+);
+
+
+state.ppe=true;
+
+
+$("#currentStep")
+.innerHTML=
+"Стъпка 4 – ЛПС и подходящи инструменти";
+
+
+focus(
+"focusPPE"
+);
+
+
+$("#ppeLabel")
+.classList.add(
+"show"
+);
+
+
+$("#instructionTitle")
+.innerHTML=
+"4. Лични предпазни средства и инструменти";
+
+
+$("#instructionText")
+.innerHTML=
+"Използват се подходящи ЛПС и само технически изправни инструменти.";
+
+
+$("#feedback")
+.innerHTML=
+"✓ ЛПС и инструментите са проверени.";
+
+
+showMessage(
+
+`
+
+<h2>
+🦺 ЛПС И ИНСТРУМЕНТИ
+</h2>
+
+<p>
+
+Използват се средствата,
+необходими за конкретната работа
+и определени според риска.
+
+</p>
+
+<div class="rule">
+
+• защитна каска;<br>
+
+• защитни очила;<br>
+
+• подходящи ръкавици;<br>
+
+• работно облекло;<br>
+
+• защитни обувки;<br>
+
+• изправни изолирани инструменти.
+
+</div>
+
+<div class="veryImportant">
+
+Личните предпазни средства
+не заменят изключването и проверката
+за отсъствие на напрежение.
+
+</div>
+
+`,
+"green"
+
+);
+
+
+updateButtons();
+
+}
+
+
+
+/* ==========================================================
+   СТЪПКА 5 – ОГРАЖДАНЕ
+   ========================================================== */
+
+function step5(){
+
+if(completed < 3){
+
+showMessage(
+
+`
+
+<h2>
+⚠ ИЗПЪЛНЕТЕ ПРЕДХОДНИТЕ ДЕЙСТВИЯ
+</h2>
+
+`,
+"red"
+);
+
+return;
+
+}
+
+
+completed=4;
+
+
+state.barrier=true;
+
+
+$("#currentStep")
+.innerHTML=
+"Стъпка 5 – Ограждане и сигнализация";
+
+
+focus(
+"focusBarrier"
+);
+
+
+$("#barrierLabel")
+.classList.add(
+"show"
+);
+
+
+$("#instructionTitle")
+.innerHTML=
+"5. Ограждане и сигнализация";
+
+
+$("#instructionText")
+.innerHTML=
+"Работното място се обозначава и се предотвратява достъпът до опасни или оставащи под напрежение части.";
+
+
+$("#feedback")
+.innerHTML=
+"✓ Работното място е подготвено за безопасна работа.";
+
+
+showMessage(
+
+`
+
+<h2>
+🚧 ОГРАЖДАНЕ И СИГНАЛИЗАЦИЯ
+</h2>
+
+<p>
+
+Обозначава се ясно границата
+на работното място.
+
+</p>
+
+<div class="rule">
+
+Оставащите под напрежение части
+трябва да бъдат ясно различими
+и при необходимост защитени
+с подходящи ограждения или прегради.
+
+</div>
+
+<p>
+
+Не се допуска неоторизиран достъп
+до работната зона.
+
+</p>
+
+<div class="veryImportant">
+
+✓ Едва след изпълнение на необходимите
+мерки може да се започне работа.
+
+</div>
+
+`,
+"purple"
+
+);
+
+
+updateButtons();
+
+}
+
+
+
+/* ==========================================================
+   BUTTON EVENTS
+   ========================================================== */
+
+document
+.querySelectorAll(
+"[data-step]"
+)
+.forEach(
+button=>{
+
+button.addEventListener(
+"click",
+function(){
+
+const step=
+Number(
+this.dataset.step
+);
+
+
+document
+.querySelectorAll(
+"[data-step]"
+)
+.forEach(
+b=>b.classList.remove(
+"active"
+)
+);
+
+
+this.classList.add(
+"active"
+);
+
+
+if(step===0)
+step1();
+
+
+if(step===1)
+step2();
+
+
+if(step===2)
+step3();
+
+
+if(step===3)
+step4();
+
+
+if(step===4)
+step5();
+
+}
+);
+
+}
+);
+
+
+
+/* ==========================================================
+   RESET
+   ========================================================== */
+
+$("#resetBtn")
+.addEventListener(
+"click",
+function(){
+
+completed=-1;
+
+
+state.powerOff=false;
+state.locked=false;
+state.tested=false;
+state.ppe=false;
+state.barrier=false;
+
+
+$("#energyFlow")
+.classList.remove(
+"off"
+);
+
+
+$("#powerStatus")
+.innerHTML=
+"Захранване: ВКЛ.";
+
+
+$("#powerStatus")
+.classList.remove(
+"off"
+);
+
+
+$("#currentStep")
+.innerHTML=
+"Изходно състояние – електрическото табло е под напрежение";
+
+
+$("#instructionTitle")
+.innerHTML=
+"Започнете с „1. Изключване“";
+
+
+$("#instructionText")
+.innerHTML=
+"Преди започване на работа определете веригата и всички възможни източници на захранване.";
+
+
+$("#feedback")
+.innerHTML="";
+
+
+clearFocus();
+
+
+$("#zeroIndicator")
+.classList.remove(
+"show"
+);
+
+
+$("#lockSymbol")
+.classList.remove(
+"show"
+);
+
+
+$("#ppeLabel")
+.classList.remove(
+"show"
+);
+
+
+$("#barrierLabel")
+.classList.remove(
+"show"
+);
+
+
+$("#probeGlow")
+.setAttribute(
+"opacity","0"
+);
+
+
+hideMessage();
+
+
+document
+.querySelectorAll(
+"[data-step]"
+)
+.forEach(
+b=>b.classList.remove(
+"active",
+"completed"
+)
+);
+
+}
+);
+
+
+</script>
+
+</body>
+</html>

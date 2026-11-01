@@ -8,13 +8,13 @@
 
 <style>
 :root{
-    --blue:#0b6fa5;
-    --dark:#17384d;
-    --red:#df3c32;
-    --green:#178d58;
-    --yellow:#f0b429;
-    --line:#c9d7df;
-    --light:#eef5f8;
+    --blue:#0b6694;
+    --dark:#111;
+    --red:#c62828;
+    --green:#17804b;
+    --grey:#5b6870;
+    --border:#cfd8dc;
+    --background:#f4f7f9;
 }
 
 *{
@@ -23,189 +23,168 @@
 
 body{
     margin:0;
-    font-family:Segoe UI, Arial, sans-serif;
-    background:linear-gradient(#e9f3f8,#f9fbfc);
-    color:var(--dark);
+    font-family:"Segoe UI",Arial,sans-serif;
+    background:var(--background);
+    color:#1d2e38;
 }
 
 .page{
-    max-width:1180px;
+    max-width:1150px;
     margin:auto;
-    padding:16px;
+    padding:18px;
 }
 
 header{
-    background:linear-gradient(90deg,#075889,#1684b8);
-    color:white;
+    background:white;
+    border:1px solid var(--border);
+    border-top:6px solid var(--blue);
     padding:20px 24px;
-    border-radius:18px;
 }
 
 header h1{
     margin:0;
-    font-size:clamp(25px,3vw,36px);
+    font-size:30px;
+    color:#183c52;
 }
 
 header p{
     margin:7px 0 0;
-    font-size:17px;
+    color:#536b79;
+    font-size:16px;
 }
 
 .intro{
-    margin-top:15px;
-    padding:15px 18px;
+    margin-top:14px;
     background:white;
-    border:1px solid var(--line);
-    border-radius:14px;
+    border:1px solid var(--border);
+    padding:15px 18px;
     line-height:1.55;
 }
 
-/* CARD */
-
-.measurement{
-    margin-top:18px;
+.section{
+    margin-top:20px;
     background:white;
-    border:1px solid var(--line);
-    border-radius:17px;
-    overflow:hidden;
-    box-shadow:0 7px 23px rgba(20,55,75,.08);
+    border:1px solid var(--border);
 }
 
-.measurement h2{
-    margin:0;
-    padding:15px 19px;
-    background:#e4f1f7;
-    font-size:23px;
+.section-title{
+    padding:14px 20px;
+    border-bottom:1px solid var(--border);
+    font-size:22px;
+    font-weight:700;
+    color:#183c52;
 }
 
 .content{
     display:grid;
-    grid-template-columns:1fr 285px;
-    gap:15px;
-    padding:16px;
+    grid-template-columns:1fr 270px;
+    gap:20px;
+    padding:20px;
 }
 
-.diagram{
-    border:1px solid var(--line);
-    border-radius:14px;
-    background:#fbfdfe;
-    padding:8px;
+.scheme{
+    background:white;
+    border:1px solid #bfc8cd;
+    padding:10px;
 }
 
 svg{
+    display:block;
     width:100%;
     height:auto;
-    display:block;
 }
 
-/* CLASSIC SCHEME */
+/* класически линии */
 
 .wire{
+    stroke:#111;
+    stroke-width:3;
     fill:none;
-    stroke:#172f3e;
-    stroke-width:5;
-    stroke-linecap:round;
-    stroke-linejoin:round;
+    stroke-linecap:square;
+    stroke-linejoin:miter;
 }
 
 .symbol{
-    fill:none;
-    stroke:#172f3e;
-    stroke-width:5;
-}
-
-.current{
-    fill:none;
-    stroke:var(--red);
-    stroke-width:7;
-    stroke-dasharray:8 17;
-    stroke-linecap:round;
-    animation:move 1s linear infinite;
-    filter:drop-shadow(0 0 3px rgba(223,60,50,.5));
-}
-
-.current.paused{
-    animation:none;
-    opacity:.15;
-}
-
-@keyframes move{
-    to{
-        stroke-dashoffset:-50;
-    }
-}
-
-.meter{
+    stroke:#111;
+    stroke-width:3;
     fill:white;
-    stroke:#172f3e;
-    stroke-width:5;
 }
 
-.meterText{
-    font-size:38px;
-    font-weight:800;
-    fill:#172f3e;
+.node{
+    fill:#111;
 }
 
-.readingText{
-    font-size:20px;
-    font-weight:800;
-    fill:var(--blue);
-}
-
-.plusMinus{
-    font-size:20px;
-    font-weight:800;
-    fill:#172f3e;
+.text{
+    fill:#111;
+    font-family:"Segoe UI",Arial,sans-serif;
 }
 
 .label{
     font-size:18px;
-    font-weight:700;
-    fill:#17384d;
+    font-weight:600;
 }
 
-/* CONTROLS */
+.small{
+    font-size:15px;
+}
+
+/* движеща се точка за тока */
+
+.charge{
+    fill:var(--red);
+    filter:drop-shadow(0 0 2px rgba(198,40,40,.4));
+}
+
+.currentArrow{
+    fill:var(--red);
+    font-size:20px;
+    font-weight:700;
+}
+
+/* контролен панел */
 
 .controls{
-    padding:4px;
+    border-left:1px solid #d6dde1;
+    padding-left:18px;
 }
 
-.controlBox{
-    padding:12px;
-    margin-bottom:11px;
-    border:1px solid var(--line);
-    border-radius:11px;
-    background:#f7fafc;
+.control{
+    margin-bottom:20px;
 }
 
-.controlBox label{
+.control label{
     display:block;
-    margin-bottom:7px;
-    font-weight:800;
+    font-weight:700;
+    margin-bottom:8px;
 }
 
-input[type="range"]{
+.control input{
     width:100%;
 }
 
 .value{
-    margin-top:6px;
-    color:#486779;
-    font-weight:700;
+    margin-top:5px;
+    font-size:15px;
+    color:#526873;
 }
 
-.result{
+.reading{
+    border:1px solid #aabcc7;
     padding:14px;
-    border-radius:12px;
-    background:#eaf6fb;
-    border-left:5px solid var(--blue);
-    margin-bottom:11px;
-    line-height:1.5;
+    margin-bottom:15px;
+    text-align:center;
+    background:#f8fbfc;
 }
 
-.result strong{
-    font-size:23px;
+.reading-title{
+    font-size:14px;
+    color:#5b6e78;
+}
+
+.reading-value{
+    margin-top:6px;
+    font-size:27px;
+    font-weight:700;
     color:var(--blue);
 }
 
@@ -216,65 +195,56 @@ input[type="range"]{
 }
 
 button{
-    border:0;
-    border-radius:10px;
-    padding:11px;
-    font-weight:800;
+    padding:10px;
+    border:1px solid #9cabb3;
+    background:white;
     cursor:pointer;
+    font-weight:600;
 }
 
-.start{
-    background:var(--green);
-    color:white;
+button:hover{
+    background:#edf4f7;
 }
-
-.pause{
-    background:#e4ebef;
-    color:var(--dark);
-}
-
-/* EXPLANATION */
 
 .explanation{
-    margin:0 16px 17px;
-    padding:14px 16px;
-    border-left:5px solid var(--blue);
-    background:#eef7fb;
-    border-radius:8px;
+    margin:0 20px 20px;
+    padding:14px 17px;
+    background:#f7fafb;
+    border-left:4px solid var(--blue);
     line-height:1.55;
 }
 
 .rule{
-    margin-top:10px;
-    padding:11px 13px;
-    background:#fff6d6;
-    border-left:5px solid var(--yellow);
-    border-radius:7px;
-    font-weight:750;
+    margin-top:12px;
+    font-size:18px;
+    font-weight:700;
+    color:#173c50;
 }
 
 .formula{
-    display:inline-block;
-    margin:7px 0;
-    padding:6px 14px;
-    background:white;
-    border:1px solid #bdd0dc;
-    border-radius:8px;
+    margin-top:10px;
     font-size:20px;
-    font-weight:800;
+    font-weight:700;
 }
 
 footer{
     text-align:center;
-    color:#667c8a;
-    font-size:13px;
     margin:18px 0 5px;
+    color:#667b86;
+    font-size:13px;
 }
 
 @media(max-width:850px){
 
     .content{
         grid-template-columns:1fr;
+    }
+
+    .controls{
+        border-left:0;
+        border-top:1px solid #d6dde1;
+        padding-left:0;
+        padding-top:16px;
     }
 }
 </style>
@@ -285,444 +255,556 @@ footer{
 <div class="page">
 
 <header>
-    <h1>Измерване на електрическо напрежение и ток</h1>
-    <p>Класически схеми за свързване на волтметър и амперметър</p>
+
+<h1>Измерване на електрическо напрежение и ток</h1>
+
+<p>
+Класически схеми за свързване на волтметър и амперметър
+</p>
+
 </header>
 
+
 <div class="intro">
-За правилното измерване на електрически величини е необходимо
-измервателният уред да бъде свързан правилно към електрическата верига.
-<strong>Волтметърът се свързва паралелно, а амперметърът – последователно.</strong>
+
+За правилното измерване на електрическите величини е необходимо
+измервателният уред да бъде свързан правилно към веригата.
+
+<strong>
+Волтметърът се свързва паралелно, а амперметърът – последователно.
+</strong>
+
 </div>
 
 
-<!-- ===================================================== -->
+<!-- ======================================================== -->
 <!-- VOLTMETER -->
-<!-- ===================================================== -->
+<!-- ======================================================== -->
 
-<section class="measurement">
+<section class="section">
 
-<h2>1. Измерване на електрическо напрежение с волтметър</h2>
+<div class="section-title">
+1. Измерване на напрежение с волтметър
+</div>
 
 <div class="content">
 
-<div class="diagram">
+<div class="scheme">
 
 <svg viewBox="0 0 820 430">
 
-<!-- MAIN CIRCUIT -->
+<!-- ЛЯВА ВЕРТИКАЛНА ЧАСТ -->
 
 <path class="wire"
-d="M130 110
-H270
-M470 110
-H690
-V330
-H130
-V110"/>
-
-<!-- CURRENT ANIMATION -->
-
-<path id="voltCurrent" class="current"
-d="M130 110
-H270
-M470 110
-H690
-V330
-H130
-V110"/>
+d="
+M130 90
+V155
+M130 245
+V335
+"/>
 
 
-<!-- SOURCE / BATTERY -->
+<!-- ИЗТОЧНИК -->
 
+<!-- дълга пластина + -->
 <line
-x1="100"
-y1="285"
-x2="160"
-y2="285"
-class="symbol"/>
+x1="95"
+y1="175"
+x2="165"
+y2="175"
+class="wire"
+/>
 
+<!-- къса пластина - -->
 <line
-x1="85"
-y1="315"
-x2="175"
-y2="315"
-class="symbol"/>
+x1="108"
+y1="220"
+x2="152"
+y2="220"
+class="wire"
+/>
 
 <path class="wire"
-d="M130 285 V110
-M130 315 V330"/>
+d="
+M130 155 V175
+M130 220 V245
+"/>
 
-<text x="65" y="291" class="plusMinus">−</text>
-<text x="65" y="322" class="plusMinus">+</text>
+<text x="176" y="181" class="text label">+</text>
+<text x="163" y="226" class="text label">−</text>
 
 <text
-x="205"
-y="302"
-class="label">
-Източник
+x="60"
+y="202"
+class="text label">
+U
 </text>
 
 <text
-id="vSourceText"
-x="205"
-y="327"
-class="readingText">
+id="sourceVtext"
+x="47"
+y="228"
+class="text small">
 12 V
 </text>
 
 
-<!-- RESISTOR CLASSIC -->
+<!-- ГОРНА ЛИНИЯ -->
 
-<path
-d="M270 110
-L290 80
-L320 140
-L350 80
-L380 140
-L410 80
-L440 140
-L470 110"
-class="symbol"/>
-
-<text
-x="370"
-y="62"
-text-anchor="middle"
-class="label">
-Консуматор R
-</text>
-
-<text
-id="vRText"
-x="370"
-y="175"
-text-anchor="middle"
-class="readingText">
-R = 6 Ω
-</text>
+<path class="wire"
+d="M130 90 H300"
+/>
 
 
-<!-- VOLTMETER PARALLEL WIRES -->
-
-<path
-class="wire"
-d="M270 110
-V225
-H315"/>
-
-<path
-class="wire"
-d="M470 110
-V225
-H425"/>
-
-
-<!-- CONNECTION POINTS -->
-
-<circle cx="270" cy="110" r="7" fill="#172f3e"/>
-<circle cx="470" cy="110" r="7" fill="#172f3e"/>
-
-
-<!-- VOLTMETER -->
+<!-- ВЪЗЕЛ A -->
 
 <circle
-cx="370"
-cy="225"
-r="55"
-class="meter"/>
+cx="300"
+cy="90"
+r="6"
+class="node"
+/>
 
 <text
-x="370"
-y="238"
+x="290"
+y="68"
+class="text label">
+A
+</text>
+
+
+<!-- IEC СЪПРОТИВЛЕНИЕ -->
+
+<rect
+x="300"
+y="65"
+width="210"
+height="50"
+class="symbol"
+/>
+
+<text
+x="405"
+y="98"
 text-anchor="middle"
-class="meterText">
+class="text label">
+R
+</text>
+
+
+<!-- ВЪЗЕЛ B -->
+
+<circle
+cx="510"
+cy="90"
+r="6"
+class="node"
+/>
+
+<text
+x="515"
+y="68"
+class="text label">
+B
+</text>
+
+
+<!-- ДЯСНА И ДОЛНА ЛИНИЯ -->
+
+<path class="wire"
+d="
+M510 90
+H690
+V335
+H130
+"/>
+
+
+<!-- ВОЛТМЕТЪР - ПАРАЛЕЛЕН КЛОН -->
+
+<path class="wire"
+d="
+M300 90
+V225
+H345
+"/>
+
+<path class="wire"
+d="
+M510 90
+V225
+H465
+"/>
+
+
+<!-- ВОЛТМЕТЪР -->
+
+<circle
+cx="405"
+cy="225"
+r="60"
+class="symbol"
+/>
+
+<text
+x="405"
+y="240"
+text-anchor="middle"
+class="text"
+font-size="42"
+font-weight="600">
 V
 </text>
 
+
+<!-- ПОКАЗАНИЕ -->
+
 <text
-id="voltMeterReading"
-x="370"
-y="305"
+id="voltmeterReading"
+x="405"
+y="315"
 text-anchor="middle"
-class="readingText">
+class="text"
+font-size="21"
+font-weight="700"
+fill="#0b6694">
 12.0 V
 </text>
+
+
+<!-- ПОСОКА НА ТОКА -->
+
+<text
+x="205"
+y="75"
+class="currentArrow">
+I →
+</text>
+
+
+<!-- ДВИЖЕЩА СЕ ТОЧКА -->
+
+<circle
+id="voltCharge"
+r="6"
+class="charge">
+
+<animateMotion
+id="voltAnim"
+dur="4s"
+repeatCount="indefinite"
+path="
+M140 90
+H690
+V335
+H140
+"
+>
+</animateMotion>
+
+</circle>
+
+
+<!-- НАДПИС -->
+
+<text
+x="405"
+y="390"
+text-anchor="middle"
+class="text"
+font-size="18"
+font-weight="700"
+fill="#0b6694">
+
+ВОЛТМЕТЪРЪТ СЕ СВЪРЗВА ПАРАЛЕЛНО
+
+</text>
+
+</svg>
+
+</div>
+
+
+<!-- CONTROLS -->
+
+<div class="controls">
+
+<div class="control">
+
+<label>
+Напрежение на източника
+</label>
+
+<input
+id="voltageV"
+type="range"
+min="0"
+max="24"
+step="1"
+value="12">
+
+<div class="value">
+U =
+<span id="voltageVlabel">12</span>
+V
+</div>
+
+</div>
+
+
+<div class="reading">
+
+<div class="reading-title">
+Показание на волтметъра
+</div>
+
+<div
+id="voltageResult"
+class="reading-value">
+12.0 V
+</div>
+
+</div>
+
+
+<div class="buttons">
+
+<button onclick="startVolt()">
+▶ Старт
+</button>
+
+<button onclick="pauseVolt()">
+⏸ Пауза
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="explanation">
+
+<strong>
+Волтметърът измерва разликата в електрическите потенциали между две точки.
+</strong>
+
+В показаната схема той е свързан между точки
+<strong>A</strong> и <strong>B</strong>, т.е. към двата извода
+на съпротивлението <strong>R</strong>.
+
+Поради това волтметърът е свързан
+<strong>паралелно на консуматора.</strong>
+
+<div class="rule">
+Запомнете: V → паралелно.
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ======================================================== -->
+<!-- AMMETER -->
+<!-- ======================================================== -->
+
+<section class="section">
+
+<div class="section-title">
+2. Измерване на ток с амперметър
+</div>
+
+
+<div class="content">
+
+
+<div class="scheme">
+
+<svg viewBox="0 0 820 430">
+
+
+<!-- ИЗТОЧНИК -->
+
+<path class="wire"
+d="
+M130 90
+V155
+M130 245
+V335
+"/>
+
+<line
+x1="95"
+y1="175"
+x2="165"
+y2="175"
+class="wire"
+/>
+
+<line
+x1="108"
+y1="220"
+x2="152"
+y2="220"
+class="wire"
+/>
+
+<path class="wire"
+d="
+M130 155 V175
+M130 220 V245
+"/>
+
+<text x="176" y="181" class="text label">+</text>
+<text x="163" y="226" class="text label">−</text>
+
+<text
+x="60"
+y="202"
+class="text label">
+U
+</text>
+
+<text
+id="sourceAtext"
+x="47"
+y="228"
+class="text small">
+12 V
+</text>
+
+
+<!-- ПРОВОДНИК ДО АМПЕРМЕТЪРА -->
+
+<path
+class="wire"
+d="M130 90 H275"
+/>
+
+
+<!-- АМПЕРМЕТЪР -->
+
+<circle
+cx="340"
+cy="90"
+r="60"
+class="symbol"
+/>
+
+<text
+x="340"
+y="105"
+text-anchor="middle"
+class="text"
+font-size="42"
+font-weight="600">
+A
+</text>
+
+
+<!-- СЛЕД АМПЕРМЕТЪРА -->
+
+<path
+class="wire"
+d="M400 90 H470"
+/>
+
+
+<!-- IEC СЪПРОТИВЛЕНИЕ -->
+
+<rect
+x="470"
+y="65"
+width="200"
+height="50"
+class="symbol"
+/>
+
+<text
+x="570"
+y="98"
+text-anchor="middle"
+class="text label">
+R
+</text>
+
+
+<!-- ВРЪЩАЩ ПРОВОДНИК -->
+
+<path
+class="wire"
+d="
+M670 90
+H710
+V335
+H130
+"/>
+
+
+<!-- ПОКАЗАНИЕ -->
+
+<text
+id="ammeterReading"
+x="340"
+y="180"
+text-anchor="middle"
+class="text"
+font-size="21"
+font-weight="700"
+fill="#0b6694">
+2.00 A
+</text>
+
+
+<!-- ТОК -->
+
+<text
+x="190"
+y="75"
+class="currentArrow">
+I →
+</text>
+
+
+<!-- ДВИЖЕЩА СЕ ТОЧКА -->
+
+<circle
+id="ampCharge"
+r="6"
+class="charge">
+
+<animateMotion
+id="ampAnim"
+dur="4s"
+repeatCount="indefinite"
+path="
+M140 90
+H710
+V335
+H140
+"
+>
+</animateMotion>
+
+</circle>
+
 
 <!-- LABEL -->
 
 <text
-x="370"
-y="370"
-text-anchor="middle"
-font-size="19"
-font-weight="800"
-fill="#0b6fa5">
-ВОЛТМЕТЪРЪТ СЕ СВЪРЗВА ПАРАЛЕЛНО
-</text>
-
-</svg>
-
-</div>
-
-
-<div class="controls">
-
-<div class="controlBox">
-
-<label>
-Напрежение U =
-<span id="vVoltageLabel">12</span> V
-</label>
-
-<input
-id="vVoltage"
-type="range"
-min="0"
-max="24"
-step="1"
-value="12">
-
-</div>
-
-
-<div class="controlBox">
-
-<label>
-Съпротивление R =
-<span id="vResistanceLabel">6</span> Ω
-</label>
-
-<input
-id="vResistance"
-type="range"
-min="1"
-max="20"
-step="1"
-value="6">
-
-</div>
-
-
-<div class="result">
-
-Показание на волтметъра:
-
-<br>
-
-<strong id="vResult">
-12.0 V
-</strong>
-
-</div>
-
-
-<div class="buttons">
-
-<button
-class="start"
-onclick="startVolt()">
-▶ Старт
-</button>
-
-<button
-class="pause"
-onclick="pauseVolt()">
-⏸ Пауза
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-
-<div class="explanation">
-
-<strong>Волтметърът измерва разликата в електрическите потенциали между две точки.</strong>
-
-Той се свързва към двете точки, между които трябва да се измери
-напрежението. Поради това волтметърът се включва
-<strong>паралелно на консуматора</strong>.
-
-<div class="rule">
-
-Запомнете: <strong>ВОЛТМЕТЪР → ПАРАЛЕЛНО.</strong>
-
-</div>
-
-</div>
-
-</section>
-
-
-
-<!-- ===================================================== -->
-<!-- AMMETER -->
-<!-- ===================================================== -->
-
-<section class="measurement">
-
-<h2>2. Измерване на електрически ток с амперметър</h2>
-
-<div class="content">
-
-<div class="diagram">
-
-<svg viewBox="0 0 820 430">
-
-
-<!-- MAIN CIRCUIT -->
-
-<path
-class="wire"
-d="M130 110
-H270
-M380 110
-H500
-M700 110
-H700
-V330
-H130
-V110"/>
-
-
-<!-- CURRENT ANIMATION -->
-
-<path
-id="ampCurrent"
-class="current"
-d="M130 110
-H270
-M380 110
-H500
-M700 110
-V330
-H130
-V110"/>
-
-
-<!-- SOURCE -->
-
-<line
-x1="100"
-y1="285"
-x2="160"
-y2="285"
-class="symbol"/>
-
-<line
-x1="85"
-y1="315"
-x2="175"
-y2="315"
-class="symbol"/>
-
-<path
-class="wire"
-d="M130 285 V110
-M130 315 V330"/>
-
-<text x="65" y="291" class="plusMinus">−</text>
-<text x="65" y="322" class="plusMinus">+</text>
-
-<text
-x="195"
-y="300"
-class="label">
-Източник
-</text>
-
-<text
-id="aSourceText"
-x="195"
-y="325"
-class="readingText">
-12 V
-</text>
-
-
-<!-- AMMETER IN SERIES -->
-
-<circle
-cx="325"
-cy="110"
-r="55"
-class="meter"/>
-
-<text
-x="325"
-y="123"
-text-anchor="middle"
-class="meterText">
-A
-</text>
-
-<text
-id="ampMeterReading"
-x="325"
-y="190"
-text-anchor="middle"
-class="readingText">
-2.00 A
-</text>
-
-
-<!-- RESISTOR -->
-
-<path
-d="M500 110
-L520 80
-L550 140
-L580 80
-L610 140
-L640 80
-L670 140
-L700 110"
-class="symbol"/>
-
-<text
-x="600"
-y="62"
-text-anchor="middle"
-class="label">
-Консуматор R
-</text>
-
-<text
-id="aRText"
-x="600"
-y="175"
-text-anchor="middle"
-class="readingText">
-R = 6 Ω
-</text>
-
-
-<!-- CURRENT DIRECTION -->
-
-<text
-x="420"
-y="82"
-text-anchor="middle"
-font-size="28"
-font-weight="900"
-fill="#d83c33">
-→ I →
-</text>
-
-
-<!-- MAIN LABEL -->
-
-<text
 x="410"
-y="370"
+y="390"
 text-anchor="middle"
-font-size="19"
-font-weight="800"
-fill="#0b6fa5">
+class="text"
+font-size="18"
+font-weight="700"
+fill="#0b6694">
+
 АМПЕРМЕТЪРЪТ СЕ СВЪРЗВА ПОСЛЕДОВАТЕЛНО
+
 </text>
 
 </svg>
@@ -730,68 +812,91 @@ fill="#0b6fa5">
 </div>
 
 
+
+<!-- CONTROLS -->
+
 <div class="controls">
 
-<div class="controlBox">
+<div class="control">
 
 <label>
-Напрежение U =
-<span id="aVoltageLabel">12</span> V
+Напрежение U
 </label>
 
 <input
-id="aVoltage"
+id="voltageA"
 type="range"
 min="0"
 max="24"
 step="1"
 value="12">
 
+<div class="value">
+
+U =
+<span id="voltageAlabel">
+12
+</span>
+V
+
+</div>
+
 </div>
 
 
-<div class="controlBox">
+
+<div class="control">
 
 <label>
-Съпротивление R =
-<span id="aResistanceLabel">6</span> Ω
+Съпротивление R
 </label>
 
 <input
-id="aResistance"
+id="resistanceA"
 type="range"
 min="1"
 max="20"
 step="1"
 value="6">
 
+<div class="value">
+
+R =
+<span id="resistanceAlabel">
+6
+</span>
+Ω
+
+</div>
+
 </div>
 
 
-<div class="result">
 
-Показание на амперметъра:
+<div class="reading">
 
-<br>
+<div class="reading-title">
+Показание на амперметъра
+</div>
 
-<strong id="aResult">
+<div
+id="currentResult"
+class="reading-value">
+
 2.00 A
-</strong>
+
+</div>
 
 </div>
 
 
 <div class="buttons">
 
-<button
-class="start"
-onclick="startAmp()">
+<button onclick="startAmp()">
 ▶ Старт
 </button>
 
-<button
-class="pause"
-onclick="pauseAmp()">
+<button onclick="pauseAmp()">
 ⏸ Пауза
 </button>
 
@@ -804,36 +909,41 @@ onclick="pauseAmp()">
 
 <div class="explanation">
 
-<strong>Амперметърът измерва електрическия ток, който протича през електрическата верига.</strong>
+<strong>
+Амперметърът измерва електрическия ток, който протича през веригата.
+</strong>
 
-За да премине измерваният ток през уреда, амперметърът се включва
-<strong>последователно с консуматора</strong>.
-
-<br><br>
-
-За показаната верига:
+За да премине целият измерван ток през уреда,
+амперметърът се включва
+<strong>последователно с консуматора R.</strong>
 
 <div class="formula">
+
 I = U / R
+
 </div>
 
-<div id="formulaText">
-При U = 12 V и R = 6 Ω → I = 2.00 A
+<div id="formulaA">
+
+При U = 12 V и R = 6 Ω:
+I = 2.00 A.
+
 </div>
 
 <div class="rule">
-
-Запомнете: <strong>АМПЕРМЕТЪР → ПОСЛЕДОВАТЕЛНО.</strong>
-
+Запомнете: A → последователно.
 </div>
 
 </div>
 
 </section>
+
 
 
 <footer>
+
 © Величко Атанасов • Учебна интерактивна анимация
+
 </footer>
 
 </div>
@@ -841,180 +951,134 @@ I = U / R
 
 <script>
 
-/* ===================================================
-   VOLTMETER
-=================================================== */
+/* VOLTMETER */
 
-const vVoltage =
-document.getElementById("vVoltage");
+const voltageV =
+document.getElementById("voltageV");
 
-const vResistance =
-document.getElementById("vResistance");
-
-
-function updateVolt(){
+function updateVoltage(){
 
     const U =
-    Number(vVoltage.value);
+    Number(voltageV.value);
 
-    const R =
-    Number(vResistance.value);
-
-    document.getElementById("vVoltageLabel")
+    document.getElementById("voltageVlabel")
     .textContent = U;
 
-    document.getElementById("vResistanceLabel")
-    .textContent = R;
-
-    document.getElementById("vSourceText")
+    document.getElementById("sourceVtext")
     .textContent = U + " V";
 
-    document.getElementById("vRText")
-    .textContent = "R = " + R + " Ω";
-
-    document.getElementById("voltMeterReading")
+    document.getElementById("voltmeterReading")
     .textContent = U.toFixed(1) + " V";
 
-    document.getElementById("vResult")
+    document.getElementById("voltageResult")
     .textContent = U.toFixed(1) + " V";
-
-
-    if(U === 0){
-
-        document.getElementById("voltCurrent")
-        .classList.add("paused");
-
-    }
 
 }
 
-
-vVoltage.addEventListener(
+voltageV.addEventListener(
 "input",
-updateVolt
-);
-
-vResistance.addEventListener(
-"input",
-updateVolt
+updateVoltage
 );
 
 
 function startVolt(){
 
-    if(Number(vVoltage.value) > 0){
-
-        document.getElementById("voltCurrent")
-        .classList.remove("paused");
-
-    }
+    document
+    .getElementById("voltAnim")
+    .beginElement();
 
 }
-
 
 function pauseVolt(){
 
-    document.getElementById("voltCurrent")
-    .classList.add("paused");
+    const svg =
+    document.querySelectorAll("svg")[0];
+
+    svg.pauseAnimations();
 
 }
 
 
-/* ===================================================
-   AMMETER
-=================================================== */
+/* AMMETER */
 
-const aVoltage =
-document.getElementById("aVoltage");
+const voltageA =
+document.getElementById("voltageA");
 
-const aResistance =
-document.getElementById("aResistance");
+const resistanceA =
+document.getElementById("resistanceA");
 
 
-function updateAmp(){
+function updateCurrent(){
 
     const U =
-    Number(aVoltage.value);
+    Number(voltageA.value);
 
     const R =
-    Number(aResistance.value);
+    Number(resistanceA.value);
 
     const I =
     U / R;
 
 
-    document.getElementById("aVoltageLabel")
+    document.getElementById("voltageAlabel")
     .textContent = U;
 
-    document.getElementById("aResistanceLabel")
+    document.getElementById("resistanceAlabel")
     .textContent = R;
 
-    document.getElementById("aSourceText")
+    document.getElementById("sourceAtext")
     .textContent = U + " V";
 
-    document.getElementById("aRText")
-    .textContent = "R = " + R + " Ω";
-
-    document.getElementById("ampMeterReading")
+    document.getElementById("ammeterReading")
     .textContent = I.toFixed(2) + " A";
 
-    document.getElementById("aResult")
+    document.getElementById("currentResult")
     .textContent = I.toFixed(2) + " A";
 
-    document.getElementById("formulaText")
+    document.getElementById("formulaA")
     .textContent =
     "При U = " +
     U +
     " V и R = " +
     R +
-    " Ω → I = " +
+    " Ω: I = " +
     I.toFixed(2) +
-    " A";
-
-
-    if(U === 0){
-
-        document.getElementById("ampCurrent")
-        .classList.add("paused");
-
-    }
+    " A.";
 
 }
 
 
-aVoltage.addEventListener(
+voltageA.addEventListener(
 "input",
-updateAmp
+updateCurrent
 );
 
-aResistance.addEventListener(
+resistanceA.addEventListener(
 "input",
-updateAmp
+updateCurrent
 );
 
 
 function startAmp(){
 
-    if(Number(aVoltage.value) > 0){
-
-        document.getElementById("ampCurrent")
-        .classList.remove("paused");
-
-    }
+    document
+    .getElementById("ampAnim")
+    .beginElement();
 
 }
-
 
 function pauseAmp(){
 
-    document.getElementById("ampCurrent")
-    .classList.add("paused");
+    const svg =
+    document.querySelectorAll("svg")[1];
+
+    svg.pauseAnimations();
 
 }
 
 
-updateVolt();
-updateAmp();
+updateVoltage();
+updateCurrent();
 
 </script>
 

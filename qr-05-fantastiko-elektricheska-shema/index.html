@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Фантастико – електрическа система на хранителен магазин</title>
+
+<style>
+:root{
+    --blue:#0b6ea8;
+    --dark:#15364e;
+    --red:#e33b32;
+    --orange:#f39a1e;
+    --green:#1b9b5f;
+    --cyan:#16a9c8;
+    --violet:#7a42c7;
+    --line:#cad7df;
+}
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Segoe UI,Arial,sans-serif;
+    background:linear-gradient(#eaf3f8,#fafcfd);
+    color:var(--dark);
+}
+
+.page{
+    max-width:1550px;
+    margin:auto;
+    padding:14px;
+}
+
+header{
+    padding:18px 22px;
+    background:linear-gradient(90deg,#07598a,#1684b9);
+    color:#fff;
+    border-radius:16px;
+}
+
+header h1{
+    margin:0;
+    font-size:clamp(24px,3vw,38px);
+}
+
+header p{
+    margin:6px 0 0;
+}
+
+/* БУТОНИ */
+
+.buttons{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    gap:7px;
+    margin-top:12px;
+}
+
+button{
+    min-height:58px;
+    border:1px solid #b8cbd6;
+    border-radius:9px;
+    background:white;
+    color:var(--dark);
+    font-weight:800;
+    cursor:pointer;
+    padding:8px;
+}
+
+button:hover{
+    background:#edf6fa;
+}
+
+button.active{
+    background:var(--blue);
+    border-color:var(--blue);
+    color:white;
+}
+
+/* СЦЕНА */
+
+.scene{
+    position:relative;
+    margin-top:12px;
+    background:white;
+    border:1px solid var(--line);
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:0 8px 24px rgba(15,55,80,.12);
+}
+
+.scene img{
+    display:block;
+    width:100%;
+    height:auto;
+}
+
+.overlay{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+}
+
+/* АНИМИРАНИ ПЪТИЩА */
+
+.route{
+    fill:none;
+    stroke-width:8;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    stroke-dasharray:16 13;
+    opacity:0;
+}
+
+.route.show{
+    opacity:.95;
+    animation:flow 1s linear infinite;
+}
+
+@keyframes flow{
+    to{
+        stroke-dashoffset:-58;
+    }
+}
+
+/* ЗОНИ */
+
+.zone{
+    fill:none;
+    stroke-width:8;
+    opacity:0;
+}
+
+.zone.show{
+    opacity:.95;
+    animation:pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes pulse{
+    0%,100%{stroke-width:7}
+    50%{stroke-width:13}
+}
+
+/* ИНФОРМАЦИЯ */
+
+.info{
+    margin-top:12px;
+    padding:14px 17px;
+    background:white;
+    border:1px solid var(--line);
+    border-left:6px solid var(--blue);
+    border-radius:10px;
+    line-height:1.55;
+}
+
+.info h2{
+    margin:0 0 8px;
+    font-size:22px;
+}
+
+.info ul{
+    margin:8px 0 0 20px;
+}
+
+.question{
+    margin-top:12px;
+    padding:13px 16px;
+    background:#fff6d7;
+    border-left:6px solid #f0b429;
+    border-radius:9px;
+    font-weight:700;
+}
+
+.legend{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:8px;
+    margin-top:10px;
+}
+
+.legend div{
+    padding:8px;
+    background:white;
+    border:1px solid var(--line);
+    border-radius:8px;
+    text-align:center;
+    font-size:13px;
+    font-weight:700;
+}
+
+footer{
+    text-align:center;
+    margin-top:15px;
+    font-size:13px;
+    color:#657b89;
+}
+
+@media(max-width:1000px){
+
+    .buttons{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .legend{
+        grid-template-columns:1fr 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+<header>
+
+<h1>
+Фантастико – електрическата система на магазина
+</h1>
+
+<p>
+Интерактивна учебна схема на основните токови кръгове
+</p>
+
+</header>
+
+
+<div class="buttons">
+
+<button class="active" data-mode="supply">
+1. Захранване и ГРТ
+</button>
+
+<button data-mode="lighting">
+2. Осветление
+</button>
+
+<button data-mode="cooling">
+3. Хладилни кръгове
+</button>
+
+<button data-mode="hvac">
+4. Вентилация и климатизация
+</button>
+
+<button data-mode="pos">
+5. Каси / POS / IT
+</button>
+
+<button data-mode="backup">
+6. UPS / резервно захранване
+</button>
+
+<button data-mode="safety">
+7. Сигурност и аварийни системи
+</button>
+
+</div>
+
+
+<div class="scene">
+
+<img
+src="supermarket_electrical_schematic_and_floor_plan.png"
+alt="Електрическа схема на магазин Фантастико">
+
+
+<svg
+class="overlay"
+viewBox="0 0 1664 936"
+preserveAspectRatio="none">
+
+
+<!-- ================================================= -->
+<!-- 1. ЗАХРАНВАНЕ -->
+<!-- ================================================= -->
+
+<path
+id="route-supply-1"
+class="route"
+stroke="#e33b32"
+d="M20 135 H145 H270 H405 H500 H1320"
+/>
+
+<path
+id="route-supply-2"
+class="route"
+stroke="#e33b32"
+d="M505 155 H1320"
+/>
+
+<rect
+id="zone-supply"
+class="zone"
+x="480"
+y="75"
+width="950"
+height="150"
+rx="18"
+stroke="#e33b32"
+/>
+
+
+<!-- ================================================= -->
+<!-- 2. ОСВЕТЛЕНИЕ -->
+<!-- ================================================= -->
+
+<path
+id="route-lighting-1"
+class="route"
+stroke="#f39a1e"
+d="M65 265 V340 H445 V625"
+/>
+
+<path
+id="route-lighting-2"
+class="route"
+stroke="#f39a1e"
+d="M445 625 H1030"
+/>
+
+<rect
+id="zone-lighting"
+class="zone"
+x="350"
+y="500"
+width="610"
+height="320"
+rx="20"
+stroke="#f39a1e"
+/>
+
+
+<!-- ================================================= -->
+<!-- 3. ХЛАДИЛНИ -->
+<!-- ================================================= -->
+
+<path
+id="route-cooling-1"
+class="route"
+stroke="#16a9c8"
+d="M830 265 V415 H1050 V650"
+/>
+
+<path
+id="route-cooling-2"
+class="route"
+stroke="#16a9c8"
+d="M930 265 V505 H1280 V655"
+/>
+
+<rect
+id="zone-cooling"
+class="zone"
+x="880"
+y="490"
+width="405"
+height="280"
+rx="20"
+stroke="#16a9c8"
+/>
+
+
+<!-- ================================================= -->
+<!-- 4. HVAC -->
+<!-- ================================================= -->
+
+<path
+id="route-hvac-1"
+class="route"
+stroke="#1b9b5f"
+d="M735 265 V420 H785 V590"
+/>
+
+<rect
+id="zone-hvac"
+class="zone"
+x="720"
+y="475"
+width="220"
+height="140"
+rx="18"
+stroke="#1b9b5f"
+/>
+
+
+<!-- ================================================= -->
+<!-- 5. POS -->
+<!-- ================================================= -->
+
+<path
+id="route-pos-1"
+class="route"
+stroke="#1678d2"
+d="M410 265 V515 H615 V745"
+/>
+
+<path
+id="route-pos-2"
+class="route"
+stroke="#1678d2"
+d="M345 265 V495 H420"
+/>
+
+<rect
+id="zone-pos"
+class="zone"
+x="385"
+y="670"
+width="520"
+height="175"
+rx="18"
+stroke="#1678d2"
+/>
+
+
+<!-- ================================================= -->
+<!-- 6. BACKUP -->
+<!-- ================================================= -->
+
+<path
+id="route-backup-1"
+class="route"
+stroke="#7a42c7"
+d="M1435 265 V410 H1350 V675"
+/>
+
+<path
+id="route-backup-2"
+class="route"
+stroke="#7a42c7"
+d="M1350 675 H1160"
+/>
+
+<rect
+id="zone-backup"
+class="zone"
+x="1270"
+y="410"
+width="330"
+height="410"
+rx="20"
+stroke="#7a42c7"
+/>
+
+
+<!-- ================================================= -->
+<!-- 7. SAFETY -->
+<!-- ================================================= -->
+
+<path
+id="route-safety-1"
+class="route"
+stroke="#e33b32"
+d="M585 265 V440 H900"
+/>
+
+<rect
+id="zone-safety"
+class="zone"
+x="540"
+y="235"
+width="260"
+height="235"
+rx="18"
+stroke="#e33b32"
+/>
+
+
+</svg>
+
+</div>
+
+
+<div id="info" class="info">
+
+<h2>
+1. Захранване и главно разпределително табло
+</h2>
+
+Електрическата енергия постъпва в магазина през
+електромерното табло, главния прекъсвач и защитата от
+пренапрежение, след което достига до
+<strong>главното разпределително табло – ГРТ</strong>.
+
+<ul>
+
+<li>
+от ГРТ започват отделните токови кръгове;
+</li>
+
+<li>
+разпределят се трите фази L1, L2 и L3;
+</li>
+
+<li>
+използват се неутрална N и защитна PE шина;
+</li>
+
+<li>
+при повреда проверката често започва от ГРТ.
+</li>
+
+</ul>
+
+</div>
+
+
+<div id="question" class="question">
+
+Практически въпрос:
+<strong>
+Ако няма захранване към целия магазин, откъде бихте започнали проверката?
+</strong>
+
+</div>
+
+
+<div class="legend">
+
+<div>🟠 Осветление</div>
+<div>🔵 Контакти / POS / IT</div>
+<div>🟦 Хладилни консуматори</div>
+<div>🟢 Вентилация / климатизация</div>
+
+</div>
+
+
+<footer>
+
+© Величко Атанасов • Учебна интерактивна анимация
+
+</footer>
+
+</div>
+
+
+<script>
+
+const data = {
+
+supply:{
+
+title:
+"1. Захранване и главно разпределително табло",
+
+text:
+`
+Електрическата енергия постъпва в магазина през
+електромерното табло, главния прекъсвач и защитата от
+пренапрежение, след което достига до
+<strong>главното разпределително табло – ГРТ</strong>.
+
+<ul>
+
+<li>от ГРТ започват отделните токови кръгове;</li>
+
+<li>разпределят се фазите L1, L2 и L3;</li>
+
+<li>използват се N и PE шини;</li>
+
+<li>при обща повреда проверката често започва от ГРТ.</li>
+
+</ul>
+`,
+
+question:
+"Ако няма захранване към целия магазин, откъде бихте започнали проверката?"
+
+},
+
+
+lighting:{
+
+title:
+"2. Осветителни токови кръгове",
+
+text:
+`
+Осветлението е разделено на отделни токови кръгове.
+
+<ul>
+
+<li>осветление на търговската зала;</li>
+
+<li>осветление на склада и помощните помещения;</li>
+
+<li>външно осветление;</li>
+
+<li>аварийно осветление.</li>
+
+</ul>
+
+При повреда се проверяват последователно
+<strong>автоматичният прекъсвач, наличието на напрежение,
+проводниците, ключовете и осветителите.</strong>
+`,
+
+question:
+"Една част от осветлението не работи, но останалата работи. Общ проблем ли е или трябва да търсим конкретния токов кръг?"
+
+},
+
+
+cooling:{
+
+title:
+"3. Хладилни токови кръгове",
+
+text:
+`
+Хладилното оборудване е сред най-важните консуматори
+в големия хранителен магазин.
+
+Към тази група могат да се отнесат:
+
+<ul>
+
+<li>хладилни витрини;</li>
+
+<li>вертикални хладилници;</li>
+
+<li>фризери;</li>
+
+<li>компресори;</li>
+
+<li>хладилна машина;</li>
+
+<li>управляващи вериги.</li>
+
+</ul>
+
+Продължителното отпадане на тези консуматори може да доведе
+до повишаване на температурата и загуба на хранителни продукти.
+`,
+
+question:
+"Ако един фризер не работи, а останалите работят, къде бихте започнали проверката?"
+
+},
+
+
+hvac:{
+
+title:
+"4. Вентилация и климатизация",
+
+text:
+`
+Вентилационните и климатичните системи са отделни
+силови консуматори.
+
+При диагностика се проверяват:
+
+<ul>
+
+<li>захранващият кръг;</li>
+
+<li>автоматичният прекъсвач;</li>
+
+<li>контакторите;</li>
+
+<li>двигателите;</li>
+
+<li>управляващите сигнали.</li>
+
+</ul>
+`,
+
+question:
+"Има захранване към таблото, но вентилаторът не работи. Каква е следващата проверка?"
+
+},
+
+
+pos:{
+
+title:
+"5. Каси, POS терминали и IT оборудване",
+
+text:
+`
+Касовата зона включва няколко типа електрически консуматори:
+
+<ul>
+
+<li>касови апарати;</li>
+
+<li>POS терминали;</li>
+
+<li>компютри и монитори;</li>
+
+<li>мрежово оборудване;</li>
+
+<li>комуникационни устройства.</li>
+
+</ul>
+
+Част от тези консуматори може да бъде захранена през
+<strong>UPS</strong>, за да се осигури работа при краткотрайно
+отпадане на основното захранване.
+`,
+
+question:
+"Една каса не работи, а съседните работят. Къде трябва да се търси проблемът?"
+
+},
+
+
+backup:{
+
+title:
+"6. Резервно захранване и UPS",
+
+text:
+`
+Резервното захранване се използва за предварително определени
+критични консуматори.
+
+То може да включва:
+
+<ul>
+
+<li>UPS;</li>
+
+<li>резервен генератор;</li>
+
+<li>аварийно осветление;</li>
+
+<li>IT и комуникационни системи;</li>
+
+<li>част от системите за сигурност.</li>
+
+</ul>
+
+<strong>
+При обезопасяване трябва да се отчете възможността
+за подаване на напрежение и от резервен източник.
+</strong>
+`,
+
+question:
+"Основното захранване е изключено. Сигурни ли сме, че по работния участък вече няма напрежение?"
+
+},
+
+
+safety:{
+
+title:
+"7. Аварийни системи и системи за сигурност",
+
+text:
+`
+Към тях се отнасят:
+
+<ul>
+
+<li>аварийно осветление;</li>
+
+<li>пожароизвестяване;</li>
+
+<li>камери;</li>
+
+<li>охранителни системи;</li>
+
+<li>контрол на достъпа.</li>
+
+</ul>
+
+Тези системи имат специална функция за безопасност и
+<strong>не трябва да бъдат изключвани без да се отчете предназначението им.</strong>
+`,
+
+question:
+"Защо аварийното осветление не трябва просто да бъде изключено заедно с обикновеното осветление?"
+
+}
+
+};
+
+
+function clearAll(){
+
+document
+.querySelectorAll(".route")
+.forEach(
+x => x.classList.remove("show")
+);
+
+document
+.querySelectorAll(".zone")
+.forEach(
+x => x.classList.remove("show")
+);
+
+document
+.querySelectorAll("button")
+.forEach(
+x => x.classList.remove("active")
+);
+
+}
+
+
+function selectMode(mode){
+
+clearAll();
+
+
+document
+.querySelectorAll(
+`[id^="route-${mode}"]`
+)
+.forEach(
+x => x.classList.add("show")
+);
+
+
+const zone =
+document.getElementById(
+"zone-" + mode
+);
+
+if(zone){
+
+zone.classList.add("show");
+
+}
+
+
+document
+.querySelector(
+`button[data-mode="${mode}"]`
+)
+.classList.add("active");
+
+
+const item =
+data[mode];
+
+
+document
+.getElementById("info")
+.innerHTML =
+"<h2>" +
+item.title +
+"</h2>" +
+item.text;
+
+
+document
+.getElementById("question")
+.innerHTML =
+"Практически въпрос: <strong>" +
+item.question +
+"</strong>";
+
+}
+
+
+document
+.querySelectorAll("button")
+.forEach(
+
+button => {
+
+button.addEventListener(
+"click",
+() => selectMode(
+button.dataset.mode
+)
+);
+
+}
+
+);
+
+
+selectMode("supply");
+
+</script>
+
+</body>
+</html>

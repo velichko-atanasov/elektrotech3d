@@ -1,4 +1,4 @@
-const CACHE = 'ees-bulgaria-pwa-v66-direct-ppt-3';
+const CACHE = 'ees-bulgaria-pwa-v70-no-pdf-1';
 const APP_SHELL = [
   './',
   './index.html',
@@ -17,7 +17,7 @@ self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
   const url = new URL(event.request.url);
   if (url.origin !== self.location.origin) return;
-  const isPresentation = url.pathname.includes('/prezentatsiya-tehnicheski-zagubi/') || /\.(ppsx|pdf)$/i.test(url.pathname);
+  const isPresentation = url.pathname.includes('/prezentatsiya-tehnicheski-zagubi/') || url.pathname.includes('/prezentatsiya-scada-ami/') || /\.ppsx$/i.test(url.pathname);
   if (isPresentation) {
     event.respondWith(fetch(event.request, {cache:'no-store'}));
     return;

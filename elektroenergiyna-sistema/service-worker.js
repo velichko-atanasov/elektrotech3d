@@ -1,4 +1,4 @@
-const CACHE = 'ees-bulgaria-pwa-v76-1-erm-inside';
+const CACHE = 'ees-bulgaria-pwa-v76-2-scada-link';
 const APP_SHELL = ['./manifest.webmanifest','./icon-192.png','./icon-512.png','./apple-touch-icon.png'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(APP_SHELL)).then(() => self.skipWaiting()));

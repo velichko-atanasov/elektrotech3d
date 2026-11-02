@@ -1,0 +1,1501 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>QR-02.2 – Обезопасяване срещу повторно включване</title>
+
+<style>
+
+:root{
+  --blue:#096b9e;
+  --dark:#15364b;
+  --green:#16965c;
+  --red:#d83c33;
+  --yellow:#f4b62c;
+  --light:#eef6fa;
+  --line:#c9d8e1;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Segoe UI,Arial,sans-serif;
+  background:linear-gradient(#eaf3f8,#f9fbfd);
+  color:var(--dark);
+}
+
+.page{
+  max-width:1200px;
+  margin:auto;
+  padding:16px;
+}
+
+header{
+  background:linear-gradient(90deg,#07598a,#1685b9);
+  color:white;
+  padding:20px 24px;
+  border-radius:17px;
+}
+
+header h1{
+  margin:0;
+  font-size:clamp(23px,3vw,35px);
+}
+
+header p{
+  margin:7px 0 0;
+}
+
+.intro{
+  margin-top:14px;
+  padding:14px 17px;
+  background:white;
+  border:1px solid var(--line);
+  border-radius:13px;
+  line-height:1.5;
+}
+
+.layout{
+  display:grid;
+  grid-template-columns:330px 1fr;
+  gap:16px;
+  margin-top:16px;
+}
+
+.card{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:15px;
+  box-shadow:0 6px 20px rgba(20,55,75,.08);
+}
+
+.menu{
+  padding:15px;
+}
+
+.menu h2{
+  margin-top:0;
+  font-size:19px;
+}
+
+.step{
+  display:block;
+  width:100%;
+  margin:8px 0;
+  padding:12px;
+
+  border:1px solid #b8ccd8;
+  border-radius:10px;
+
+  background:white;
+  color:var(--dark);
+
+  text-align:left;
+  font-weight:750;
+  font-size:14px;
+
+  cursor:pointer;
+}
+
+.step:hover{
+  background:#edf6fa;
+}
+
+.step.active{
+  background:var(--blue);
+  color:white;
+  border-color:var(--blue);
+}
+
+.testButton{
+  width:100%;
+  margin-top:14px;
+  padding:13px;
+
+  border:0;
+  border-radius:10px;
+
+  background:var(--red);
+  color:white;
+
+  font-weight:900;
+  font-size:15px;
+  cursor:pointer;
+}
+
+.resetButton{
+  width:100%;
+  margin-top:8px;
+  padding:11px;
+
+  border:0;
+  border-radius:10px;
+
+  background:#e5edf2;
+  color:var(--dark);
+
+  font-weight:800;
+  cursor:pointer;
+}
+
+.ruleButton{
+  display:block;
+  margin-top:12px;
+  padding:11px;
+
+  background:#fff5cf;
+  border:1px solid #dcc45b;
+  border-radius:10px;
+
+  color:#664d00;
+  text-decoration:none;
+  text-align:center;
+
+  font-weight:800;
+}
+
+
+/* MAIN */
+
+.main{
+  padding:15px;
+}
+
+.scene{
+  border:1px solid var(--line);
+  border-radius:14px;
+  overflow:hidden;
+  background:#f6fafc;
+}
+
+.sceneTitle{
+  background:#e4f1f7;
+  padding:11px 14px;
+  font-weight:850;
+}
+
+svg{
+  width:100%;
+  height:auto;
+  display:block;
+}
+
+
+/* ENERGY */
+
+.energy{
+  stroke:#e34035;
+  stroke-width:6;
+  stroke-dasharray:9 11;
+  animation:move 1s linear infinite;
+  filter:drop-shadow(0 0 4px #ff756c);
+}
+
+.energy.stop{
+  animation:none;
+  stroke:#7e98a8;
+  opacity:.4;
+}
+
+@keyframes move{
+  to{
+    stroke-dashoffset:-40;
+  }
+}
+
+
+/* hidden elements */
+
+.lock,
+.tag,
+.remoteX,
+.reserveX,
+.motorLock{
+  opacity:0;
+  transition:.3s;
+}
+
+.visible{
+  opacity:1;
+}
+
+
+/* INFO */
+
+.info{
+  margin-top:13px;
+  padding:13px 15px;
+
+  background:#eef7fc;
+  border-left:5px solid var(--blue);
+  border-radius:8px;
+
+  line-height:1.5;
+}
+
+.info.warning{
+  background:#fff0ed;
+  border-left-color:var(--red);
+  color:#8f2821;
+}
+
+.info.good{
+  background:#edf9f2;
+  border-left-color:var(--green);
+  color:#17623f;
+}
+
+
+/* STATUS */
+
+.statusGrid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+  margin-top:12px;
+}
+
+.status{
+  padding:9px;
+  border-radius:9px;
+  border:1px solid var(--line);
+
+  text-align:center;
+  font-size:13px;
+  font-weight:750;
+}
+
+.bad{
+  background:#fff0ee;
+  color:#912a24;
+}
+
+.ok{
+  background:#e9f8ef;
+  color:#12643d;
+}
+
+
+/* MOTOR */
+
+.motorBox{
+  display:none;
+
+  margin-top:13px;
+  padding:14px;
+
+  border:1px solid #e0ca78;
+  background:#fff8dc;
+
+  border-radius:11px;
+  line-height:1.5;
+}
+
+.motorBox.show{
+  display:block;
+}
+
+.motor{
+  display:inline-block;
+  font-size:45px;
+
+  animation:spin .8s linear infinite;
+}
+
+.motor.stop{
+  animation:none;
+}
+
+@keyframes spin{
+  to{transform:rotate(360deg)}
+}
+
+.motorButton{
+  margin-top:10px;
+  padding:9px 13px;
+
+  border:0;
+  border-radius:8px;
+
+  background:var(--green);
+  color:white;
+
+  font-weight:800;
+  cursor:pointer;
+}
+
+footer{
+  text-align:center;
+  margin-top:16px;
+  color:#657b8a;
+  font-size:13px;
+}
+
+@media(max-width:850px){
+
+  .layout{
+    grid-template-columns:1fr;
+  }
+
+  .statusGrid{
+    grid-template-columns:1fr 1fr;
+  }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="page">
+
+<header>
+
+<h1>
+QR-02.2 – Обезопасяване срещу повторно включване
+</h1>
+
+<p>
+Безопасна работа по електрообзавеждане с напрежение до 1000 V
+</p>
+
+</header>
+
+
+<div class="intro">
+
+След изключване на напрежението трябва да се предотврати
+случайното, неправомерното или неволното възстановяване
+на захранването.
+
+<br><br>
+
+<strong>
+Може ли някой или нещо отново да подаде напрежение към мястото,
+където ще работим?
+</strong>
+
+</div>
+
+
+<div class="layout">
+
+
+<!-- MENU -->
+
+<div class="card menu">
+
+<h2>Последователност</h2>
+
+
+<button class="step active" onclick="step1()">
+1. Изключи
+</button>
+
+
+<button class="step" onclick="step2()">
+2. Открий всички възможности за повторно включване
+</button>
+
+
+<button class="step" onclick="step3()">
+3. Блокирай / заключи
+</button>
+
+
+<button class="step" onclick="step4()">
+4. Постави табела
+</button>
+
+
+<button class="step" onclick="step5()">
+5. Обезопаси дистанционно и резервно управление
+</button>
+
+
+<button class="step" onclick="step6()">
+6. Специален случай – електродвигател
+</button>
+
+
+<button class="testButton" onclick="testRestart()">
+
+⚠ ОПИТАЙ ПОВТОРНО ВКЛЮЧВАНЕ
+
+</button>
+
+
+<button class="resetButton" onclick="resetAll()">
+
+↺ НАЧАЛО
+
+</button>
+
+
+<a
+class="ruleButton"
+href="../qr-02-1-pravilnik/pravilnik.pdf">
+
+📘 Пълен правилник
+
+</a>
+
+
+</div>
+
+
+
+<!-- MAIN -->
+
+<div class="card main">
+
+
+<div class="scene">
+
+<div class="sceneTitle">
+
+Как може отново да се появи напрежение?
+
+</div>
+
+
+<svg viewBox="0 0 900 470">
+
+
+<!-- MAIN SOURCE -->
+
+<rect
+x="30"
+y="65"
+width="135"
+height="90"
+rx="12"
+fill="white"
+stroke="#91aabb"
+stroke-width="2"
+/>
+
+<text
+x="97"
+y="95"
+text-anchor="middle"
+font-size="17"
+font-weight="800">
+ОСНОВНО
+</text>
+
+<text
+x="97"
+y="120"
+text-anchor="middle"
+font-size="17"
+font-weight="800">
+ЗАХРАНВАНЕ
+</text>
+
+<text
+x="97"
+y="145"
+text-anchor="middle"
+font-size="22">
+⚡
+</text>
+
+
+
+<!-- ENERGY MAIN -->
+
+<path
+id="flow1"
+class="energy"
+d="M165 110 H285"
+fill="none"
+/>
+
+
+
+<!-- BREAKER -->
+
+<rect
+x="285"
+y="55"
+width="140"
+height="120"
+rx="12"
+fill="white"
+stroke="#91aabb"
+stroke-width="2"
+/>
+
+<text
+x="355"
+y="80"
+text-anchor="middle"
+font-size="15"
+font-weight="850">
+ГЛАВЕН
+</text>
+
+<text
+x="355"
+y="100"
+text-anchor="middle"
+font-size="15"
+font-weight="850">
+ПРЕКЪСВАЧ
+</text>
+
+
+<circle
+cx="320"
+cy="145"
+r="7"
+fill="#17394e"
+/>
+
+<circle
+cx="390"
+cy="145"
+r="7"
+fill="#17394e"
+/>
+
+
+<line
+id="switchLine"
+x1="320"
+y1="145"
+x2="385"
+y2="115"
+stroke="#17394e"
+stroke-width="8"
+stroke-linecap="round"
+/>
+
+
+
+<!-- LOCK -->
+
+<g id="lock" class="lock">
+
+<rect
+x="365"
+y="133"
+width="45"
+height="40"
+rx="7"
+fill="#df3b32"
+/>
+
+<path
+d="M373 133 V119
+A14 14 0 0 1 401 119
+V133"
+fill="none"
+stroke="#92241f"
+stroke-width="7"
+/>
+
+</g>
+
+
+
+<!-- WORK FLOW -->
+
+<path
+id="flow2"
+class="energy"
+d="M425 110 H630"
+fill="none"
+/>
+
+
+
+<!-- WORK AREA -->
+
+<rect
+x="630"
+y="62"
+width="190"
+height="100"
+rx="12"
+fill="white"
+stroke="#91aabb"
+stroke-width="2"
+/>
+
+<text
+x="725"
+y="95"
+text-anchor="middle"
+font-size="19"
+font-weight="900">
+РАБОТЕН
+</text>
+
+<text
+x="725"
+y="120"
+text-anchor="middle"
+font-size="19"
+font-weight="900">
+УЧАСТЪК
+</text>
+
+<text
+id="workStatus"
+x="725"
+y="148"
+text-anchor="middle"
+font-size="15"
+font-weight="850"
+fill="#d83c33">
+
+ПОД НАПРЕЖЕНИЕ
+
+</text>
+
+
+
+<!-- TAG -->
+
+<g id="tag" class="tag">
+
+<line
+x1="405"
+y1="125"
+x2="470"
+y2="200"
+stroke="#555"
+stroke-width="3"
+/>
+
+<rect
+x="445"
+y="185"
+width="190"
+height="80"
+rx="8"
+fill="white"
+stroke="#d83c33"
+stroke-width="4"
+/>
+
+<text
+x="540"
+y="218"
+text-anchor="middle"
+font-size="18"
+font-weight="900"
+fill="#c42c25">
+
+НЕ ВКЛЮЧВАЙ!
+
+</text>
+
+<text
+x="540"
+y="245"
+text-anchor="middle"
+font-size="18"
+font-weight="900"
+fill="#c42c25">
+
+РАБОТЯТ ХОРА!
+
+</text>
+
+</g>
+
+
+
+<!-- REMOTE -->
+
+<rect
+x="35"
+y="290"
+width="205"
+height="120"
+rx="12"
+fill="white"
+stroke="#91aabb"
+stroke-width="2"
+/>
+
+<text
+x="137"
+y="320"
+text-anchor="middle"
+font-size="16"
+font-weight="850">
+
+ДИСТАНЦИОННО
+
+</text>
+
+<text
+x="137"
+y="343"
+text-anchor="middle"
+font-size="16"
+font-weight="850">
+
+УПРАВЛЕНИЕ
+
+</text>
+
+
+<circle
+cx="100"
+cy="375"
+r="20"
+fill="#1b9c5c"
+/>
+
+<text
+x="100"
+y="381"
+text-anchor="middle"
+fill="white"
+font-weight="900">
+
+ON
+
+</text>
+
+
+<circle
+cx="175"
+cy="375"
+r="20"
+fill="#d83c33"
+/>
+
+<text
+x="175"
+y="381"
+text-anchor="middle"
+fill="white"
+font-weight="900">
+
+OFF
+
+</text>
+
+
+<path
+d="M240 345 C300 320 330 255 345 178"
+fill="none"
+stroke="#d83c33"
+stroke-width="4"
+stroke-dasharray="8 8"
+/>
+
+
+
+<g id="remoteX" class="remoteX">
+
+<line
+x1="65"
+y1="340"
+x2="205"
+y2="400"
+stroke="#d83c33"
+stroke-width="11"
+/>
+
+<line
+x1="205"
+y1="340"
+x2="65"
+y2="400"
+stroke="#d83c33"
+stroke-width="11"
+/>
+
+</g>
+
+
+
+<!-- RESERVE -->
+
+<rect
+x="650"
+y="290"
+width="215"
+height="120"
+rx="12"
+fill="white"
+stroke="#91aabb"
+stroke-width="2"
+/>
+
+<text
+x="757"
+y="320"
+text-anchor="middle"
+font-size="16"
+font-weight="850">
+
+РЕЗЕРВЕН / АЛТЕРНАТИВЕН
+
+</text>
+
+<text
+x="757"
+y="343"
+text-anchor="middle"
+font-size="16"
+font-weight="850">
+
+ИЗТОЧНИК
+
+</text>
+
+
+<text
+x="757"
+y="390"
+text-anchor="middle"
+font-size="40">
+
+🔋
+
+</text>
+
+
+<path
+d="M650 345 C590 320 590 235 630 160"
+fill="none"
+stroke="#d83c33"
+stroke-width="4"
+stroke-dasharray="8 8"
+/>
+
+
+
+<g id="reserveX" class="reserveX">
+
+<line
+x1="685"
+y1="330"
+x2="830"
+y2="398"
+stroke="#d83c33"
+stroke-width="11"
+/>
+
+<line
+x1="830"
+y1="330"
+x2="685"
+y2="398"
+stroke="#d83c33"
+stroke-width="11"
+/>
+
+</g>
+
+
+</svg>
+
+</div>
+
+
+
+<div id="information" class="info">
+
+<strong>Начално състояние:</strong>
+
+Съоръжението е под напрежение.
+Започнете със стъпка 1.
+
+</div>
+
+
+
+<div class="statusGrid">
+
+<div id="s1" class="status bad">
+Главен апарат: НЕОБЕЗОПАСЕН
+</div>
+
+<div id="s2" class="status bad">
+Дистанционно: АКТИВНО
+</div>
+
+<div id="s3" class="status bad">
+Резервен източник: ВЪЗМОЖЕН
+</div>
+
+<div id="s4" class="status bad">
+Табела: НЯМА
+</div>
+
+</div>
+
+
+
+<div id="motorBox" class="motorBox">
+
+<h3>⚙ Специален случай – електродвигател</h3>
+
+<span id="motor" class="motor">
+⚙️
+</span>
+
+<p>
+При работа, свързана с допиране до тоководещи или въртящи се
+части на електродвигател, двигателят се спира и захранването
+се изключва.
+</p>
+
+<p>
+Правилникът предвижда още:
+</p>
+
+<ul>
+
+<li>
+изключване на захранващата линия;
+</li>
+
+<li>
+поставяне на табела
+<strong>„Не включвай! Работят хора!“</strong>;
+</li>
+
+<li>
+отсъединяване и заземяване на захранващия кабел;
+</li>
+
+<li>
+мерки срещу завъртане на двигателя от задвижвания механизъм.
+</li>
+
+</ul>
+
+
+<button
+class="motorButton"
+onclick="stopMotor()">
+
+🔒 ОБЕЗОПАСИ СРЕЩУ ЗАВЪРТАНЕ
+
+</button>
+
+
+<span
+id="motorOK"
+style="
+display:none;
+color:#15965c;
+font-weight:900;
+margin-left:10px;
+">
+
+✓ ОБЕЗОПАСЕНО
+
+</span>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+<footer>
+
+© Величко Атанасов • Учебна интерактивна анимация
+
+</footer>
+
+
+</div>
+
+
+
+<script>
+
+let off=false;
+let found=false;
+let locked=false;
+let tagged=false;
+let remote=false;
+let reserve=false;
+
+
+const info =
+document.getElementById("information");
+
+
+function message(text,type=""){
+
+info.className =
+"info " + type;
+
+info.innerHTML =
+text;
+
+}
+
+
+
+function stopEnergy(){
+
+document
+.getElementById("flow1")
+.classList.add("stop");
+
+document
+.getElementById("flow2")
+.classList.add("stop");
+
+document
+.getElementById("workStatus")
+.textContent="ИЗКЛЮЧЕН УЧАСТЪК";
+
+document
+.getElementById("workStatus")
+.setAttribute("fill","#15965c");
+
+}
+
+
+
+function startEnergy(){
+
+document
+.getElementById("flow1")
+.classList.remove("stop");
+
+document
+.getElementById("flow2")
+.classList.remove("stop");
+
+document
+.getElementById("workStatus")
+.textContent="ПОД НАПРЕЖЕНИЕ";
+
+document
+.getElementById("workStatus")
+.setAttribute("fill","#d83c33");
+
+}
+
+
+
+function setStatus(id,text,good){
+
+let element =
+document.getElementById(id);
+
+element.textContent=text;
+
+element.className =
+"status " + (good ? "ok" : "bad");
+
+}
+
+
+
+function step1(){
+
+off=true;
+
+stopEnergy();
+
+message(
+
+"<strong>1. ИЗКЛЮЧВАНЕ</strong><br><br>" +
+
+"Захранването към работния участък е изключено. " +
+
+"Но това все още не означава, че съоръжението е обезопасено. " +
+
+"Някой може да включи прекъсвача отново или той може да бъде " +
+
+"задействан дистанционно."
+
+,"warning"
+
+);
+
+}
+
+
+
+function step2(){
+
+if(!off){
+
+message(
+"Първо трябва да се изключи работният участък.",
+"warning"
+);
+
+return;
+
+}
+
+found=true;
+
+message(
+
+"<strong>2. ОТКРИЙ ВСИЧКИ ВЪЗМОЖНОСТИ ЗА ПОВТОРНО ВКЛЮЧВАНЕ</strong><br><br>" +
+
+"Проверяват се всички органи и вериги, чрез които може да бъде " +
+
+"възстановено напрежението: главни и автоматични прекъсвачи, " +
+
+"разединители, предпазители, ключове, ръкохватки, управляващи " +
+
+"вериги, дистанционно управление и резервни или алтернативни източници."
+
+);
+
+}
+
+
+
+function step3(){
+
+if(!found){
+
+message(
+"Първо установете всички възможности за повторно включване.",
+"warning"
+);
+
+return;
+
+}
+
+locked=true;
+
+document
+.getElementById("lock")
+.classList.add("visible");
+
+
+setStatus(
+"s1",
+"Главен апарат: БЛОКИРАН",
+true
+);
+
+
+message(
+
+"<strong>3. БЛОКИРАНЕ / ЗАКЛЮЧВАНЕ</strong><br><br>" +
+
+"Комутационният апарат е блокиран в изключено положение. " +
+
+"Целта е друг човек да не може неволно или неправомерно " +
+
+"да възстанови захранването."
+
+,"good"
+
+);
+
+}
+
+
+
+function step4(){
+
+if(!locked){
+
+message(
+"Първо обезопасете комутационния апарат срещу повторно включване.",
+"warning"
+);
+
+return;
+
+}
+
+tagged=true;
+
+document
+.getElementById("tag")
+.classList.add("visible");
+
+
+setStatus(
+"s4",
+"Табела: ПОСТАВЕНА",
+true
+);
+
+
+message(
+
+"<strong>4. ПРЕДУПРЕДИТЕЛНА ТАБЕЛА</strong><br><br>" +
+
+"На органите, чрез които може да бъде подадено напрежение, " +
+
+"се поставя табела:<br><br>" +
+
+"<strong>„НЕ ВКЛЮЧВАЙ! РАБОТЯТ ХОРА!“</strong>"
+
+,"good"
+
+);
+
+}
+
+
+
+function step5(){
+
+if(!tagged){
+
+message(
+"Първо поставете предупредителната табела.",
+"warning"
+);
+
+return;
+
+}
+
+
+remote=true;
+reserve=true;
+
+
+document
+.getElementById("remoteX")
+.classList.add("visible");
+
+
+document
+.getElementById("reserveX")
+.classList.add("visible");
+
+
+setStatus(
+"s2",
+"Дистанционно: ОБЕЗОПАСЕНО",
+true
+);
+
+
+setStatus(
+"s3",
+"Резервен източник: ОБЕЗОПАСЕН",
+true
+);
+
+
+message(
+
+"<strong>5. ДРУГИ ВЪЗМОЖНОСТИ ЗА ВКЛЮЧВАНЕ</strong><br><br>" +
+
+"Обезопасени са дистанционното управление и показаният резервен " +
+
+"източник. При дистанционно задвижван комутационен апарат " +
+
+"правилникът изисква да се изключи захранването на пусковата бобина."
+
+,"good"
+
+);
+
+}
+
+
+
+function step6(){
+
+document
+.getElementById("motorBox")
+.classList.add("show");
+
+
+message(
+
+"<strong>6. ЕЛЕКТРОДВИГАТЕЛ</strong><br><br>" +
+
+"Електрическото изключване не премахва автоматично опасността " +
+
+"от механично завъртане. Затова при електродвигател се предприемат " +
+
+"и мерки срещу завъртането му от задвижвания механизъм."
+
+);
+
+}
+
+
+
+function stopMotor(){
+
+document
+.getElementById("motor")
+.classList.add("stop");
+
+
+document
+.getElementById("motorOK")
+.style.display="inline";
+
+}
+
+
+
+function testRestart(){
+
+if(
+off &&
+locked &&
+tagged &&
+remote &&
+reserve
+){
+
+message(
+
+"<strong>✓ ОПИТЪТ ЗА ПОВТОРНО ВКЛЮЧВАНЕ Е БЛОКИРАН.</strong>" +
+
+"<br><br>" +
+
+"Показаните възможности за повторно подаване на напрежение " +
+
+"са обезопасени."
+
+,"good"
+
+);
+
+}
+
+else{
+
+off=false;
+
+startEnergy();
+
+
+message(
+
+"<strong>⚠ ОПАСНО!</strong><br><br>" +
+
+"Напрежението може да се появи отново. " +
+
+"Не са изпълнени всички мерки срещу повторно включване." +
+
+"<br><br>" +
+
+"<strong>Работното място все още не е подготвено за безопасна работа.</strong>"
+
+,"warning"
+
+);
+
+}
+
+}
+
+
+
+function resetAll(){
+
+off=false;
+found=false;
+locked=false;
+tagged=false;
+remote=false;
+reserve=false;
+
+
+startEnergy();
+
+
+document
+.getElementById("lock")
+.classList.remove("visible");
+
+
+document
+.getElementById("tag")
+.classList.remove("visible");
+
+
+document
+.getElementById("remoteX")
+.classList.remove("visible");
+
+
+document
+.getElementById("reserveX")
+.classList.remove("visible");
+
+
+document
+.getElementById("motorBox")
+.classList.remove("show");
+
+
+document
+.getElementById("motor")
+.classList.remove("stop");
+
+
+document
+.getElementById("motorOK")
+.style.display="none";
+
+
+setStatus(
+"s1",
+"Главен апарат: НЕОБЕЗОПАСЕН",
+false
+);
+
+
+setStatus(
+"s2",
+"Дистанционно: АКТИВНО",
+false
+);
+
+
+setStatus(
+"s3",
+"Резервен източник: ВЪЗМОЖЕН",
+false
+);
+
+
+setStatus(
+"s4",
+"Табела: НЯМА",
+false
+);
+
+
+message(
+
+"<strong>Начално състояние:</strong><br>" +
+
+"Съоръжението е под напрежение. Започнете със стъпка 1."
+
+);
+
+}
+
+</script>
+
+
+</body>
+</html>

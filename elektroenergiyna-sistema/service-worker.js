@@ -1,12 +1,5 @@
-const CACHE = 'ees-bulgaria-pwa-v70-no-pdf-1';
-const APP_SHELL = [
-  './',
-  './index.html',
-  './manifest.webmanifest',
-  './icon-192.png',
-  './icon-512.png',
-  './apple-touch-icon.png'
-];
+const CACHE = 'ees-bulgaria-pwa-v76-1-erm-inside';
+const APP_SHELL = ['./manifest.webmanifest','./icon-192.png','./icon-512.png','./apple-touch-icon.png'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(APP_SHELL)).then(() => self.skipWaiting()));
 });
@@ -22,9 +15,13 @@ self.addEventListener('fetch', event => {
     event.respondWith(fetch(event.request, {cache:'no-store'}));
     return;
   }
+  if (event.request.mode === 'navigate') {
+    event.respondWith(fetch(event.request, {cache:'reload'}).catch(() => caches.match('./index.html')));
+    return;
+  }
   event.respondWith(fetch(event.request, {cache:'no-cache'}).then(resp => {
     const copy = resp.clone();
     caches.open(CACHE).then(cache => cache.put(event.request, copy));
     return resp;
-  }).catch(() => caches.match(event.request).then(cached => cached || caches.match('./index.html'))));
+  }).catch(() => caches.match(event.request)));
 });

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<!-- saved from url=(0053)file:///C:/Users/velichko.atanasov/Desktop/index.html -->
-<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="author" content="доц. д-р инж. Величко Атанасов">
 <title>QR-004 · Генератор с вдлъбнати магнитни полюси</title>
@@ -94,17 +94,29 @@ button:focus-visible,input:focus-visible{
 }
 .panel-head strong{font-size:16px}
 .panel-head small{font-size:12px;color:var(--muted)}
+
+/*
+  3D платното е абсолютно позиционирано.
+  Така не може да измести сцената под друга запазена рисунка.
+*/
 #viewport{
   position:relative;
   width:100%;
   aspect-ratio:1.23;
   min-height:350px;
+  overflow:hidden;
   background:#141e2a;
   touch-action:none;
   cursor:grab;
 }
 #viewport:active{cursor:grabbing}
-#viewport canvas{width:100%;height:100%;display:block}
+#viewport canvas{
+  position:absolute;
+  inset:0;
+  display:block;
+  width:100%;
+  height:100%;
+}
 #loading{
   position:absolute;
   inset:0;
@@ -301,7 +313,7 @@ footer{
   .reading b{font-size:17px}
 }
 </style>
-<script src="./QR-004 · Генератор с вдлъбнати магнитни полюси_files/three.min.js.download" async=""></script></head>
+</head>
 
 <body>
 <div class="wrap">
@@ -315,13 +327,13 @@ footer{
 </header>
 
 <div class="toolbar">
-  <button id="modeAC" class="active" aria-pressed="true">AC · контактни пръстени</button>
-  <button id="modeDC" aria-pressed="false" class="">DC · комутатор</button>
-  <button id="modeFilter" aria-pressed="false" class="">DC · изглаждане</button>
+  <button id="modeAC" class="active" type="button">AC · контактни пръстени</button>
+  <button id="modeDC" type="button">DC · комутатор</button>
+  <button id="modeFilter" type="button">DC · изглаждане</button>
   <span class="spacer"></span>
-  <button id="pause">Ⅱ Пауза</button>
-  <button id="restart">↺ Начално положение</button>
-  <button id="resetView">Начален изглед</button>
+  <button id="pause" type="button">Ⅱ Пауза</button>
+  <button id="restart" type="button">↺ Начално положение</button>
+  <button id="resetView" type="button">Начален изглед</button>
 </div>
 
 <div class="layout">
@@ -331,17 +343,18 @@ footer{
       <small id="contactLabel">Два контактни пръстена</small>
     </div>
 
+    <!-- Тук умишлено няма предварително запазено 3D canvas. -->
     <div id="viewport">
-      <div id="loading" role="status" hidden="">
+      <div id="loading" role="status">
         <b>Зареждане на 3D модела…</b>
         <span>Необходима е интернет връзка за 3D библиотеката.</span>
       </div>
-    <canvas data-engine="three.js r160" width="1091" height="887" style="display: block;"></canvas></div>
+    </div>
 
     <div class="scene-footer">
       <span>Плъзни с мишката за друг изглед.</span>
       <label class="check">
-        <input id="showField" type="checkbox" checked="">
+        <input id="showField" type="checkbox" checked>
         Покажи полето N → S
       </label>
     </div>
@@ -353,10 +366,11 @@ footer{
         <strong>Напрежения преди и след контактната система</strong>
       </div>
 
-      <div id="signalChain" class="signal-chain">Намотка: синусоида → контактни пръстени → синусоидално напрежение на изхода</div>
+      <div id="signalChain" class="signal-chain"></div>
 
       <div class="graph-wrap">
-        <canvas id="voltageGraph" aria-label="Синхронизирани графики на ЕДН в намотката и изходното напрежение" width="712" height="475" style="height: 380px;">
+        <canvas id="voltageGraph"
+          aria-label="Синхронизирани графики на ЕДН в намотката и изходното напрежение">
         </canvas>
       </div>
 
@@ -368,19 +382,19 @@ footer{
       <div class="readings">
         <div class="reading">
           <span>ЕДН в намотката e(t)</span>
-          <b id="coilRead">-283,0 V</b>
+          <b id="coilRead">—</b>
         </div>
         <div class="reading">
           <span>Напрежение на четките u(t)</span>
-          <b id="brushRead">-283,0 V</b>
+          <b id="brushRead">—</b>
         </div>
         <div class="reading">
           <span>Ъгъл α</span>
-          <b id="angleRead">241,9°</b>
+          <b id="angleRead">—</b>
         </div>
         <div class="reading">
           <span id="characteristicTitle">Ефективна стойност на изхода</span>
-          <b id="characteristicRead">226,9 V</b>
+          <b id="characteristicRead">—</b>
         </div>
       </div>
     </section>
@@ -391,30 +405,33 @@ footer{
       </div>
 
       <div class="positions">
-        <button data-angle="0" class="">0°</button>
-        <button data-angle="90" class="">90°</button>
-        <button data-angle="180" class="">180°</button>
-        <button data-angle="270" class="">270°</button>
+        <button data-angle="0" type="button">0°</button>
+        <button data-angle="90" type="button">90°</button>
+        <button data-angle="180" type="button">180°</button>
+        <button data-angle="270" type="button">270°</button>
       </div>
 
       <div class="position-note">
         Избраното положение се задържа. Натисни „Продължи“ за движение.
       </div>
 
-      <p id="explanation">Двете криви съвпадат по форма. Контактните пръстени не изправят напрежението. Неговата полярност се обръща при всеки половин оборот.</p>
+      <p id="explanation"></p>
 
-      <div id="filterControls" hidden="">
+      <div id="filterControls" hidden>
         <div class="control">
           <label for="R">Товар R <output id="Rread">220 Ω</output></label>
-          <input id="R" type="range" min="100" max="1000" step="20" value="220">
+          <input id="R" type="range"
+            min="100" max="1000" step="20" value="220">
         </div>
+
         <div class="control">
           <label for="C">Капацитет C <output id="Cread">470 μF</output></label>
-          <input id="C" type="range" min="100" max="2200" step="10" value="470">
+          <input id="C" type="range"
+            min="100" max="2200" step="10" value="470">
         </div>
       </div>
 
-      <p id="rippleRead" hidden="">Пулсации след филтъра: 25,7 V връх–връх. Честота на пулсациите: 100 Hz.</p>
+      <p id="rippleRead" hidden></p>
     </section>
   </div>
 </div>
@@ -436,7 +453,7 @@ footer{
   </div>
 
   <div class="control">
-    <label for="speed">Учебна скорост <output id="speedRead">0,25×</output></label>
+    <label for="speed">Учебна скорост <output id="speedRead">1,00×</output></label>
     <input id="speed" type="range" min=".25" max="2" step=".25" value="1">
   </div>
 </div>
@@ -510,7 +527,8 @@ footer{
 
   <p>
     Физична основа:
-    <a href="https://openstax.org/books/university-physics-volume-2/pages/13-6-electric-generators-and-back-emf" target="_blank" rel="noopener noreferrer">
+    <a href="https://openstax.org/books/university-physics-volume-2/pages/13-6-electric-generators-and-back-emf"
+       target="_blank" rel="noopener noreferrer">
       OpenStax — Electric Generators and Back Emf
     </a>.
   </p>
@@ -531,12 +549,30 @@ const TAU = 2 * Math.PI;
 const AREA = 0.0532;
 const FILTER_STEPS = 720;
 
+const viewport = $("viewport");
+const loading = $("loading");
+
+/*
+  ПОПРАВКА НА ЗАРЕЖДАНЕТО:
+  премахваме стари canvas елементи, останали при
+  запазване на вече отворената страница от браузъра.
+  Графиката извън viewport не се засяга.
+*/
+viewport.querySelectorAll("canvas").forEach(canvas => canvas.remove());
+
+loading.hidden = false;
+loading.innerHTML =
+  "<b>Зареждане на 3D модела…</b>" +
+  "<span>Необходима е интернет връзка за 3D библиотеката.</span>";
+
 let mode = "AC";
 let angle = Math.PI / 3;
 let lastTime = null;
-let playing = !window.matchMedia(
-  "(prefers-reduced-motion: reduce)"
-).matches;
+
+let playing = !(
+  window.matchMedia &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches
+);
 
 let filtered = [];
 let filterMean = 0;
@@ -546,6 +582,7 @@ const wrap = a => ((a % TAU) + TAU) % TAU;
 
 function fmt(value, digits = 1){
   const n = Math.abs(value) < 1e-9 ? 0 : value;
+
   return n.toLocaleString("bg-BG", {
     minimumFractionDigits: digits,
     maximumFractionDigits: digits
@@ -558,7 +595,9 @@ function readParameters(){
   const f = Number($("F").value);
 
   return {
-    n, b, f,
+    n,
+    b,
+    f,
     r: Number($("R").value),
     c: Number($("C").value) * 1e-6,
     speed: Number($("speed").value),
@@ -594,14 +633,17 @@ function calculateFilter(){
 
       voltage = Math.max(available, voltage * decay);
 
-      if(cycle === 9) filtered.push(voltage);
+      if(cycle === 9){
+        filtered.push(voltage);
+      }
     }
   }
 
-  filterMean = filtered.reduce((sum, v) => sum + v, 0)
-    / filtered.length;
+  filterMean =
+    filtered.reduce((sum, v) => sum + v, 0) / filtered.length;
 
-  filterRipple = Math.max(...filtered) - Math.min(...filtered);
+  filterRipple =
+    Math.max(...filtered) - Math.min(...filtered);
 }
 
 function filteredVoltage(a){
@@ -623,9 +665,14 @@ function loadVoltage(a){
 
 calculateFilter();
 
-/* Зареждане на фиксирана версия на Three.js. */
+/*
+  Three.js се зарежда само от фиксираните интернет адреси.
+  В документа няма препратка към локална папка _files.
+*/
 async function loadThree(){
-  if(window.THREE) return window.THREE;
+  if(window.THREE && window.THREE.WebGLRenderer){
+    return window.THREE;
+  }
 
   const urls = [
     "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js",
@@ -647,6 +694,7 @@ async function loadThree(){
 
         script.src = url;
         script.async = true;
+        script.dataset.qr004Library = "true";
 
         script.onload = () => {
           if(settled) return;
@@ -660,15 +708,17 @@ async function loadThree(){
           settled = true;
           clearTimeout(timer);
           script.remove();
-          reject(new Error("Неуспешно зареждане."));
+          reject(new Error("Неуспешно зареждане на библиотеката."));
         };
 
         document.head.appendChild(script);
       });
 
-      if(window.THREE) return window.THREE;
+      if(window.THREE && window.THREE.WebGLRenderer){
+        return window.THREE;
+      }
     }catch(error){
-      // При неуспех се използва резервният адрес.
+      // При неуспех се опитва резервният адрес.
     }
   }
 
@@ -679,31 +729,43 @@ async function loadThree(){
 
 const THREE = await loadThree();
 
-const viewport = $("viewport");
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x141e29);
 
 const camera = new THREE.PerspectiveCamera(37, 1, 0.1, 70);
-const renderer = new THREE.WebGLRenderer({antialias: true});
+const renderer = new THREE.WebGLRenderer({antialias:true});
 
-renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+renderer.setPixelRatio(
+  Math.min(window.devicePixelRatio || 1, 2)
+);
+
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.10;
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
+/* Гарантирано остава само едно работещо 3D платно. */
+viewport.querySelectorAll("canvas").forEach(canvas => canvas.remove());
+
+renderer.domElement.setAttribute(
+  "aria-label",
+  "Триизмерен генератор с вдлъбнати магнитни полюси"
+);
+
 viewport.appendChild(renderer.domElement);
 
-const V = (x, y, z) => new THREE.Vector3(x, y, z);
+const V = (x,y,z) => new THREE.Vector3(x,y,z);
 
-/* Осветление — без промяна. */
-scene.add(new THREE.HemisphereLight(0xd8edff, 0x182330, 2.2));
+/* Осветление. */
+scene.add(
+  new THREE.HemisphereLight(0xd8edff, 0x182330, 2.2)
+);
 
 const keyLight = new THREE.DirectionalLight(0xfff0d6, 3.1);
-keyLight.position.set(-4, 8, 6);
+keyLight.position.set(-4,8,6);
 keyLight.castShadow = true;
-keyLight.shadow.mapSize.set(2048, 2048);
+keyLight.shadow.mapSize.set(2048,2048);
 keyLight.shadow.camera.left = -8;
 keyLight.shadow.camera.right = 8;
 keyLight.shadow.camera.top = 8;
@@ -712,11 +774,11 @@ keyLight.shadow.normalBias = 0.025;
 scene.add(keyLight);
 
 const rimLight = new THREE.DirectionalLight(0x8bc3ff, 2.6);
-rimLight.position.set(3, 5, -6);
+rimLight.position.set(3,5,-6);
 scene.add(rimLight);
 
 const fillLight = new THREE.DirectionalLight(0xffffff, 1.4);
-fillLight.position.set(7, 1, 6);
+fillLight.position.set(7,1,6);
 scene.add(fillLight);
 
 /* Процедурна среда за отраженията. */
@@ -725,20 +787,26 @@ envCanvas.width = 1024;
 envCanvas.height = 512;
 
 const envCtx = envCanvas.getContext("2d");
-const envGradient = envCtx.createLinearGradient(0, 0, 0, 512);
 
-envGradient.addColorStop(0, "#8fa1b2");
-envGradient.addColorStop(0.36, "#d7e1e7");
-envGradient.addColorStop(0.56, "#354451");
-envGradient.addColorStop(1, "#111b26");
+if(!envCtx){
+  throw new Error("Липсва поддръжка на Canvas 2D.");
+}
+
+const envGradient = envCtx.createLinearGradient(0,0,0,512);
+envGradient.addColorStop(0,"#8fa1b2");
+envGradient.addColorStop(0.36,"#d7e1e7");
+envGradient.addColorStop(0.56,"#354451");
+envGradient.addColorStop(1,"#111b26");
 
 envCtx.fillStyle = envGradient;
-envCtx.fillRect(0, 0, 1024, 512);
+envCtx.fillRect(0,0,1024,512);
+
 envCtx.fillStyle = "#ffffff";
-envCtx.fillRect(90, 70, 110, 220);
-envCtx.fillRect(470, 80, 65, 230);
+envCtx.fillRect(90,70,110,220);
+envCtx.fillRect(470,80,65,230);
+
 envCtx.fillStyle = "#bbddff";
-envCtx.fillRect(790, 75, 150, 210);
+envCtx.fillRect(790,75,150,210);
 
 const envTexture = new THREE.CanvasTexture(envCanvas);
 envTexture.mapping = THREE.EquirectangularReflectionMapping;
@@ -754,150 +822,167 @@ pmrem.dispose();
 /* Материалите и цветовете са запазени. */
 const mat = {
   red: new THREE.MeshPhysicalMaterial({
-    color: 0xf01632,
-    metalness: 0.25,
-    roughness: 0.22,
-    clearcoat: 1,
-    clearcoatRoughness: 0.15
+    color:0xf01632,
+    metalness:0.25,
+    roughness:0.22,
+    clearcoat:1,
+    clearcoatRoughness:0.15
   }),
+
   blue: new THREE.MeshPhysicalMaterial({
-    color: 0x075bf2,
-    metalness: 0.25,
-    roughness: 0.22,
-    clearcoat: 1,
-    clearcoatRoughness: 0.15
+    color:0x075bf2,
+    metalness:0.25,
+    roughness:0.22,
+    clearcoat:1,
+    clearcoatRoughness:0.15
   }),
+
   copper: new THREE.MeshStandardMaterial({
-    color: 0xf3a448,
-    metalness: 0.92,
-    roughness: 0.20
+    color:0xf3a448,
+    metalness:0.92,
+    roughness:0.20
   }),
+
   copperDark: new THREE.MeshStandardMaterial({
-    color: 0xbf6a26,
-    metalness: 0.88,
-    roughness: 0.26
+    color:0xbf6a26,
+    metalness:0.88,
+    roughness:0.26
   }),
+
   steel: new THREE.MeshStandardMaterial({
-    color: 0xa4b2c0,
-    metalness: 0.95,
-    roughness: 0.24
+    color:0xa4b2c0,
+    metalness:0.95,
+    roughness:0.24
   }),
+
   dark: new THREE.MeshStandardMaterial({
-    color: 0x303d49,
-    metalness: 0.72,
-    roughness: 0.40
+    color:0x303d49,
+    metalness:0.72,
+    roughness:0.40
   }),
+
   graphite: new THREE.MeshStandardMaterial({
-    color: 0x202b36,
-    metalness: 0.12,
-    roughness: 0.72
+    color:0x202b36,
+    metalness:0.12,
+    roughness:0.72
   }),
+
   redWire: new THREE.MeshStandardMaterial({
-    color: 0xde2634,
-    roughness: 0.30,
-    metalness: 0.10
+    color:0xde2634,
+    roughness:0.30,
+    metalness:0.10
   }),
+
   blueWire: new THREE.MeshStandardMaterial({
-    color: 0x075ade,
-    roughness: 0.30,
-    metalness: 0.10
+    color:0x075ade,
+    roughness:0.30,
+    metalness:0.10
   }),
+
   gold: new THREE.MeshStandardMaterial({
-    color: 0xe6af3e,
-    metalness: 0.85,
-    roughness: 0.26
+    color:0xe6af3e,
+    metalness:0.85,
+    roughness:0.26
   }),
+
   cyan: new THREE.MeshBasicMaterial({
-    color: 0x4be1ff,
-    transparent: true,
-    opacity: 0.58,
-    depthWrite: false
+    color:0x4be1ff,
+    transparent:true,
+    opacity:0.58,
+    depthWrite:false
   })
 };
 
 function mesh(geometry, material, parent = scene){
-  const object = new THREE.Mesh(geometry, material);
+  const object = new THREE.Mesh(geometry,material);
   object.castShadow = true;
   object.receiveShadow = true;
   parent.add(object);
   return object;
 }
 
-function roundedBox(w, h, d, radius, material, position, parent = scene){
-  const r = Math.min(radius, w / 2, h / 2);
-  const x = -w / 2;
-  const y = -h / 2;
+function roundedBox(
+  w,h,d,radius,material,position,parent = scene
+){
+  const r = Math.min(radius,w/2,h/2);
+  const x = -w/2;
+  const y = -h/2;
   const shape = new THREE.Shape();
 
-  shape.moveTo(x + r, y);
-  shape.lineTo(x + w - r, y);
-  shape.quadraticCurveTo(x + w, y, x + w, y + r);
-  shape.lineTo(x + w, y + h - r);
-  shape.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-  shape.lineTo(x + r, y + h);
-  shape.quadraticCurveTo(x, y + h, x, y + h - r);
-  shape.lineTo(x, y + r);
-  shape.quadraticCurveTo(x, y, x + r, y);
+  shape.moveTo(x+r,y);
+  shape.lineTo(x+w-r,y);
+  shape.quadraticCurveTo(x+w,y,x+w,y+r);
+  shape.lineTo(x+w,y+h-r);
+  shape.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+  shape.lineTo(x+r,y+h);
+  shape.quadraticCurveTo(x,y+h,x,y+h-r);
+  shape.lineTo(x,y+r);
+  shape.quadraticCurveTo(x,y,x+r,y);
 
-  const bevel = Math.min(0.04, d / 5);
-  const geometry = new THREE.ExtrudeGeometry(shape, {
-    depth: Math.max(0.01, d - 2 * bevel),
-    steps: 1,
-    bevelEnabled: true,
-    bevelSize: bevel,
-    bevelThickness: bevel,
-    bevelSegments: 3,
-    curveSegments: 12
+  const bevel = Math.min(0.04,d/5);
+
+  const geometry = new THREE.ExtrudeGeometry(shape,{
+    depth:Math.max(0.01,d-2*bevel),
+    steps:1,
+    bevelEnabled:true,
+    bevelSize:bevel,
+    bevelThickness:bevel,
+    bevelSegments:3,
+    curveSegments:12
   });
 
   geometry.center();
 
-  const object = mesh(geometry, material, parent);
+  const object = mesh(geometry,material,parent);
   object.position.copy(position);
+
   return object;
 }
 
-function rod(a, b, radius, material, parent = scene){
+function rod(a,b,radius,material,parent = scene){
   const direction = b.clone().sub(a);
   const length = direction.length();
 
   const object = mesh(
-    new THREE.CylinderGeometry(radius, radius, length, 32),
+    new THREE.CylinderGeometry(radius,radius,length,32),
     material,
     parent
   );
 
   object.position.copy(a).add(b).multiplyScalar(0.5);
+
   object.quaternion.setFromUnitVectors(
-    V(0, 1, 0),
+    V(0,1,0),
     direction.normalize()
   );
 
   return object;
 }
 
-function tube(points, radius, material, parent = scene, segments = 100){
+function tube(
+  points,radius,material,parent = scene,segments = 100
+){
   const curve = new THREE.CatmullRomCurve3(
-    points,
-    false,
-    "centripetal"
+    points,false,"centripetal"
   );
 
   return mesh(
-    new THREE.TubeGeometry(curve, segments, radius, 10, false),
+    new THREE.TubeGeometry(curve,segments,radius,10,false),
     material,
     parent
   );
 }
 
-function labelPlane(content, width, height){
+function labelPlane(content,width,height){
   const canvas = document.createElement("canvas");
   canvas.width = 512;
   canvas.height = 256;
 
   const ctx = canvas.getContext("2d");
+
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
+
   ctx.font = content.length === 1
     ? "bold 207px Georgia"
     : "bold 84px Arial";
@@ -906,25 +991,25 @@ function labelPlane(content, width, height){
   ctx.shadowBlur = 10;
   ctx.shadowOffsetY = 6;
 
-  const gradient = ctx.createLinearGradient(0, 25, 0, 235);
-  gradient.addColorStop(0, "#ffffff");
-  gradient.addColorStop(0.55, "#f5f8ff");
-  gradient.addColorStop(1, "#a8b5c5");
+  const gradient = ctx.createLinearGradient(0,25,0,235);
+  gradient.addColorStop(0,"#ffffff");
+  gradient.addColorStop(0.55,"#f5f8ff");
+  gradient.addColorStop(1,"#a8b5c5");
 
   ctx.fillStyle = gradient;
-  ctx.fillText(content, 256, 140);
+  ctx.fillText(content,256,140);
 
   const texture = new THREE.CanvasTexture(canvas);
   texture.colorSpace = THREE.SRGBColorSpace;
 
   return new THREE.Mesh(
-    new THREE.PlaneGeometry(width, height),
+    new THREE.PlaneGeometry(width,height),
     new THREE.MeshBasicMaterial({
-      map: texture,
-      transparent: true,
-      depthWrite: false,
-      toneMapped: false,
-      side: THREE.DoubleSide
+      map:texture,
+      transparent:true,
+      depthWrite:false,
+      toneMapped:false,
+      side:THREE.DoubleSide
     })
   );
 }
@@ -935,201 +1020,183 @@ function clearGeometry(group){
     group.remove(child);
 
     child.traverse(object => {
-      if(object.geometry) object.geometry.dispose();
+      if(object.geometry){
+        object.geometry.dispose();
+      }
     });
   }
 }
 
-/* Основа и опори — без промяна. */
-roundedBox(8.6, 0.28, 4.1, 0.18, mat.dark, V(0.25, -3.17, 0));
-roundedBox(8.2, 0.09, 3.9, 0.14, mat.steel, V(0.25, -2.99, 0));
+/* Основа и опори. */
+roundedBox(
+  8.6,0.28,4.1,0.18,
+  mat.dark,V(0.25,-3.17,0)
+);
 
-for(const x of [-3.55, 4.05]){
-  for(const z of [-1.67, 1.67]){
+roundedBox(
+  8.2,0.09,3.9,0.14,
+  mat.steel,V(0.25,-2.99,0)
+);
+
+for(const x of [-3.55,4.05]){
+  for(const z of [-1.67,1.67]){
     const bolt = mesh(
-      new THREE.CylinderGeometry(0.09, 0.09, 0.075, 6),
+      new THREE.CylinderGeometry(0.09,0.09,0.075,6),
       mat.steel
     );
-    bolt.position.set(x, -2.90, z);
+
+    bolt.position.set(x,-2.90,z);
   }
 }
 
-for(const x of [-2.73, 1.23]){
+for(const x of [-2.73,1.23]){
   roundedBox(
-    0.20, 4.46, 0.23, 0.035,
-    mat.dark, V(x, -0.73, -1.85)
+    0.20,4.46,0.23,0.035,
+    mat.dark,V(x,-0.73,-1.85)
   );
 }
 
 rod(
-  V(-2.73, 1.19, -1.85),
-  V(1.23, 1.19, -1.85),
+  V(-2.73,1.19,-1.85),
+  V(1.23,1.19,-1.85),
   0.085,
   mat.steel
 );
 
-/* =========================================================
-   ПРОМЕНЕНИ СА САМО МАГНИТИТЕ.
-
-   Два масивни правоъгълни полюсни блока:
-   - плоски външни стени;
-   - цилиндрична вдлъбнатина към бобината;
-   - оста на вдлъбнатината е X, както оста на вала.
-
-   Профилът първо се създава в напречното сечение,
-   след което се изтегля по дължината на вала.
-   ========================================================= */
-
+/*
+  МАГНИТНИ ПОЛЮСИ:
+  Масивни блокове с вдлъбнати цилиндрични лица.
+  Оста на цилиндричната вдлъбнатина е X —
+  същата ос, около която се върти бобината.
+*/
 const rotorX = -0.75;
 
-function concavePole(sign, material, letter){
+function concavePole(sign,material,letter){
   const axialLength = 3.38;
   const halfDepth = 0.90;
   const innerRadius = 1.50;
   const outerHeight = 2.15;
   const bevel = 0.018;
 
-  /*
-   * Координати на профила:
-   * horizontal = напречна координата;
-   * vertical   = височина над оста на вала.
-   *
-   * Вдлъбнатото лице удовлетворява:
-   * y² + z² = innerRadius².
-   */
   const edgeHeight = Math.sqrt(
-    innerRadius * innerRadius -
-    halfDepth * halfDepth
+    innerRadius*innerRadius-halfDepth*halfDepth
   );
 
-  const arcStart = Math.atan2(edgeHeight, halfDepth);
-  const arcEnd = Math.PI - arcStart;
+  const arcStart = Math.atan2(edgeHeight,halfDepth);
+  const arcEnd = Math.PI-arcStart;
 
   const shape = new THREE.Shape();
 
-  // Плоска външна горна стена и плоска странична стена.
-  shape.moveTo(-halfDepth, outerHeight);
-  shape.lineTo(halfDepth, outerHeight);
-  shape.lineTo(halfDepth, edgeHeight);
+  shape.moveTo(-halfDepth,outerHeight);
+  shape.lineTo(halfDepth,outerHeight);
+  shape.lineTo(halfDepth,edgeHeight);
 
-  // Вдлъбната кръгова повърхност, обърната към ротора.
   shape.absarc(
-    0,
-    0,
-    innerRadius,
-    arcStart,
-    arcEnd,
-    false
+    0,0,innerRadius,
+    arcStart,arcEnd,false
   );
 
-  // Другата плоска странична стена.
-  shape.lineTo(-halfDepth, outerHeight);
+  shape.lineTo(-halfDepth,outerHeight);
   shape.closePath();
 
-  const extrusionDepth = axialLength - 2 * bevel;
+  const extrusionDepth = axialLength-2*bevel;
 
-  const geometry = new THREE.ExtrudeGeometry(shape, {
-    depth: extrusionDepth,
-    steps: 1,
-    bevelEnabled: true,
-    bevelSize: bevel,
-    bevelThickness: bevel,
-    bevelSegments: 3,
-    curveSegments: 80
+  const geometry = new THREE.ExtrudeGeometry(shape,{
+    depth:extrusionDepth,
+    steps:1,
+    bevelEnabled:true,
+    bevelSize:bevel,
+    bevelThickness:bevel,
+    bevelSegments:3,
+    curveSegments:80
   });
 
-  // Центриране по оста на екструдиране.
-  geometry.translate(0, 0, -extrusionDepth / 2);
+  geometry.translate(0,0,-extrusionDepth/2);
+  geometry.rotateY(Math.PI/2);
+  geometry.computeBoundingBox();
 
-  /*
-   * Важно:
-   * ExtrudeGeometry изтегля по Z.
-   * Завъртаме геометрията, така че цилиндричната
-   * вдлъбнатина и дължината на полюса да следват X —
-   * действителната ос на въртене.
-   */
-  geometry.rotateY(Math.PI / 2);
+  const pole = mesh(geometry,material);
+  pole.name = "magnetic-pole-"+letter;
+  pole.position.set(rotorX,0,0);
 
-  const pole = mesh(geometry, material);
-  pole.position.set(rotorX, 0, 0);
-
-  // Долният блок е огледално разположен около оста на вала.
-  if(sign < 0){
+  if(sign<0){
     pole.rotation.x = Math.PI;
   }
 
-  // Запазени означения N и S върху предната плоска стена.
-  const label = labelPlane(letter, 0.88, 0.47);
+  const label = labelPlane(letter,0.88,0.47);
+  label.name = "pole-label-"+letter;
+
   label.position.set(
     rotorX,
-    sign * ((edgeHeight + outerHeight) / 2),
-    halfDepth + 0.045
+    sign*((edgeHeight+outerHeight)/2),
+    halfDepth+0.045
   );
+
   scene.add(label);
+
+  return pole;
 }
 
-concavePole(1, mat.red, "N");
-concavePole(-1, mat.blue, "S");
+const northPole = concavePole(1,mat.red,"N");
+const southPole = concavePole(-1,mat.blue,"S");
 
-/* КРАЙ НА ПРОМЯНАТА НА МАГНИТИТЕ. */
-
-/* Лагери с отвор за вала — без промяна. */
+/* Лагери с отвор за вала. */
 function bearingAt(x){
   roundedBox(
-    0.28, 2.70, 0.42, 0.05,
-    mat.dark, V(x, -1.55, 0)
+    0.28,2.70,0.42,0.05,
+    mat.dark,V(x,-1.55,0)
   );
 
   roundedBox(
-    0.75, 0.13, 0.93, 0.05,
-    mat.steel, V(x, -2.88, 0)
+    0.75,0.13,0.93,0.05,
+    mat.steel,V(x,-2.88,0)
   );
 
   const profile = [
-    new THREE.Vector2(0.17, -0.15),
-    new THREE.Vector2(0.30, -0.15),
-    new THREE.Vector2(0.30, 0.15),
-    new THREE.Vector2(0.17, 0.15),
-    new THREE.Vector2(0.17, -0.15)
+    new THREE.Vector2(0.17,-0.15),
+    new THREE.Vector2(0.30,-0.15),
+    new THREE.Vector2(0.30,0.15),
+    new THREE.Vector2(0.17,0.15),
+    new THREE.Vector2(0.17,-0.15)
   ];
 
   const bearing = mesh(
-    new THREE.LatheGeometry(profile, 64),
+    new THREE.LatheGeometry(profile,64),
     mat.steel
   );
 
-  bearing.rotation.z = Math.PI / 2;
-  bearing.position.set(x, 0, 0);
+  bearing.rotation.z = Math.PI/2;
+  bearing.position.set(x,0,0);
 }
 
 bearingAt(-2.73);
 bearingAt(1.23);
 
 rod(
-  V(-3.04, 0, 0),
-  V(2.43, 0, 0),
+  V(-3.04,0,0),
+  V(2.43,0,0),
   0.085,
   mat.steel
 );
 
-/* Ротор, бобина и контакти — без промяна. */
+/* Ротор, бобина и контактна система. */
 const rotor = new THREE.Group();
-rotor.position.set(rotorX, 0, 0);
+rotor.position.set(rotorX,0,0);
 scene.add(rotor);
 
 const windingGroup = new THREE.Group();
 const acRotor = new THREE.Group();
 const dcRotor = new THREE.Group();
 
-rotor.add(windingGroup, acRotor, dcRotor);
+rotor.add(windingGroup,acRotor,dcRotor);
 
 const ringA = 2.47;
 const ringB = 2.81;
 const commutatorX = 2.64;
 
 rod(
-  V(2.30, 0, 0),
-  V(2.98, 0, 0),
+  V(2.30,0,0),
+  V(2.98,0,0),
   0.15,
   mat.graphite,
   rotor
@@ -1138,29 +1205,29 @@ rod(
 function buildWinding(){
   clearGeometry(windingGroup);
 
-  const displayedTurns = Math.min(config.n, 8);
+  const displayedTurns = Math.min(config.n,8);
   const points = [];
 
-  for(let turn = 0; turn < displayedTurns; turn++){
-    const hw = 1.34 - turn * 0.042;
-    const hh = 0.87 - turn * 0.042;
+  for(let turn=0;turn<displayedTurns;turn++){
+    const hw = 1.34-turn*0.042;
+    const hh = 0.87-turn*0.042;
     const cornerRadius = 0.15;
 
     const corners = [
-      [hw - cornerRadius, hh - cornerRadius, 0],
-      [-hw + cornerRadius, hh - cornerRadius, Math.PI / 2],
-      [-hw + cornerRadius, -hh + cornerRadius, Math.PI],
-      [hw - cornerRadius, -hh + cornerRadius, 3 * Math.PI / 2]
+      [hw-cornerRadius,hh-cornerRadius,0],
+      [-hw+cornerRadius,hh-cornerRadius,Math.PI/2],
+      [-hw+cornerRadius,-hh+cornerRadius,Math.PI],
+      [hw-cornerRadius,-hh+cornerRadius,3*Math.PI/2]
     ];
 
-    for(const [cx, cz, start] of corners){
-      for(let k = 0; k <= 9; k++){
-        const a = start + k / 9 * Math.PI / 2;
+    for(const [cx,cz,start] of corners){
+      for(let k=0;k<=9;k++){
+        const a = start+k/9*Math.PI/2;
 
         points.push(V(
-          cx + cornerRadius * Math.cos(a),
+          cx+cornerRadius*Math.cos(a),
           0,
-          cz + cornerRadius * Math.sin(a)
+          cz+cornerRadius*Math.sin(a)
         ));
       }
     }
@@ -1168,124 +1235,127 @@ function buildWinding(){
 
   tube(
     points,
-    displayedTurns === 1 ? 0.044 : 0.030,
+    displayedTurns===1?0.044:0.030,
     mat.copper,
     windingGroup,
-    Math.max(240, points.length * 3)
+    Math.max(240,points.length*3)
   );
 
   const first = points[0].clone();
-  const end = points[points.length - 1].clone();
+  const end = points[points.length-1].clone();
 
   tube([
     first,
-    V(1.45, 0.05, 0.60),
-    V(1.65, 0.125, 0),
-    V(2.13, 0.125, 0),
-    V(mode === "AC" ? ringA : commutatorX, 0, -0.245)
-  ], 0.021, mat.copper, windingGroup, 100);
+    V(1.45,0.05,0.60),
+    V(1.65,0.125,0),
+    V(2.13,0.125,0),
+    V(mode==="AC"?ringA:commutatorX,0,-0.245)
+  ],0.021,mat.copper,windingGroup,100);
 
   tube([
     end,
-    V(1.45, -0.05, -0.55),
-    V(1.65, -0.125, 0),
-    V(2.13, -0.125, 0),
-    V(mode === "AC" ? ringB : commutatorX, 0, 0.245)
-  ], 0.021, mat.copperDark, windingGroup, 100);
+    V(1.45,-0.05,-0.55),
+    V(1.65,-0.125,0),
+    V(2.13,-0.125,0),
+    V(mode==="AC"?ringB:commutatorX,0,0.245)
+  ],0.021,mat.copperDark,windingGroup,100);
 }
 
 function addSlipRing(x){
   const profile = [
-    new THREE.Vector2(0.15, -0.075),
-    new THREE.Vector2(0.255, -0.075),
-    new THREE.Vector2(0.255, 0.075),
-    new THREE.Vector2(0.15, 0.075),
-    new THREE.Vector2(0.15, -0.075)
+    new THREE.Vector2(0.15,-0.075),
+    new THREE.Vector2(0.255,-0.075),
+    new THREE.Vector2(0.255,0.075),
+    new THREE.Vector2(0.15,0.075),
+    new THREE.Vector2(0.15,-0.075)
   ];
 
   const ring = mesh(
-    new THREE.LatheGeometry(profile, 64),
+    new THREE.LatheGeometry(profile,64),
     mat.copper,
     acRotor
   );
 
-  ring.rotation.z = Math.PI / 2;
+  ring.rotation.z = Math.PI/2;
   ring.position.x = x;
 }
 
 addSlipRing(ringA);
 addSlipRing(ringB);
 
-function addCommutatorHalf(start, end, material){
+function addCommutatorHalf(start,end,material){
   const shape = new THREE.Shape();
 
-  shape.absarc(0, 0, 0.26, start, end, false);
+  shape.absarc(0,0,0.26,start,end,false);
+
   shape.lineTo(
-    0.155 * Math.cos(end),
-    0.155 * Math.sin(end)
+    0.155*Math.cos(end),
+    0.155*Math.sin(end)
   );
-  shape.absarc(0, 0, 0.155, end, start, true);
+
+  shape.absarc(0,0,0.155,end,start,true);
   shape.closePath();
 
-  const geometry = new THREE.ExtrudeGeometry(shape, {
-    depth: 0.30,
-    bevelEnabled: true,
-    bevelSize: 0.006,
-    bevelThickness: 0.006,
-    bevelSegments: 2,
-    curveSegments: 30
+  const geometry = new THREE.ExtrudeGeometry(shape,{
+    depth:0.30,
+    bevelEnabled:true,
+    bevelSize:0.006,
+    bevelThickness:0.006,
+    bevelSegments:2,
+    curveSegments:30
   });
 
-  geometry.translate(0, 0, -0.15);
+  geometry.translate(0,0,-0.15);
 
-  const half = mesh(geometry, material, dcRotor);
-  half.rotation.y = Math.PI / 2;
+  const half = mesh(geometry,material,dcRotor);
+  half.rotation.y = Math.PI/2;
   half.position.x = commutatorX;
 }
 
 addCommutatorHalf(
-  -Math.PI / 2 + 0.045,
-  Math.PI / 2 - 0.045,
+  -Math.PI/2+0.045,
+  Math.PI/2-0.045,
   mat.copper
 );
 
 addCommutatorHalf(
-  Math.PI / 2 + 0.045,
-  3 * Math.PI / 2 - 0.045,
+  Math.PI/2+0.045,
+  3*Math.PI/2-0.045,
   mat.copperDark
 );
 
-/* Неподвижни четки — без промяна. */
+/* Неподвижни четки. */
 const acContacts = new THREE.Group();
 const dcContacts = new THREE.Group();
-scene.add(acContacts, dcContacts);
 
-for(const x of [rotorX + ringA, rotorX + ringB]){
+scene.add(acContacts,dcContacts);
+
+for(const x of [rotorX+ringA,rotorX+ringB]){
   roundedBox(
-    0.18, 0.26, 0.16, 0.02,
+    0.18,0.26,0.16,0.02,
     mat.graphite,
-    V(x, -0.38, 0),
+    V(x,-0.38,0),
     acContacts
   );
 }
 
-const dcBrushX = rotorX + commutatorX;
+const dcBrushX = rotorX+commutatorX;
 
 roundedBox(
-  0.20, 0.25, 0.12, 0.02,
+  0.20,0.25,0.12,0.02,
   mat.graphite,
-  V(dcBrushX, 0.38, 0),
+  V(dcBrushX,0.38,0),
   dcContacts
 );
 
 roundedBox(
-  0.20, 0.25, 0.12, 0.02,
+  0.20,0.25,0.12,0.02,
   mat.graphite,
-  V(dcBrushX, -0.38, 0),
+  V(dcBrushX,-0.38,0),
   dcContacts
 );
 
-/* Външна верига и филтър — без промяна. */
+/* Външна верига и филтър. */
 const wires = new THREE.Group();
 scene.add(wires);
 
@@ -1293,105 +1363,105 @@ const filterBox = new THREE.Group();
 scene.add(filterBox);
 
 const filterMaterial = new THREE.MeshStandardMaterial({
-  color: 0x087b65,
-  metalness: 0.40,
-  roughness: 0.34
+  color:0x087b65,
+  metalness:0.40,
+  roughness:0.34
 });
 
 roundedBox(
-  0.74, 0.38, 0.58, 0.07,
+  0.74,0.38,0.58,0.07,
   filterMaterial,
-  V(2.48, -2.69, 0.75),
+  V(2.48,-2.69,0.75),
   filterBox
 );
 
-const filterLabel = labelPlane("D–RC", 0.57, 0.21);
-filterLabel.position.set(2.48, -2.67, 1.08);
+const filterLabel = labelPlane("D–RC",0.57,0.21);
+filterLabel.position.set(2.48,-2.67,1.08);
 filterBox.add(filterLabel);
 
 function buildWires(){
   clearGeometry(wires);
 
-  const positiveLead = mode === "AC"
-    ? V(rotorX + ringB, -0.51, 0)
-    : V(dcBrushX, 0.51, 0);
+  const positiveLead = mode==="AC"
+    ? V(rotorX+ringB,-0.51,0)
+    : V(dcBrushX,0.51,0);
 
-  const negativeLead = mode === "AC"
-    ? V(rotorX + ringA, -0.51, 0)
-    : V(dcBrushX, -0.51, 0);
+  const negativeLead = mode==="AC"
+    ? V(rotorX+ringA,-0.51,0)
+    : V(dcBrushX,-0.51,0);
 
-  const redPoints = mode === "FILTER"
+  const redPoints = mode==="FILTER"
     ? [
         positiveLead,
-        V(2.40, -0.65, 0.15),
-        V(2.48, -2.49, 0.75),
-        V(2.88, -2.83, 0.90),
-        V(3.12, -2.80, 1.08)
+        V(2.40,-0.65,0.15),
+        V(2.48,-2.49,0.75),
+        V(2.88,-2.83,0.90),
+        V(3.12,-2.80,1.08)
       ]
     : [
         positiveLead,
-        V(2.45, -0.80, 0.20),
-        V(2.75, -2.55, 0.76),
-        V(3.12, -2.80, 1.08)
+        V(2.45,-0.80,0.20),
+        V(2.75,-2.55,0.76),
+        V(3.12,-2.80,1.08)
       ];
 
-  tube(redPoints, 0.041, mat.redWire, wires, 90);
+  tube(redPoints,0.041,mat.redWire,wires,90);
 
   tube([
     negativeLead,
-    V(2.48, -1.10, -0.35),
-    V(3.15, -2.84, 0.30),
-    V(3.62, -2.80, 1.08)
-  ], 0.041, mat.blueWire, wires, 90);
+    V(2.48,-1.10,-0.35),
+    V(3.15,-2.84,0.30),
+    V(3.62,-2.80,1.08)
+  ],0.041,mat.blueWire,wires,90);
 }
 
-/* Лампа — без промяна. */
+/* Лампа. */
 const lampX = 3.37;
 const lampZ = 1.00;
 
 roundedBox(
-  1.15, 0.18, 1.12, 0.12,
+  1.15,0.18,1.12,0.12,
   mat.dark,
-  V(lampX, -2.87, lampZ)
+  V(lampX,-2.87,lampZ)
 );
 
 rod(
-  V(lampX, -2.78, lampZ),
-  V(lampX, -2.39, lampZ),
+  V(lampX,-2.78,lampZ),
+  V(lampX,-2.39,lampZ),
   0.24,
   mat.graphite
 );
 
-for(let k = 0; k < 5; k++){
+for(let k=0;k<5;k++){
   const thread = mesh(
-    new THREE.TorusGeometry(0.19, 0.02, 8, 40),
+    new THREE.TorusGeometry(0.19,0.02,8,40),
     mat.gold
   );
 
-  thread.rotation.x = Math.PI / 2;
+  thread.rotation.x = Math.PI/2;
   thread.position.set(
     lampX,
-    -2.42 + k * 0.055,
+    -2.42+k*0.055,
     lampZ
   );
 }
 
 const filamentMaterial = new THREE.MeshStandardMaterial({
-  color: 0xffe49a,
-  emissive: 0xffb72c,
-  emissiveIntensity: 2,
-  roughness: 0.44
+  color:0xffe49a,
+  emissive:0xffb72c,
+  emissiveIntensity:2,
+  roughness:0.44
 });
 
 const filamentPoints = [];
 
-for(let k = 0; k <= 60; k++){
-  const t = k / 60;
+for(let k=0;k<=60;k++){
+  const t = k/60;
 
   filamentPoints.push(V(
-    lampX - 0.15 + 0.30 * t,
-    -1.90 + 0.045 * Math.sin(t * TAU * 5),
-    lampZ + 0.045 * Math.cos(t * TAU * 5)
+    lampX-0.15+0.30*t,
+    -1.90+0.045*Math.sin(t*TAU*5),
+    lampZ+0.045*Math.cos(t*TAU*5)
   ));
 }
 
@@ -1404,118 +1474,121 @@ tube(
 );
 
 rod(
-  V(lampX - 0.10, -2.33, lampZ),
-  V(lampX - 0.15, -1.90, lampZ),
+  V(lampX-0.10,-2.33,lampZ),
+  V(lampX-0.15,-1.90,lampZ),
   0.008,
   mat.steel
 );
 
 rod(
-  V(lampX + 0.10, -2.33, lampZ),
-  V(lampX + 0.15, -1.90, lampZ),
+  V(lampX+0.10,-2.33,lampZ),
+  V(lampX+0.15,-1.90,lampZ),
   0.008,
   mat.steel
 );
 
 const glassMaterial = new THREE.MeshPhysicalMaterial({
-  color: 0xffefb7,
-  transparent: true,
-  opacity: 0.18,
-  roughness: 0.12,
-  metalness: 0,
-  clearcoat: 1,
-  side: THREE.DoubleSide,
-  depthWrite: false
+  color:0xffefb7,
+  transparent:true,
+  opacity:0.18,
+  roughness:0.12,
+  metalness:0,
+  clearcoat:1,
+  side:THREE.DoubleSide,
+  depthWrite:false
 });
 
 const glass = mesh(
-  new THREE.SphereGeometry(0.43, 40, 28),
+  new THREE.SphereGeometry(0.43,40,28),
   glassMaterial
 );
 
-glass.position.set(lampX, -1.94, lampZ);
+glass.position.set(lampX,-1.94,lampZ);
 glass.scale.y = 1.19;
 glass.castShadow = false;
 
 const lampLight = new THREE.PointLight(
-  0xffc45a, 4, 4.2, 2
+  0xffc45a,4,4.2,2
 );
-lampLight.position.set(lampX, -1.93, lampZ);
+
+lampLight.position.set(lampX,-1.93,lampZ);
 scene.add(lampLight);
 
 const glowCanvas = document.createElement("canvas");
-glowCanvas.width = glowCanvas.height = 128;
+glowCanvas.width = 128;
+glowCanvas.height = 128;
 
 const glowCtx = glowCanvas.getContext("2d");
+
 const glowGradient = glowCtx.createRadialGradient(
-  64, 64, 0, 64, 64, 64
+  64,64,0,64,64,64
 );
 
 glowGradient.addColorStop(
-  0, "rgba(255,247,180,.90)"
+  0,"rgba(255,247,180,.90)"
 );
 glowGradient.addColorStop(
-  .22, "rgba(255,205,70,.45)"
+  0.22,"rgba(255,205,70,.45)"
 );
 glowGradient.addColorStop(
-  1, "rgba(255,170,20,0)"
+  1,"rgba(255,170,20,0)"
 );
 
 glowCtx.fillStyle = glowGradient;
-glowCtx.fillRect(0, 0, 128, 128);
+glowCtx.fillRect(0,0,128,128);
 
 const glowMaterial = new THREE.SpriteMaterial({
-  map: new THREE.CanvasTexture(glowCanvas),
-  transparent: true,
-  opacity: .4,
-  depthWrite: false,
-  blending: THREE.AdditiveBlending
+  map:new THREE.CanvasTexture(glowCanvas),
+  transparent:true,
+  opacity:0.4,
+  depthWrite:false,
+  blending:THREE.AdditiveBlending
 });
 
 const lampGlow = new THREE.Sprite(glowMaterial);
-lampGlow.position.set(lampX, -1.93, lampZ);
-lampGlow.scale.set(1.65, 1.65, 1);
+lampGlow.position.set(lampX,-1.93,lampZ);
+lampGlow.scale.set(1.65,1.65,1);
 scene.add(lampGlow);
 
-/* Магнитни линии — без промяна. */
+/* Магнитни линии. */
 const fieldGroup = new THREE.Group();
 scene.add(fieldGroup);
 
-for(const x of [-1.90, -1.32, -.74, -.16, .42]){
+for(const x of [-1.90,-1.32,-0.74,-0.16,0.42]){
   rod(
-    V(x, 1.13, -0.72),
-    V(x, -1.03, -0.72),
+    V(x,1.13,-0.72),
+    V(x,-1.03,-0.72),
     0.011,
     mat.cyan,
     fieldGroup
   );
 
   const arrowHead = mesh(
-    new THREE.ConeGeometry(0.060, 0.16, 12),
+    new THREE.ConeGeometry(0.060,0.16,12),
     mat.cyan,
     fieldGroup
   );
 
   arrowHead.rotation.z = Math.PI;
-  arrowHead.position.set(x, -1.09, -0.72);
+  arrowHead.position.set(x,-1.09,-0.72);
   arrowHead.castShadow = false;
 }
 
-/* Посока на механичното въртене — без промяна. */
+/* Посока на механичното въртене. */
 const rotationPoints = [];
 
-for(let k = 0; k <= 45; k++){
-  const a = 0.85 - 1.75 * k / 45;
+for(let k=0;k<=45;k++){
+  const a = 0.85-1.75*k/45;
 
   rotationPoints.push(V(
     0.88,
-    0.68 * Math.cos(a),
-    0.68 * Math.sin(a)
+    0.68*Math.cos(a),
+    0.68*Math.sin(a)
   ));
 }
 
 const rotationMaterial = new THREE.MeshBasicMaterial({
-  color: 0xffda42
+  color:0xffda42
 });
 
 tube(
@@ -1527,43 +1600,44 @@ tube(
 );
 
 const rotationEnd =
-  rotationPoints[rotationPoints.length - 1];
+  rotationPoints[rotationPoints.length-1];
 
 const rotationBefore =
-  rotationPoints[rotationPoints.length - 2];
+  rotationPoints[rotationPoints.length-2];
 
 const rotationHead = mesh(
-  new THREE.ConeGeometry(0.10, 0.23, 20),
+  new THREE.ConeGeometry(0.10,0.23,20),
   rotationMaterial
 );
 
 rotationHead.position.copy(rotationEnd);
+
 rotationHead.quaternion.setFromUnitVectors(
-  V(0, 1, 0),
+  V(0,1,0),
   rotationEnd.clone().sub(rotationBefore).normalize()
 );
 
-/* Камера — без промяна. */
+/* Камера и завъртане на изгледа. */
 let cameraYaw = 0.30;
 let cameraElevation = 0.23;
-const cameraTarget = V(0.15, -0.36, 0);
+const cameraTarget = V(0.15,-0.36,0);
 
 function updateCamera(){
   const rect = viewport.getBoundingClientRect();
-  const aspect = rect.width / Math.max(1, rect.height);
-  const distance = 13.6 * Math.max(1, 1.23 / aspect);
+  const aspect = rect.width/Math.max(1,rect.height);
+  const distance = 13.6*Math.max(1,1.23/aspect);
 
   camera.aspect = aspect;
 
   camera.position.set(
-    cameraTarget.x +
-      distance * Math.cos(cameraElevation) * Math.sin(cameraYaw),
+    cameraTarget.x+
+      distance*Math.cos(cameraElevation)*Math.sin(cameraYaw),
 
-    cameraTarget.y +
-      distance * Math.sin(cameraElevation),
+    cameraTarget.y+
+      distance*Math.sin(cameraElevation),
 
-    cameraTarget.z +
-      distance * Math.cos(cameraElevation) * Math.cos(cameraYaw)
+    cameraTarget.z+
+      distance*Math.cos(cameraElevation)*Math.cos(cameraYaw)
   );
 
   camera.lookAt(cameraTarget);
@@ -1574,8 +1648,8 @@ function resize(){
   const rect = viewport.getBoundingClientRect();
 
   renderer.setSize(
-    Math.max(1, rect.width),
-    Math.max(1, rect.height),
+    Math.max(1,rect.width),
+    Math.max(1,rect.height),
     false
   );
 
@@ -1586,30 +1660,31 @@ let dragging = false;
 let pointerX = 0;
 let pointerY = 0;
 
-viewport.addEventListener("pointerdown", event => {
+viewport.addEventListener("pointerdown",event => {
   dragging = true;
   pointerX = event.clientX;
   pointerY = event.clientY;
   viewport.setPointerCapture(event.pointerId);
 });
 
-viewport.addEventListener("pointermove", event => {
+viewport.addEventListener("pointermove",event => {
   if(!dragging) return;
 
   cameraYaw = THREE.MathUtils.clamp(
-    cameraYaw + (event.clientX - pointerX) * .004,
-    -.45,
-    .85
+    cameraYaw+(event.clientX-pointerX)*0.004,
+    -0.45,
+    0.85
   );
 
   cameraElevation = THREE.MathUtils.clamp(
-    cameraElevation + (event.clientY - pointerY) * .003,
-    .04,
-    .52
+    cameraElevation+(event.clientY-pointerY)*0.003,
+    0.04,
+    0.52
   );
 
   pointerX = event.clientX;
   pointerY = event.clientY;
+
   updateCamera();
 });
 
@@ -1618,162 +1693,151 @@ for(const eventName of [
   "pointercancel",
   "lostpointercapture"
 ]){
-  viewport.addEventListener(eventName, () => {
+  viewport.addEventListener(eventName,() => {
     dragging = false;
   });
 }
 
-$("resetView").addEventListener("click", () => {
-  cameraYaw = .30;
-  cameraElevation = .23;
+$("resetView").addEventListener("click",() => {
+  cameraYaw = 0.30;
+  cameraElevation = 0.23;
   updateCamera();
 });
 
 if(window.ResizeObserver){
   new ResizeObserver(resize).observe(viewport);
 }else{
-  window.addEventListener("resize", resize);
+  window.addEventListener("resize",resize);
 }
 
-/* Графики и синхронизация — без промяна. */
+/* Графики — запазени са формите и синхронизацията. */
 const graph = $("voltageGraph");
 const graphCtx = graph.getContext("2d");
 
+if(!graphCtx){
+  throw new Error("Не може да се създаде графиката на напрежението.");
+}
+
 function drawGraphs(){
   const rect = graph.getBoundingClientRect();
-  const dpr = Math.min(
-    window.devicePixelRatio || 1,
-    2
-  );
+  const dpr = Math.min(window.devicePixelRatio||1,2);
 
-  const width = Math.max(280, rect.width);
-  const height = Math.max(340, rect.height);
+  const width = Math.max(280,rect.width);
+  const height = Math.max(340,rect.height);
 
-  const pixelWidth = Math.round(width * dpr);
-  const pixelHeight = Math.round(height * dpr);
+  const pixelWidth = Math.round(width*dpr);
+  const pixelHeight = Math.round(height*dpr);
 
   if(
-    graph.width !== pixelWidth ||
-    graph.height !== pixelHeight
+    graph.width!==pixelWidth ||
+    graph.height!==pixelHeight
   ){
     graph.width = pixelWidth;
     graph.height = pixelHeight;
   }
 
-  graphCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  graphCtx.clearRect(0, 0, width, height);
+  graphCtx.setTransform(dpr,0,0,dpr,0,0);
+  graphCtx.clearRect(0,0,width,height);
 
-  const rows = mode === "FILTER" ? 3 : 2;
-  const rowHeight = height / rows;
+  const rows = mode==="FILTER"?3:2;
+  const rowHeight = height/rows;
 
   const L = 56;
-  const R = width - 15;
+  const R = width-15;
 
   const displayAngle =
-    ((angle % (2 * TAU)) + 2 * TAU) % (2 * TAU);
+    ((angle%(2*TAU))+2*TAU)%(2*TAU);
 
   const cursorX =
-    L + (R - L) * displayAngle / (2 * TAU);
+    L+(R-L)*displayAngle/(2*TAU);
 
   function plot(
-    row,
-    title,
-    signal,
-    color,
-    positiveOnly,
-    reference
+    row,title,signal,color,positiveOnly,reference
   ){
-    const rowTop = row * rowHeight;
-    const T = rowTop + 34;
-    const B = rowTop + rowHeight - 30;
+    const rowTop = row*rowHeight;
+    const T = rowTop+34;
+    const B = rowTop+rowHeight-30;
 
-    const max = config.peak * 1.14;
-    const min = positiveOnly ? 0 : -max;
+    const max = config.peak*1.14;
+    const min = positiveOnly?0:-max;
 
     const mapY = value =>
-      B - (value - min) / (max - min) * (B - T);
+      B-(value-min)/(max-min)*(B-T);
 
     graphCtx.fillStyle = color;
     graphCtx.font = "bold 12px Arial";
     graphCtx.textAlign = "left";
-    graphCtx.fillText(title, 9, rowTop + 18);
+    graphCtx.fillText(title,9,rowTop+18);
 
     graphCtx.font = "10px Arial";
     graphCtx.lineWidth = 1;
 
-    for(let k = 0; k <= 4; k++){
-      const x = L + (R - L) * k / 4;
+    for(let k=0;k<=4;k++){
+      const x = L+(R-L)*k/4;
 
       graphCtx.strokeStyle = "#284056";
       graphCtx.beginPath();
-      graphCtx.moveTo(x, T);
-      graphCtx.lineTo(x, B);
+      graphCtx.moveTo(x,T);
+      graphCtx.lineTo(x,B);
       graphCtx.stroke();
 
       const milliseconds =
-        (2 / config.f) * k / 4 * 1000;
+        (2/config.f)*k/4*1000;
 
       graphCtx.fillStyle = "#b0c7da";
       graphCtx.textAlign = "center";
       graphCtx.fillText(
-        fmt(milliseconds, 0),
-        x,
-        B + 15
+        fmt(milliseconds,0),x,B+15
       );
     }
 
-    for(let k = 0; k <= 4; k++){
-      const y = T + (B - T) * k / 4;
+    for(let k=0;k<=4;k++){
+      const y = T+(B-T)*k/4;
 
       graphCtx.strokeStyle = "#21374b";
       graphCtx.beginPath();
-      graphCtx.moveTo(L, y);
-      graphCtx.lineTo(R, y);
+      graphCtx.moveTo(L,y);
+      graphCtx.lineTo(R,y);
       graphCtx.stroke();
     }
 
     graphCtx.strokeStyle = "#97b3ca";
     graphCtx.beginPath();
-    graphCtx.moveTo(L, T);
-    graphCtx.lineTo(L, B);
-    graphCtx.moveTo(L, mapY(0));
-    graphCtx.lineTo(R, mapY(0));
+    graphCtx.moveTo(L,T);
+    graphCtx.lineTo(L,B);
+    graphCtx.moveTo(L,mapY(0));
+    graphCtx.lineTo(R,mapY(0));
     graphCtx.stroke();
 
     graphCtx.fillStyle = "#c4dceb";
     graphCtx.textAlign = "right";
 
     graphCtx.fillText(
-      fmt(config.peak, 1),
-      L - 6,
-      mapY(config.peak) + 4
+      fmt(config.peak,1),
+      L-6,
+      mapY(config.peak)+4
     );
 
-    graphCtx.fillText(
-      "0",
-      L - 6,
-      mapY(0) + 4
-    );
+    graphCtx.fillText("0",L-6,mapY(0)+4);
 
     if(!positiveOnly){
       graphCtx.fillText(
-        fmt(-config.peak, 1),
-        L - 6,
-        mapY(-config.peak) + 4
+        fmt(-config.peak,1),
+        L-6,
+        mapY(-config.peak)+4
       );
     }
 
     graphCtx.textAlign = "left";
-    graphCtx.fillText("V", 10, T + 10);
-    graphCtx.fillText("t, ms", R - 22, B + 26);
+    graphCtx.fillText("V",10,T+10);
+    graphCtx.fillText("t, ms",R-22,B+26);
 
-    function curve(fn, stroke, dashed){
+    function curve(fn,stroke,dashed){
       graphCtx.save();
+
       graphCtx.strokeStyle = stroke;
-      graphCtx.lineWidth = dashed ? 1.3 : 2.7;
-      graphCtx.setLineDash(
-        dashed ? [5, 5] : []
-      );
+      graphCtx.lineWidth = dashed?1.3:2.7;
+      graphCtx.setLineDash(dashed?[5,5]:[]);
 
       if(!dashed){
         graphCtx.shadowColor = stroke;
@@ -1782,15 +1846,15 @@ function drawGraphs(){
 
       graphCtx.beginPath();
 
-      for(let k = 0; k <= 480; k++){
-        const a = 2 * TAU * k / 480;
-        const x = L + (R - L) * k / 480;
+      for(let k=0;k<=480;k++){
+        const a = 2*TAU*k/480;
+        const x = L+(R-L)*k/480;
         const y = mapY(fn(a));
 
-        if(k === 0){
-          graphCtx.moveTo(x, y);
+        if(k===0){
+          graphCtx.moveTo(x,y);
         }else{
-          graphCtx.lineTo(x, y);
+          graphCtx.lineTo(x,y);
         }
       }
 
@@ -1799,18 +1863,18 @@ function drawGraphs(){
     }
 
     if(reference){
-      curve(reference, "#a77743", true);
+      curve(reference,"#a77743",true);
     }
 
-    curve(signal, color, false);
+    curve(signal,color,false);
 
     graphCtx.strokeStyle = "#f2f7fc";
     graphCtx.lineWidth = 1;
-    graphCtx.setLineDash([3, 4]);
+    graphCtx.setLineDash([3,4]);
 
     graphCtx.beginPath();
-    graphCtx.moveTo(cursorX, T);
-    graphCtx.lineTo(cursorX, B);
+    graphCtx.moveTo(cursorX,T);
+    graphCtx.lineTo(cursorX,B);
     graphCtx.stroke();
 
     graphCtx.setLineDash([]);
@@ -1840,16 +1904,16 @@ function drawGraphs(){
 
   plot(
     1,
-    mode === "AC"
+    mode==="AC"
       ? "2. На четките: u(t) — същата синусоида"
       : "2. След комутатора: u(t) = |e(t)|",
     brushVoltage,
     "#ffd768",
-    mode !== "AC",
+    mode!=="AC",
     null
   );
 
-  if(mode === "FILTER"){
+  if(mode==="FILTER"){
     plot(
       2,
       "3. Върху товара след D–RC филтъра",
@@ -1864,25 +1928,25 @@ function drawGraphs(){
 function updateText(){
   const e = coilVoltage(angle);
   const u = brushVoltage(angle);
-  const degrees = wrap(angle) * 180 / Math.PI;
+  const degrees = wrap(angle)*180/Math.PI;
 
-  $("coilRead").textContent = fmt(e, 1) + " V";
-  $("brushRead").textContent = fmt(u, 1) + " V";
-  $("angleRead").textContent = fmt(degrees, 1) + "°";
+  $("coilRead").textContent = fmt(e,1)+" V";
+  $("brushRead").textContent = fmt(u,1)+" V";
+  $("angleRead").textContent = fmt(degrees,1)+"°";
 
   $("Nread").textContent = String(config.n);
-  $("Bread").textContent = fmt(config.b, 2) + " T";
-  $("Fread").textContent = fmt(config.f, 0) + " Hz";
-  $("speedRead").textContent = fmt(config.speed, 2) + "×";
-  $("Rread").textContent = fmt(config.r, 0) + " Ω";
-  $("Cread").textContent = fmt(config.c * 1e6, 0) + " μF";
+  $("Bread").textContent = fmt(config.b,2)+" T";
+  $("Fread").textContent = fmt(config.f,0)+" Hz";
+  $("speedRead").textContent = fmt(config.speed,2)+"×";
+  $("Rread").textContent = fmt(config.r,0)+" Ω";
+  $("Cread").textContent = fmt(config.c*1e6,0)+" μF";
 
   $("pause").textContent =
-    playing ? "Ⅱ Пауза" : "▶ Продължи";
+    playing?"Ⅱ Пауза":"▶ Продължи";
 
   let explanation;
 
-  if(mode === "AC"){
+  if(mode==="AC"){
     $("contactLabel").textContent =
       "Два контактни пръстена";
 
@@ -1893,98 +1957,96 @@ function updateText(){
       "Ефективна стойност на изхода";
 
     $("characteristicRead").textContent =
-      fmt(config.peak / Math.SQRT2, 1) + " V";
+      fmt(config.peak/Math.SQRT2,1)+" V";
 
     explanation =
-      "Двете криви съвпадат по форма. Контактните пръстени " +
-      "не изправят напрежението. Неговата полярност се обръща " +
+      "Двете криви съвпадат по форма. Контактните пръстени "+
+      "не изправят напрежението. Неговата полярност се обръща "+
       "при всеки половин оборот.";
   }else{
     $("contactLabel").textContent =
-      mode === "DC"
+      mode==="DC"
         ? "Двусекционен комутатор"
         : "Комутатор и D–RC филтър";
 
     $("signalChain").textContent =
-      mode === "DC"
+      mode==="DC"
         ? "Намотка: синусоида → комутатор → два положителни полупериода за един оборот"
         : "Намотка: синусоида → комутатор: пулсации → D–RC филтър: изглаждане";
 
     $("characteristicTitle").textContent =
-      mode === "DC"
+      mode==="DC"
         ? "Средна стойност на четките"
         : "Средна стойност след филтъра";
 
     $("characteristicRead").textContent =
       fmt(
-        mode === "DC"
-          ? 2 * config.peak / Math.PI
+        mode==="DC"
+          ? 2*config.peak/Math.PI
           : filterMean,
         1
-      ) + " V";
+      )+" V";
 
-    if(Math.abs(e) < config.peak * 0.015){
+    if(Math.abs(e)<config.peak*0.015){
       explanation =
-        "Неутрално положение: ЕДН в намотката е близка до нула. " +
+        "Неутрално положение: ЕДН в намотката е близка до нула. "+
         "Комутаторът преминава към другата секция.";
-    }else if(e < 0){
+    }else if(e<0){
       explanation =
-        "Синусоидата в намотката е отрицателна. " +
-        "Комутаторът разменя връзката към четките и на изхода " +
+        "Синусоидата в намотката е отрицателна. "+
+        "Комутаторът разменя връзката към четките и на изхода "+
         "съответният полупериод е положителен.";
     }else{
       explanation =
-        "Синусоидата в намотката е положителна. " +
-        "На четките се получава положителен полупериод. " +
+        "Синусоидата в намотката е положителна. "+
+        "На четките се получава положителен полупериод. "+
         "През следващия половин оборот комутаторът ще размени връзката.";
     }
 
-    if(mode === "FILTER"){
+    if(mode==="FILTER"){
       explanation +=
         " Зелената трета крива показва напрежението върху товара след изглаждането.";
     }
   }
 
   $("explanation").textContent = explanation;
-  $("filterControls").hidden = mode !== "FILTER";
-  $("rippleRead").hidden = mode !== "FILTER";
+
+  $("filterControls").hidden = mode!=="FILTER";
+  $("rippleRead").hidden = mode!=="FILTER";
 
   $("rippleRead").textContent =
-    "Пулсации след филтъра: " +
-    fmt(filterRipple, 1) +
-    " V връх–връх. Честота на пулсациите: " +
-    fmt(2 * config.f, 0) +
+    "Пулсации след филтъра: "+
+    fmt(filterRipple,1)+
+    " V връх–връх. Честота на пулсациите: "+
+    fmt(2*config.f,0)+
     " Hz.";
 
-  for(const [id, selectedMode] of [
-    ["modeAC", "AC"],
-    ["modeDC", "DC"],
-    ["modeFilter", "FILTER"]
+  for(const [id,selectedMode] of [
+    ["modeAC","AC"],
+    ["modeDC","DC"],
+    ["modeFilter","FILTER"]
   ]){
     $(id).classList.toggle(
-      "active",
-      mode === selectedMode
+      "active",mode===selectedMode
     );
 
     $(id).setAttribute(
       "aria-pressed",
-      String(mode === selectedMode)
+      String(mode===selectedMode)
     );
   }
 
   document.querySelectorAll("[data-angle]").forEach(button => {
     let difference = Math.abs(
-      degrees - Number(button.dataset.angle)
+      degrees-Number(button.dataset.angle)
     );
 
     difference = Math.min(
-      difference,
-      360 - difference
+      difference,360-difference
     );
 
     button.classList.toggle(
-      "active",
-      difference < 2
+      "active",difference<2
     );
   });
 }
@@ -1992,44 +2054,42 @@ function updateText(){
 function updateVisual(){
   rotor.rotation.x = -angle;
 
-  const ac = mode === "AC";
+  const ac = mode==="AC";
 
   acRotor.visible = ac;
   dcRotor.visible = !ac;
   acContacts.visible = ac;
   dcContacts.visible = !ac;
 
-  filterBox.visible = mode === "FILTER";
+  filterBox.visible = mode==="FILTER";
   fieldGroup.visible = $("showField").checked;
 
   const relative =
-    Math.abs(loadVoltage(angle)) /
-    Math.max(config.peak, 1e-9);
+    Math.abs(loadVoltage(angle))/
+    Math.max(config.peak,1e-9);
 
   const brightness = THREE.MathUtils.clamp(
-    relative * relative,
-    0,
-    1
+    relative*relative,0,1
   );
 
   filamentMaterial.emissiveIntensity =
-    0.10 + 7 * brightness;
+    0.10+7*brightness;
 
   lampLight.intensity =
-    0.08 + 6 * brightness;
+    0.08+6*brightness;
 
   glowMaterial.opacity =
-    0.02 + .55 * brightness;
+    0.02+0.55*brightness;
 
   glassMaterial.opacity =
-    .10 + .13 * brightness;
+    0.10+0.13*brightness;
 }
 
 function changeMode(nextMode){
   mode = nextMode;
 
   graph.style.height =
-    mode === "FILTER" ? "520px" : "380px";
+    mode==="FILTER"?"520px":"380px";
 
   buildWinding();
   buildWires();
@@ -2039,38 +2099,38 @@ function changeMode(nextMode){
 }
 
 $("modeAC").addEventListener(
-  "click",
-  () => changeMode("AC")
+  "click",() => changeMode("AC")
 );
 
 $("modeDC").addEventListener(
-  "click",
-  () => changeMode("DC")
+  "click",() => changeMode("DC")
 );
 
 $("modeFilter").addEventListener(
-  "click",
-  () => changeMode("FILTER")
+  "click",() => changeMode("FILTER")
 );
 
-$("pause").addEventListener("click", () => {
+$("pause").addEventListener("click",() => {
   playing = !playing;
   lastTime = null;
   updateText();
 });
 
-$("restart").addEventListener("click", () => {
+$("restart").addEventListener("click",() => {
   angle = 0;
   playing = true;
   lastTime = null;
+
+  updateVisual();
   updateText();
+  drawGraphs();
 });
 
 document.querySelectorAll("[data-angle]").forEach(button => {
-  button.addEventListener("click", () => {
+  button.addEventListener("click",() => {
     angle =
-      Number(button.dataset.angle) *
-      Math.PI / 180;
+      Number(button.dataset.angle)*
+      Math.PI/180;
 
     playing = false;
     lastTime = null;
@@ -2078,11 +2138,12 @@ document.querySelectorAll("[data-angle]").forEach(button => {
     updateVisual();
     updateText();
     drawGraphs();
-    renderer.render(scene, camera);
+
+    renderer.render(scene,camera);
   });
 });
 
-function refreshParameters(rebuildCoil = false){
+function refreshParameters(rebuildCoil=false){
   config = readParameters();
   calculateFilter();
 
@@ -2096,27 +2157,25 @@ function refreshParameters(rebuildCoil = false){
 }
 
 $("N").addEventListener(
-  "input",
-  () => refreshParameters(true)
+  "input",() => refreshParameters(true)
 );
 
-for(const id of ["B", "F", "R", "C"]){
+for(const id of ["B","F","R","C"]){
   $(id).addEventListener(
-    "input",
-    () => refreshParameters(false)
+    "input",() => refreshParameters(false)
   );
 }
 
-$("speed").addEventListener("input", () => {
+$("speed").addEventListener("input",() => {
   config.speed = Number($("speed").value);
   updateText();
 });
 
-$("showField").addEventListener("change", () => {
+$("showField").addEventListener("change",() => {
   fieldGroup.visible = $("showField").checked;
 });
 
-document.addEventListener("visibilitychange", () => {
+document.addEventListener("visibilitychange",() => {
   lastTime = null;
 });
 
@@ -2126,48 +2185,46 @@ renderer.domElement.addEventListener(
     event.preventDefault();
     playing = false;
 
-    $("loading").hidden = false;
-    $("loading").textContent =
+    loading.hidden = false;
+    loading.textContent =
       "3D контекстът е прекъснат. Презареди страницата.";
   }
 );
 
-/* Самопроверката на електрическия модел е запазена. */
+/* Проверка на електрическите зависимости. */
 function selfCheck(){
   const oldMode = mode;
   const tolerance =
-    1e-7 * Math.max(1, config.peak);
+    1e-7*Math.max(1,config.peak);
 
   let valid = true;
 
   mode = "DC";
 
-  for(const degrees of [
-    0, 30, 90, 180, 210, 270, 360
-  ]){
-    const a = degrees * Math.PI / 180;
+  for(const degrees of [0,30,90,180,210,270,360]){
+    const a = degrees*Math.PI/180;
     const expected =
-      Math.abs(config.peak * Math.sin(a));
+      Math.abs(config.peak*Math.sin(a));
 
     if(
-      Math.abs(brushVoltage(a) - expected) >
+      Math.abs(brushVoltage(a)-expected)>
       tolerance
     ){
       valid = false;
     }
 
-    if(brushVoltage(a) < -tolerance){
+    if(brushVoltage(a)<-tolerance){
       valid = false;
     }
   }
 
   mode = "AC";
 
-  for(const degrees of [0, 90, 180, 270]){
-    const a = degrees * Math.PI / 180;
+  for(const degrees of [0,90,180,270]){
+    const a = degrees*Math.PI/180;
 
     if(
-      Math.abs(brushVoltage(a) - coilVoltage(a)) >
+      Math.abs(brushVoltage(a)-coilVoltage(a))>
       tolerance
     ){
       valid = false;
@@ -2177,11 +2234,43 @@ function selfCheck(){
   mode = oldMode;
 
   return valid &&
-    filtered.length === FILTER_STEPS &&
+    filtered.length===FILTER_STEPS &&
     filtered.every(Number.isFinite) &&
-    filterRipple >= 0;
+    filterRipple>=0;
 }
 
+/* Проверка, че двата полюса действително са добавени. */
+function checkMagnets(){
+  for(const pole of [northPole,southPole]){
+    if(!pole || pole.parent!==scene || !pole.visible){
+      return false;
+    }
+
+    const positions = pole.geometry.getAttribute("position");
+
+    if(!positions || positions.count<3){
+      return false;
+    }
+
+    const box = pole.geometry.boundingBox;
+
+    if(
+      !box ||
+      !Number.isFinite(box.min.x) ||
+      !Number.isFinite(box.min.y) ||
+      !Number.isFinite(box.min.z) ||
+      !Number.isFinite(box.max.x) ||
+      !Number.isFinite(box.max.y) ||
+      !Number.isFinite(box.max.z)
+    ){
+      return false;
+    }
+  }
+
+  return true;
+}
+
+/* Инициализация. */
 buildWinding();
 buildWires();
 resize();
@@ -2195,32 +2284,40 @@ if(!selfCheck()){
   );
 }
 
-$("loading").hidden = true;
+if(!checkMagnets()){
+  throw new Error(
+    "Магнитните полюси не са създадени правилно."
+  );
+}
+
+/* Първо изобразяване преди скриване на съобщението. */
+renderer.render(scene,camera);
+loading.hidden = true;
 
 function animate(now){
-  const dt = lastTime === null
+  const dt = lastTime===null
     ? 0
     : Math.min(
-        .05,
-        Math.max(0, (now - lastTime) / 1000)
+        0.05,
+        Math.max(0,(now-lastTime)/1000)
       );
 
   lastTime = now;
 
-  if(playing && !document.hidden){
+  if(playing&&!document.hidden){
     angle +=
-      dt * TAU / 7 *
-      (config.f / 50) *
+      dt*TAU/7*
+      (config.f/50)*
       config.speed;
 
-    angle %= TAU * 10000;
+    angle %= TAU*10000;
   }
 
   if(!document.hidden){
     updateVisual();
     drawGraphs();
     updateText();
-    renderer.render(scene, camera);
+    renderer.render(scene,camera);
   }
 
   requestAnimationFrame(animate);
@@ -2231,18 +2328,17 @@ requestAnimationFrame(animate);
 })().catch(error => {
   console.error(error);
 
-  const loading =
-    document.getElementById("loading");
+  const loading = document.getElementById("loading");
 
   if(loading){
     loading.hidden = false;
     loading.textContent =
-      "Моделът не успя да се отвори: " +
-      error.message +
+      "Моделът не успя да се отвори: "+
+      error.message+
       " Проверете интернет връзката и поддръжката на WebGL.";
   }
 });
 </script>
 
-
-</body></html>
+</body>
+</html>

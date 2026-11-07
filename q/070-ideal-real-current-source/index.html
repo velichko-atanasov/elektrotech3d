@@ -1,193 +1,1449 @@
 <!DOCTYPE html>
-<!-- saved from url=(0064)file:///C:/Users/velichko.atanasov/Downloads/preview%20(86).html -->
+<!-- saved from url=(0053)file:///C:/Users/velichko.atanasov/Desktop/index.html -->
 <html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Идеален и реален източник на ток</title>
+<meta name="author" content="доц. д-р инж. Величко Атанасов">
+<title>QR-070 · Идеален и реален източник на ток</title>
+
 <style>
-:root{--bg:#07111f;--panel:#0d1b2d;--wire:#f3f7fb;--blue:#38a8ff;--red:#ff4a43;--muted:#b5c6d6;--line:#29445e}
+:root{
+  --bg:#071321;
+  --panel:#0d263d;
+  --line:#3b6685;
+  --text:#f1f9ff;
+  --muted:#bbd7e9;
+  --source:#4ddcff;
+  --load:#69efad;
+  --internal:#ffbb62;
+  --wire:#eef7ff;
+}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:#fff;font-family:Arial,Helvetica,sans-serif}
-.wrap{max-width:1180px;margin:auto;padding:20px}
-h1{text-align:center;margin:4px 0 5px;font-size:29px}
-.subtitle{text-align:center;color:var(--muted);margin-bottom:16px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:14px}
-.card h2{text-align:center;margin:3px 0 0;font-size:23px}
-svg{width:100%;height:auto;display:block}
-.wire{stroke:var(--wire);stroke-width:4.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
-.elem{stroke:var(--wire);stroke-width:3.5;fill:var(--panel)}
-.txt{fill:#fff;font-size:21px;font-weight:700}
-.small{fill:var(--muted);font-size:16px}
-.blue{fill:var(--blue)}
-.red{fill:var(--red)}
-.controls{margin-top:16px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:15px}
-.row{display:grid;grid-template-columns:190px 1fr 110px;gap:12px;align-items:center;margin:8px 0}
-input[type=range]{width:100%}
-.readouts{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px}
-.read{background:#081522;border:1px solid var(--line);border-radius:13px;padding:16px;text-align:center;line-height:1.65;font-size:19px}
-.formula{font-size:28px;font-weight:700;display:inline-block;margin-top:7px;letter-spacing:.2px}
-.note{text-align:center;margin-top:13px;color:#dbe7f1;line-height:1.5}
-@media(max-width:800px){.grid,.readouts{grid-template-columns:1fr}.row{grid-template-columns:1fr}}
+body{
+  margin:0;
+  color:var(--text);
+  background:
+    radial-gradient(ellipse at 50% 0,#1a5279,transparent 65%),
+    var(--bg);
+  font:15px/1.55 Arial,Helvetica,sans-serif;
+}
+.wrap{max-width:1380px;margin:auto;padding:16px}
+header{text-align:center;margin-bottom:14px}
+.eyebrow{
+  color:var(--source);
+  font-size:12px;
+  font-weight:bold;
+  letter-spacing:1.3px;
+}
+h1{
+  margin:5px 0;
+  font-size:clamp(25px,3.6vw,38px);
+  line-height:1.2;
+}
+.subtitle{margin:8px 0;color:var(--muted)}
+.toolbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:13px;
+}
+.source-badge{
+  padding:9px 13px;
+  border:1px solid #488aac;
+  border-radius:10px;
+  background:#113b54;
+  color:#dbf8ff;
+}
+button{
+  border:1px solid #6b9dbb;
+  border-radius:9px;
+  padding:10px 13px;
+  color:white;
+  background:#195375;
+  font:700 13px Arial,sans-serif;
+  cursor:pointer;
+}
+button:hover{filter:brightness(1.13)}
+button:focus-visible,
+input:focus-visible{
+  outline:3px solid #ffe376;
+  outline-offset:3px;
+}
+.button-row{display:flex;gap:8px;flex-wrap:wrap}
+.circuits{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:13px;
+}
+.card{
+  min-width:0;
+  overflow:hidden;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:linear-gradient(145deg,#122f48,#0b2033);
+  box-shadow:0 8px 23px #0003;
+}
+.card-head{
+  padding:12px 15px;
+  border-bottom:1px solid var(--line);
+}
+.card-head h2{margin:0;font-size:21px}
+.card-head p{
+  margin:5px 0 0;
+  color:var(--muted);
+  font-size:13px;
+}
+.ideal-head{border-top:4px solid var(--source)}
+.real-head{border-top:4px solid var(--load)}
+.diagram{
+  padding:5px;
+  background:radial-gradient(circle at 50% 28%,#17425e,#091a2b 85%);
+}
+.diagram svg{display:block;width:100%;height:auto}
+.wire{
+  fill:none;
+  stroke:var(--wire);
+  stroke-width:4.5;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.source-element{
+  fill:#123b55;
+  stroke:#79dfff;
+  stroke-width:3.5;
+}
+.load-element{
+  fill:#174334;
+  stroke:var(--load);
+  stroke-width:3;
+}
+.internal-element{
+  fill:#463321;
+  stroke:var(--internal);
+  stroke-width:3;
+}
+.svg-label{
+  fill:white;
+  font:700 21px Arial,sans-serif;
+  text-anchor:middle;
+}
+.svg-small{
+  fill:#c6dfed;
+  font:15px Arial,sans-serif;
+  text-anchor:middle;
+}
+.svg-value{
+  fill:white;
+  font:700 16px Arial,sans-serif;
+  text-anchor:middle;
+}
+.flow-value{
+  font:700 19px Arial,sans-serif;
+  text-anchor:middle;
+}
+.node{fill:#fff;stroke:#76b9d8;stroke-width:2}
+.packet{stroke:#fff;stroke-width:1}
+.metrics{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
+  padding:12px;
+  border-top:1px solid var(--line);
+}
+.metrics.three{grid-template-columns:repeat(3,1fr)}
+.metric{
+  padding:10px;
+  border:1px solid #365c77;
+  border-radius:9px;
+  background:#102d43;
+}
+.metric span{
+  display:block;
+  color:var(--muted);
+  font-size:12px;
+}
+.metric b{
+  display:block;
+  margin-top:5px;
+  font-size:21px;
+  font-variant-numeric:tabular-nums;
+}
+.cyan{color:var(--source)}
+.green{color:var(--load)}
+.orange{color:var(--internal)}
+.workbench{
+  display:grid;
+  grid-template-columns:minmax(280px,.8fr) minmax(0,1.35fr);
+  gap:13px;
+  margin-top:13px;
+  align-items:start;
+}
+.pad{padding:15px}
+h2{font-size:18px;margin:0 0 12px}
+.control{display:block;margin:15px 0}
+.control .control-line{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:center;
+  font-size:14px;
+}
+output{
+  color:var(--source);
+  font-weight:bold;
+  white-space:nowrap;
+}
+input[type=range]{
+  display:block;
+  width:100%;
+  margin-top:10px;
+  accent-color:var(--source);
+}
+#Ri{accent-color:var(--internal)}
+.range-limits{
+  display:flex;
+  justify-content:space-between;
+  color:#91b2c9;
+  font-size:11px;
+}
+.equation{
+  border:1px solid #467c94;
+  background:#103c45;
+  border-radius:11px;
+  padding:13px;
+  margin-top:13px;
+}
+.equation .math{
+  color:#b2ffce;
+  font:700 24px Cambria,Georgia,serif;
+}
+.equation .numbers{
+  margin-top:7px;
+  color:white;
+  font-weight:bold;
+  font-variant-numeric:tabular-nums;
+}
+.deviation{
+  padding:13px;
+  margin-top:12px;
+  border:1px solid #7f684c;
+  border-radius:10px;
+  background:#302f28;
+}
+.deviation-line{
+  display:flex;
+  justify-content:space-between;
+  gap:9px;
+  align-items:center;
+}
+.deviation strong{
+  color:var(--internal);
+  font-size:23px;
+}
+.bar{
+  height:9px;
+  margin-top:10px;
+  background:#172a39;
+  border-radius:9px;
+  overflow:hidden;
+}
+.bar span{
+  display:block;
+  width:0;
+  height:100%;
+  background:var(--internal);
+  transition:width .15s;
+}
+.chart-pad{padding:12px}
+#graph{
+  display:block;
+  width:100%;
+  height:330px;
+  background:#071a2b;
+  border:1px solid #335b75;
+  border-radius:10px;
+}
+.legend{
+  display:flex;
+  gap:10px 16px;
+  flex-wrap:wrap;
+  margin-top:11px;
+  font-size:12px;
+  color:#cce5f3;
+}
+.legend i{
+  display:inline-block;
+  width:20px;
+  height:4px;
+  vertical-align:middle;
+  margin-right:5px;
+}
+.check{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:11px;
+  font-size:13px;
+  color:var(--muted);
+}
+.check input{accent-color:#7eafce}
+.coordinates{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:11px;
+}
+.coordinate{
+  border:1px solid #375e78;
+  border-radius:9px;
+  padding:9px;
+  background:#102b40;
+  font-size:13px;
+}
+.coordinate b{display:block;margin-bottom:4px}
+.formulas{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-top:13px;
+}
+.formula{
+  border:1px solid var(--line);
+  border-radius:11px;
+  background:#10283d;
+  padding:14px 9px;
+  text-align:center;
+  color:#75e5ff;
+  font:700 23px Cambria,Georgia,serif;
+}
+.formula small{
+  display:block;
+  margin-top:8px;
+  color:var(--muted);
+  font:12px/1.5 Arial,sans-serif;
+}
+.fraction{
+  display:inline-flex;
+  flex-direction:column;
+  text-align:center;
+  vertical-align:middle;
+  line-height:1.15;
+  margin:0 4px;
+}
+.fraction .numerator{
+  padding:0 7px 3px;
+  border-bottom:2px solid currentColor;
+}
+.fraction .denominator{padding:3px 7px 0}
+.small{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.65;
+}
+.notes{
+  margin-top:13px;
+  padding:15px 17px;
+  line-height:1.65;
+}
+.notes p{margin:8px 0}
+details{margin-top:11px}
+summary{cursor:pointer;font-weight:bold}
+#error{
+  margin:12px 0;
+  padding:13px;
+  background:#642937;
+  color:white;
+  border:1px solid #f08c9b;
+  border-radius:9px;
+}
+[hidden]{display:none!important}
+footer{
+  margin-top:17px;
+  padding:15px 5px;
+  border-top:1px solid var(--line);
+  text-align:center;
+  color:#bddbec;
+  font-size:13px;
+}
+@media(max-width:900px){
+  .circuits,.workbench{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .wrap{padding:10px}
+  .formulas{grid-template-columns:1fr}
+  .coordinates{grid-template-columns:1fr}
+  .metric b{font-size:18px}
+  .metrics.three{gap:5px;padding:8px}
+  .metrics.three .metric{padding:8px}
+  .control .control-line{font-size:13px}
+}
 </style>
 </head>
+
 <body>
 <div class="wrap">
-<h1>Идеален и реален източник на ток</h1>
-<div class="subtitle">Сравнение на поведението при промяна на товарното съпротивление R</div>
 
-<div class="grid">
-<!-- IDEAL -->
-<div class="card">
-<h2>Идеален източник</h2>
-<svg viewBox="0 0 520 430">
-<defs>
-<marker id="ar1" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="8" markerHeight="8" orient="auto" markerUnits="userSpaceOnUse">
-<path d="M0 0L10 5L0 10Z" fill="#ff4a43"></path></marker>
-<marker id="ab1" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto" markerUnits="userSpaceOnUse">
-<path d="M0 0L10 5L0 10Z" fill="#38a8ff"></path></marker>
-</defs>
-<path class="wire" d="M130 95H390M390 95V155M390 275V340H130M130 340V275M130 155V95"></path>
-<circle class="elem" cx="130" cy="215" r="60"></circle>
-<line x1="130" y1="250" x2="130" y2="180" stroke="#38a8ff" stroke-width="5" marker-end="url(#ab1)"></line>
-<text x="50" y="221" class="txt blue">Iₛ</text>
-<rect x="350" y="155" width="80" height="120" class="elem"></rect>
-<text x="450" y="222" class="txt">R</text>
-<text x="323" y="163" class="txt red">+</text><text x="326" y="288" class="txt red">−</text>
-<text x="290" y="222" class="txt blue">U</text>
-<line x1="210" y1="95" x2="285" y2="95" stroke="#ff4a43" stroke-width="3" marker-end="url(#ar1)"></line>
-<text x="238" y="73" class="txt red">I</text>
-<g id="flowIdeal"><circle cx="301.05579999276733" cy="95" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="390" cy="97.8739818109492" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="390" cy="189.69216362913096" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="390" cy="281.51034544731283" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="356.6714727345054" cy="340" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="264.85329091632366" cy="340" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="173.0351090981418" cy="340" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="130" cy="291.2169272799599" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="130" cy="199.398745461778" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="130" cy="107.58056364359624" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="209.23761817458546" cy="95" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle></g>
-<text x="115" y="397" fill="#b5c6d6" font-size="20" font-weight="700">Rᵢ → ∞   •   I = Iₛ = const</text>
-</svg>
+<header>
+  <div class="eyebrow">QR-070 · ЕЛЕКТРИЧЕСКИ ИЗТОЧНИЦИ</div>
+  <h1>Идеален и реален източник на ток</h1>
+  <p class="subtitle">
+    Еднакъв зададен ток · Различно влияние на товара · Обща характеристика
+  </p>
+</header>
+
+<div class="toolbar">
+  <div class="source-badge">
+    За двете схеми: <b>I<sub>s</sub> = 2 A</b>
+  </div>
+  <div class="button-row">
+    <button id="pause" type="button" aria-pressed="false">Ⅱ Пауза</button>
+    <button id="reset" type="button">↺ Начални стойности</button>
+  </div>
 </div>
 
-<!-- REAL -->
-<div class="card">
-<h2>Реален източник</h2>
-<svg viewBox="0 0 520 430">
-<defs>
-<marker id="ar2" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="8" markerHeight="8" orient="auto" markerUnits="userSpaceOnUse">
-<path d="M0 0L10 5L0 10Z" fill="#ff4a43"></path></marker>
-<marker id="ab2" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" orient="auto" markerUnits="userSpaceOnUse">
-<path d="M0 0L10 5L0 10Z" fill="#38a8ff"></path></marker>
-</defs>
+<div id="error" role="alert" hidden=""></div>
 
-<!-- common output nodes -->
-<path class="wire" d="M70 95H450M70 340H450"></path>
+<div class="circuits">
 
-<!-- internal resistance: separate parallel branch -->
-<path class="wire" d="M105 95V145M105 285V340"></path>
-<rect x="70" y="145" width="70" height="140" class="elem"></rect>
-<text x="82" y="132" class="txt">Rᵢ</text>
-<text x="58" y="222" class="small">вътрешно</text>
-<line x1="160" y1="165" x2="160" y2="250" stroke="#ff4a43" stroke-width="3" marker-end="url(#ar2)"></line>
-<text x="170" y="215" class="txt red">Iᵢ</text>
+<!-- ИДЕАЛЕН ИЗТОЧНИК -->
+<section class="card">
+  <div class="card-head ideal-head">
+    <h2>Идеален източник</h2>
+    <p>Товарният ток остава равен на зададения ток I<sub>s</sub>.</p>
+  </div>
 
-<!-- ideal current-source part of the real-source model -->
-<path class="wire" d="M245 95V155M245 275V340"></path>
-<circle class="elem" cx="245" cy="215" r="60"></circle>
-<line x1="245" y1="250" x2="245" y2="180" stroke="#38a8ff" stroke-width="5" marker-end="url(#ab2)"></line>
-<text x="218" y="310" class="txt blue">Iₛ</text>
-<line x1="285" y1="250" x2="285" y2="180" stroke="#ff4a43" stroke-width="3" marker-end="url(#ar2)"></line>
-<text x="295" y="220" class="txt red">Iₛ</text>
+  <div class="diagram">
+    <svg viewBox="0 0 620 440" role="img" aria-label="Идеален източник на ток с товарен резистор">
 
-<!-- load branch -->
-<path class="wire" d="M410 95V155M410 275V340"></path>
-<rect x="370" y="155" width="80" height="120" class="elem"></rect>
-<text x="462" y="222" class="txt">R</text>
-<text x="342" y="163" class="txt red">+</text><text x="345" y="288" class="txt red">−</text>
-<text x="365" y="75" class="txt red">Iₗ</text>
-<line x1="410" y1="115" x2="410" y2="145" stroke="#ff4a43" stroke-width="3" marker-end="url(#ar2)"></line>
-<g id="flowSource"><circle cx="245" cy="254.84290000175446" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="245" cy="219.84290000175446" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="245" cy="184.84290000175446" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="245" cy="149.8429000017545" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="245" cy="114.84290000175446" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="245" cy="324.84290000175446" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="245" cy="289.84290000175446" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle></g>
-<g id="flowLoad"><circle cx="410" cy="129.8584999958824" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="410" cy="193.74738888477128" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="410" cy="257.63627777366014" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="410" cy="321.5251666625491" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="364.5859444485621" cy="340" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="300.6970555596731" cy="340" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="253.1918333292157" cy="95" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="317.0807222181046" cy="95" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="380.9696111069934" cy="95" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle></g>
-<g id="flowInternal"><circle cx="105" cy="137.47949999624046" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle><circle cx="164.97949999624046" cy="340" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"></circle></g>
-<text x="120" y="395" class="small">Rᵢ е паралелно на идеалния източник Iₛ</text>
-</svg>
-</div>
+      <defs>
+        <marker id="idealArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+          <path d="M0 0L10 5L0 10Z" fill="#4ddcff"></path>
+        </marker>
+      </defs>
+
+      <path class="wire" d="M150 173V105H470V173
+           M470 277V350H150V277"></path>
+
+      <circle cx="150" cy="225" r="52" class="source-element"></circle>
+
+      <line x1="150" y1="253" x2="150" y2="195" stroke="#4ddcff" stroke-width="5" marker-end="url(#idealArrow)"></line>
+
+      <text x="73" y="232" class="svg-label" fill="#4ddcff">Iₛ</text>
+
+      <rect x="436" y="173" width="68" height="104" rx="4" class="load-element"></rect>
+
+      <text x="470" y="157" class="svg-label">R</text>
+      <text id="idealResistanceSvg" x="470" y="232" class="svg-value">31 Ω</text>
+
+      <text x="534" y="179" class="svg-label" fill="#4ddcff">+</text>
+      <text x="534" y="286" class="svg-label" fill="#4ddcff">−</text>
+      <text x="553" y="232" class="svg-label" fill="#4ddcff">U</text>
+
+      <line x1="280" y1="105" x2="344" y2="105" stroke="#4ddcff" stroke-width="4" marker-end="url(#idealArrow)"></line>
+
+      <text id="idealCurrentSvg" x="310" y="73" class="flow-value" fill="#4ddcff">I = 2,000 A</text>
+
+      <text x="150" y="306" class="svg-small">Зададен ток Iₛ</text>
+
+      <g id="flowIdeal"><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;" cx="150.00" cy="281.63"></circle><circle r="3.8" class="packet" fill="#4ddcff" cx="150.00" cy="293.08" style=""></circle><circle r="3.8" class="packet" fill="#4ddcff" cx="150.00" cy="321.41" style=""></circle><circle r="3.8" class="packet" fill="#4ddcff" cx="150.00" cy="349.74" style=""></circle><circle r="3.8" class="packet" fill="#4ddcff" cx="178.08" cy="350.00" style=""></circle><circle r="3.8" class="packet" fill="#4ddcff" cx="206.41" cy="350.00" style=""></circle><circle r="3.8" class="packet" fill="#4ddcff" cx="234.74" cy="350.00" style=""></circle><circle r="3.8" class="packet" fill="#4ddcff" cx="263.08" cy="350.00" style=""></circle><circle r="3.8" class="packet" fill="#4ddcff" cx="291.41" cy="350.00" style=""></circle><circle r="3.8" class="packet" fill="#4ddcff" cx="319.74" cy="350.00" style=""></circle><circle r="3.8" class="packet" fill="#4ddcff" cx="348.08" cy="350.00" style=""></circle><circle r="3.8" class="packet" fill="#4ddcff" cx="376.41" cy="350.00" style=""></circle><circle r="3.8" class="packet" fill="#4ddcff" cx="404.74" cy="350.00" style=""></circle><circle r="3.8" class="packet" fill="#4ddcff" cx="433.08" cy="350.00" style=""></circle><circle r="3.8" class="packet" fill="#4ddcff" cx="461.41" cy="350.00" style=""></circle><circle r="3.8" class="packet" fill="#4ddcff" cx="470.00" cy="330.26" style=""></circle><circle r="3.8" class="packet" fill="#4ddcff" cx="470.00" cy="301.92" style=""></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;" cx="470.00" cy="284.90"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" cx="470.00" cy="160.26" style=""></circle><circle r="3.8" class="packet" fill="#4ddcff" cx="470.00" cy="131.92" style=""></circle><circle r="3.8" class="packet" fill="#4ddcff" cx="468.59" cy="105.00" style=""></circle><circle r="3.8" class="packet" fill="#4ddcff" cx="440.26" cy="105.00" style=""></circle><circle r="3.8" class="packet" fill="#4ddcff" cx="411.92" cy="105.00" style=""></circle><circle r="3.8" class="packet" fill="#4ddcff" cx="383.59" cy="105.00" style=""></circle><circle r="3.8" class="packet" fill="#4ddcff" cx="355.26" cy="105.00" style=""></circle><circle r="3.8" class="packet" fill="#4ddcff" cx="326.92" cy="105.00" style=""></circle><circle r="3.8" class="packet" fill="#4ddcff" cx="298.59" cy="105.00" style=""></circle><circle r="3.8" class="packet" fill="#4ddcff" cx="270.26" cy="105.00" style=""></circle><circle r="3.8" class="packet" fill="#4ddcff" cx="241.92" cy="105.00" style=""></circle><circle r="3.8" class="packet" fill="#4ddcff" cx="213.59" cy="105.00" style=""></circle><circle r="3.8" class="packet" fill="#4ddcff" cx="185.26" cy="105.00" style=""></circle><circle r="3.8" class="packet" fill="#4ddcff" cx="156.92" cy="105.00" style=""></circle><circle r="3.8" class="packet" fill="#4ddcff" cx="150.00" cy="126.41" style=""></circle><circle r="3.8" class="packet" fill="#4ddcff" cx="150.00" cy="154.74" style=""></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle></g>
+
+      <text x="310" y="407" text-anchor="middle" fill="#9feaff" font-size="21" font-weight="bold">
+        Rᵢ → ∞ · I = Iₛ = const
+      </text>
+    </svg>
+  </div>
+
+  <div class="metrics">
+    <div class="metric">
+      <span>Ток през товара</span>
+      <b id="idealI" class="cyan">2,000 A</b>
+    </div>
+    <div class="metric">
+      <span>Напрежение върху товара</span>
+      <b id="idealU">62,00 V</b>
+    </div>
+  </div>
+</section>
+
+<!-- РЕАЛЕН ИЗТОЧНИК -->
+<section class="card">
+  <div class="card-head real-head">
+    <h2>Реален източник</h2>
+    <p>Линеен модел: идеален източник и паралелно съпротивление R<sub>i</sub>.</p>
+  </div>
+
+  <div class="diagram">
+    <svg viewBox="0 0 620 440" role="img" aria-label="Реален източник на ток с паралелно вътрешно съпротивление и товар">
+
+      <defs>
+        <marker id="sourceArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+          <path d="M0 0L10 5L0 10Z" fill="#4ddcff"></path>
+        </marker>
+
+        <marker id="loadArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+          <path d="M0 0L10 5L0 10Z" fill="#69efad"></path>
+        </marker>
+
+        <marker id="internalArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+          <path d="M0 0L10 5L0 10Z" fill="#ffbb62"></path>
+        </marker>
+      </defs>
+
+      <!-- Общи възли на трите паралелни клона -->
+      <path class="wire" d="M125 105H485M125 350H485"></path>
+
+      <!-- Вътрешно съпротивление -->
+      <path class="wire" d="M125 105V173M125 277V350"></path>
+
+      <rect x="91" y="173" width="68" height="104" rx="4" class="internal-element"></rect>
+
+      <text x="125" y="157" class="svg-label">Rᵢ</text>
+      <text id="internalResistanceSvg" x="125" y="232" class="svg-value">20 Ω</text>
+
+      <text x="125" y="305" class="svg-small">вътрешно</text>
+
+      <!-- Идеалната част на реалния източник -->
+      <path class="wire" d="M300 105V173M300 277V350"></path>
+
+      <circle cx="300" cy="225" r="52" class="source-element"></circle>
+
+      <line x1="300" y1="253" x2="300" y2="195" stroke="#4ddcff" stroke-width="5" marker-end="url(#sourceArrow)"></line>
+
+      <text x="300" y="307" text-anchor="middle" fill="#4ddcff" font-size="18" font-weight="bold">Iₛ = 2,000 A</text>
+
+      <!-- Товар -->
+      <path class="wire" d="M485 105V173M485 277V350"></path>
+
+      <rect x="451" y="173" width="68" height="104" rx="4" class="load-element"></rect>
+
+      <text x="485" y="157" class="svg-label">R</text>
+      <text id="realResistanceSvg" x="485" y="232" class="svg-value">31 Ω</text>
+
+      <text x="548" y="179" class="svg-label" fill="#69efad">+</text>
+      <text x="548" y="286" class="svg-label" fill="#69efad">−</text>
+      <text x="565" y="232" class="svg-label" fill="#69efad">U</text>
+
+      <!-- Разделяне на тока при възел a -->
+      <line x1="245" y1="105" x2="188" y2="105" stroke="#ffbb62" stroke-width="4" marker-end="url(#internalArrow)"></line>
+
+      <line x1="360" y1="105" x2="424" y2="105" stroke="#69efad" stroke-width="4" marker-end="url(#loadArrow)"></line>
+
+      <text id="internalCurrentSvg" x="150" y="69" class="flow-value" fill="#ffbb62">Iᵢ = 1,216 A</text>
+
+      <text id="loadCurrentSvg" x="460" y="69" class="flow-value" fill="#69efad">Iₗ = 0,784 A</text>
+
+      <circle cx="300" cy="105" r="7" class="node"></circle>
+      <circle cx="300" cy="350" r="7" class="node"></circle>
+
+      <text x="300" y="86" class="svg-small">a</text>
+      <text x="300" y="377" class="svg-small">b</text>
+
+      <g id="flowReal"><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;" cx="300.00" cy="280.90"></circle><circle r="3.8" class="packet" fill="#4ddcff" cx="300.00" cy="286.41" style=""></circle><circle r="3.8" class="packet" fill="#4ddcff" cx="300.00" cy="314.74" style=""></circle><circle r="3.8" class="packet" fill="#69efad" cx="313.08" cy="350.00" style=""></circle><circle r="3.8" class="packet" fill="#ffbb62" cx="278.59" cy="350.00" style=""></circle><circle r="3.8" class="packet" fill="#69efad" cx="369.74" cy="350.00" style=""></circle><circle r="3.8" class="packet" fill="#ffbb62" cx="221.92" cy="350.00" style=""></circle><circle r="3.8" class="packet" fill="#ffbb62" cx="193.59" cy="350.00" style=""></circle><circle r="3.8" class="packet" fill="#69efad" cx="454.74" cy="350.00" style=""></circle><circle r="3.8" class="packet" fill="#ffbb62" cx="136.92" cy="350.00" style=""></circle><circle r="3.8" class="packet" fill="#69efad" cx="485.00" cy="323.59" style=""></circle><circle r="3.8" class="packet" fill="#ffbb62" cx="125.00" cy="305.26" style=""></circle><circle r="3.8" class="packet" fill="#ffbb62" cx="125.00" cy="299.58" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#69efad" style="display: none;" cx="485.00" cy="167.77"></circle><circle r="3.8" class="packet" fill="#ffbb62" cx="125.00" cy="163.59" style=""></circle><circle r="3.8" class="packet" fill="#ffbb62" cx="125.00" cy="135.26" style=""></circle><circle r="3.8" class="packet" fill="#69efad" cx="476.92" cy="105.00" style=""></circle><circle r="3.8" class="packet" fill="#ffbb62" cx="151.41" cy="105.00" style=""></circle><circle r="3.8" class="packet" fill="#ffbb62" cx="179.74" cy="105.00" style=""></circle><circle r="3.8" class="packet" fill="#69efad" cx="391.92" cy="105.00" style=""></circle><circle r="3.8" class="packet" fill="#ffbb62" cx="236.41" cy="105.00" style=""></circle><circle r="3.8" class="packet" fill="#69efad" cx="335.26" cy="105.00" style=""></circle><circle r="3.8" class="packet" fill="#ffbb62" cx="293.08" cy="105.00" style=""></circle><circle r="3.8" class="packet" fill="#4ddcff" cx="300.00" cy="126.41" style=""></circle><circle r="3.8" class="packet" fill="#4ddcff" cx="300.00" cy="154.74" style=""></circle><circle r="3.8" class="packet" fill="#4ddcff" cx="300.00" cy="160.42" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle><circle r="3.8" class="packet" fill="#4ddcff" style="display: none;"></circle></g>
+
+      <text x="310" y="411" text-anchor="middle" fill="#c5ffdf" font-size="21" font-weight="bold">
+        Iₛ = Iₗ + Iᵢ
+      </text>
+    </svg>
+  </div>
+
+  <div class="metrics three">
+    <div class="metric">
+      <span>Товарен ток I<sub>L</sub></span>
+      <b id="realIL" class="green">0,784 A</b>
+    </div>
+    <div class="metric">
+      <span>Вътрешен ток I<sub>i</sub></span>
+      <b id="realIi" class="orange">1,216 A</b>
+    </div>
+    <div class="metric">
+      <span>Напрежение U</span>
+      <b id="realU">24,31 V</b>
+    </div>
+  </div>
+</section>
+
 </div>
 
-<div class="controls">
-<div class="row"><b>Товарно съпротивление R</b><input id="R" type="range" min="1" max="50" step="1" value="10"><b><span id="Rv">10</span> Ω</b></div>
-<div class="row"><b>Вътрешно съпротивление Rᵢ</b><input id="Ri" type="range" min="20" max="200" step="10" value="100"><b><span id="Riv">100</span> Ω</b></div>
+<div class="workbench">
 
-<div class="readouts">
-<div class="read">
-<b>Идеален източник</b><br>
-I = <span id="Ii">2.000</span> A &nbsp;&nbsp; U = <span id="Ui">20.0</span> V<br>
-<span class="formula">I = I<sub>S</sub> = const</span>
+<section class="card pad">
+  <h2>Управление на опита</h2>
+
+  <label class="control" for="R">
+    <span class="control-line">
+      <span>Товарно съпротивление R</span>
+      <output id="Rvalue" for="R">31 Ω</output>
+    </span>
+    <input id="R" type="range" min="1" max="50" step="1" value="10">
+    <span class="range-limits"><span>1 Ω</span><span>50 Ω</span></span>
+  </label>
+
+  <label class="control" for="Ri">
+    <span class="control-line">
+      <span>Вътрешно съпротивление R<sub>i</sub></span>
+      <output id="Rivalue" for="Ri">20 Ω</output>
+    </span>
+    <input id="Ri" type="range" min="20" max="2000" step="10" value="100">
+    <span class="range-limits"><span>20 Ω</span><span>2000 Ω</span></span>
+  </label>
+
+  <div class="equation">
+    <div class="math">I<sub>s</sub> = I<sub>L</sub> + I<sub>i</sub></div>
+    <div id="balanceValue" class="numbers">2,000 = 0,784 + 1,216 A</div>
+    <div id="voltageCheck" class="small" style="margin-top:7px">U = IₗR = IᵢRᵢ = 24,31 V</div>
+  </div>
+
+  <div class="deviation">
+    <div class="deviation-line">
+      <span>Отклонение на I<sub>L</sub> от I<sub>s</sub></span>
+      <strong id="deviationValue">60,78%</strong>
+    </div>
+    <div class="bar"><span id="deviationBar" style="width: 60.7843%;"></span></div>
+    <div class="small" style="margin-top:8px">
+      δ<sub>I</sub> = (I<sub>s</sub> − I<sub>L</sub>)/I<sub>s</sub> · 100%
+    </div>
+  </div>
+
+  <p id="observation" class="small">При R = 31 Ω и Rᵢ = 20 Ω към товара преминават 39,22% от тока на източника. Останалите 60,78% преминават през вътрешното съпротивление.</p>
+
+  <p class="small">
+    „Пауза“ замразява движението. Тя не изключва източниците
+    и не променя изчислените стойности.
+  </p>
+</section>
+
+<section class="card">
+  <div class="card-head">
+    <h2>Обща волт-амперна характеристика</h2>
+    <p>I<sub>L</sub> = f(U) · Еднакви, постоянни скали за двата източника</p>
+  </div>
+
+  <div class="chart-pad">
+    <canvas id="graph" role="img" aria-label="Волт-амперни характеристики на идеален и реален източник на ток" width="1016" height="413">
+      Графиката изисква браузър с поддръжка на Canvas.
+    </canvas>
+
+    <div class="legend">
+      <span><i style="background:#4ddcff"></i>Идеален: I = Iₛ</span>
+      <span><i style="background:#69efad"></i>Реален: Iₗ = Iₛ − U/Rᵢ</span>
+      <span><i style="background:#b4c7d5"></i>Товар: I = U/R</span>
+    </div>
+
+    <label class="check">
+      <input id="showLoadLine" type="checkbox" checked="">
+      Покажи товарната права I = U/R
+    </label>
+
+    <div class="coordinates">
+      <div class="coordinate">
+        <b class="cyan">Работна точка — идеален</b>
+        <span id="idealPoint">U = 62,00 V; I = 2,000 A</span>
+      </div>
+      <div class="coordinate">
+        <b class="green">Работна точка — реален</b>
+        <span id="realPoint">U = 24,31 V; Iₗ = 0,784 A</span>
+      </div>
+    </div>
+
+    <p class="small">
+      Хоризонтална ос: 0–120 V. Вертикална ос: 0–2,5 A.
+      Показан е работен участък от характеристиките.
+      Увеличаването на Rᵢ прави реалната характеристика по-близка
+      до хоризонталната идеална характеристика.
+    </p>
+  </div>
+</section>
+
 </div>
-<div class="read">
-<b>Реален източник</b><br>
-I<sub>L</sub> = <span id="Ir">1.818</span> A &nbsp;&nbsp;
-I<sub>i</sub> = <span id="Iint">0.182</span> A &nbsp;&nbsp;
-U = <span id="Ur">18.2</span> V<br>
-<span class="formula">I<sub>S</sub> = I<sub>L</sub> + I<sub>i</sub></span><br>
-<span class="formula">I<sub>L</sub> = I<sub>S</sub> ·
-    <span style="display:inline-block;vertical-align:middle;text-align:center;line-height:1.15">
-      <span style="display:block;border-bottom:2px solid #fff;padding:0 8px 3px">R<sub>i</sub></span>
-      <span style="display:block;padding-top:3px">R<sub>i</sub> + R</span>
-    </span></span>
+
+<div class="formulas">
+  <div class="formula">
+    I<sub>L</sub> = I<sub>s</sub>
+    <span class="fraction">
+      <span class="numerator">R<sub>i</sub></span>
+      <span class="denominator">R<sub>i</sub> + R</span>
+    </span>
+    <small>Ток през външния товар</small>
+  </div>
+
+  <div class="formula">
+    I<sub>i</sub> = I<sub>s</sub>
+    <span class="fraction">
+      <span class="numerator">R</span>
+      <span class="denominator">R<sub>i</sub> + R</span>
+    </span>
+    <small>Ток през вътрешното съпротивление</small>
+  </div>
+
+  <div class="formula">
+    U = I<sub>L</sub>R = I<sub>i</sub>R<sub>i</sub>
+    <small>Еднакво напрежение върху паралелните клони</small>
+  </div>
 </div>
-</div>
-<div class="note">
-При идеалния източник товарният ток не зависи от R. При реалния източник токът Iₛ се разделя между товара R и вътрешното съпротивление Rᵢ: Iₛ = Iₗ + Iᵢ.
-</div>
-</div>
+
+<section class="card notes">
+  <h2>Какво да наблюдаваме?</h2>
+
+  <p>
+    При <b>идеалния източник</b> увеличаването на товара R
+    не променя зададения ток, но увеличава напрежението U = IₛR.
+  </p>
+
+  <p>
+    При <b>реалния източник</b> токът Iₛ се разделя между
+    товарното съпротивление R и паралелното вътрешно съпротивление Rᵢ.
+    При увеличаване на R по-голяма част от тока преминава през Rᵢ.
+  </p>
+
+  <p>
+    При едно и също R по-голямото Rᵢ намалява вътрешния ток.
+    Товарният ток се приближава към Iₛ.
+  </p>
+
+  <details>
+    <summary>Как е направено движението и какви са допусканията?</summary>
+
+    <p>
+      Сините маркери представят общия ток на източника.
+      При разклонението в реалната схема всеки маркер се насочва
+      само към единия клон: зелен към товара или оранжев към Rᵢ.
+      Средната честота на преминаване на маркерите е пропорционална
+      на тока. При много малък вътрешен ток оранжевите маркери
+      преминават рядко.
+    </p>
+
+    <p>
+      Маркерите са условна визуализация, а не отделни електрони.
+      Скоростта им не е действителната дрейфова скорост.
+      Броят на едновременно видимите маркери не е сам по себе си
+      мярка за тока, защото пътищата имат различни дължини.
+    </p>
+
+    <p>
+      След промяна на параметър се показва нов установен режим.
+      Не се моделира преходният електромагнитен процес.
+      Приборите, съпротивленията и проводниците се приемат за идеализирани.
+    </p>
+
+    <p>
+      Реалният източник е представен чрез линеен модел на Нортон.
+      Не са включени ограничение на изходното напрежение,
+      захранващи шини, защита от претоварване и температурни ефекти.
+      Следователно схемата не описва всички ограничения на
+      конкретно електронно устройство.
+    </p>
+  </details>
+</section>
+
+<footer>
+  © 2026 доц. д-р инж. Величко Атанасов. Всички права запазени.
+</footer>
+
 </div>
 
 <script>
-const IS=2;
-const R=document.getElementById('R'), Ri=document.getElementById('Ri');
-function update(){
- const r=+R.value, ri=+Ri.value;
- const ii=IS, ui=ii*r;
- const ir=IS*ri/(ri+r), ur=ir*r;
- Rv.textContent=r; Riv.textContent=ri;
- Ii.textContent=ii.toFixed(3); Ui.textContent=ui.toFixed(1);
- Ir.textContent=ir.toFixed(3);
- Iint.textContent=(IS-ir).toFixed(3);
- Ur.textContent=ur.toFixed(1);
-}
-R.oninput=Ri.oninput=update; update();
+(() => {
+"use strict";
 
-// Moving red markers: conventional current, exactly on the white conductors.
-const idealPts=[[130,275],[130,95],[390,95],[390,340],[130,340],[130,275]];
-const realSourcePts=[[245,340],[245,95]];
-const realLoadPts=[[245,95],[410,95],[410,340],[245,340]];
-const realInternalPts=[[245,95],[105,95],[105,340],[245,340]];
-function prep(pts){
- let ls=[],total=0;
- for(let i=0;i<pts.length-1;i++){let l=Math.hypot(pts[i+1][0]-pts[i][0],pts[i+1][1]-pts[i][1]);ls.push(l);total+=l}
- return {pts,ls,total};
+try {
+
+const $ = id => document.getElementById(id);
+const SVG_NS = "http://www.w3.org/2000/svg";
+
+const IS = 2;
+const GRAPH_MAX_U = 120;
+const GRAPH_MAX_I = 2.5;
+
+/*
+ * Маркерите са равностойни условни пакети.
+ * Източникът подава една и съща честота в двете схеми.
+ */
+const PACKETS_PER_AMP = 3;
+const EMISSION_RATE = IS * PACKETS_PER_AMP;
+const FLOW_SPEED = 170;
+const MAX_MARKERS = 64;
+
+const COLOR_SOURCE = "#4ddcff";
+const COLOR_LOAD = "#69efad";
+const COLOR_INTERNAL = "#ffbb62";
+
+let paused = Boolean(
+  window.matchMedia &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches
+);
+
+let lastFrame = null;
+let emissionCredit = 0;
+let splitCredit = 0.5;
+
+let idealPackets = [];
+let realPackets = [];
+
+function fmt(value, digits = 2){
+  const n = Math.abs(value) < 1e-12 ? 0 : value;
+
+  return n.toLocaleString("bg-BG", {
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits
+  });
 }
-const PI=prep(idealPts), PRS=prep(realSourcePts), PRL=prep(realLoadPts), PRI=prep(realInternalPts);
-function point(P,u){
- let d=(u%1)*P.total;
- for(let i=0;i<P.ls.length;i++){
-  if(d<=P.ls[i]){let a=P.pts[i],b=P.pts[i+1],q=d/P.ls[i];return[a[0]+(b[0]-a[0])*q,a[1]+(b[1]-a[1])*q]}
-  d-=P.ls[i];
- }
- return P.pts[0];
+
+function put(id, value){
+  $(id).textContent = value;
 }
-let ph=0,last=performance.now();
-function draw(g,P,n,phase){
- let h='';
- for(let k=0;k<n;k++){let p=point(P,phase+k/n);h+=`<circle cx="${p[0]}" cy="${p[1]}" r="3.5" fill="#ff4a43" stroke="white" stroke-width=".7"/>`}
- g.innerHTML=h;
+
+function calculate(r, ri){
+  if(!Number.isFinite(r) || !Number.isFinite(ri) || r <= 0 || ri <= 0){
+    throw new Error("Съпротивленията трябва да бъдат положителни числа.");
+  }
+
+  const idealI = IS;
+  const idealU = IS * r;
+
+  const loadI = IS * ri / (ri + r);
+  const internalI = IS - loadI;
+  const realU = loadI * r;
+  const deviation = internalI / IS * 100;
+
+  return {
+    r, ri,
+    idealI, idealU,
+    loadI, internalI,
+    realU, deviation
+  };
 }
-function anim(t){
- ph=(ph+(t-last)*.00015)%1; last=t;
- draw(document.getElementById('flowIdeal'),PI,11,ph);
- const r=+R.value, ri=+Ri.value;
- const fracLoad=ri/(ri+r);
- const nLoad=Math.max(4,Math.round(10*fracLoad));
- const nInt=Math.max(2,Math.round(10*(1-fracLoad)));
- draw(document.getElementById('flowSource'),PRS,7,ph);
- draw(document.getElementById('flowLoad'),PRL,nLoad,ph);
- draw(document.getElementById('flowInternal'),PRI,nInt,ph);
- requestAnimationFrame(anim);
+
+let model = calculate(10, 100);
+
+/* Полилинейни пътища за движение по проводниците. */
+function makePath(points){
+  const lengths = [];
+  let total = 0;
+
+  for(let i = 0; i < points.length - 1; i++){
+    const a = points[i];
+    const b = points[i + 1];
+    const length = Math.hypot(b[0] - a[0], b[1] - a[1]);
+
+    lengths.push(length);
+    total += length;
+  }
+
+  return {points, lengths, total};
 }
-requestAnimationFrame(anim);
+
+function pointOnPath(path, distance){
+  let remaining = Math.max(
+    0,
+    Math.min(path.total, distance)
+  );
+
+  for(let i = 0; i < path.lengths.length; i++){
+    const length = path.lengths[i];
+
+    if(remaining <= length || i === path.lengths.length - 1){
+      const a = path.points[i];
+      const b = path.points[i + 1];
+      const fraction = length > 0 ? remaining / length : 0;
+
+      return {
+        x: a[0] + (b[0] - a[0]) * fraction,
+        y: a[1] + (b[1] - a[1]) * fraction
+      };
+    }
+
+    remaining -= length;
+  }
+
+  const last = path.points[path.points.length - 1];
+  return {x:last[0], y:last[1]};
+}
+
+/*
+ * Началото и краят са вътре в символа на източника.
+ * Така маркери не възникват и не изчезват при разклонението.
+ */
+const idealPath = makePath([
+  [150,225],
+  [150,105],
+  [470,105],
+  [470,350],
+  [150,350],
+  [150,225]
+]);
+
+const sourcePath = makePath([
+  [300,225],
+  [300,105]
+]);
+
+const loadPath = makePath([
+  [300,105],
+  [485,105],
+  [485,350],
+  [300,350],
+  [300,225]
+]);
+
+const internalPath = makePath([
+  [300,105],
+  [125,105],
+  [125,350],
+  [300,350],
+  [300,225]
+]);
+
+const RETURN_COMMON_LENGTH = 125;
+
+function createMarkerPool(groupId){
+  const group = $(groupId);
+  group.replaceChildren();
+
+  const nodes = [];
+
+  for(let i = 0; i < MAX_MARKERS; i++){
+    const circle = document.createElementNS(SVG_NS, "circle");
+
+    circle.setAttribute("r", "3.8");
+    circle.setAttribute("class", "packet");
+    circle.setAttribute("fill", COLOR_SOURCE);
+    circle.style.display = "none";
+
+    group.appendChild(circle);
+    nodes.push(circle);
+  }
+
+  return nodes;
+}
+
+const idealNodes = createMarkerPool("flowIdeal");
+const realNodes = createMarkerPool("flowReal");
+
+/*
+ * Разделяне на потока чрез акумулатор.
+ * За последователност от пакети разликата между желания
+ * и действителния брой във вътрешния клон е до един пакет.
+ */
+function chooseBranch(){
+  splitCredit += model.internalI / IS;
+
+  if(splitCredit >= 1){
+    splitCredit -= 1;
+    return "internal";
+  }
+
+  return "load";
+}
+
+function advanceFlow(dt){
+  const travel = FLOW_SPEED * dt;
+
+  for(const packet of idealPackets){
+    packet.distance += travel;
+  }
+
+  idealPackets = idealPackets.filter(
+    packet => packet.distance < idealPath.total
+  );
+
+  for(const packet of realPackets){
+    packet.distance += travel;
+
+    if(packet.branch === null && packet.distance >= sourcePath.total){
+      packet.distance -= sourcePath.total;
+      packet.branch = chooseBranch();
+    }
+  }
+
+  realPackets = realPackets.filter(packet => {
+    if(packet.branch === null) return true;
+
+    const path = packet.branch === "load"
+      ? loadPath
+      : internalPath;
+
+    return packet.distance < path.total;
+  });
+
+  /*
+   * Един и същ източников поток за двете схеми.
+   * Остатъкът определя времето от последното излъчване,
+   * така че маркерите да не се струпват по кадри.
+   */
+  emissionCredit += dt * EMISSION_RATE;
+
+  while(emissionCredit >= 1){
+    emissionCredit -= 1;
+
+    const age = emissionCredit / EMISSION_RATE;
+    const distance = FLOW_SPEED * age;
+
+    idealPackets.push({distance});
+    realPackets.push({distance, branch:null});
+  }
+}
+
+function resetFlow(){
+  idealPackets = [];
+  realPackets = [];
+
+  emissionCredit = 0;
+  splitCredit = 0.5;
+
+  /*
+   * Предварително запълване на установеното учебно движение.
+   * Това не добавя време или енергия към електрическия модел.
+   */
+  for(let i = 0; i < 300; i++){
+    advanceFlow(1 / 30);
+  }
+
+  lastFrame = null;
+  drawFlow();
+}
+
+function insideCircle(x, y, cx, cy, radius){
+  return (x - cx) ** 2 + (y - cy) ** 2 < radius ** 2;
+}
+
+function obscuredIdeal(p){
+  const source = insideCircle(p.x, p.y, 150, 225, 55);
+
+  const resistor =
+    Math.abs(p.x - 470) < 10 &&
+    p.y > 169 && p.y < 281;
+
+  return source || resistor;
+}
+
+function obscuredReal(p){
+  const source = insideCircle(p.x, p.y, 300, 225, 55);
+
+  const resistor =
+    (
+      Math.abs(p.x - 125) < 10 ||
+      Math.abs(p.x - 485) < 10
+    ) &&
+    p.y > 169 && p.y < 281;
+
+  return source || resistor;
+}
+
+function setMarker(node, point, color, hidden){
+  node.style.display = hidden ? "none" : "";
+
+  if(hidden) return;
+
+  node.setAttribute("cx", point.x.toFixed(2));
+  node.setAttribute("cy", point.y.toFixed(2));
+  node.setAttribute("fill", color);
+}
+
+function drawFlow(){
+  idealNodes.forEach((node, index) => {
+    const packet = idealPackets[index];
+
+    if(!packet){
+      node.style.display = "none";
+      return;
+    }
+
+    const point = pointOnPath(idealPath, packet.distance);
+
+    setMarker(node, point, COLOR_SOURCE, obscuredIdeal(point));
+  });
+
+  realNodes.forEach((node, index) => {
+    const packet = realPackets[index];
+
+    if(!packet){
+      node.style.display = "none";
+      return;
+    }
+
+    let path;
+    let color;
+
+    if(packet.branch === null){
+      path = sourcePath;
+      color = COLOR_SOURCE;
+    }else{
+      path = packet.branch === "load" ? loadPath : internalPath;
+
+      color = packet.branch === "load"
+        ? COLOR_LOAD
+        : COLOR_INTERNAL;
+
+      /*
+       * След долния възел двата потока отново са общи.
+       */
+      if(packet.distance >= path.total - RETURN_COMMON_LENGTH){
+        color = COLOR_SOURCE;
+      }
+    }
+
+    const point = pointOnPath(path, packet.distance);
+
+    setMarker(node, point, color, obscuredReal(point));
+  });
+}
+
+/* Графика с постоянни скали. */
+const graph = $("graph");
+const ctx = graph.getContext("2d");
+
+if(!ctx){
+  throw new Error("Браузърът не предоставя Canvas 2D контекст.");
+}
+
+function drawGraph(){
+  const rect = graph.getBoundingClientRect();
+  const width = Math.max(280, rect.width);
+  const height = Math.max(280, rect.height);
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+  const pixelWidth = Math.round(width * dpr);
+  const pixelHeight = Math.round(height * dpr);
+
+  if(graph.width !== pixelWidth || graph.height !== pixelHeight){
+    graph.width = pixelWidth;
+    graph.height = pixelHeight;
+  }
+
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, width, height);
+
+  const L = 49;
+  const R = width - 18;
+  const T = 25;
+  const B = height - 47;
+
+  const x = u => L + (R - L) * u / GRAPH_MAX_U;
+  const y = i => B - (B - T) * i / GRAPH_MAX_I;
+
+  ctx.font = "11px Arial";
+  ctx.lineWidth = 1;
+
+  for(let u = 0; u <= GRAPH_MAX_U; u += 20){
+    const xx = x(u);
+
+    ctx.strokeStyle = "#26465e";
+    ctx.beginPath();
+    ctx.moveTo(xx, T);
+    ctx.lineTo(xx, B);
+    ctx.stroke();
+
+    ctx.fillStyle = "#bed7e8";
+    ctx.textAlign = "center";
+    ctx.fillText(String(u), xx, B + 19);
+  }
+
+  for(let i = 0; i <= GRAPH_MAX_I + 1e-9; i += 0.5){
+    const yy = y(i);
+
+    ctx.strokeStyle = "#26465e";
+    ctx.beginPath();
+    ctx.moveTo(L, yy);
+    ctx.lineTo(R, yy);
+    ctx.stroke();
+
+    ctx.fillStyle = "#bed7e8";
+    ctx.textAlign = "right";
+    ctx.fillText(fmt(i, 1), L - 8, yy + 4);
+  }
+
+  ctx.strokeStyle = "#d9eefb";
+  ctx.lineWidth = 1.8;
+  ctx.beginPath();
+  ctx.moveTo(L, T);
+  ctx.lineTo(L, B);
+  ctx.lineTo(R, B);
+  ctx.stroke();
+
+  ctx.fillStyle = "#d9eefb";
+  ctx.textAlign = "left";
+  ctx.font = "12px Arial";
+  ctx.fillText("I, A", 8, 15);
+  ctx.fillText("U, V", R - 27, height - 10);
+
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(L, T, R - L, B - T);
+  ctx.clip();
+
+  /* Товарна права: еднакъв R и за двата източника. */
+  if($("showLoadLine").checked){
+    const endpointU = Math.min(
+      GRAPH_MAX_U,
+      model.r * GRAPH_MAX_I
+    );
+
+    ctx.strokeStyle = "#b4c7d5";
+    ctx.lineWidth = 1.7;
+    ctx.setLineDash([5, 6]);
+
+    ctx.beginPath();
+    ctx.moveTo(x(0), y(0));
+    ctx.lineTo(
+      x(endpointU),
+      y(endpointU / model.r)
+    );
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  /* Идеален източник. */
+  ctx.strokeStyle = COLOR_SOURCE;
+  ctx.lineWidth = 3;
+
+  ctx.beginPath();
+  ctx.moveTo(x(0), y(IS));
+  ctx.lineTo(x(GRAPH_MAX_U), y(IS));
+  ctx.stroke();
+
+  /*
+   * Реален източник:
+   * I_L = I_s − U/R_i.
+   * Показваме областта с неотрицателен товарен ток.
+   */
+  const realEndU = Math.min(
+    GRAPH_MAX_U,
+    IS * model.ri
+  );
+
+  const realEndI = Math.max(
+    0,
+    IS - realEndU / model.ri
+  );
+
+  ctx.strokeStyle = COLOR_LOAD;
+  ctx.lineWidth = 3;
+
+  ctx.beginPath();
+  ctx.moveTo(x(0), y(IS));
+  ctx.lineTo(x(realEndU), y(realEndI));
+  ctx.stroke();
+
+  /* Проекции на реалната работна точка. */
+  ctx.strokeStyle = "#69efad9c";
+  ctx.lineWidth = 1.1;
+  ctx.setLineDash([4, 5]);
+
+  ctx.beginPath();
+  ctx.moveTo(x(model.realU), B);
+  ctx.lineTo(x(model.realU), y(model.loadI));
+  ctx.lineTo(L, y(model.loadI));
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  ctx.restore();
+
+  /*
+   * Идеална точка: син пръстен.
+   * Реална точка: зелена плътна точка.
+   * При почти съвпадащи точки се виждат и двата знака.
+   */
+  ctx.fillStyle = "#071a2b";
+  ctx.strokeStyle = COLOR_SOURCE;
+  ctx.lineWidth = 2.7;
+  ctx.beginPath();
+  ctx.arc(x(model.idealU), y(model.idealI), 7, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.stroke();
+
+  ctx.fillStyle = COLOR_LOAD;
+  ctx.strokeStyle = "#e8fff1";
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.arc(x(model.realU), y(model.loadI), 4.8, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.stroke();
+}
+
+function updateReadings(){
+  put("Rvalue", fmt(model.r, 0) + " Ω");
+  put("Rivalue", fmt(model.ri, 0) + " Ω");
+
+  put("idealResistanceSvg", String(model.r) + " Ω");
+  put("realResistanceSvg", String(model.r) + " Ω");
+  put("internalResistanceSvg", String(model.ri) + " Ω");
+
+  put("idealCurrentSvg", "I = " + fmt(IS, 3) + " A");
+  put("loadCurrentSvg", "Iₗ = " + fmt(model.loadI, 3) + " A");
+  put("internalCurrentSvg", "Iᵢ = " + fmt(model.internalI, 3) + " A");
+
+  put("idealI", fmt(model.idealI, 3) + " A");
+  put("idealU", fmt(model.idealU, 2) + " V");
+
+  put("realIL", fmt(model.loadI, 3) + " A");
+  put("realIi", fmt(model.internalI, 3) + " A");
+  put("realU", fmt(model.realU, 2) + " V");
+
+  put(
+    "balanceValue",
+    fmt(IS, 3) + " = " +
+    fmt(model.loadI, 3) + " + " +
+    fmt(model.internalI, 3) + " A"
+  );
+
+  put(
+    "voltageCheck",
+    "U = IₗR = IᵢRᵢ = " + fmt(model.realU, 2) + " V"
+  );
+
+  put("deviationValue", fmt(model.deviation, 2) + "%");
+
+  $("deviationBar").style.width =
+    Math.max(0, Math.min(100, model.deviation)) + "%";
+
+  put(
+    "idealPoint",
+    "U = " + fmt(model.idealU, 2) +
+    " V; I = " + fmt(IS, 3) + " A"
+  );
+
+  put(
+    "realPoint",
+    "U = " + fmt(model.realU, 2) +
+    " V; Iₗ = " + fmt(model.loadI, 3) + " A"
+  );
+
+  put(
+    "observation",
+    "При R = " + fmt(model.r, 0) +
+    " Ω и Rᵢ = " + fmt(model.ri, 0) +
+    " Ω към товара преминават " +
+    fmt(100 - model.deviation, 2) +
+    "% от тока на източника. " +
+    "Останалите " + fmt(model.deviation, 2) +
+    "% преминават през вътрешното съпротивление."
+  );
+
+  put("pause", paused ? "▶ Продължи" : "Ⅱ Пауза");
+  $("pause").setAttribute("aria-pressed", String(paused));
+}
+
+function updateParameters(){
+  model = calculate(
+    Number($("R").value),
+    Number($("Ri").value)
+  );
+
+  updateReadings();
+  resetFlow();
+  drawGraph();
+}
+
+/* Проверка на модела при начални и крайни стойности. */
+function selfCheck(){
+  const tolerance = 1e-9;
+
+  for(const r of [1, 10, 50]){
+    for(const ri of [20, 100, 1000, 2000]){
+      const m = calculate(r, ri);
+
+      if(Math.abs(m.loadI + m.internalI - IS) > tolerance){
+        return false;
+      }
+
+      if(Math.abs(m.realU - m.internalI * ri) > tolerance){
+        return false;
+      }
+
+      if(Math.abs(m.realU - m.loadI * r) > tolerance){
+        return false;
+      }
+
+      if(!(m.loadI > 0 && m.loadI < IS)){
+        return false;
+      }
+
+      if(!(m.realU > 0 && m.realU < m.idealU)){
+        return false;
+      }
+
+      const characteristicI = IS - m.realU / ri;
+
+      if(Math.abs(characteristicI - m.loadI) > tolerance){
+        return false;
+      }
+    }
+  }
+
+  const initial = calculate(10, 100);
+
+  return (
+    Math.abs(initial.idealU - 20) < tolerance &&
+    Math.abs(initial.loadI - 20 / 11) < tolerance &&
+    Math.abs(initial.internalI - 2 / 11) < tolerance &&
+    Math.abs(initial.realU - 200 / 11) < tolerance
+  );
+}
+
+if(!selfCheck()){
+  throw new Error("Самопроверката на електрическия модел не премина.");
+}
+
+/* Събития за управление. */
+$("R").addEventListener("input", updateParameters);
+$("Ri").addEventListener("input", updateParameters);
+
+$("showLoadLine").addEventListener("change", drawGraph);
+
+$("pause").addEventListener("click", () => {
+  paused = !paused;
+  lastFrame = null;
+  updateReadings();
+});
+
+$("reset").addEventListener("click", () => {
+  $("R").value = 10;
+  $("Ri").value = 100;
+
+  updateParameters();
+});
+
+document.addEventListener("visibilitychange", () => {
+  lastFrame = null;
+});
+
+if(window.ResizeObserver){
+  const observer = new ResizeObserver(drawGraph);
+  observer.observe(graph);
+}else{
+  window.addEventListener("resize", drawGraph);
+}
+
+function animate(now){
+  const dt = lastFrame === null
+    ? 0
+    : Math.min(0.05, Math.max(0, (now - lastFrame) / 1000));
+
+  lastFrame = now;
+
+  if(!paused && !document.hidden){
+    advanceFlow(dt);
+    drawFlow();
+  }
+
+  requestAnimationFrame(animate);
+}
+
+updateParameters();
+requestAnimationFrame(animate);
+
+} catch(error){
+  console.error(error);
+
+  const message = document.getElementById("error");
+  message.hidden = false;
+  message.textContent =
+    "Анимацията не успя да се инициализира: " + error.message;
+}
+
+})();
 </script>
+
 </body></html>

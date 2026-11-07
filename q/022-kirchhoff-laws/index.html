@@ -1,241 +1,1282 @@
 <!DOCTYPE html>
-<!-- saved from url=(0064)file:///C:/Users/velichko.atanasov/Downloads/preview%20(93).html -->
+<!-- saved from url=(0053)file:///C:/Users/velichko.atanasov/Desktop/index.html -->
 <html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="доц. д-р инж. Величко Атанасов">
 <title>QR-022 – Закони на Кирхоф</title>
+
 <style>
-*{box-sizing:border-box}
 :root{
- --bg:#071427;--panel:#0d1d33;--txt:#eef7ff;--muted:#b6c8da;--line:#35577a;
- --green:#45d06d;--blue:#3f8cff;--purple:#9a53db;--red:#ff5b5b;--orange:#ff9b42;--cyan:#43d7dd;--yellow:#f4d64b;
+  --bg:#071427;
+  --panel:#0d1d33;
+  --text:#eef7ff;
+  --muted:#b6c8da;
+  --line:#35577a;
+  --green:#45d06d;
+  --blue:#42a5ff;
+  --purple:#bc83ff;
+  --red:#ff5b5b;
+  --orange:#ffad55;
 }
-body{margin:0;background:radial-gradient(circle at 50% 0,#143b6b,#071427 60%,#030810);color:var(--txt);font-family:Segoe UI,Arial,sans-serif}
-.wrap{max-width:1220px;margin:auto;padding:12px}
-h1{text-align:center;margin:4px 0;font-size:clamp(24px,4vw,38px)}
-.sub{text-align:center;color:var(--muted);margin:4px 0 12px}
-.tabs{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:10px}
-.tab{padding:12px;border:1px solid #456990;border-radius:12px;background:#15304d;color:#fff;font-weight:850;cursor:pointer}
-.tab.on.green{background:#198e37}.tab.on.blue{background:#1f63b6}.tab.on.purple{background:#7c36b7}
-.main{display:grid;grid-template-columns:1.35fr .65fr;gap:11px}
-.stage{position:relative;min-height:650px;border:1px solid var(--line);border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#10253c,#091626)}
-svg{position:absolute;inset:0;width:100%;height:100%}
-.side{border:1px solid var(--line);border-radius:20px;background:var(--panel);padding:11px}
-.card{border:1px solid #385975;border-radius:14px;padding:10px;margin-bottom:9px;background:#ffffff07}
-.eq{font-family:Cambria Math,Georgia,serif;font-size:20px;line-height:1.55;text-align:center;font-weight:800;color:#ffe778}
-.res{font-size:16px;line-height:1.5;font-weight:800;color:#8cf0a8}
-.note{font-size:13px;line-height:1.45;color:var(--muted)}
-label{display:flex;justify-content:space-between;gap:8px;font-weight:750;margin:6px 0}
-input[type=range]{width:100%}
-.wire{stroke:#d9e4ec;stroke-width:5;fill:none;stroke-linecap:square;stroke-linejoin:round}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:
+    radial-gradient(circle at 50% 0,#143b6b,#071427 60%,#030810);
+  color:var(--text);
+  font:15px/1.55 "Segoe UI",Arial,sans-serif;
+}
+.wrap{max-width:1220px;margin:auto;padding:13px}
+h1{
+  text-align:center;
+  margin:4px 0;
+  font-size:clamp(24px,4vw,38px);
+}
+.sub{
+  text-align:center;
+  color:var(--muted);
+  margin:6px 0 14px;
+}
+.tabs{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+  margin-bottom:11px;
+}
+button{
+  padding:11px 13px;
+  border:1px solid #557a9c;
+  border-radius:10px;
+  background:#15304d;
+  color:white;
+  font:700 14px "Segoe UI",Arial,sans-serif;
+  cursor:pointer;
+}
+button:hover{filter:brightness(1.15)}
+button:focus-visible,input:focus-visible{
+  outline:3px solid #ffe376;
+  outline-offset:3px;
+}
+.tab.on.green{background:#198e37}
+.tab.on.blue{background:#1f63b6}
+.toolbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:11px;
+}
+.toolbar .buttons{display:flex;gap:8px;flex-wrap:wrap}
+#motionStatus{font-size:12px;color:var(--muted)}
+.main{
+  display:grid;
+  grid-template-columns:minmax(0,1.35fr) minmax(290px,.65fr);
+  gap:12px;
+  align-items:start;
+}
+.stagecol{min-width:0}
+.stage{
+  border:1px solid var(--line);
+  border-radius:18px;
+  overflow:auto;
+  background:linear-gradient(180deg,#10253c,#091626);
+}
+.stage svg{
+  display:block;
+  width:100%;
+  min-width:620px;
+  height:auto;
+}
+.legend{
+  margin-top:10px;
+  padding:12px 14px;
+  border:1px solid var(--line);
+  border-radius:11px;
+  background:#10273c;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.65;
+}
+.side{
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:var(--panel);
+  padding:11px;
+}
+.card{
+  border:1px solid #385975;
+  border-radius:13px;
+  padding:12px;
+  margin-bottom:10px;
+  background:#ffffff06;
+}
+.eq{
+  color:#ffe778;
+  font:700 21px/1.6 "Cambria Math",Cambria,Georgia,serif;
+  text-align:center;
+}
+.eq small{
+  display:block;
+  margin-top:8px;
+  color:#c8ddec;
+  font:13px/1.6 "Segoe UI",Arial,sans-serif;
+}
+.res{
+  font-size:16px;
+  line-height:1.75;
+  color:#dbf8e5;
+}
+.res strong{color:#8cf0a8}
+.note{
+  font-size:13px;
+  line-height:1.65;
+  color:var(--muted);
+}
+.control{display:block;margin:10px 0}
+.control>span{
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  font-weight:700;
+}
+output{color:#8ad9ff}
+input[type=range]{
+  display:block;
+  width:100%;
+  margin-top:8px;
+  accent-color:#55b5ff;
+}
+.choice{
+  width:100%;
+  margin:4px 0;
+  background:#15314a;
+}
+.choice.on{
+  background:#663995;
+  border-color:#d2aaff;
+}
+.route{
+  margin-top:8px;
+  color:#d8bdff;
+  font-size:12px;
+  line-height:1.65;
+}
+.steps div{margin:7px 0}
+.steps b{color:#e6f3ff}
+.numeric{
+  padding:8px;
+  margin-top:9px;
+  border-radius:8px;
+  background:#0a2536;
+  color:#ceffe0;
+  font-variant-numeric:tabular-nums;
+}
+.negative{color:#ffbd78;font-weight:700}
+.wire{
+  stroke:#d9e4ec;
+  stroke-width:5;
+  fill:none;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
 .resistor{stroke:#303d49;stroke-width:2}
 .source{fill:#f8fbff;stroke:#40617d;stroke-width:3}
 .node{fill:#ff424d;stroke:white;stroke-width:2}
-.lab{fill:white;font-size:17px;font-weight:850}
-.small{fill:#d0dfec;font-size:13px;font-weight:650}
-.arrBlue{stroke:#42a5ff;stroke-width:3;fill:none;marker-end:url(#ab)}
-.arrGreen{stroke:#3bd16f;stroke-width:3;fill:none;marker-end:url(#ag)}
-.arrRed{stroke:#ff4d4d;stroke-width:3;fill:none;marker-end:url(#ar)}
-.arrOrange{stroke:#ff9b42;stroke-width:3;fill:none;marker-end:url(#ao)}
-.arrPurple{stroke:#9e57e7;stroke-width:3;fill:none;marker-end:url(#ap)}
-.loop{stroke:#9a53db;stroke-width:4;fill:none;marker-end:url(#ap)}.kvlTitle{fill:#ffffff;font-size:18px;font-weight:850;text-anchor:middle}.kvlLaw{fill:#ffe778;font-size:24px;font-weight:900;text-anchor:middle;font-family:Cambria Math,Georgia,serif}
-.choice{width:100%;padding:9px;border:1px solid #4a6a84;background:#15314a;color:white;border-radius:10px;font-weight:800;margin:4px 0;cursor:pointer}
-.choice.on{background:#245e9c}
-@media(max-width:840px){.main{grid-template-columns:1fr}.tabs{grid-template-columns:1fr}.stage{min-height:560px}}
+.lab{fill:white;font-size:17px;font-weight:800}
+.small{fill:#d0dfec;font-size:13px;font-weight:600}
+.arrBlue{
+  stroke:#42a5ff;stroke-width:3;fill:none;
+  marker-end:url(#ab);
+}
+.arrGreen{
+  stroke:#45d06d;stroke-width:3;fill:none;
+  marker-end:url(#ag);
+}
+.arrRed{
+  stroke:#ff5b5b;stroke-width:3;fill:none;
+  marker-end:url(#ar);
+}
+.arrOrange{
+  stroke:#ffad55;stroke-width:3;fill:none;
+  marker-end:url(#ao);
+}
+.arrPurple{
+  stroke:#b887ed;stroke-width:3;fill:none;
+  marker-end:url(#ap);
+}
+.loopArrow{
+  stroke:#bc83ff;
+  stroke-width:3.5;
+  stroke-dasharray:9 5;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  fill:none;
+  marker-end:url(#loopHead);
+}
+.loopLabel{
+  fill:#d4adff;
+  font-size:23px;
+  font-weight:800;
+  text-anchor:middle;
+}
+.loopSmall{
+  fill:#c7abed;
+  font-size:13px;
+  text-anchor:middle;
+}
+.kvlTitle{
+  fill:white;
+  font-size:18px;
+  font-weight:800;
+  text-anchor:middle;
+}
+.kvlLaw{
+  fill:#ffe778;
+  font-size:24px;
+  font-weight:800;
+  text-anchor:middle;
+  font-family:"Cambria Math",Cambria,Georgia,serif;
+}
+.packet{
+  stroke:white;
+  stroke-width:.8;
+  pointer-events:none;
+}
+#error{
+  margin:10px 0;
+  padding:13px;
+  border:1px solid #ef8b95;
+  border-radius:10px;
+  color:white;
+  background:#622637;
+}
+[hidden]{display:none!important}
+footer{
+  margin-top:16px;
+  padding:15px 5px;
+  border-top:1px solid var(--line);
+  text-align:center;
+  color:#c4ddec;
+  font-size:13px;
+}
+@media(max-width:840px){
+  .main{grid-template-columns:1fr}
+}
+@media(max-width:560px){
+  .wrap{padding:9px}
+  .tabs{grid-template-columns:1fr}
+}
 </style>
 </head>
+
 <body>
 <div class="wrap">
+
 <h1>QR-022 – Първи и Втори закон на Кирхоф</h1>
-<div class="sub">Интерактивна анимация по схемите от учебника</div>
+<div class="sub">
+  Баланс на токовете във възел · Напрежения в затворен контур
+</div>
 
 <div class="tabs">
-<button class="tab green on" data-mode="kcl">1. Първи закон – възел</button>
-<button class="tab blue" data-mode="kvl">2. Втори закон – контури</button>
+  <button class="tab green" data-mode="kcl" type="button" aria-pressed="false">
+    1. Първи закон – възел
+  </button>
+  <button class="tab blue on" data-mode="kvl" type="button" aria-pressed="true">
+    2. Втори закон – контури
+  </button>
 </div>
+
+<div class="toolbar">
+  <div class="buttons">
+    <button id="pause" type="button" aria-pressed="false">Ⅱ Пауза</button>
+    <button id="reset" type="button">↺ Начални стойности</button>
+  </div>
+  <span id="motionStatus">Условно движение на тока по действителната му посока.</span>
+</div>
+
+<div id="error" role="alert" hidden=""></div>
 
 <div class="main">
-<section class="stage">
-<svg viewBox="0 0 820 650">
-<defs>
-<marker id="ab" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L0 6L9 3z" fill="#42a5ff"></path></marker>
-<marker id="ag" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L0 6L9 3z" fill="#3bd16f"></path></marker>
-<marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L0 6L9 3z" fill="#ff4d4d"></path></marker>
-<marker id="ao" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L0 6L9 3z" fill="#ff9b42"></path></marker>
-<marker id="ap" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L0 6L9 3z" fill="#9e57e7"></path></marker>
-</defs>
-<g id="kcl" style=""><circle cx="400" cy="305" r="20" class="node"></circle><text x="400" y="353" class="lab" text-anchor="middle">V</text><line x1="110" y1="165" x2="375" y2="290" class="arrGreen"></line><text x="242.5" y="217.5" class="lab" text-anchor="middle">I₁</text><line x1="400" y1="85" x2="400" y2="280" class="arrRed"></line><text x="400" y="172.5" class="lab" text-anchor="middle">I₂</text><line x1="650" y1="135" x2="425" y2="288" class="arrBlue"></line><text x="537.5" y="201.5" class="lab" text-anchor="middle">I₃</text><line x1="425" y1="305" x2="690" y2="305" class="arrOrange"></line><text x="557.5" y="295" class="lab" text-anchor="middle">I₄</text><line x1="425" y1="325" x2="610" y2="500" class="arrPurple"></line><text x="517.5" y="402.5" class="lab" text-anchor="middle">I₅</text><line x1="375" y1="325" x2="150" y2="500" class="arrOrange"></line><text x="262.5" y="402.5" class="lab" text-anchor="middle">I₆</text></g><g id="kvl" style="display: none;"><line x1="410" y1="470" x2="105" y2="470" class="wire"></line><line x1="105" y1="470" x2="105" y2="214" class="wire"></line><circle cx="105" cy="190" r="24" class="source"></circle><line x1="105" y1="197" x2="105" y2="183" class="" stroke="#ff4d4d" stroke-width="2" stroke-linecap="round"></line><path d="M 101.5 187 L 105 182 L 108.5 187" stroke="#ff4d4d" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path><text x="143" y="196" class="lab" text-anchor="start">Е₁</text><line x1="105" y1="166" x2="105" y2="135" class="wire"></line><line x1="105" y1="135" x2="230" y2="135" class="wire"></line><line x1="230" y1="135" x2="250" y2="135" class="wire"></line><rect x="250" y="120" width="100" height="30" rx="4" fill="#55c97b" class="resistor"></rect><line x1="350" y1="135" x2="370" y2="135" class="wire"></line><text x="300" y="109" class="lab" text-anchor="middle">R₁</text><line x1="370" y1="135" x2="410" y2="135" class="wire"></line><line x1="410" y1="135" x2="455" y2="135" class="wire"></line><line x1="455" y1="135" x2="475" y2="135" class="wire"></line><rect x="475" y="120" width="100" height="30" rx="4" fill="#ffad43" class="resistor"></rect><line x1="575" y1="135" x2="595" y2="135" class="wire"></line><text x="525" y="109" class="lab" text-anchor="middle">R₂</text><line x1="595" y1="135" x2="700" y2="135" class="wire"></line><line x1="700" y1="135" x2="700" y2="166" class="wire"></line><circle cx="700" cy="190" r="24" class="source"></circle><line x1="700" y1="197" x2="700" y2="183" class="" stroke="#ff4d4d" stroke-width="2" stroke-linecap="round"></line><path d="M 696.5 187 L 700 182 L 703.5 187" stroke="#ff4d4d" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path><text x="738" y="196" class="lab" text-anchor="start">Е₂</text><line x1="700" y1="214" x2="700" y2="470" class="wire"></line><line x1="700" y1="470" x2="410" y2="470" class="wire"></line><circle cx="410" cy="135" r="8" class="node"></circle><text x="410" y="108" class="lab" text-anchor="middle">V₁</text><line x1="410" y1="143" x2="410" y2="245" class="wire"></line><line x1="410" y1="245" x2="410" y2="265" class="wire"></line><rect x="395" y="265" width="30" height="110" rx="4" fill="#6f8ef6" class="resistor"></rect><line x1="410" y1="375" x2="410" y2="395" class="wire"></line><text x="442" y="325" class="lab" text-anchor="start">R₃</text><line x1="410" y1="395" x2="410" y2="470" class="wire"></line><circle cx="410" cy="470" r="8" class="node"></circle><text x="410" y="502" class="lab" text-anchor="middle">V₂</text><line x1="190" y1="180" x2="310" y2="180" class="arrGreen"></line><text x="250" y="170" class="lab" text-anchor="middle">I₁</text><line x1="635" y1="400" x2="635" y2="315" class="arrOrange"></line><text x="665" y="355" class="lab" text-anchor="start">I₂</text><line x1="375" y1="405" x2="375" y2="310" class="arrBlue"></line><text x="350" y="355" class="lab" text-anchor="end">I₃</text><text x="410" y="565" class="kvlTitle" text-anchor="middle">Втори закон на Кирхоф</text><text x="410" y="600" class="kvlLaw" text-anchor="middle">∑E = ∑(I·R)</text></g></svg>
-</section>
+
+<div class="stagecol">
+  <section class="stage">
+    <svg id="circuit" viewBox="0 0 820 650" role="img" aria-label="Електрически схеми за законите на Кирхоф">
+
+      <defs>
+        <marker id="ab" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto">
+          <path d="M1 1L11 6L1 11Z" fill="#42a5ff"></path>
+        </marker>
+
+        <marker id="ag" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto">
+          <path d="M1 1L11 6L1 11Z" fill="#45d06d"></path>
+        </marker>
+
+        <marker id="ar" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto">
+          <path d="M1 1L11 6L1 11L3 6Z" fill="#ff5b5b"></path>
+        </marker>
+
+        <marker id="ao" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto">
+          <path d="M1 1L11 6L1 11Z" fill="#ffad55"></path>
+        </marker>
+
+        <marker id="ap" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto">
+          <path d="M1 1L11 6L1 11Z" fill="#b887ed"></path>
+        </marker>
+
+        <!-- Отделна стрелка за обхода, различна от токовите стрелки -->
+        <marker id="loopHead" viewBox="0 0 14 14" refX="12" refY="7" markerWidth="15" markerHeight="15" markerUnits="userSpaceOnUse" orient="auto">
+          <path d="M1 1L13 7L1 13L4 7Z" fill="#bc83ff"></path>
+        </marker>
+      </defs>
+
+      <g id="kcl" style="display: none;"><line x1="110" y1="165" x2="375" y2="290" class="arrGreen"></line><text x="242" y="216" class="lab" text-anchor="middle">I₁</text><line x1="400" y1="85" x2="400" y2="280" class="arrRed"></line><text x="429" y="179" class="lab" text-anchor="start">I₂</text><line x1="650" y1="135" x2="425" y2="288" class="arrBlue"></line><text x="538" y="199" class="lab" text-anchor="middle">I₃</text><line x1="425" y1="305" x2="690" y2="305" class="arrOrange"></line><text x="558" y="286" class="lab" text-anchor="middle">I₄</text><line x1="425" y1="325" x2="610" y2="500" class="arrPurple"></line><text x="534" y="398" class="lab" text-anchor="middle">I₅</text><line x1="375" y1="325" x2="150" y2="500" class="arrOrange"></line><text x="258" y="399" class="lab" text-anchor="middle">I₆</text><circle cx="400" cy="305" r="20" class="node"></circle><text x="400" y="353" class="lab" text-anchor="middle">V</text><text x="410" y="565" class="kvlTitle" text-anchor="middle">Първи закон на Кирхоф</text><text x="410" y="600" class="kvlLaw" text-anchor="middle">∑Iвх = ∑Iизх</text></g>
+      <g id="kvl" style=""><line x1="410" y1="470" x2="105" y2="470" class="wire"></line><line x1="105" y1="470" x2="105" y2="214" class="wire"></line><circle cx="105" cy="190" r="24" class="source"></circle><line x1="105" y1="197" x2="105" y2="183" class="" stroke="#ff4d4d" stroke-width="2" stroke-linecap="round"></line><path d="M101.5 187L105 182L108.5 187" stroke="#ff4d4d" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path><text x="143" y="196" class="lab" text-anchor="start">Е₁</text><line x1="105" y1="166" x2="105" y2="135" class="wire"></line><line x1="105" y1="135" x2="230" y2="135" class="wire"></line><line x1="230" y1="135" x2="250" y2="135" class="wire"></line><rect x="250" y="120" width="100" height="30" rx="4" fill="#55c97b" class="resistor"></rect><line x1="350" y1="135" x2="370" y2="135" class="wire"></line><text x="300" y="109" class="lab" text-anchor="middle">R₁</text><line x1="370" y1="135" x2="410" y2="135" class="wire"></line><line x1="410" y1="135" x2="455" y2="135" class="wire"></line><line x1="455" y1="135" x2="475" y2="135" class="wire"></line><rect x="475" y="120" width="100" height="30" rx="4" fill="#ffad43" class="resistor"></rect><line x1="575" y1="135" x2="595" y2="135" class="wire"></line><text x="525" y="109" class="lab" text-anchor="middle">R₂</text><line x1="595" y1="135" x2="700" y2="135" class="wire"></line><line x1="700" y1="135" x2="700" y2="166" class="wire"></line><circle cx="700" cy="190" r="24" class="source"></circle><line x1="700" y1="197" x2="700" y2="183" class="" stroke="#ff4d4d" stroke-width="2" stroke-linecap="round"></line><path d="M696.5 187L700 182L703.5 187" stroke="#ff4d4d" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path><text x="738" y="196" class="lab" text-anchor="start">Е₂</text><line x1="700" y1="214" x2="700" y2="470" class="wire"></line><line x1="700" y1="470" x2="410" y2="470" class="wire"></line><circle cx="410" cy="135" r="8" class="node"></circle><text x="410" y="108" class="lab" text-anchor="middle">V₁</text><line x1="410" y1="143" x2="410" y2="245" class="wire"></line><line x1="410" y1="245" x2="410" y2="265" class="wire"></line><rect x="395" y="265" width="30" height="110" rx="4" fill="#6f8ef6" class="resistor"></rect><line x1="410" y1="375" x2="410" y2="395" class="wire"></line><text x="442" y="325" class="lab" text-anchor="start">R₃</text><line x1="410" y1="395" x2="410" y2="470" class="wire"></line><circle cx="410" cy="470" r="8" class="node"></circle><text x="410" y="502" class="lab" text-anchor="middle">V₂</text><g id="loop-left" opacity="0.3" aria-label="Ляв контур: обход по часовниковата стрелка"><path d="M207 235H275Q305 235 305 265V390Q305 420 275 420H205Q175 420 175 390V278" class="loopArrow"></path><text x="240" y="313" class="loopLabel" text-anchor="middle">К₁</text><text x="240" y="338" class="loopSmall" text-anchor="middle">обход</text></g><g id="loop-right" opacity="1" aria-label="Десен контур: обход обратно на часовниковата стрелка"><path d="M583 235H530Q500 235 500 265V390Q500 420 530 420H585Q615 420 615 390V278" class="loopArrow"></path><text x="557" y="313" class="loopLabel" text-anchor="middle">К₂</text><text x="557" y="338" class="loopSmall" text-anchor="middle">обход</text></g><line x1="190" y1="180" x2="310" y2="180" class="arrGreen"></line><text x="250" y="170" class="lab" text-anchor="middle">I₁</text><line x1="635" y1="400" x2="635" y2="315" class="arrOrange"></line><text x="665" y="355" class="lab" text-anchor="start">I₂</text><line x1="375" y1="310" x2="375" y2="405" class="arrBlue"></line><text x="350" y="355" class="lab" text-anchor="end">I₃</text><text x="410" y="540" class="small" text-anchor="middle">Лилаво: посока на обход, а не посока на ток</text><text x="410" y="572" class="kvlTitle" text-anchor="middle">Втори закон на Кирхоф</text><text x="410" y="607" class="kvlLaw" text-anchor="middle">∑E = ∑(I·R)</text></g>
+      <g id="markers"><circle r="3.4" class="packet" fill="#45d06d" cx="391.83" cy="470.00" style=""></circle><circle r="3.4" class="packet" fill="#45d06d" cx="371.56" cy="470.00" style=""></circle><circle r="3.4" class="packet" fill="#45d06d" cx="351.30" cy="470.00" style=""></circle><circle r="3.4" class="packet" fill="#45d06d" cx="331.04" cy="470.00" style=""></circle><circle r="3.4" class="packet" fill="#45d06d" cx="310.77" cy="470.00" style=""></circle><circle r="3.4" class="packet" fill="#45d06d" cx="290.51" cy="470.00" style=""></circle><circle r="3.4" class="packet" fill="#45d06d" cx="270.25" cy="470.00" style=""></circle><circle r="3.4" class="packet" fill="#45d06d" cx="249.99" cy="470.00" style=""></circle><circle r="3.4" class="packet" fill="#45d06d" cx="229.72" cy="470.00" style=""></circle><circle r="3.4" class="packet" fill="#45d06d" cx="209.46" cy="470.00" style=""></circle><circle r="3.4" class="packet" fill="#45d06d" cx="189.20" cy="470.00" style=""></circle><circle r="3.4" class="packet" fill="#45d06d" cx="168.93" cy="470.00" style=""></circle><circle r="3.4" class="packet" fill="#45d06d" cx="148.67" cy="470.00" style=""></circle><circle r="3.4" class="packet" fill="#45d06d" cx="128.41" cy="470.00" style=""></circle><circle r="3.4" class="packet" fill="#45d06d" cx="108.14" cy="470.00" style=""></circle><circle r="3.4" class="packet" fill="#45d06d" cx="105.00" cy="452.88" style=""></circle><circle r="3.4" class="packet" fill="#45d06d" cx="105.00" cy="432.62" style=""></circle><circle r="3.4" class="packet" fill="#45d06d" cx="105.00" cy="412.35" style=""></circle><circle r="3.4" class="packet" fill="#45d06d" cx="105.00" cy="392.09" style=""></circle><circle r="3.4" class="packet" fill="#45d06d" cx="105.00" cy="371.83" style=""></circle><circle r="3.4" class="packet" fill="#45d06d" cx="105.00" cy="351.56" style=""></circle><circle r="3.4" class="packet" fill="#45d06d" cx="105.00" cy="331.30" style=""></circle><circle r="3.4" class="packet" fill="#45d06d" cx="105.00" cy="311.04" style=""></circle><circle r="3.4" class="packet" fill="#45d06d" cx="105.00" cy="290.77" style=""></circle><circle r="3.4" class="packet" fill="#45d06d" cx="105.00" cy="270.51" style=""></circle><circle r="3.4" class="packet" fill="#45d06d" cx="105.00" cy="250.25" style=""></circle><circle r="3.4" class="packet" fill="#45d06d" cx="105.00" cy="229.99" style=""></circle><circle r="3.4" class="packet" fill="#45d06d" cx="105.00" cy="148.93" style=""></circle><circle r="3.4" class="packet" fill="#45d06d" cx="111.33" cy="135.00" style=""></circle><circle r="3.4" class="packet" fill="#45d06d" cx="131.59" cy="135.00" style=""></circle><circle r="3.4" class="packet" fill="#45d06d" cx="151.86" cy="135.00" style=""></circle><circle r="3.4" class="packet" fill="#45d06d" cx="172.12" cy="135.00" style=""></circle><circle r="3.4" class="packet" fill="#45d06d" cx="192.38" cy="135.00" style=""></circle><circle r="3.4" class="packet" fill="#45d06d" cx="212.65" cy="135.00" style=""></circle><circle r="3.4" class="packet" fill="#45d06d" cx="232.91" cy="135.00" style=""></circle><circle r="3.4" class="packet" fill="#45d06d" cx="374.75" cy="135.00" style=""></circle><circle r="3.4" class="packet" fill="#45d06d" cx="395.01" cy="135.00" style=""></circle><circle r="3.4" class="packet" fill="#ffad55" cx="451.87" cy="470.00" style=""></circle><circle r="3.4" class="packet" fill="#ffad55" cx="580.20" cy="470.00" style=""></circle><circle r="3.4" class="packet" fill="#ffad55" cx="700.00" cy="461.47" style=""></circle><circle r="3.4" class="packet" fill="#ffad55" cx="700.00" cy="333.13" style=""></circle><circle r="3.4" class="packet" fill="#ffad55" cx="641.47" cy="135.00" style=""></circle><circle r="3.4" class="packet" fill="#42a5ff" cx="410.00" cy="160.65" style=""></circle><circle r="3.4" class="packet" fill="#42a5ff" cx="410.00" cy="178.15" style=""></circle><circle r="3.4" class="packet" fill="#42a5ff" cx="410.00" cy="195.65" style=""></circle><circle r="3.4" class="packet" fill="#42a5ff" cx="410.00" cy="213.15" style=""></circle><circle r="3.4" class="packet" fill="#42a5ff" cx="410.00" cy="230.65" style=""></circle><circle r="3.4" class="packet" fill="#42a5ff" cx="410.00" cy="248.15" style=""></circle><circle r="3.4" class="packet" fill="#42a5ff" cx="410.00" cy="388.15" style=""></circle><circle r="3.4" class="packet" fill="#42a5ff" cx="410.00" cy="405.65" style=""></circle><circle r="3.4" class="packet" fill="#42a5ff" cx="410.00" cy="423.15" style=""></circle><circle r="3.4" class="packet" fill="#42a5ff" cx="410.00" cy="440.65" style=""></circle><circle r="3.4" class="packet" fill="#42a5ff" cx="410.00" cy="458.15" style=""></circle><circle r="3.4" class="packet" fill="#42a5ff" cx="410.00" cy="451.18" style="display: none;"></circle><circle r="3.4" class="packet" fill="#42a5ff" cx="410.00" cy="458.16" style="display: none;"></circle><circle r="3.4" class="packet" fill="#42a5ff" cx="410.00" cy="451.16" style="display: none;"></circle><circle r="3.4" class="packet" fill="#42a5ff" cx="410.00" cy="451.16" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffad55" cx="379.09" cy="321.73" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffad55" cx="363.27" cy="334.12" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffad55" cx="347.41" cy="346.46" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffad55" cx="331.55" cy="358.79" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffad55" cx="315.69" cy="371.13" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffad55" cx="299.83" cy="383.46" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffad55" cx="283.97" cy="395.80" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffad55" cx="268.11" cy="408.13" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffad55" cx="252.25" cy="420.47" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffad55" cx="236.39" cy="432.81" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffad55" cx="220.53" cy="445.14" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffad55" cx="204.67" cy="457.48" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffad55" cx="188.81" cy="469.81" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffad55" cx="172.95" cy="482.15" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffad55" cx="157.09" cy="494.48" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffad55" style="display: none;" cx="150.90" cy="499.30"></circle><circle r="3.4" class="packet" fill="#ffad55" style="display: none;" cx="152.99" cy="497.68"></circle><circle r="3.4" class="packet" fill="#ffad55" style="display: none;" cx="155.77" cy="495.51"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle><circle r="3.4" class="packet" fill="#ffffff" style="display: none;"></circle></g>
+    </svg>
+  </section>
+
+  <div id="legend" class="legend"><b style="color:#d4adff">Пунктирана лилава стрелка:</b> избрана посока на обход на контура.<br><b>Цветни стрелки I₁, I₂, I₃:</b> приети положителни посоки за уравненията.<br><b>Движещи се точки:</b> действителна посока на тока. Темпът е учебно мащабиран, а не реална скорост на електроните.</div>
+</div>
 
 <aside class="side">
-<div id="kclControls" style="">
-<div class="card">
-<label>I₁ <b id="i1o">2.3 A</b></label><input id="I1" type="range" min="0.2" max="10" step="0.1" value="2.3">
-<label>I₂ <b id="i2o">1.8 A</b></label><input id="I2" type="range" min="0.2" max="10" step="0.1" value="1.8">
-<label>I₃ <b id="i3o">3.1 A</b></label><input id="I3" type="range" min="0.2" max="10" step="0.1" value="3.1">
-<label>I₄ <b id="i4o">2.4 A</b></label><input id="I4" type="range" min="0.2" max="10" step="0.1" value="2.4">
-<label>I₅ <b id="i5o">2.1 A</b></label><input id="I5" type="range" min="0.2" max="10" step="0.1" value="2.1">
-<div class="note">I₆ се изчислява автоматично.</div>
-</div>
-</div>
 
-<div id="kvlControls" style="display: none;">
-<div class="card">
-<label>E₁ <b id="e1o">12 V</b></label><input id="E1" type="range" min="2" max="24" step="1" value="12">
-<label>E₂ <b id="e2o">9 V</b></label><input id="E2" type="range" min="2" max="24" step="1" value="9">
-<label>R₁ <b id="r1o">2 Ω</b></label><input id="R1" type="range" min="1" max="20" step="1" value="2">
-<label>R₂ <b id="r2o">4 Ω</b></label><input id="R2" type="range" min="1" max="20" step="1" value="4">
-<label>R₃ <b id="r3o">3 Ω</b></label><input id="R3" type="range" min="1" max="20" step="1" value="3">
-</div>
-<div class="card">
-<button class="choice on" id="leftLoop">Ляв контур</button>
-<button class="choice" id="rightLoop">Десен контур</button>
-</div>
-</div>
+  <div id="kclControls" hidden="">
+    <div class="card">
+      <label class="control" for="I1">
+        <span>I₁ <output id="i1o">2,3 A</output></span>
+        <input id="I1" type="range" min=".2" max="10" step=".1" value="2.3">
+      </label>
 
-<div class="card eq" id="formula">ΣI = 0<br>или<br>ΣI<sub>вх</sub> = ΣI<sub>изх</sub></div>
-<div class="card res" id="results">ΣI<sub>вх</sub> = 7.20 A<br>ΣI<sub>изх</sub> = 7.20 A<br>I₆ = 2.70 A (от възела)<br><span style="color:#8cf0a8">Законът е изпълнен.</span></div>
-<div class="card note" id="explain">Във възела не се натрупва електрически заряд. Колкото ток влиза, толкова ток излиза. Посоката на I₆ се определя автоматично от баланса на токовете.</div>
+      <label class="control" for="I2">
+        <span>I₂ <output id="i2o">1,8 A</output></span>
+        <input id="I2" type="range" min=".2" max="10" step=".1" value="1.8">
+      </label>
+
+      <label class="control" for="I3">
+        <span>I₃ <output id="i3o">3,1 A</output></span>
+        <input id="I3" type="range" min=".2" max="10" step=".1" value="3.1">
+      </label>
+
+      <label class="control" for="I4">
+        <span>I₄ <output id="i4o">2,4 A</output></span>
+        <input id="I4" type="range" min=".2" max="10" step=".1" value="2.4">
+      </label>
+
+      <label class="control" for="I5">
+        <span>I₅ <output id="i5o">2,1 A</output></span>
+        <input id="I5" type="range" min=".2" max="10" step=".1" value="2.1">
+      </label>
+
+      <div class="note">
+        Големината и посоката на I₆ се определят от баланса.
+      </div>
+    </div>
+  </div>
+
+  <div id="kvlControls">
+    <div class="card">
+      <label class="control" for="E1">
+        <span>E₁ <output id="e1o">12 V</output></span>
+        <input id="E1" type="range" min="2" max="24" step="1" value="12">
+      </label>
+
+      <label class="control" for="E2">
+        <span>E₂ <output id="e2o">9 V</output></span>
+        <input id="E2" type="range" min="2" max="24" step="1" value="9">
+      </label>
+
+      <label class="control" for="R1">
+        <span>R₁ <output id="r1o">2 Ω</output></span>
+        <input id="R1" type="range" min="1" max="20" step="1" value="2">
+      </label>
+
+      <label class="control" for="R2">
+        <span>R₂ <output id="r2o">4 Ω</output></span>
+        <input id="R2" type="range" min="1" max="20" step="1" value="4">
+      </label>
+
+      <label class="control" for="R3">
+        <span>R₃ <output id="r3o">3 Ω</output></span>
+        <input id="R3" type="range" min="1" max="20" step="1" value="3">
+      </label>
+    </div>
+
+    <div class="card">
+      <button class="choice" id="leftLoop" type="button" aria-pressed="false">
+        ↻ Ляв контур — по часовника
+      </button>
+
+      <button class="choice on" id="rightLoop" type="button" aria-pressed="true">
+        ↺ Десен контур — обратно на часовника
+      </button>
+
+      <div id="pathRead" class="route">Обход обратно на часовниковата стрелка: V₂ → E₂ → R₂ → V₁ → R₃ → V₂.</div>
+    </div>
+  </div>
+
+  <div class="card eq" id="formula">Десен контур ↺<br>E₂ − I₂R₂ − I₃R₃ = 0<small>E₂ = I₂R₂ + I₃R₃</small></div>
+  <div class="card res" id="results"><span>I₁ = 2,192 A</span><br><span>I₂ = 0,346 A</span><br><span>I₃ = 2,538 A</span><br><strong>Контурен баланс: 0,000 V</strong><br><span class="note">Възлов баланс: I₁ + I₂ − I₃ = 0,000 A</span></div>
+  <div class="card note steps" id="stepSigns"><b>Знаци при избрания обход</b><div>1. През E₂, по посоката на ЕДН:<br><b>+E₂ = + 9,000 V</b></div><div>2. През R₂, по приетата посока на I₂:<br><b>−I₂R₂ = − 1,385 V</b></div><div>3. През R₃, от V₁ към V₂:<br><b>−I₃R₃ = − 7,615 V</b></div><div class="numeric">9,000 − 1,385 − 7,615 ≈ 0,000 V</div><div class="note">Числовите членове са закръглени. Балансът се проверява с пълната точност.</div></div>
+  <div class="card note" id="explain">Лилавата стрелка задава посоката на обход на контура. Стрелките I₁, I₂ и I₃ са приети положителни посоки. Движещите се точки показват действителното протичане.</div>
+
 </aside>
 </div>
+
+<footer>
+  © 2026 доц. д-р инж. Величко Атанасов.
+  Всички права запазени.
+</footer>
+
 </div>
 
 <script>
-const NS="http://www.w3.org/2000/svg",$=id=>document.getElementById(id);
-let mode="kcl",loop="left";
-function line(g,x1,y1,x2,y2,cls="wire"){let e=document.createElementNS(NS,"line");e.setAttribute("x1",x1);e.setAttribute("y1",y1);e.setAttribute("x2",x2);e.setAttribute("y2",y2);e.setAttribute("class",cls);g.appendChild(e);return e}
-function path(g,d,cls="wire"){let e=document.createElementNS(NS,"path");e.setAttribute("d",d);e.setAttribute("class",cls);g.appendChild(e);return e}
-function txt(g,x,y,s,cls="lab",a="middle"){let t=document.createElementNS(NS,"text");t.setAttribute("x",x);t.setAttribute("y",y);t.setAttribute("class",cls);t.setAttribute("text-anchor",a);t.textContent=s;g.appendChild(t);return t}
-function circle(g,x,y,r,cls){let c=document.createElementNS(NS,"circle");c.setAttribute("cx",x);c.setAttribute("cy",y);c.setAttribute("r",r);c.setAttribute("class",cls);g.appendChild(c);return c}
-function resistor(g,x,y,w,label,color="#8fc34a",vertical=false){
- if(!vertical){line(g,x-20,y,x,y);let r=document.createElementNS(NS,"rect");r.setAttribute("x",x);r.setAttribute("y",y-15);r.setAttribute("width",w);r.setAttribute("height",30);r.setAttribute("rx",4);r.setAttribute("fill",color);r.setAttribute("class","resistor");g.appendChild(r);line(g,x+w,y,x+w+20,y);txt(g,x+w/2,y-26,label,"lab")}
- else{line(g,x,y-20,x,y);let r=document.createElementNS(NS,"rect");r.setAttribute("x",x-15);r.setAttribute("y",y);r.setAttribute("width",30);r.setAttribute("height",w);r.setAttribute("rx",4);r.setAttribute("fill",color);r.setAttribute("class","resistor");g.appendChild(r);line(g,x,y+w,x,y+w+20);txt(g,x+32,y+w/2+5,label,"lab","start")}
+(() => {
+"use strict";
+
+try {
+
+const $ = id => document.getElementById(id);
+const NS = "http://www.w3.org/2000/svg";
+const EPS = 1e-9;
+
+const DEFAULTS = {
+  I1:2.3, I2:1.8, I3:3.1, I4:2.4, I5:2.1,
+  E1:12, E2:9, R1:2, R2:4, R3:3
+};
+
+const reduceMotion = Boolean(
+  window.matchMedia &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches
+);
+
+let mode = "kcl";
+let loop = "left";
+let paused = reduceMotion;
+let flowTime = 0;
+let lastFrame = null;
+let flows = [];
+
+const markerNodes = [];
+const MAX_MARKERS = 240;
+const FLOW_SPEED = 105;
+
+function val(id){
+  return Number($(id).value);
 }
-function source(g,x,y,label,vertical=false){
- circle(g,x,y,24,"source");
- if(vertical){
-   // small ordinary EMF arrow centered in the source circle
-   let shaft=line(g,x,y+7,x,y-7,"");
-   shaft.setAttribute("stroke","#ff4d4d");
-   shaft.setAttribute("stroke-width","2");
-   shaft.setAttribute("stroke-linecap","round");
-   let head=document.createElementNS(NS,"path");
-   head.setAttribute("d",`M ${x-3.5} ${y-3} L ${x} ${y-8} L ${x+3.5} ${y-3}`);
-   head.setAttribute("stroke","#ff4d4d");
-   head.setAttribute("stroke-width","2");
-   head.setAttribute("fill","none");
-   head.setAttribute("stroke-linecap","round");
-   head.setAttribute("stroke-linejoin","round");
-   g.appendChild(head);
-   txt(g,x+38,y+6,label,"lab","start");
- }else{
-   txt(g,x,y+6,"+","lab");
-   txt(g,x,y-34,label,"lab");
-   txt(g,x,y+43,"−","lab");
- }
+
+/* Не допускаме изписване на „−0,000“. */
+function fmt(value, digits=3){
+  const limit = 0.5*Math.pow(10,-digits);
+  const n = Math.abs(value)<limit ? 0 : value;
+
+  return n.toLocaleString("bg-BG",{
+    minimumFractionDigits:digits,
+    maximumFractionDigits:digits
+  });
 }
-function arrow(g,x1,y1,x2,y2,label,cls){line(g,x1,y1,x2,y2,cls);txt(g,(x1+x2)/2,(y1+y2)/2-10,label,"lab")}
+
+function signed(value,digits=3){
+  const limit = 0.5*Math.pow(10,-digits);
+  const n = Math.abs(value)<limit ? 0 : value;
+
+  return (n<0 ? "− " : "+ ")+fmt(Math.abs(n),digits);
+}
+
+function clean(value){
+  return Math.abs(value)<EPS ? 0 : value;
+}
+
+function element(name,attributes,parent){
+  const e = document.createElementNS(NS,name);
+
+  for(const [key,value] of Object.entries(attributes)){
+    e.setAttribute(key,String(value));
+  }
+
+  if(parent) parent.appendChild(e);
+  return e;
+}
+
+function line(g,x1,y1,x2,y2,cls="wire"){
+  return element("line",{x1,y1,x2,y2,class:cls},g);
+}
+
+function path(g,d,cls="wire"){
+  return element("path",{d,class:cls},g);
+}
+
+function text(g,x,y,value,cls="lab",anchor="middle"){
+  const t = element(
+    "text",{x,y,class:cls,"text-anchor":anchor},g
+  );
+  t.textContent = value;
+  return t;
+}
+
+function circle(g,x,y,r,cls){
+  return element("circle",{cx:x,cy:y,r,class:cls},g);
+}
+
+function resistor(g,x,y,length,label,color,vertical=false){
+  if(!vertical){
+    line(g,x-20,y,x,y);
+
+    element("rect",{
+      x,y:y-15,width:length,height:30,
+      rx:4,fill:color,class:"resistor"
+    },g);
+
+    line(g,x+length,y,x+length+20,y);
+    text(g,x+length/2,y-26,label);
+
+  }else{
+    line(g,x,y-20,x,y);
+
+    element("rect",{
+      x:x-15,y,width:30,height:length,
+      rx:4,fill:color,class:"resistor"
+    },g);
+
+    line(g,x,y+length,x,y+length+20);
+    text(g,x+32,y+length/2+5,label,"lab","start");
+  }
+}
+
+function source(g,x,y,label){
+  circle(g,x,y,24,"source");
+
+  const shaft = line(g,x,y+7,x,y-7,"");
+  shaft.setAttribute("stroke","#ff4d4d");
+  shaft.setAttribute("stroke-width","2");
+  shaft.setAttribute("stroke-linecap","round");
+
+  element("path",{
+    d:`M${x-3.5} ${y-3}L${x} ${y-8}L${x+3.5} ${y-3}`,
+    stroke:"#ff4d4d",
+    "stroke-width":2,
+    fill:"none",
+    "stroke-linecap":"round",
+    "stroke-linejoin":"round"
+  },g);
+
+  text(g,x+38,y+6,label,"lab","start");
+}
+
+/* Чист изчислителен модел на оригиналната двуконтурна схема. */
+function solve(p){
+  const {E1,E2,R1,R2,R3} = p;
+
+  if(
+    ![E1,E2,R1,R2,R3].every(Number.isFinite) ||
+    R1<=0 || R2<=0 || R3<=0
+  ){
+    throw new Error("Невалидни параметри на електрическата верига.");
+  }
+
+  const V1 = (E1/R1+E2/R2)/(1/R1+1/R2+1/R3);
+  const I1 = (E1-V1)/R1;
+  const I2 = (E2-V1)/R2;
+  const I3 = V1/R3;
+
+  return {E1,E2,R1,R2,R3,V1,I1,I2,I3};
+}
+
+function currentParameters(){
+  return {
+    E1:val("E1"), E2:val("E2"),
+    R1:val("R1"), R2:val("R2"), R3:val("R3")
+  };
+}
+
+/* Маршрути за условното движение на тока. */
+function makePath(points){
+  const lengths = [];
+  let total = 0;
+
+  for(let k=0;k<points.length-1;k++){
+    const a = points[k];
+    const b = points[k+1];
+    const length = Math.hypot(b[0]-a[0],b[1]-a[1]);
+
+    lengths.push(length);
+    total += length;
+  }
+
+  return {points,lengths,total};
+}
+
+function pointAt(route,distance){
+  let d = Math.max(0,Math.min(route.total,distance));
+
+  for(let k=0;k<route.lengths.length;k++){
+    const length = route.lengths[k];
+
+    if(d<=length || k===route.lengths.length-1){
+      const a = route.points[k];
+      const b = route.points[k+1];
+      const q = length>0 ? d/length : 0;
+
+      return {
+        x:a[0]+(b[0]-a[0])*q,
+        y:a[1]+(b[1]-a[1])*q
+      };
+    }
+
+    d -= length;
+  }
+
+  const end = route.points[route.points.length-1];
+  return {x:end[0],y:end[1]};
+}
+
+function addFlow(points,current,color){
+  flows.push({
+    route:makePath(points),
+    current:clean(current),
+    color
+  });
+}
+
+/* Първи закон — запазени разположение и токове. */
 function drawKCL(){
- let g=$("kcl");g.innerHTML="";
- let I1=+$("I1").value,I2=+$("I2").value,I3=+$("I3").value,I4=+$("I4").value,I5=+$("I5").value;
- let I6=I1+I2+I3-I4-I5;
- let cx=400,cy=305; circle(g,cx,cy,20,"node");txt(g,cx,cy+48,"V","lab");
- arrow(g,110,165,375,290,"I₁","arrGreen");
- arrow(g,400,85,400,280,"I₂","arrRed");
- arrow(g,650,135,425,288,"I₃","arrBlue");
- arrow(g,425,305,690,305,"I₄","arrOrange");
- arrow(g,425,325,610,500,"I₅","arrPurple");
- if(I6>=0) arrow(g,375,325,150,500,"I₆","arrOrange");
- else arrow(g,150,500,375,325,"I₆","arrOrange");
- let sumIn, sumOut, dir6;
- if(I6>=0){sumIn=I1+I2+I3; sumOut=I4+I5+I6; dir6="от възела";}
- else{sumIn=I1+I2+I3-I6; sumOut=I4+I5; dir6="към възела";}
- $("formula").innerHTML="ΣI = 0<br>или<br>ΣI<sub>вх</sub> = ΣI<sub>изх</sub>";
- $("results").innerHTML=`ΣI<sub>вх</sub> = ${sumIn.toFixed(2)} A<br>ΣI<sub>изх</sub> = ${sumOut.toFixed(2)} A<br>I₆ = ${Math.abs(I6).toFixed(2)} A (${dir6})<br><span style="color:#8cf0a8">Законът е изпълнен.</span>`;
- $("explain").innerHTML="Във възела не се натрупва електрически заряд. Колкото ток влиза, толкова ток излиза. Посоката на I₆ се определя автоматично от баланса на токовете.";
+  const g = $("kcl");
+  g.replaceChildren();
+
+  const values = [
+    val("I1"),val("I2"),val("I3"),val("I4"),val("I5")
+  ];
+
+  const I6 = clean(
+    values[0]+values[1]+values[2]-values[3]-values[4]
+  );
+
+  const signedOut = [
+    -values[0],-values[1],-values[2],
+    values[3],values[4],I6
+  ];
+
+  const branches = [
+    {
+      outer:[110,165],inner:[375,290],
+      label:[242,216],name:"I₁",
+      cls:"arrGreen",color:"#45d06d"
+    },
+    {
+      outer:[400,85],inner:[400,280],
+      label:[429,179],name:"I₂",
+      cls:"arrRed",color:"#ff5b5b",anchor:"start"
+    },
+    {
+      outer:[650,135],inner:[425,288],
+      label:[538,199],name:"I₃",
+      cls:"arrBlue",color:"#42a5ff"
+    },
+    {
+      outer:[690,305],inner:[425,305],
+      label:[558,286],name:"I₄",
+      cls:"arrOrange",color:"#ffad55"
+    },
+    {
+      outer:[610,500],inner:[425,325],
+      label:[534,398],name:"I₅",
+      cls:"arrPurple",color:"#b887ed"
+    },
+    {
+      outer:[150,500],inner:[375,325],
+      label:[258,399],name:"I₆",
+      cls:"arrOrange",color:"#ffad55"
+    }
+  ];
+
+  branches.forEach((branch,k)=>{
+    const outgoing = signedOut[k];
+    const outer = branch.outer;
+    const inner = branch.inner;
+
+    if(Math.abs(outgoing)<EPS){
+      const wire = line(
+        g,inner[0],inner[1],outer[0],outer[1],""
+      );
+      wire.setAttribute("stroke","#71869b");
+      wire.setAttribute("stroke-width","3");
+
+    }else if(outgoing>0){
+      line(
+        g,inner[0],inner[1],outer[0],outer[1],branch.cls
+      );
+
+    }else{
+      line(
+        g,outer[0],outer[1],inner[0],inner[1],branch.cls
+      );
+    }
+
+    text(
+      g,branch.label[0],branch.label[1],
+      Math.abs(outgoing)<EPS ? branch.name+" = 0" : branch.name,
+      "lab",branch.anchor || "middle"
+    );
+
+    addFlow(
+      [[400,305],inner,outer],
+      outgoing,
+      branch.color
+    );
+  });
+
+  circle(g,400,305,20,"node");
+  text(g,400,353,"V");
+
+  text(
+    g,410,565,
+    "Първи закон на Кирхоф",
+    "kvlTitle"
+  );
+
+  text(
+    g,410,600,
+    "∑Iвх = ∑Iизх",
+    "kvlLaw"
+  );
+
+  const sumIn =
+    values[0]+values[1]+values[2]+Math.max(0,-I6);
+
+  const sumOut =
+    values[3]+values[4]+Math.max(0,I6);
+
+  let direction;
+  if(I6>EPS) direction="от възела";
+  else if(I6<-EPS) direction="към възела";
+  else direction="няма ток в клона";
+
+  $("formula").innerHTML =
+    "ΣI = 0<br>ΣI<sub>вх</sub> = ΣI<sub>изх</sub>"+
+    "<small>I₆ = I₁ + I₂ + I₃ − I₄ − I₅</small>";
+
+  $("results").innerHTML =
+    "ΣI<sub>вх</sub> = "+fmt(sumIn,2)+" A<br>"+
+    "ΣI<sub>изх</sub> = "+fmt(sumOut,2)+" A<br>"+
+    "<strong>I₆ = "+fmt(Math.abs(I6),2)+" A</strong><br>"+
+    direction+
+    "<br><span class='note'>Остатък: "+
+    fmt(sumIn-sumOut,3)+" A</span>";
+
+  $("explain").textContent =
+    "Токовете I₁, I₂ и I₃ влизат във възела. "+
+    "Токовете I₄ и I₅ излизат. Посоката на I₆ се определя "+
+    "от баланса. При I₆ = 0 стрелката и движението в този клон "+
+    "се премахват.";
+
+  $("legend").innerHTML =
+    "<b>Цветните стрелки показват посоките на токовете.</b> "+
+    "При промяна на знака на I₆ неговата стрелка се обръща. "+
+    "Движението на точките е условно и не представя реалната "+
+    "скорост на електроните.";
 }
-function solveTwoLoop(){
- let E1=+$("E1").value,E2=+$("E2").value,R1=+$("R1").value,R2=+$("R2").value,R3=+$("R3").value;
- // V1 is found from KCL: (E1−V1)/R1 + (E2−V1)/R2 = V1/R3
- let V1=(E1/R1+E2/R2)/(1/R1+1/R2+1/R3);
- let I1=(E1-V1)/R1;
- let I2=(E2-V1)/R2;
- let I3=V1/R3;
- return {E1,E2,R1,R2,R3,V1,I1,I2,I3};
+
+/*
+ * Лилави контурни стрелки.
+ *
+ * Ляв контур:
+ * горната страна е надясно, дясната — надолу,
+ * долната — наляво, лявата — нагоре.
+ * Това е обход по часовниковата стрелка.
+ *
+ * Десен контур:
+ * горната страна е наляво, лявата — надолу,
+ * долната — надясно, дясната — нагоре.
+ * Това е обход обратно на часовниковата стрелка.
+ */
+function drawLoopGuides(g){
+  const definitions = [
+    {
+      name:"left",
+      d:"M207 235H275Q305 235 305 265V390"+
+        "Q305 420 275 420H205Q175 420 175 390V278",
+      cx:240,
+      label:"К₁",
+      direction:"по часовника"
+    },
+    {
+      name:"right",
+      d:"M583 235H530Q500 235 500 265V390"+
+        "Q500 420 530 420H585Q615 420 615 390V278",
+      cx:557,
+      label:"К₂",
+      direction:"обратно"
+    }
+  ];
+
+  for(const def of definitions){
+    const selected = loop===def.name;
+
+    const group = element("g",{
+      id:"loop-"+def.name,
+      opacity:selected ? 1 : .30,
+      "aria-label":def.name==="left"
+        ? "Ляв контур: обход по часовниковата стрелка"
+        : "Десен контур: обход обратно на часовниковата стрелка"
+    },g);
+
+    path(group,def.d,"loopArrow");
+    text(group,def.cx,313,def.label,"loopLabel");
+    text(group,def.cx,338,"обход","loopSmall");
+  }
 }
+
+/* Втори закон — същата електрическа схема. */
 function drawKVL(){
- let g=$("kvl"); g.innerHTML="";
- let s=solveTwoLoop();
+  const g = $("kvl");
+  g.replaceChildren();
 
- // Geometry
- const xL=105, xC=410, xR=700, yT=190, yB=470;
+  const s = solve(currentParameters());
 
- // LEFT OUTER BRANCH: V2 -> left -> E1 -> R1 -> V1
- line(g,xC,yB,xL,yB);
- line(g,xL,yB,xL,214);
- source(g,xL,yT,"Е₁",true);
- line(g,xL,166,xL,135);
- line(g,xL,135,230,135);
- resistor(g,250,135,100,"R₁","#55c97b");
- line(g,370,135,xC,135);
- 
- // RIGHT OUTER BRANCH: V1 -> R2 -> E2 -> V2
-  line(g,xC,135,455,135);
- resistor(g,475,135,100,"R₂","#ffad43");
- line(g,595,135,xR,135);
- line(g,xR,135,xR,166);
- source(g,xR,yT,"Е₂",true);
- line(g,xR,214,xR,yB);
- line(g,xR,yB,xC,yB);
+  const xL=105, xC=410, xR=700;
+  const ySource=190, yTop=135, yBottom=470;
 
- // COMMON CENTRAL BRANCH V1 -> R3 -> V2
- circle(g,xC,135,8,"node"); txt(g,xC,108,"V₁","lab");
- line(g,xC,143,xC,245);
- resistor(g,xC,265,110,"R₃","#6f8ef6",true);
- line(g,xC,395,xC,yB);
- circle(g,xC,yB,8,"node"); txt(g,xC,yB+32,"V₂","lab");
+  /* Ляв външен клон. */
+  line(g,xC,yBottom,xL,yBottom);
+  line(g,xL,yBottom,xL,214);
+  source(g,xL,ySource,"Е₁");
+  line(g,xL,166,xL,yTop);
+  line(g,xL,yTop,230,yTop);
+  resistor(g,250,yTop,100,"R₁","#55c97b");
+  line(g,370,yTop,xC,yTop);
 
- // Currents
- line(g,190,180,310,180,"arrGreen");
- txt(g,250,170,"I₁","lab");
- line(g,635,400,635,315,"arrOrange");
- txt(g,665,355,"I₂","lab","start");
- line(g,375,310,375,405,"arrBlue");
- txt(g,350,355,"I₃","lab","end");
+  /* Десен външен клон. */
+  line(g,xC,yTop,455,yTop);
+  resistor(g,475,yTop,100,"R₂","#ffad43");
+  line(g,595,yTop,xR,yTop);
+  line(g,xR,yTop,xR,166);
+  source(g,xR,ySource,"Е₂");
+  line(g,xR,214,xR,yBottom);
+  line(g,xR,yBottom,xC,yBottom);
 
- // Selected loop
- if(loop==="left"){
-   // no contour outline for the left loop – the circuit itself defines contour 1
- }else{
-   path(g,"M470 285 Q470 260 500 260 L620 260 Q650 260 650 290 L650 395 Q650 430 615 430 L500 430 Q470 430 470 400","loop");
- }
+  /* Общ централен клон. */
+  circle(g,xC,yTop,8,"node");
+  text(g,xC,108,"V₁");
 
- txt(g,410,565,"Втори закон на Кирхоф","kvlTitle");
- txt(g,410,600,"∑E = ∑(I·R)","kvlLaw");
+  line(g,xC,143,xC,245);
+  resistor(g,xC,265,110,"R₃","#6f8ef6",true);
+  line(g,xC,395,xC,yBottom);
 
- let u1=s.I1*s.R1, u2=s.I2*s.R2, u3=s.I3*s.R3;
- if(loop==="left"){
-   $("formula").innerHTML="Ляв контур:<br>E₁ = I₁R₁ + I₃R₃";
-   $("results").innerHTML=`I₁ = ${s.I1.toFixed(3)} A<br>I₃ = ${s.I3.toFixed(3)} A<br>Проверка: ${(s.E1-u1-u3).toFixed(3)} V`;
- }else{
-   $("formula").innerHTML="Десен контур:<br>E₂ = I₂R₂ + I₃R₃";
-   $("results").innerHTML=`I₂ = ${s.I2.toFixed(3)} A<br>I₃ = ${s.I3.toFixed(3)} A<br>Проверка: ${(s.E2-u2-u3).toFixed(3)} V`;
- }
- $("explain").innerHTML="За всеки затворен контур алгебричната сума на ЕДН е равна на алгебричната сума на падовете I·R. Отрицателна стойност на ток означава, че действителната му посока е обратна на приетата стрелка.";
+  circle(g,xC,yBottom,8,"node");
+  text(g,xC,502,"V₂");
+
+  /* И двата контура са показани; избраният е по-ярък. */
+  drawLoopGuides(g);
+
+  /*
+   * Приети положителни посоки на токовете.
+   * Те НЕ се обръщат при отрицателна числова стойност.
+   */
+  line(g,190,180,310,180,"arrGreen");
+  text(g,250,170,"I₁");
+
+  line(g,635,400,635,315,"arrOrange");
+  text(g,665,355,"I₂","lab","start");
+
+  line(g,375,310,375,405,"arrBlue");
+  text(g,350,355,"I₃","lab","end");
+
+  text(
+    g,410,540,
+    "Лилаво: посока на обход, а не посока на ток",
+    "small"
+  );
+
+  text(g,410,572,"Втори закон на Кирхоф","kvlTitle");
+  text(g,410,607,"∑E = ∑(I·R)","kvlLaw");
+
+  /*
+   * Реални маршрути по проводниците.
+   * I₁ и I₂ са положителни от V₂ към V₁.
+   * I₃ е положителен от V₁ към V₂.
+   */
+  addFlow([
+    [410,470],[105,470],[105,135],[410,135]
+  ],s.I1,"#45d06d");
+
+  addFlow([
+    [410,470],[700,470],[700,135],[410,135]
+  ],s.I2,"#ffad55");
+
+  addFlow([
+    [410,135],[410,470]
+  ],s.I3,"#42a5ff");
+
+  const left = loop==="left";
+  const sourceName = left ? "E₁" : "E₂";
+  const currentName = left ? "I₁" : "I₂";
+  const resistorName = left ? "R₁" : "R₂";
+
+  const E = left ? s.E1 : s.E2;
+  const branchDrop = left ? s.I1*s.R1 : s.I2*s.R2;
+  const commonDrop = s.I3*s.R3;
+  const residual = E-branchDrop-commonDrop;
+
+  const directionText = left
+    ? "по часовниковата стрелка"
+    : "обратно на часовниковата стрелка";
+
+  $("formula").innerHTML =
+    (left ? "Ляв контур ↻" : "Десен контур ↺")+
+    "<br>"+sourceName+" − "+currentName+resistorName+
+    " − I₃R₃ = 0"+
+    "<small>"+sourceName+" = "+currentName+resistorName+
+    " + I₃R₃</small>";
+
+  function currentLine(label,value){
+    const cls = value<-EPS ? " class='negative'" : "";
+
+    return "<span"+cls+">"+label+" = "+
+      fmt(value,3)+" A</span>";
+  }
+
+  $("results").innerHTML =
+    currentLine("I₁",s.I1)+"<br>"+
+    currentLine("I₂",s.I2)+"<br>"+
+    currentLine("I₃",s.I3)+"<br>"+
+    "<strong>Контурен баланс: "+
+    fmt(residual,3)+" V</strong><br>"+
+    "<span class='note'>Възлов баланс: I₁ + I₂ − I₃ = "+
+    fmt(s.I1+s.I2-s.I3,3)+" A</span>";
+
+  $("pathRead").textContent =
+    "Обход "+directionText+": V₂ → "+
+    sourceName+" → "+resistorName+" → V₁ → R₃ → V₂.";
+
+  $("stepSigns").innerHTML =
+    "<b>Знаци при избрания обход</b>"+
+    "<div>1. През "+sourceName+
+      ", по посоката на ЕДН:<br>"+
+      "<b>+"+sourceName+" = "+signed(E,3)+" V</b></div>"+
+    "<div>2. През "+resistorName+
+      ", по приетата посока на "+currentName+":<br>"+
+      "<b>−"+currentName+resistorName+
+      " = "+signed(-branchDrop,3)+" V</b></div>"+
+    "<div>3. През R₃, от V₁ към V₂:<br>"+
+      "<b>−I₃R₃ = "+signed(-commonDrop,3)+" V</b></div>"+
+    "<div class='numeric'>"+
+      fmt(E,3)+" "+signed(-branchDrop,3)+" "+
+      signed(-commonDrop,3)+" ≈ 0,000 V"+
+    "</div>"+
+    "<div class='note'>Числовите членове са закръглени. "+
+    "Балансът се проверява с пълната точност.</div>";
+
+  const negative = [
+    ["I₁",s.I1],["I₂",s.I2],["I₃",s.I3]
+  ].filter(([,value])=>value<-EPS);
+
+  const zero = [
+    ["I₁",s.I1],["I₂",s.I2],["I₃",s.I3]
+  ].filter(([,value])=>Math.abs(value)<EPS);
+
+  let explanation =
+    "Лилавата стрелка задава посоката на обход на контура. "+
+    "Стрелките I₁, I₂ и I₃ са приети положителни посоки. "+
+    "Движещите се точки показват действителното протичане.";
+
+  if(negative.length){
+    explanation += " "+
+      negative.map(([name])=>name).join(", ")+
+      ": отрицателна стойност — действителният ток е "+
+      "обратен на съответната референтна стрелка.";
+  }
+
+  if(zero.length){
+    explanation += " "+
+      zero.map(([name])=>name).join(", ")+
+      " = 0: няма движение на токови маркери в този клон.";
+  }
+
+  $("explain").textContent = explanation;
+
+  $("legend").innerHTML =
+    "<b style='color:#d4adff'>Пунктирана лилава стрелка:</b> "+
+    "избрана посока на обход на контура.<br>"+
+    "<b>Цветни стрелки I₁, I₂, I₃:</b> "+
+    "приети положителни посоки за уравненията.<br>"+
+    "<b>Движещи се точки:</b> действителна посока на тока. "+
+    "Темпът е учебно мащабиран, а не реална скорост на електроните.";
 }
+
+/* Създаване на маркерите еднократно. */
+$("markers").replaceChildren();
+
+for(let k=0;k<MAX_MARKERS;k++){
+  const node = element("circle",{
+    r:3.4,
+    class:"packet",
+    fill:"#ffffff"
+  },$("markers"));
+
+  node.style.display = "none";
+  markerNodes.push(node);
+}
+
+function insideCircle(p,x,y,r){
+  return (p.x-x)**2+(p.y-y)**2<r*r;
+}
+
+function hiddenByElement(p){
+  if(mode==="kcl"){
+    return insideCircle(p,400,305,24);
+  }
+
+  if(
+    insideCircle(p,105,190,28) ||
+    insideCircle(p,700,190,28) ||
+    insideCircle(p,410,135,11) ||
+    insideCircle(p,410,470,11)
+  ){
+    return true;
+  }
+
+  const topResistors =
+    p.y>115 && p.y<155 &&
+    (
+      (p.x>245 && p.x<355) ||
+      (p.x>470 && p.x<580)
+    );
+
+  const middleResistor =
+    p.x>390 && p.x<430 &&
+    p.y>260 && p.y<380;
+
+  return topResistors || middleResistor;
+}
+
+/*
+ * Честотата на преминаване на маркерите е пропорционална
+ * на големината на тока, с общ визуален мащаб за схемата.
+ * Знакът определя действителната посока.
+ */
+function drawFlow(){
+  for(const marker of markerNodes){
+    marker.style.display = "none";
+  }
+
+  if(!flows.length) return;
+
+  const maxCurrent = Math.max(
+    ...flows.map(flow=>Math.abs(flow.current)),
+    EPS
+  );
+
+  const rateScale = 6/maxCurrent;
+  let used = 0;
+
+  flows.forEach((flow,index)=>{
+    const current = Math.abs(flow.current);
+    if(current<EPS) return;
+
+    const frequency = current*rateScale;
+    const period = 1/frequency;
+    const duration = flow.route.total/FLOW_SPEED;
+
+    const firstAge = (flowTime+index*0.29)%period;
+
+    for(let age=firstAge;age<=duration;age+=period){
+      if(used>=markerNodes.length) return;
+
+      const travelled = age*FLOW_SPEED;
+
+      const referenceDistance = flow.current>0
+        ? travelled
+        : flow.route.total-travelled;
+
+      const point = pointAt(flow.route,referenceDistance);
+
+      if(hiddenByElement(point)) continue;
+
+      const marker = markerNodes[used++];
+      marker.style.display = "";
+      marker.setAttribute("cx",point.x.toFixed(2));
+      marker.setAttribute("cy",point.y.toFixed(2));
+      marker.setAttribute("fill",flow.color);
+    }
+  });
+}
+
+function updatePause(){
+  $("pause").textContent = paused ? "▶ Продължи" : "Ⅱ Пауза";
+  $("pause").setAttribute("aria-pressed",String(paused));
+
+  $("motionStatus").textContent = paused
+    ? "Движението е на пауза; изчисленията остават активни."
+    : "Условно движение на тока по действителната му посока.";
+}
+
 function redraw(){
- ["kcl","kvl"].forEach(x=>$(x).style.display=mode===x?"":"none");
- $("kclControls").style.display=mode==="kcl"?"":"none";$("kvlControls").style.display=mode==="kvl"?"":"none";
- ["1","2","3","4","5"].forEach(n=>$("i"+n+"o").textContent=(+$("I"+n).value).toFixed(1)+" A");
- $("e1o").textContent=$("E1").value+" V";$("e2o").textContent=$("E2").value+" V";
- ["1","2","3"].forEach(n=>$("r"+n+"o").textContent=$("R"+n).value+" Ω");
- if(mode==="kcl")drawKCL();if(mode==="kvl")drawKVL();
+  flows = [];
+  flowTime = 0;
+  lastFrame = null;
+
+  $("kcl").style.display = mode==="kcl" ? "" : "none";
+  $("kvl").style.display = mode==="kvl" ? "" : "none";
+
+  $("kclControls").hidden = mode!=="kcl";
+  $("kvlControls").hidden = mode!=="kvl";
+  $("stepSigns").hidden = mode!=="kvl";
+
+  document.querySelectorAll(".tab").forEach(button=>{
+    const active = button.dataset.mode===mode;
+    button.classList.toggle("on",active);
+    button.setAttribute("aria-pressed",String(active));
+  });
+
+  $("leftLoop").classList.toggle("on",loop==="left");
+  $("rightLoop").classList.toggle("on",loop==="right");
+  $("leftLoop").setAttribute("aria-pressed",String(loop==="left"));
+  $("rightLoop").setAttribute("aria-pressed",String(loop==="right"));
+
+  for(let n=1;n<=5;n++){
+    $("i"+n+"o").textContent = fmt(val("I"+n),1)+" A";
+  }
+
+  $("e1o").textContent = fmt(val("E1"),0)+" V";
+  $("e2o").textContent = fmt(val("E2"),0)+" V";
+
+  for(let n=1;n<=3;n++){
+    $("r"+n+"o").textContent = fmt(val("R"+n),0)+" Ω";
+  }
+
+  if(mode==="kcl") drawKCL();
+  else drawKVL();
+
+  drawFlow();
+  updatePause();
 }
-document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{mode=b.dataset.mode;document.querySelectorAll(".tab").forEach(x=>x.classList.remove("on"));b.classList.add("on");redraw()});
-["I1","I2","I3","I4","I5","E1","E2","R1","R2","R3"].forEach(id=>$(id).oninput=redraw);
-$("leftLoop").onclick=()=>{loop="left";$("leftLoop").classList.add("on");$("rightLoop").classList.remove("on");redraw()};
-$("rightLoop").onclick=()=>{loop="right";$("rightLoop").classList.add("on");$("leftLoop").classList.remove("on");redraw()};
+
+/* Самопроверка на двуконтурните уравнения. */
+function selfCheck(){
+  function near(a,b){
+    return Math.abs(a-b)<=
+      1e-9*Math.max(1,Math.abs(a),Math.abs(b));
+  }
+
+  for(const E1 of [2,12,24]){
+    for(const E2 of [2,9,24]){
+      for(const R1 of [1,2,20]){
+        for(const R2 of [1,4,20]){
+          for(const R3 of [1,3,20]){
+            const s = solve({E1,E2,R1,R2,R3});
+
+            if(!near(s.I1+s.I2,s.I3)) return false;
+            if(!near(s.E1,s.I1*s.R1+s.I3*s.R3)) return false;
+            if(!near(s.E2,s.I2*s.R2+s.I3*s.R3)) return false;
+          }
+        }
+      }
+    }
+  }
+
+  const initial = solve({
+    E1:12,E2:9,R1:2,R2:4,R3:3
+  });
+
+  const reverse = solve({
+    E1:24,E2:2,R1:2,R2:4,R3:3
+  });
+
+  const zero = solve({
+    E1:12,E2:9,R1:1,R2:4,R3:3
+  });
+
+  return near(initial.V1,99/13) &&
+    near(initial.I1,57/26) &&
+    near(initial.I2,9/26) &&
+    near(initial.I3,33/13) &&
+    reverse.I2<0 &&
+    near(zero.I2,0) &&
+    near(2.3+1.8+3.1-2.4-2.1,2.7);
+}
+
+if(!selfCheck()){
+  throw new Error("Самопроверката на математическия модел не премина.");
+}
+
+document.querySelectorAll(".tab").forEach(button=>{
+  button.addEventListener("click",()=>{
+    mode = button.dataset.mode;
+    redraw();
+  });
+});
+
+for(const id of [
+  "I1","I2","I3","I4","I5",
+  "E1","E2","R1","R2","R3"
+]){
+  $(id).addEventListener("input",redraw);
+}
+
+$("leftLoop").addEventListener("click",()=>{
+  loop = "left";
+  redraw();
+});
+
+$("rightLoop").addEventListener("click",()=>{
+  loop = "right";
+  redraw();
+});
+
+$("pause").addEventListener("click",()=>{
+  paused = !paused;
+  lastFrame = null;
+  updatePause();
+});
+
+$("reset").addEventListener("click",()=>{
+  for(const [id,value] of Object.entries(DEFAULTS)){
+    $(id).value = value;
+  }
+
+  mode = "kcl";
+  loop = "left";
+  paused = reduceMotion;
+  redraw();
+});
+
+document.addEventListener("visibilitychange",()=>{
+  lastFrame = null;
+});
+
+function animate(now){
+  const dt = lastFrame===null
+    ? 0
+    : Math.min(.05,Math.max(0,(now-lastFrame)/1000));
+
+  lastFrame = now;
+
+  if(!paused && !document.hidden){
+    flowTime += dt;
+    drawFlow();
+  }
+
+  requestAnimationFrame(animate);
+}
+
 redraw();
+requestAnimationFrame(animate);
+
+} catch(error){
+  console.error(error);
+
+  const box = document.getElementById("error");
+
+  if(box){
+    box.hidden = false;
+    box.textContent =
+      "Анимацията не успя да се инициализира: "+error.message;
+  }
+}
+
+})();
 </script>
+
 
 </body></html>

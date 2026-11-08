@@ -1,262 +1,965 @@
+
 <!DOCTYPE html>
-<!-- saved from url=(0050)file:///C:/Users/Rosi/Downloads/preview%20(3).html -->
-<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="доц. д-р инж. Величко Атанасов">
+<meta name="copyright" content="© 2026 доц. д-р инж. Величко Атанасов">
+
 <title>Анимация 58 – Двуфазно въртящо магнитно поле</title>
+
 <style>
+:root{
+  --bg:#f4f7fa;
+  --ink:#17212b;
+  --muted:#52677a;
+  --line:#c7d4e0;
+  --red:#d52323;
+  --blue:#1559d5;
+  --purple:#7030a0;
+}
 *{box-sizing:border-box}
-body{margin:0;background:#f4f7fa;font-family:Arial,sans-serif;color:#17212b}
-.wrap{max-width:1420px;margin:12px auto;background:#fff;border:1px solid #b8c6d5;border-radius:12px;padding:15px}
-h1{text-align:center;color:#173f70;margin:2px 0 5px;font-size:27px}
-.sub{text-align:center;font-weight:700;margin-bottom:10px}
-.steps{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:10px 0}
-button{border:1px solid #aabaca;background:#f8fafc;border-radius:7px;padding:9px 14px;font-weight:700;cursor:pointer}
-button.on{background:#173f70;color:#fff}
-.grid{display:grid;grid-template-columns:1.12fr .88fr;gap:14px}
-.card{border:1px solid #ccd7e2;border-radius:10px;padding:12px;background:#fff}
-canvas{width:100%;display:block}
-#field{height:570px}
-#waves{height:280px}
-.formula{text-align:center;font:21px "Cambria Math","Times New Roman",serif;margin:8px}
-.explain{margin-top:12px;background:#f5f8fc;border-left:4px solid #173f70;padding:11px 13px;line-height:1.5}
-.values{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
-.val{text-align:center;padding:8px;border:1px solid #d7e0e8;border-radius:7px;font-weight:700}
-.controls{display:flex;justify-content:center;gap:18px;align-items:center;flex-wrap:wrap;border-top:1px solid #e2e7ec;margin-top:10px;padding-top:10px;font-weight:700}
-.note{font-size:13px;color:#4b5563;text-align:center;margin-top:6px}
-.tag{padding:4px 8px;border-radius:5px;background:#f7f9fb;border:1px solid #d6dee7}
-@media(max-width:950px){.grid{grid-template-columns:1fr}}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font:15px/1.55 Arial,Helvetica,sans-serif;
+  -webkit-user-select:none;
+  user-select:none;
+}
+.wrap{
+  max-width:1400px;
+  margin:12px auto;
+  padding:16px;
+  border:1px solid #b8c6d5;
+  border-radius:14px;
+  background:white;
+}
+h1{
+  margin:3px 0 6px;
+  text-align:center;
+  color:#173f70;
+  font-size:clamp(24px,3vw,33px);
+}
+.sub{
+  text-align:center;
+  color:var(--muted);
+  font-weight:600;
+  margin-bottom:15px;
+}
+.steps{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:14px;
+}
+button{
+  padding:11px 14px;
+  border:1px solid #9caebf;
+  background:#f7fafc;
+  color:var(--ink);
+  border-radius:8px;
+  font-weight:bold;
+  cursor:pointer;
+}
+button:hover{background:#e9f2fa}
+button.active{
+  background:#173f70;
+  color:white;
+}
+button:focus-visible,input:focus-visible{
+  outline:3px solid #7cadde;
+  outline-offset:2px;
+}
+.grid{
+  display:grid;
+  grid-template-columns:minmax(0,1.12fr) minmax(320px,.88fr);
+  gap:14px;
+  align-items:start;
+}
+.card{
+  min-width:0;
+  border:1px solid #ccd7e2;
+  border-radius:12px;
+  background:#fff;
+  padding:13px;
+}
+.card h2{
+  margin:2px 0 10px;
+  font-size:18px;
+  color:#173f70;
+}
+svg{display:block;width:100%;height:auto}
+.values{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin:12px 0;
+}
+.val{
+  border:1px solid #d5e0e9;
+  border-radius:9px;
+  padding:10px 6px;
+  text-align:center;
+  font-weight:bold;
+  font-size:14px;
+}
+.val strong{
+  display:block;
+  font-size:19px;
+  margin-top:4px;
+}
+.controls{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:12px;
+  border-top:1px solid #e0e7ef;
+  padding-top:12px;
+}
+.controls label{font-weight:bold}
+.controls input{
+  vertical-align:middle;
+  width:170px;
+  accent-color:#173f70;
+}
+.formula{
+  text-align:center;
+  font:20px/1.8 Cambria,Georgia,serif;
+}
+.explain{
+  margin-top:11px;
+  background:#f1f6fd;
+  border-left:4px solid #173f70;
+  padding:12px;
+  line-height:1.7;
+}
+.note{
+  font-size:13px;
+  color:var(--muted);
+  line-height:1.6;
+}
+.divider{
+  height:1px;
+  background:#dce5ec;
+  margin:12px 0;
+}
+.legend{
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+  font-size:13px;
+  padding-top:8px;
+}
+.dot{
+  width:10px;
+  height:10px;
+  display:inline-block;
+  border-radius:50%;
+  margin-right:5px;
+}
+footer{
+  margin-top:16px;
+  padding:15px;
+  border-top:1px solid #dce5ec;
+  text-align:center;
+  color:#607387;
+  font-size:13px;
+}
+#error{
+  background:#fff0f0;
+  border:1px solid #e6aaaa;
+  padding:12px;
+  border-radius:8px;
+  color:#a12424;
+  margin-top:12px;
+}
+[hidden]{display:none!important}
+@media(max-width:970px){
+  .grid{grid-template-columns:1fr}
+}
+@media(max-width:520px){
+  .wrap{padding:9px}
+  .values{grid-template-columns:1fr}
+}
 </style>
 </head>
+
 <body>
+
 <div class="wrap">
-<h1>Анимация 58: Въртящо магнитно поле при двуфазна система</h1>
-<div class="sub">Две отделни намотки на 90° и два тока, отместени във времето на 90°</div>
+
+<h1>Анимация 58 – Двуфазно въртящо магнитно поле</h1>
+
+<div class="sub">
+Две пространствено перпендикулярни намотки и
+два синусоидални тока, отместени на 90°
+</div>
 
 <div class="steps">
-<button class="" data-mode="0">1. Намотка A–A′</button>
-<button data-mode="1" class="">2. Намотка B–B′</button>
-<button data-mode="2" class="">3. Двете полета</button>
-<button data-mode="3" class="on">4. Въртящо поле</button>
+<button data-step="1" class="active" type="button">
+1. Намотка A–A′
+</button>
+<button data-step="2" type="button">
+2. Намотка B–B′
+</button>
+<button data-step="3" type="button">
+3. Двете полета
+</button>
+<button data-step="4" type="button">
+4. Въртящо поле
+</button>
 </div>
 
 <div class="grid">
-<div class="card">
-<canvas id="field" width="700" height="570"></canvas>
+
+<section class="card">
+<h2>Напречно сечение на двуфазната система</h2>
+
+<svg id="fieldSvg"
+     viewBox="0 0 800 590"
+     role="img"
+     aria-label="Две намотки с перпендикулярни магнитни оси">
+
+<defs>
+<marker id="redHead"
+ viewBox="0 0 10 10"
+ refX="9" refY="5"
+ markerWidth="7" markerHeight="7"
+ orient="auto">
+<path d="M0 0L10 5L0 10Z" fill="#d52323"/>
+</marker>
+
+<marker id="blueHead"
+ viewBox="0 0 10 10"
+ refX="9" refY="5"
+ markerWidth="7" markerHeight="7"
+ orient="auto">
+<path d="M0 0L10 5L0 10Z" fill="#1559d5"/>
+</marker>
+
+<marker id="purpleHead"
+ viewBox="0 0 10 10"
+ refX="9" refY="5"
+ markerWidth="7" markerHeight="7"
+ orient="auto">
+<path d="M0 0L10 5L0 10Z" fill="#7030a0"/>
+</marker>
+</defs>
+
+<text x="400" y="36" text-anchor="middle"
+ font-size="19" font-weight="bold" fill="#173f70">
+ДВЕ НЕЗАВИСИМИ НАМОТКИ
+</text>
+
+<!-- Статор и въздушна междина -->
+<circle cx="400" cy="288" r="216"
+ fill="#edf2f6" stroke="#8294a3" stroke-width="3"/>
+
+<circle cx="400" cy="288" r="147"
+ fill="white" stroke="#afbfca" stroke-width="2"/>
+
+<!-- Намотка A: активни страни ГОРЕ и ДОЛУ -->
+<g id="windingA"></g>
+
+<!-- Намотка B: активни страни ЛЯВО и ДЯСНО -->
+<g id="windingB"></g>
+
+<!-- Магнитна ос A - хоризонтална -->
+<line id="axisA"
+ x1="230" y1="288" x2="570" y2="288"
+ stroke="#d52323" stroke-width="1.7"
+ stroke-dasharray="8 6" opacity=".65"/>
+
+<!-- Магнитна ос B - вертикална -->
+<line id="axisB"
+ x1="400" y1="118" x2="400" y2="458"
+ stroke="#1559d5" stroke-width="1.7"
+ stroke-dasharray="8 6" opacity=".65"/>
+
+<!-- Моментни вектори -->
+<line id="vectorA"
+ x1="400" y1="288" x2="400" y2="288"
+ stroke="#d52323" stroke-width="4"
+ marker-end="url(#redHead)"/>
+
+<line id="vectorB"
+ x1="400" y1="288" x2="400" y2="288"
+ stroke="#1559d5" stroke-width="4"
+ marker-end="url(#blueHead)"/>
+
+<line id="vectorR"
+ x1="400" y1="288" x2="400" y2="288"
+ stroke="#7030a0" stroke-width="6"
+ marker-end="url(#purpleHead)"/>
+
+<text id="labelA" x="525" y="265"
+ fill="#d52323" font-size="20" font-weight="bold">
+B<tspan baseline-shift="sub" font-size="13">A</tspan>
+</text>
+
+<text id="labelB" x="415" y="155"
+ fill="#1559d5" font-size="20" font-weight="bold">
+B<tspan baseline-shift="sub" font-size="13">B</tspan>
+</text>
+
+<text id="labelR" x="545" y="155"
+ fill="#7030a0" font-size="21" font-weight="bold">
+B<tspan baseline-shift="sub" font-size="13">Σ</tspan>
+</text>
+
+<!-- Отправна точка -->
+<circle cx="400" cy="288" r="5" fill="#17212b"/>
+<text x="385" y="309" font-size="15" fill="#17212b">
+O
+</text>
+
+<!-- Действителен ъгъл на резултантния вектор -->
+<path id="angleArc"
+ d="" stroke="#946919" stroke-width="2.8"
+ fill="none"/>
+
+<text id="angleText" x="452" y="252"
+ fill="#946919" font-size="16" font-weight="bold">
+θ
+</text>
+
+<text id="directionText" x="400" y="538"
+ text-anchor="middle"
+ font-size="16" font-weight="bold" fill="#7030a0">
+Посока на въртене: обратно на часовниковата стрелка
+</text>
+
+<text x="400" y="562" text-anchor="middle"
+ font-size="13" fill="#607789">
+● ток към наблюдателя · × ток от наблюдателя
+</text>
+
+<text x="785" y="584"
+ text-anchor="end" font-size="11" fill="#a3b2c1">
+© 2026 Величко Атанасов
+</text>
+
+</svg>
 
 <div class="values">
-<div class="val" id="va" style="color:#d52323">iA = -0.13 Im</div>
-<div class="val" id="vb" style="color:#1559d5">iB = -0.99 Im</div>
+<div class="val" style="color:#d52323">
+Ток i<sub>A</sub>
+<strong id="valueA">—</strong>
+</div>
+
+<div class="val" style="color:#1559d5">
+Ток i<sub>B</sub>
+<strong id="valueB">—</strong>
+</div>
+
+<div class="val" style="color:#7030a0">
+Големина |B|
+<strong id="valueR">—</strong>
+</div>
 </div>
 
 <div class="controls">
-<button id="play">Пауза</button>
-<button id="reset">Начало</button>
-<label>Скорост:
-<input id="speed" type="range" min="20" max="150" value="70">
+<button id="pause" type="button">Ⅱ Пауза</button>
+<button id="reset" type="button">↺ Начало</button>
+
+<label for="speed">
+Скорост:
+<input id="speed" type="range"
+ min="20" max="150" step="1" value="70">
 </label>
-</div>
-<div class="note">Показаните намотки са схематични. Важни са техните магнитни оси, разположени на 90°.</div>
+
+<span id="speedValue">70%</span>
 </div>
 
-<div>
-<div class="card"><canvas id="waves" width="544" height="280"></canvas></div>
-<div class="card" style="margin-top:14px">
-<div class="formula">i<sub>A</sub> = I<sub>m</sub> cos(ωt)</div>
-<div class="formula">i<sub>B</sub> = I<sub>m</sub> sin(ωt)</div>
-<div class="formula">B<sub>A</sub> = B<sub>m</sub> cos(ωt)</div>
-<div class="formula">B<sub>B</sub> = B<sub>m</sub> sin(ωt)</div>
-<div class="formula"><b>B⃗ = B⃗<sub>A</sub> + B⃗<sub>B</sub></b></div>
-<div class="formula"><b>|B⃗| = B<sub>m</sub> = const.</b></div>
-<div class="explain" id="info"><b>Стъпка 4.</b> Виолетовият вектор е B⃗ = B⃗A + B⃗B. Понеже BA = Bm cos(ωt) и BB = Bm sin(ωt), получаваме |B⃗| = Bm√(cos²ωt + sin²ωt) = <b>Bm = const.</b> Затова краят на B⃗ описва окръжност и полето се върти равномерно.</div>
+<p class="note">
+Движението е учебно забавено. Посоките на токовете
+в активните страни на намотките се сменят при
+промяна на знака на съответния фазов ток.
+</p>
+</section>
+
+<section class="card">
+
+<h2>Токове с фазово отместване 90°</h2>
+
+<svg id="waveSvg"
+     viewBox="0 0 720 300"
+     role="img"
+     aria-label="Две синусоидални криви с фазово отместване 90 градуса">
+
+<line x1="55" y1="150" x2="675" y2="150"
+ stroke="#8395a5" stroke-width="1.5"/>
+
+<line x1="55" y1="42" x2="55" y2="257"
+ stroke="#8395a5" stroke-width="1.5"/>
+
+<text x="680" y="157" fill="#52677a" font-size="15">
+ωt
+</text>
+
+<text x="20" y="49" fill="#52677a" font-size="14">
+i
+</text>
+
+<path id="waveA"
+ fill="none" stroke="#d52323" stroke-width="3"/>
+
+<path id="waveB"
+ fill="none" stroke="#1559d5" stroke-width="3"/>
+
+<line id="timeCursor"
+ x1="55" y1="45" x2="55" y2="255"
+ stroke="#7030a0" stroke-width="1.8"
+ stroke-dasharray="6 5"/>
+
+<circle id="dotA" r="6" fill="#d52323"/>
+<circle id="dotB" r="6" fill="#1559d5"/>
+
+<text x="85" y="30" fill="#d52323"
+ font-size="17" font-weight="bold">
+i<tspan baseline-shift="sub" font-size="12">A</tspan>
+</text>
+
+<text x="156" y="30" fill="#1559d5"
+ font-size="17" font-weight="bold">
+i<tspan baseline-shift="sub" font-size="12">B</tspan>
+</text>
+
+<text x="55" y="275" text-anchor="middle"
+ fill="#52677a" font-size="13">0°</text>
+
+<text x="210" y="275" text-anchor="middle"
+ fill="#52677a" font-size="13">90°</text>
+
+<text x="365" y="275" text-anchor="middle"
+ fill="#52677a" font-size="13">180°</text>
+
+<text x="520" y="275" text-anchor="middle"
+ fill="#52677a" font-size="13">270°</text>
+
+<text x="675" y="275" text-anchor="middle"
+ fill="#52677a" font-size="13">360°</text>
+
+</svg>
+
+<div class="divider"></div>
+
+<div class="formula">
+i<sub>A</sub> = I<sub>m</sub> cos(ωt)
 </div>
+
+<div class="formula">
+i<sub>B</sub> = I<sub>m</sub> sin(ωt)
 </div>
+
+<div class="formula">
+B<sub>A</sub> = B<sub>m</sub> cos(ωt)
 </div>
+
+<div class="formula">
+B<sub>B</sub> = B<sub>m</sub> sin(ωt)
+</div>
+
+<div class="formula">
+<b>⃗B = ⃗B<sub>A</sub> + ⃗B<sub>B</sub></b>
+</div>
+
+<div class="formula">
+<b>|⃗B| = B<sub>m</sub> = const.</b>
+</div>
+
+<div class="explain" id="info"></div>
+
+<div class="explain">
+<strong>Моментен електрически ъгъл:</strong>
+<span id="angleValue">0°</span>
+
+<div class="divider"></div>
+
+<strong>Модел:</strong> магнитната индукция във всяка ос
+е пропорционална на съответния фазов ток.
+При равни амплитуди и пространствено отместване
+на осите 90° резултантното поле е с постоянна големина.
+</div>
+
+<div class="legend">
+<span>
+<i class="dot" style="background:#d52323"></i>
+Намотка A
+</span>
+
+<span>
+<i class="dot" style="background:#1559d5"></i>
+Намотка B
+</span>
+
+<span>
+<i class="dot" style="background:#7030a0"></i>
+Резултантно поле
+</span>
+</div>
+
+</section>
+</div>
+
+<div id="error" hidden role="alert"></div>
+
+<footer>
+© 2026 доц. д-р инж. Величко Атанасов.
+Всички права запазени.
+</footer>
+
 </div>
 
 <script>
-const f=document.getElementById('field'),c=f.getContext('2d');
-const wv=document.getElementById('waves'),q=wv.getContext('2d');
-const red='#d52323',blue='#1559d5',purple='#7030a0',ink='#17212b',grey='#9aa5b1';
-let mode=0,th=0,running=false,last=0;
+(() => {
+"use strict";
 
-function fit(x,z){
-  const r=x.getBoundingClientRect(),d=devicePixelRatio||1;
-  x.width=r.width*d;x.height=r.height*d;z.setTransform(d,0,0,d,0,0);
+const $ = id => document.getElementById(id);
+const NS = "http://www.w3.org/2000/svg";
+
+const TAU = 2 * Math.PI;
+
+const CX = 400;
+const CY = 288;
+
+let mode = 1;
+let running = true;
+let theta = .30;
+let lastTime = null;
+
+const red = "#d52323";
+const blue = "#1559d5";
+const purple = "#7030a0";
+
+function wrap(a){
+ return ((a % TAU) + TAU) % TAU;
 }
-function line(z,x1,y1,x2,y2,col=ink,lw=1.5,d=[]){
-  z.save();z.strokeStyle=col;z.lineWidth=lw;z.setLineDash(d);z.lineCap='round';
-  z.beginPath();z.moveTo(x1,y1);z.lineTo(x2,y2);z.stroke();z.restore();
+
+function fmt(value,digits=2){
+ const v = Math.abs(value)<.5*Math.pow(
+  10,-digits
+ ) ? 0 : value;
+
+ return v.toLocaleString("bg-BG",{
+  minimumFractionDigits:digits,
+  maximumFractionDigits:digits
+ });
 }
-function arrow(z,x1,y1,x2,y2,col=ink,lw=2){
-  line(z,x1,y1,x2,y2,col,lw);
-  const a=Math.atan2(y2-y1,x2-x1),s=9;
-  z.save();z.fillStyle=col;z.beginPath();z.moveTo(x2,y2);
-  z.lineTo(x2-s*Math.cos(a-.45),y2-s*Math.sin(a-.45));
-  z.lineTo(x2-s*Math.cos(a+.45),y2-s*Math.sin(a+.45));
-  z.closePath();z.fill();z.restore();
+
+function svg(tag,attrs={}){
+ const element=document.createElementNS(NS,tag);
+
+ for(const [key,value] of Object.entries(attrs)){
+  element.setAttribute(key,String(value));
+ }
+
+ return element;
 }
-function text(z,s,x,y,n=15,col=ink,b=false){
-  z.save();z.fillStyle=col;z.font=(b?'bold ':'')+n+'px Arial';
-  z.textAlign='center';z.textBaseline='middle';z.fillText(s,x,y);z.restore();
+
+function setLine(id,x1,y1,x2,y2){
+ const e=$(id);
+
+ e.setAttribute("x1",x1);
+ e.setAttribute("y1",y1);
+ e.setAttribute("x2",x2);
+ e.setAttribute("y2",y2);
 }
-function conductor(x,y,col,dot){
-  c.save();c.strokeStyle=col;c.lineWidth=2.8;c.fillStyle='#fff';
-  c.beginPath();c.arc(x,y,12,0,Math.PI*2);c.fill();c.stroke();c.restore();
-  if(dot){
-    c.fillStyle=col;c.beginPath();c.arc(x,y,3.2,0,Math.PI*2);c.fill();
-  }else{
-    line(c,x-4,y-4,x+4,y+4,col,2);
-    line(c,x-4,y+4,x+4,y-4,col,2);
-  }
+
+/* Класическо означение на активна страна.
+   Кръгче с точка: ток към наблюдателя.
+   Кръгче с кръст: ток от наблюдателя.
+*/
+function createConductor(parent,x,y,color,label){
+ const group=svg("g");
+
+ group.appendChild(svg("rect",{
+  x:x-26,
+  y:y-29,
+  width:52,
+  height:58,
+  rx:9,
+  fill:"#fff",
+  stroke:color,
+  "stroke-width":2.6
+ }));
+
+ group.appendChild(svg("circle",{
+  cx:x,
+  cy:y,
+  r:15,
+  fill:"#fff",
+  stroke:color,
+  "stroke-width":2.6
+ }));
+
+ const dot=svg("circle",{
+  cx:x,cy:y,
+  r:4.6,
+  fill:color
+ });
+
+ const cross=svg("g");
+
+ cross.appendChild(svg("line",{
+  x1:x-7,y1:y-7,
+  x2:x+7,y2:y+7,
+  stroke:color,
+  "stroke-width":3,
+  "stroke-linecap":"round"
+ }));
+
+ cross.appendChild(svg("line",{
+  x1:x-7,y1:y+7,
+  x2:x+7,y2:y-7,
+  stroke:color,
+  "stroke-width":3,
+  "stroke-linecap":"round"
+ }));
+
+ group.appendChild(dot);
+ group.appendChild(cross);
+
+ const text=svg("text",{
+  x:x+31,
+  y:y-20,
+  fill:color,
+  "font-size":17,
+  "font-weight":"bold"
+ });
+
+ text.textContent=label;
+ group.appendChild(text);
+ parent.appendChild(group);
+
+ return {dot,cross};
 }
-function curvedConnection(cx,cy,r,a1,a2,col,side){
-  c.save();c.strokeStyle=col;c.lineWidth=3;
-  c.beginPath();
-  const rr=r+35+side*8;
-  c.arc(cx,cy,rr,a1,a2,false);
-  c.stroke();c.restore();
+
+function polarity(slot,positive){
+ slot.dot.style.display=positive?"":"none";
+ slot.cross.style.display=positive?"none":"";
 }
-function drawWindingA(cx,cy,R){
-  // A winding has its two active sides left and right; its magnetic axis is horizontal.
-  const lx=cx-R, rx=cx+R, y=cy;
-  conductor(lx,y,red,true);
-  conductor(rx,y,red,false);
-  // two visible end connections make it one closed winding
-  curvedConnection(cx,cy,R,Math.PI,2*Math.PI,red,0);
-  curvedConnection(cx,cy,R,0,Math.PI,red,0);
-  text(c,'A',lx-30,y,18,red,true);
-  text(c,"A′",rx+32,y,18,red,true);
-  line(c,cx-R+25,cy,cx+R-25,cy,red,1.5,[7,5]);
-  text(c,'магнитна ос A',cx,cy-22,14,red,true);
+
+/* Активните страни на намотка A са горе и долу.
+   Те създават хоризонтална магнитна ос. */
+const aTop=createConductor(
+ $("windingA"),400,115,red,"A"
+);
+
+const aBottom=createConductor(
+ $("windingA"),400,461,red,"A′"
+);
+
+/* Активните страни на намотка B са ляво и дясно.
+   Те създават вертикална магнитна ос. */
+const bLeft=createConductor(
+ $("windingB"),227,288,blue,"B"
+);
+
+const bRight=createConductor(
+ $("windingB"),573,288,blue,"B′"
+);
+
+/* Графики, построени еднократно */
+function wavePath(fn){
+ let d="";
+
+ for(let i=0;i<=240;i++){
+  const a=TAU*i/240;
+  const x=55+620*i/240;
+  const y=150-76*fn(a);
+
+  d+=(i===0?"M":"L")+
+   x.toFixed(2)+" "+y.toFixed(2)+" ";
+ }
+
+ return d;
 }
-function drawWindingB(cx,cy,R){
-  // B winding has its two active sides top and bottom; magnetic axis vertical.
-  const x=cx, ty=cy-R, by=cy+R;
-  conductor(x,ty,blue,true);
-  conductor(x,by,blue,false);
-  // draw clear side connections just outside stator, as one closed winding
-  c.save();c.strokeStyle=blue;c.lineWidth=3;
-  c.beginPath();c.moveTo(x,ty-12);
-  c.bezierCurveTo(cx+R+55,cy-R-15,cx+R+55,cy+R+15,x,by+12);c.stroke();
-  c.beginPath();c.moveTo(x,ty-12);
-  c.bezierCurveTo(cx-R-55,cy-R-15,cx-R-55,cy+R+15,x,by+12);c.stroke();
-  c.restore();
-  text(c,'B',x,ty-32,18,blue,true);
-  text(c,"B′",x,by+34,18,blue,true);
-  line(c,cx,cy-R+25,cx,cy+R-25,blue,1.5,[7,5]);
-  text(c,'магнитна ос B',cx+60,cy,14,blue,true);
+
+$("waveA").setAttribute(
+ "d",wavePath(Math.cos)
+);
+
+$("waveB").setAttribute(
+ "d",wavePath(Math.sin)
+);
+
+/* Показване на учебните стъпки */
+const explanations={
+ 1:"Стъпка 1. Намотка A–A′ има активни страни горе и долу. Магнитната ѝ ос е хоризонтална. При синусоидален ток магнитното поле по тази ос изменя големината и посоката си.",
+ 2:"Стъпка 2. Намотка B–B′ има активни страни отляво и отдясно. Магнитната ѝ ос е вертикална — перпендикулярна на оста на намотка A. Токът във втората намотка е отместен на 90°.",
+ 3:"Стъпка 3. Двата синусоидални тока създават магнитни полета по две взаимно перпендикулярни оси. Векторите Bₐ и Bᵦ изменят моментните си големини и посоки.",
+ 4:"Стъпка 4. Резултантното магнитно поле е векторната сума на двете полета. При еднакви амплитуди то има постоянна големина и се върти равномерно обратно на часовниковата стрелка в показания модел."
+};
+
+function setMode(next){
+ mode=next;
+
+ document.querySelectorAll(
+  "[data-step]"
+ ).forEach(button=>{
+  button.classList.toggle(
+   "active",
+   Number(button.dataset.step)===mode
+  );
+ });
+
+ $("info").textContent=explanations[mode];
+
+ $("windingA").style.display=
+  mode===2?"none":"";
+
+ $("windingB").style.display=
+  mode===1?"none":"";
+
+ $("axisA").style.display=
+  mode===2?"none":"";
+
+ $("axisB").style.display=
+  mode===1?"none":"";
+
+ $("vectorA").style.display=
+  mode===2?"none":"";
+
+ $("vectorB").style.display=
+  mode===1?"none":"";
+
+ $("labelA").style.display=
+  mode===2?"none":"";
+
+ $("labelB").style.display=
+  mode===1?"none":"";
+
+ $("vectorR").style.display=
+  mode===4?"":"none";
+
+ $("labelR").style.display=
+  mode===4?"":"none";
+
+ $("angleArc").style.display=
+  mode===4?"":"none";
+
+ $("angleText").style.display=
+  mode===4?"":"none";
+
+ $("directionText").style.display=
+  mode===4?"":"none";
+
+ $("waveA").style.opacity=mode===2?".20":"1";
+ $("waveB").style.opacity=mode===1?".20":"1";
+
+ draw();
 }
-function drawField(){
-  const W=f.clientWidth,H=f.clientHeight;
-  c.clearRect(0,0,W,H);
-  const cx=W/2,cy=H*.52,R=Math.min(W,H)*.30,stator=R+55;
 
-  text(c,'ДВЕ ОТДЕЛНИ НАМОТКИ',cx,24,17,'#173f70',true);
+function draw(){
+ const ia=Math.cos(theta);
+ const ib=Math.sin(theta);
 
-  c.save();c.strokeStyle='#7f8b97';c.lineWidth=2.2;
-  c.beginPath();c.arc(cx,cy,stator,0,Math.PI*2);c.stroke();
-  c.strokeStyle='#c7ced5';c.lineWidth=1.2;
-  c.beginPath();c.arc(cx,cy,R,0,Math.PI*2);c.stroke();
-  c.restore();
+ const strength=Math.hypot(ia,ib);
+ const scale=133;
 
-  // Always show A; show B from step 2 onward.
-  drawWindingA(cx,cy,R);
-  if(mode>=1) drawWindingB(cx,cy,R);
+ /* Посоките на токовете се сменят със знака. */
+ polarity(aTop,ia>=0);
+ polarity(aBottom,ia<0);
 
-  // 90-degree marker
-  if(mode>=1){
-    c.save();c.strokeStyle=ink;c.lineWidth=1.4;c.beginPath();c.arc(cx,cy,42,-Math.PI/2,0);c.stroke();c.restore();
-    text(c,'90°',cx+50,cy-48,14,ink,true);
-  }
+ polarity(bLeft,ib>=0);
+ polarity(bRight,ib<0);
 
-  c.fillStyle=ink;c.beginPath();c.arc(cx,cy,3.5,0,Math.PI*2);c.fill();
-  text(c,'O',cx-13,cy+16,14);
+ const ax=CX+scale*ia;
+ const by=CY-scale*ib;
 
-  const ia=Math.cos(th), ib=Math.sin(th);
+ setLine("vectorA",CX,CY,ax,CY);
+ setLine("vectorB",CX,CY,CX,by);
+ setLine("vectorR",CX,CY,ax,by);
 
-  if(mode>=2){
-    // BA lies only on horizontal A axis
-    arrow(c,cx,cy,cx+R*.62*ia,cy,red,3.2);
-    text(c,'BA',cx+R*.62*ia,cy-22,15,red,true);
+ $("vectorA").setAttribute(
+  "opacity",Math.abs(ia)<.015?".08":"1"
+ );
 
-    // BB lies only on vertical B axis
-    arrow(c,cx,cy,cx,cy-R*.62*ib,blue,3.2);
-    text(c,'BB',cx+22,cy-R*.62*ib,15,blue,true);
-  }
+ $("vectorB").setAttribute(
+  "opacity",Math.abs(ib)<.015?".08":"1"
+ );
 
-  if(mode>=3){
-    const ex=cx+R*.62*ia, ey=cy-R*.62*ib;
-    arrow(c,cx,cy,ex,ey,purple,5);
-    text(c,'B – резултантно',ex,ey-25,16,purple,true);
+ $("labelA").setAttribute(
+  "x",ax+(ia>=0?9:-35)
+ );
 
-    c.save();c.strokeStyle=purple;c.lineWidth=2.2;
-    c.beginPath();c.arc(cx,cy,R*.80,-.18,-1.02,true);c.stroke();c.restore();
-    arrow(c,cx+R*.80*Math.cos(-.95),cy+R*.80*Math.sin(-.95),
-            cx+R*.80*Math.cos(-1.02),cy+R*.80*Math.sin(-1.02),purple,2.2);
-    text(c,'посока на въртене',cx+R*.52,cy-R*.73,14,purple,true);
-  }
+ $("labelA").setAttribute(
+  "y",CY-19
+ );
+
+ $("labelB").setAttribute(
+  "x",CX+14
+ );
+
+ $("labelB").setAttribute(
+  "y",by+(ib>=0?-13:24)
+ );
+
+ $("labelR").setAttribute(
+  "x",ax+(ia>=0?12:-32)
+ );
+
+ $("labelR").setAttribute(
+  "y",by+(ib>=0?-15:24)
+ );
+
+ /* Ъгъл на результантното поле */
+ const a=wrap(theta);
+ const radius=56;
+
+ const arcEndX=CX+radius*Math.cos(a);
+ const arcEndY=CY-radius*Math.sin(a);
+
+ const largeArc=a>Math.PI?1:0;
+
+ const arcPath=
+  "M"+(CX+radius)+" "+CY+
+  " A"+radius+" "+radius+
+  " 0 "+largeArc+" 0 "+
+  arcEndX+" "+arcEndY;
+
+ $("angleArc").setAttribute("d",arcPath);
+
+ $("angleText").setAttribute(
+  "x",CX+75*Math.cos(a/2)
+ );
+
+ $("angleText").setAttribute(
+  "y",CY-75*Math.sin(a/2)
+ );
+
+ /* Токове */
+ $("valueA").textContent=fmt(ia,2)+" Iₘ";
+ $("valueB").textContent=fmt(ib,2)+" Iₘ";
+ $("valueR").textContent=fmt(strength,3)+" Bₘ";
+
+ $("angleValue").textContent=
+  fmt(a*180/Math.PI,1)+"°";
+
+ /* Синусоиди — същият момент като при векторите */
+ const x=55+620*a/TAU;
+
+ setLine("timeCursor",x,45,x,255);
+
+ $("dotA").setAttribute("cx",x);
+ $("dotA").setAttribute(
+  "cy",150-76*ia
+ );
+
+ $("dotB").setAttribute("cx",x);
+ $("dotB").setAttribute(
+  "cy",150-76*ib
+ );
+
+ $("speedValue").textContent=
+  $("speed").value+"%";
 }
-function drawWaves(){
-  const W=wv.clientWidth,H=wv.clientHeight;
-  q.clearRect(0,0,W,H);
-  const L=42,R=W-14,T=30,B=H-35,M=(T+B)/2,A=(B-T)*.32;
-  line(q,L,M,R,M,'#555',1);
-  line(q,L,T,L,B,'#555',1);
 
-  // iA = cos; iB = sin = cos(θ - 90°)
-  [[0,red,'iA'],[-Math.PI/2,blue,'iB']].forEach((v,k)=>{
-    q.save();q.strokeStyle=v[1];q.lineWidth=2.2;q.beginPath();
-    for(let px=L;px<=R;px++){
-      const u=(px-L)/(R-L)*2*Math.PI;
-      const yy=M-A*Math.cos(u+v[0]);
-      px===L?q.moveTo(px,yy):q.lineTo(px,yy);
-    }
-    q.stroke();q.restore();
-    text(q,v[2],L+26,T+17+k*22,14,v[1],true);
-  });
-
-  const xx=L+(((th%(2*Math.PI)+2*Math.PI)%(2*Math.PI))/(2*Math.PI))*(R-L);
-  line(q,xx,T,xx,B,purple,1.7,[4,3]);
-  text(q,'текущ момент',xx,B+16,12,purple);
-  text(q,'90° фазово отместване',W*.72,20,14,ink,true);
-}
-function update(){
-  const ia=Math.cos(th),ib=Math.sin(th);
-  va.textContent='iA = '+ia.toFixed(2)+' Im';
-  vb.textContent='iB = '+ib.toFixed(2)+' Im';
-
-  if(mode===0)
-    info.innerHTML='<b>Стъпка 1.</b> Червената линия е <b>една намотка A–A′</b>. Двете кръгчета са нейните две активни страни. Точката и кръстът показват противоположни посоки на тока.';
-  if(mode===1)
-    info.innerHTML='<b>Стъпка 2.</b> Добавяме <b>втора отделна намотка B–B′</b>. Нейната магнитна ос е перпендикулярна на оста на A. Следователно двете магнитни оси са на <b>90°</b>.';
-  if(mode===2)
-    info.innerHTML='<b>Стъпка 3.</b> Токът iA създава поле BA само по хоризонталната ос A, а токът iB – поле BB само по вертикалната ос B. Токовете са отместени във времето на <b>90°</b>.';
-  if(mode===3)
-    info.innerHTML='<b>Стъпка 4.</b> Виолетовият вектор е B⃗ = B⃗A + B⃗B. Понеже BA = Bm cos(ωt) и BB = Bm sin(ωt), получаваме |B⃗| = Bm√(cos²ωt + sin²ωt) = <b>Bm = const.</b> Затова краят на B⃗ описва окръжност и полето се върти равномерно.';
-
-  drawField();
-  drawWaves();
-}
-document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{
-  mode=+b.dataset.mode;
-  document.querySelectorAll('[data-mode]').forEach(x=>x.classList.toggle('on',x===b));
-  if(mode<3){running=false;play.textContent='Старт'}
-  update();
+/* Управление */
+document.querySelectorAll(
+ "[data-step]"
+).forEach(button=>{
+ button.addEventListener("click",()=>{
+  setMode(Number(button.dataset.step));
+ });
 });
-play.onclick=()=>{running=!running;play.textContent=running?'Пауза':'Старт'};
-reset.onclick=()=>{th=0;running=false;play.textContent='Старт';update()};
-function resize(){fit(f,c);fit(wv,q);update()}
-window.onresize=resize;resize();
-function loop(ts){
-  if(!last)last=ts;
-  const dt=Math.min((ts-last)/1000,.04);last=ts;
-  if(running){
-    th+=dt*(+speed.value/70)*.85;
-    update();
+
+$("pause").addEventListener("click",()=>{
+ running=!running;
+
+ $("pause").textContent=running
+  ?"Ⅱ Пауза"
+  :"▶ Продължи";
+
+ lastTime=null;
+});
+
+$("reset").addEventListener("click",()=>{
+ theta=0;
+ running=true;
+ lastTime=null;
+
+ $("speed").value=70;
+ $("pause").textContent="Ⅱ Пауза";
+
+ setMode(1);
+});
+
+$("speed").addEventListener("input",draw);
+
+document.addEventListener(
+ "visibilitychange",()=>{
+  lastTime=null;
+ }
+);
+
+/* Единствен анимационен цикъл */
+function animate(now){
+ try{
+  const dt=lastTime===null
+   ?0
+   :Math.min(.05,Math.max(0,(now-lastTime)/1000));
+
+  lastTime=now;
+
+  if(running && !document.hidden){
+   const speed=Number($("speed").value)/70;
+
+   /* Един оборот за около 7 s при 70%. */
+   theta=wrap(theta+dt*TAU*speed/7);
   }
-  requestAnimationFrame(loop);
+
+  if(!document.hidden){
+   draw();
+  }
+
+ }catch(error){
+  console.error(error);
+
+  $("error").hidden=false;
+  $("error").textContent=
+   "Грешка в анимацията: "+error.message;
+
+  running=false;
+ }
+
+ requestAnimationFrame(animate);
 }
-requestAnimationFrame(loop);
+
+/* Ограничения срещу обичайно копиране */
+document.addEventListener("contextmenu",event=>{
+ event.preventDefault();
+});
+
+document.addEventListener("copy",event=>{
+ event.preventDefault();
+});
+
+window.addEventListener("keydown",event=>{
+ const modifier=event.ctrlKey||event.metaKey;
+ const key=String(event.key).toLowerCase();
+
+ if(
+  (modifier&&["s","u"].includes(key))||
+  event.key==="F12"||
+  (modifier&&event.shiftKey&&
+   ["i","j","c"].includes(key))
+ ){
+  event.preventDefault();
+ }
+},true);
+
+/* Начало */
+setMode(1);
+requestAnimationFrame(animate);
+
+})();
 </script>
 
-</body></html>
+</body>
+</html>

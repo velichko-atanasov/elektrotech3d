@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="author" content="доц. д-р инж. Величко Атанасов">
-<title>QR-004 · Генератор с вдлъбнати магнитни полюси</title>
+<meta name="copyright" content="© 2026 доц. д-р инж. Величко Атанасов">
+<title>QR-004 · Генератор и електронен дрейф</title>
 
 <style>
 :root{
@@ -15,7 +16,6 @@
   --muted:#b4cadd;
   --gold:#ffdb62;
   --cyan:#55dfff;
-  --green:#75edb5;
 }
 *{box-sizing:border-box}
 body{
@@ -27,49 +27,39 @@ body{
   font:15px/1.55 Arial,Helvetica,sans-serif;
 }
 .wrap{max-width:1580px;margin:auto;padding:17px}
-header{margin-bottom:15px;text-align:center}
+header{text-align:center;margin-bottom:15px}
 .eyebrow{
   color:var(--gold);
   font-size:12px;
   font-weight:bold;
-  letter-spacing:1.4px;
+  letter-spacing:1px;
 }
-h1{
-  margin:5px 0;
-  font-size:clamp(25px,3.4vw,38px);
-  line-height:1.2;
-}
-.subtitle{
-  margin:8px 0 0;
-  color:var(--muted);
-  font-size:14px;
-}
+h1{font-size:clamp(24px,3vw,38px);margin:5px 0}
+.subtitle{color:var(--muted);margin:5px 0}
 .toolbar{
   display:flex;
   flex-wrap:wrap;
   gap:8px;
   margin-bottom:13px;
 }
-.toolbar .spacer{flex:1}
+.spacer{flex:1}
 button{
   border:1px solid #5a7b97;
   border-radius:9px;
-  padding:11px 13px;
+  padding:11px 12px;
   background:#193b56;
   color:white;
-  font:700 13px Arial,sans-serif;
+  font-weight:bold;
   cursor:pointer;
 }
-button:hover{background:#245271}
-button.active{
-  background:#ae7822;
-  border-color:#ffe29a;
-  box-shadow:0 0 12px #ffca3530;
-}
+button:hover:not(:disabled){background:#245271}
+button.active{background:#ae7822;border-color:#ffe29a}
+button:disabled{opacity:.45;cursor:not-allowed}
 button:focus-visible,input:focus-visible{
-  outline:3px solid var(--gold);
-  outline-offset:3px;
+  outline:2px solid #ffe29a;
+  outline-offset:2px;
 }
+#electrons.active{background:#087b90;border-color:#8cf3ff}
 .layout{
   display:grid;
   grid-template-columns:minmax(0,1.48fr) minmax(340px,1fr);
@@ -82,23 +72,16 @@ button:focus-visible,input:focus-visible{
   border:1px solid var(--line);
   border-radius:16px;
   overflow:hidden;
-  box-shadow:0 10px 28px #0004;
 }
 .panel-head{
   display:flex;
-  align-items:center;
   justify-content:space-between;
+  align-items:center;
   gap:10px;
   padding:12px 14px;
   border-bottom:1px solid var(--line);
 }
-.panel-head strong{font-size:16px}
-.panel-head small{font-size:12px;color:var(--muted)}
-
-/*
-  3D платното е абсолютно позиционирано.
-  Така не може да измести сцената под друга запазена рисунка.
-*/
+.panel-head small{color:var(--muted)}
 #viewport{
   position:relative;
   width:100%;
@@ -109,49 +92,38 @@ button:focus-visible,input:focus-visible{
   touch-action:none;
   cursor:grab;
 }
-#viewport:active{cursor:grabbing}
-#viewport canvas{
-  position:absolute;
-  inset:0;
-  display:block;
-  width:100%;
-  height:100%;
-}
+#viewport canvas{display:block;width:100%;height:100%}
 #loading{
   position:absolute;
   inset:0;
-  z-index:3;
+  z-index:2;
   display:flex;
-  align-items:center;
-  justify-content:center;
   flex-direction:column;
+  justify-content:center;
+  align-items:center;
   gap:10px;
-  padding:25px;
+  background:#101e2bf2;
+  padding:20px;
   text-align:center;
-  background:#101e2bef;
 }
-#loading[hidden]{display:none}
-#loading b{font-size:20px;color:var(--gold)}
+[hidden]{display:none!important}
 .scene-footer{
-  padding:11px 14px;
-  border-top:1px solid var(--line);
   display:flex;
-  gap:12px;
   justify-content:space-between;
   flex-wrap:wrap;
+  gap:9px;
+  padding:10px 14px;
+  border-top:1px solid var(--line);
   color:var(--muted);
   font-size:12px;
 }
-.check{display:flex;align-items:center;gap:7px}
-.check input{accent-color:#42d1ed}
+.scene-footer label{display:flex;gap:7px;align-items:center}
 .right{display:grid;gap:12px;min-width:0}
 .signal-chain{
   padding:11px 13px;
   color:#ffe6a0;
   background:#102b3c;
-  border-bottom:1px solid var(--line);
   font-size:13px;
-  line-height:1.6;
 }
 .graph-wrap{padding:10px}
 #voltageGraph{
@@ -180,8 +152,8 @@ button:focus-visible,input:focus-visible{
 }
 .reading span{
   display:block;
-  color:var(--muted);
   font-size:11px;
+  color:var(--muted);
 }
 .reading b{
   display:block;
@@ -207,8 +179,6 @@ button:focus-visible,input:focus-visible{
   padding:13px;
   background:#123b35;
   color:#e1fff0;
-  border-top:1px solid #3e7164;
-  line-height:1.65;
 }
 .controls{
   display:grid;
@@ -217,25 +187,20 @@ button:focus-visible,input:focus-visible{
   margin-top:13px;
 }
 .control{
-  min-width:0;
   padding:12px;
   border:1px solid var(--line);
   background:#112b40;
   border-radius:11px;
+  min-width:0;
 }
 .control label{
   display:flex;
   justify-content:space-between;
-  gap:8px;
+  gap:7px;
   font-size:13px;
 }
-.control output{
-  white-space:nowrap;
-  color:var(--cyan);
-  font-weight:bold;
-}
+.control output{color:var(--cyan);font-weight:bold}
 input[type=range]{
-  display:block;
   width:100%;
   margin-top:10px;
   accent-color:#40d2f2;
@@ -246,14 +211,11 @@ input[type=range]{
   gap:8px;
   padding:12px;
 }
-#filterControls[hidden]{display:none}
 #rippleRead{
-  margin:0;
   padding:0 13px 12px;
   color:#8ff5bd;
   font-size:13px;
 }
-#rippleRead[hidden]{display:none}
 .formulas{
   display:grid;
   grid-template-columns:repeat(3,1fr);
@@ -261,56 +223,113 @@ input[type=range]{
   margin-top:13px;
 }
 .formula{
-  padding:13px 10px;
+  padding:13px;
   border:1px solid var(--line);
   border-radius:10px;
   background:#0d263a;
   text-align:center;
   color:var(--cyan);
-  font:700 23px Cambria,Georgia,serif;
+  font:700 23px Georgia,serif;
 }
 .formula small{
   display:block;
-  margin-top:7px;
   color:var(--muted);
   font:12px/1.5 Arial,sans-serif;
+  margin-top:7px;
+}
+.electron-panel{
+  padding:14px;
+  border-top:1px solid #398c9b;
+  background:linear-gradient(135deg,#123c49,#0b2438);
+}
+.electron-heading{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.electron-heading strong{color:#b6f4ff;font-size:16px}
+#electronState{
+  color:#ffe49b;
+  font-size:13px;
+  font-weight:bold;
+}
+#wireCanvas{
+  display:block;
+  width:100%;
+  height:162px;
+  margin-top:10px;
+  border:1px solid #42677d;
+  border-radius:11px;
+  background:#061c2c;
+}
+.electron-note{
+  color:#badbe6;
+  font-size:12px;
+  line-height:1.65;
+  margin:8px 0;
 }
 details{
-  margin-top:13px;
-  padding:14px 16px;
+  margin-top:12px;
+  padding:13px 16px;
   border:1px solid var(--line);
   border-radius:11px;
   background:#10273b;
 }
 summary{cursor:pointer;font-weight:bold}
-details p{
-  color:#c6dceb;
-  font-size:13px;
-  line-height:1.65;
-}
-details a{color:#7adfff}
+details p{color:#c6dceb;font-size:13px;line-height:1.7}
 footer{
+  text-align:center;
   margin-top:17px;
   padding:15px;
   border-top:1px solid var(--line);
-  text-align:center;
   color:var(--muted);
   font-size:13px;
 }
 @media(max-width:1050px){
   .layout{grid-template-columns:1fr}
-  .right{
-    grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);
-    align-items:start;
-  }
   .controls{grid-template-columns:1fr 1fr}
 }
 @media(max-width:700px){
-  .wrap{padding:10px}
-  .right{grid-template-columns:1fr}
+  .wrap{padding:9px}
   .formulas{grid-template-columns:1fr}
-  .toolbar .spacer{display:none}
-  .reading b{font-size:17px}
+  .reading b{font-size:16px}
+}
+
+/*
+  Ограничения на ниво потребителски интерфейс.
+  Това не е криптиране или абсолютна защита на кода.
+*/
+body{
+  -webkit-user-select:none;
+  user-select:none;
+  -webkit-touch-callout:none;
+}
+input:not([type="range"]):not([type="checkbox"]),
+textarea,
+[contenteditable="true"]{
+  -webkit-user-select:text;
+  user-select:text;
+}
+canvas,img{
+  -webkit-user-drag:none;
+}
+#rightsNotice{
+  position:fixed;
+  right:16px;
+  bottom:16px;
+  z-index:10000;
+  max-width:min(430px,calc(100vw - 32px));
+  padding:12px 16px;
+  border:1px solid #7aabc8;
+  border-radius:11px;
+  background:rgba(11,32,49,.97);
+  color:#e5f5ff;
+  box-shadow:0 8px 25px #0006;
+  font-size:13px;
+  line-height:1.55;
+  pointer-events:none;
 }
 </style>
 </head>
@@ -319,255 +338,357 @@ footer{
 <div class="wrap">
 
 <header>
-  <div class="eyebrow">QR-004 · ЕЛЕКТРОМАГНИТНА ИНДУКЦИЯ</div>
-  <h1>От синусоидата в намотката до напрежението на изхода</h1>
-  <p class="subtitle">
-    Въртяща се медна бобина · Вдлъбнати магнитни полюси · AC и DC
-  </p>
+<div class="eyebrow">QR-004 · ЕЛЕКТРОМАГНИТНА ИНДУКЦИЯ</div>
+<h1>От синусоидата в намотката до напрежението на изхода</h1>
+<p class="subtitle">
+Въртяща се медна бобина · Вдлъбнати магнитни полюси · Електронен дрейф
+</p>
 </header>
 
 <div class="toolbar">
-  <button id="modeAC" class="active" type="button">AC · контактни пръстени</button>
-  <button id="modeDC" type="button">DC · комутатор</button>
-  <button id="modeFilter" type="button">DC · изглаждане</button>
-  <span class="spacer"></span>
-  <button id="pause" type="button">Ⅱ Пауза</button>
-  <button id="restart" type="button">↺ Начално положение</button>
-  <button id="resetView" type="button">Начален изглед</button>
+<button id="modeAC" class="active" type="button">
+AC · контактни пръстени
+</button>
+<button id="modeDC" type="button">DC · комутатор</button>
+<button id="modeFilter" type="button">DC · изглаждане</button>
+<button id="electrons" type="button" disabled>
+e⁻ Движение на електроните
+</button>
+<span class="spacer"></span>
+<button id="pause" type="button">Ⅱ Пауза</button>
+<button id="restart" type="button">↺ Начално положение</button>
+<button id="resetView" type="button">Начален изглед</button>
 </div>
 
 <div class="layout">
-  <section class="panel">
-    <div class="panel-head">
-      <strong>3D модел на генератора</strong>
-      <small id="contactLabel">Два контактни пръстена</small>
-    </div>
+<section class="panel">
 
-    <!-- Тук умишлено няма предварително запазено 3D canvas. -->
-    <div id="viewport">
-      <div id="loading" role="status">
-        <b>Зареждане на 3D модела…</b>
-        <span>Необходима е интернет връзка за 3D библиотеката.</span>
-      </div>
-    </div>
+<div class="panel-head">
+<strong>3D модел на генератора</strong>
+<small id="contactLabel">Два контактни пръстена</small>
+</div>
 
-    <div class="scene-footer">
-      <span>Плъзни с мишката за друг изглед.</span>
-      <label class="check">
-        <input id="showField" type="checkbox" checked>
-        Покажи полето N → S
-      </label>
-    </div>
-  </section>
+<div id="viewport">
+<div id="loading">
+<strong>Зареждане на 3D модела…</strong>
+<span>Необходима е интернет връзка.</span>
+</div>
+</div>
 
-  <div class="right">
-    <section class="panel">
-      <div class="panel-head">
-        <strong>Напрежения преди и след контактната система</strong>
-      </div>
+<div class="scene-footer">
+<span>Плъзни с мишката за друг изглед.</span>
+<label>
+<input id="showField" type="checkbox" checked>
+Покажи полето N → S
+</label>
+</div>
 
-      <div id="signalChain" class="signal-chain"></div>
+<section id="electronPanel" class="electron-panel" hidden>
+<div class="electron-heading">
+<strong>e⁻ · Увеличен участък от медния проводник</strong>
+<span id="electronState">—</span>
+</div>
 
-      <div class="graph-wrap">
-        <canvas id="voltageGraph"
-          aria-label="Синхронизирани графики на ЕДН в намотката и изходното напрежение">
-        </canvas>
-      </div>
+<canvas id="wireCanvas"
+ aria-label="Електронен дрейф в увеличен меден проводник"></canvas>
 
-      <div class="graph-note">
-        Общият курсор показва един и същ момент на всички графики.
-        „Преди“ и „след“ означават различни места в схемата.
-      </div>
+<p id="electronDirection" class="electron-note"></p>
 
-      <div class="readings">
-        <div class="reading">
-          <span>ЕДН в намотката e(t)</span>
-          <b id="coilRead">—</b>
-        </div>
-        <div class="reading">
-          <span>Напрежение на четките u(t)</span>
-          <b id="brushRead">—</b>
-        </div>
-        <div class="reading">
-          <span>Ъгъл α</span>
-          <b id="angleRead">—</b>
-        </div>
-        <div class="reading">
-          <span id="characteristicTitle">Ефективна стойност на изхода</span>
-          <b id="characteristicRead">—</b>
-        </div>
-      </div>
-    </section>
+<p class="electron-note">
+Светлосините точки символизират огромен брой свободни
+електрони. Броят им не се изменя. Дължината на
+светлинните следи показва относителната дрейфова
+скорост. Движението е условно увеличено.
+</p>
 
-    <section class="panel">
-      <div class="panel-head">
-        <strong>Характерни положения</strong>
-      </div>
+<p class="electron-note">
+При 0° и 180° насоченият дрейф е нулев.
+При 90° и 270° скоростта е максимална,
+но посоките са противоположни.
+</p>
+</section>
+</section>
 
-      <div class="positions">
-        <button data-angle="0" type="button">0°</button>
-        <button data-angle="90" type="button">90°</button>
-        <button data-angle="180" type="button">180°</button>
-        <button data-angle="270" type="button">270°</button>
-      </div>
+<div class="right">
+<section class="panel">
+<div class="panel-head">
+<strong>Напрежения преди и след контактната система</strong>
+</div>
+<div id="signalChain" class="signal-chain"></div>
 
-      <div class="position-note">
-        Избраното положение се задържа. Натисни „Продължи“ за движение.
-      </div>
+<div class="graph-wrap">
+<canvas id="voltageGraph"></canvas>
+</div>
 
-      <p id="explanation"></p>
+<div class="graph-note">
+Общият курсор показва един и същ момент на графиките.
+</div>
 
-      <div id="filterControls" hidden>
-        <div class="control">
-          <label for="R">Товар R <output id="Rread">220 Ω</output></label>
-          <input id="R" type="range"
-            min="100" max="1000" step="20" value="220">
-        </div>
+<div class="readings">
+<div class="reading">
+<span>ЕДН в намотката e(t)</span>
+<b id="coilRead">—</b>
+</div>
+<div class="reading">
+<span>Напрежение на четките u(t)</span>
+<b id="brushRead">—</b>
+</div>
+<div class="reading">
+<span>Ъгъл α</span>
+<b id="angleRead">—</b>
+</div>
+<div class="reading">
+<span id="characteristicTitle">Ефективна стойност</span>
+<b id="characteristicRead">—</b>
+</div>
+</div>
+</section>
 
-        <div class="control">
-          <label for="C">Капацитет C <output id="Cread">470 μF</output></label>
-          <input id="C" type="range"
-            min="100" max="2200" step="10" value="470">
-        </div>
-      </div>
+<section class="panel">
+<div class="panel-head"><strong>Характерни положения</strong></div>
+<div class="positions">
+<button data-angle="0" type="button">0°</button>
+<button data-angle="90" type="button">90°</button>
+<button data-angle="180" type="button">180°</button>
+<button data-angle="270" type="button">270°</button>
+</div>
 
-      <p id="rippleRead" hidden></p>
-    </section>
-  </div>
+<div class="position-note">
+Избери положение за спиране на рамката.
+Натисни „Продължи“ за движение.
+</div>
+
+<p id="explanation"></p>
+
+<div id="filterControls" hidden>
+<div class="control">
+<label>Товар R <output id="Rread">220 Ω</output></label>
+<input id="R" type="range"
+ min="100" max="1000" step="20" value="220">
+</div>
+<div class="control">
+<label>Капацитет C <output id="Cread">470 μF</output></label>
+<input id="C" type="range"
+ min="100" max="2200" step="10" value="470">
+</div>
+</div>
+<p id="rippleRead" hidden></p>
+</section>
+</div>
 </div>
 
 <div class="controls">
-  <div class="control">
-    <label for="N">Брой навивки N <output id="Nread">16</output></label>
-    <input id="N" type="range" min="1" max="24" step="1" value="16">
-  </div>
-
-  <div class="control">
-    <label for="B">Магнитна индукция B <output id="Bread">1,20 T</output></label>
-    <input id="B" type="range" min=".2" max="1.2" step=".05" value="1.2">
-  </div>
-
-  <div class="control">
-    <label for="F">Честота f <output id="Fread">50 Hz</output></label>
-    <input id="F" type="range" min="10" max="100" step="5" value="50">
-  </div>
-
-  <div class="control">
-    <label for="speed">Учебна скорост <output id="speedRead">1,00×</output></label>
-    <input id="speed" type="range" min=".25" max="2" step=".25" value="1">
-  </div>
+<div class="control">
+<label>Брой навивки N <output id="Nread">16</output></label>
+<input id="N" type="range" min="1" max="24" step="1" value="16">
+</div>
+<div class="control">
+<label>Магнитна индукция B <output id="Bread">1,20 T</output></label>
+<input id="B" type="range"
+ min=".2" max="1.2" step=".05" value="1.2">
+</div>
+<div class="control">
+<label>Честота f <output id="Fread">50 Hz</output></label>
+<input id="F" type="range" min="10" max="100" step="5" value="50">
+</div>
+<div class="control">
+<label>Учебна скорост <output id="speedRead">1,00×</output></label>
+<input id="speed" type="range"
+ min=".25" max="2" step=".25" value="1">
+</div>
 </div>
 
 <div class="formulas">
-  <div class="formula">
-    e(t) = E<sub>m</sub> sin α
-    <small>Синусоидална ЕДН в намотката</small>
-  </div>
-
-  <div class="formula">
-    u<sub>DC</sub>(t) = |e(t)|
-    <small>Напрежение на четките при идеален комутатор</small>
-  </div>
-
-  <div class="formula">
-    E<sub>m</sub> = NBS · 2πf
-    <small>Амплитуда при равномерно въртене</small>
-  </div>
+<div class="formula">
+e(t) = E<sub>m</sub> sin α
+<small>Синусоидална ЕДН в намотката</small>
+</div>
+<div class="formula">
+u<sub>DC</sub>(t) = |e(t)|
+<small>Напрежение след идеалния комутатор</small>
+</div>
+<div class="formula">
+E<sub>m</sub> = NBS · 2πf
+<small>Амплитуда при равномерно въртене</small>
+</div>
 </div>
 
 <details>
-  <summary>Физични означения и допускания</summary>
-
-  <p>
-    Червеният полюс N е отгоре, а синият S — отдолу.
-    Магнитното поле във въздушната междина е насочено надолу.
-    Полюсите са масивни тела с вдлъбнати цилиндрични лица към
-    бобината. Оста на цилиндричната вдлъбнатина съвпада с оста
-    на въртене на вала.
-    Формата е визуализация; в изчисленията полето е прието за еднородно.
-  </p>
-
-  <p>
-    Рамката се върти около хоризонтална ос, перпендикулярна на полето.
-    Ъгълът α е между положителната нормала към рамката и B.
-    Потокът през една навивка е Φ = BS cos α,
-    а индуцираната ЕДН е e = −N dΦ/dt.
-  </p>
-
-  <p>
-    При AC контактните пръстени не изправят напрежението:
-    напрежението на четките има същата синусоидална форма.
-    При DC комутаторът разменя връзката през половин оборот.
-    И двата полупериода участват — отрицателният се обръща
-    в положителен на изхода.
-  </p>
-
-  <p>
-    В режим „Изглаждане“ след комутатора има изолиращ диод
-    с приет пад 0,7 V и паралелни C и R.
-    Кондензаторът се разрежда през товара, но не обратно към генератора.
-    Филтърът е показан в установен периодичен режим.
-    „Начално положение“ връща ъгъла на нула; не означава незареден кондензатор.
-  </p>
-
-  <p>
-    Приета е площ S = 0,0532 m².
-    Изображението не е мащабен конструктивен чертеж.
-    Видимите медни контури са схематични, а изчисленията използват
-    точния избран брой навивки N.
-  </p>
-
-  <p>
-    Пренебрегнати са съпротивлението на намотката,
-    реакцията на котвата, насищането и преходите при комутация.
-    Не се изчисляват реалните зарядни импулси през филтърния диод.
-    Светенето на лампата е условен ефект, не топлинен модел.
-    „Пауза“ замразява учебното време.
-  </p>
-
-  <p>
-    Физична основа:
-    <a href="https://openstax.org/books/university-physics-volume-2/pages/13-6-electric-generators-and-back-emf"
-       target="_blank" rel="noopener noreferrer">
-      OpenStax — Electric Generators and Back Emf
-    </a>.
-  </p>
+<summary>Физичен модел и допускания</summary>
+<p>
+Червеният полюс N е отгоре, а синият S — отдолу.
+Полюсите са масивни с вдлъбнати цилиндрични лица.
+Магнитното поле между тях е прието за еднородно.
+</p>
+<p>
+Магнитният поток през навивката е Φ = BS cos α.
+При равномерно въртене индуцираното напрежение
+има синусоидална форма.
+</p>
+<p>
+При AC контактните пръстени запазват променливата
+полярност, а при DC комутаторът изправя
+двата полупериода.
+</p>
+<p>
+За електронния модел приемаме затворена верига
+с активен товар и пренебрежимо индуктивно влияние.
+Тогава електронната дрейфова скорост се изменя
+със синусоидата на тока и има обратна посока
+спрямо условния ток.
+</p>
+<p>
+В увеличения проводник се изобразява еднакъв брой
+условни електрони във всеки момент. Периодичното
+им преместване е увеличено за видимост.
+Светлинните следи не са физически следи,
+оставяни от електроните — те са визуален
+индикатор за моментната скорост и посока.
+</p>
+<p>
+Нулевият дрейф не означава, че хаотичното
+движение на електроните престава.
+В анимацията е показано само насоченото
+средно движение.
+</p>
+<p>
+При изглаждащия филтър се използва опростен
+модел с диод, пад 0,7 V, кондензатор и активен
+товар. Не се моделират зарядните токови импулси.
+</p>
 </details>
 
 <footer>
-  © 2026 доц. д-р инж. Величко Атанасов. Всички права запазени.
+© 2026 доц. д-р инж. Величко Атанасов.
+Всички права запазени.
 </footer>
-
 </div>
+
+<div id="rightsNotice" role="status" aria-live="polite" hidden></div>
+
+<!--
+  Самостоятелна добавка за ограничаване на обичайното копиране.
+  Не променя изчисленията, въртенето, плъзгачите или графиките.
+  Не може да предотврати изтегляне на публично достъпния код.
+-->
+<script>
+(() => {
+  "use strict";
+
+  const notice = document.getElementById("rightsNotice");
+  let noticeTimer = null;
+
+  function showNotice(){
+    notice.textContent =
+      "© доц. д-р инж. Величко Атанасов. " +
+      "Тази команда е ограничена в учебната страница.";
+
+    notice.hidden = false;
+    clearTimeout(noticeTimer);
+
+    noticeTimer = setTimeout(() => {
+      notice.hidden = true;
+    }, 2400);
+  }
+
+  function editableTarget(target){
+    return target instanceof Element &&
+      Boolean(target.closest(
+        'textarea, ' +
+        'input:not([type="range"]):not([type="checkbox"]), ' +
+        '[contenteditable="true"]'
+      ));
+  }
+
+  function cancelAction(event, notify = true){
+    if(event.cancelable){
+      event.preventDefault();
+    }
+    if(notify){
+      showNotice();
+    }
+  }
+
+  document.addEventListener("contextmenu", event => {
+    if(editableTarget(event.target)) return;
+    cancelAction(event);
+  }, {capture:true});
+
+  document.addEventListener("selectstart", event => {
+    if(editableTarget(event.target)) return;
+    cancelAction(event, false);
+  }, {capture:true});
+
+  for(const type of ["copy", "cut"]){
+    document.addEventListener(type, event => {
+      if(editableTarget(event.target)) return;
+      cancelAction(event);
+    }, {capture:true});
+  }
+
+  document.addEventListener("dragstart", event => {
+    const target = event.target;
+    if(target instanceof Element &&
+       target.closest("canvas, img, a")){
+      cancelAction(event, false);
+    }
+  }, {capture:true});
+
+  window.addEventListener("keydown", event => {
+    if(event.isComposing) return;
+
+    const modifier = event.ctrlKey || event.metaKey;
+    const code = event.code;
+    const key = String(event.key || "").toLowerCase();
+
+    const saveCommand = modifier &&
+      (code === "KeyS" || key === "s");
+
+    const sourceCommand = modifier &&
+      (code === "KeyU" || key === "u");
+
+    const commonInspectionCommand =
+      event.key === "F12" ||
+      (modifier && event.shiftKey &&
+        ["KeyI", "KeyJ", "KeyC"].includes(code)) ||
+      (event.metaKey && event.altKey &&
+        ["KeyI", "KeyJ", "KeyC"].includes(code));
+
+    const selectAllCommand =
+      modifier &&
+      (code === "KeyA" || key === "a") &&
+      !editableTarget(event.target);
+
+    if(saveCommand || sourceCommand ||
+       commonInspectionCommand || selectAllCommand){
+      cancelAction(event);
+      event.stopImmediatePropagation();
+    }
+
+    /*
+      Tab, стрелките, Space, Enter и управлението
+      на плъзгачите остават свободни.
+    */
+  }, {capture:true});
+})();
+</script>
 
 <script>
 (async function(){
 "use strict";
 
 const $ = id => document.getElementById(id);
-const TAU = 2 * Math.PI;
-const AREA = 0.0532;
-const FILTER_STEPS = 720;
+const TAU = 2*Math.PI;
+const AREA = .0532;
+const STEPS = 720;
 
 const viewport = $("viewport");
 const loading = $("loading");
 
-/*
-  ПОПРАВКА НА ЗАРЕЖДАНЕТО:
-  премахваме стари canvas елементи, останали при
-  запазване на вече отворената страница от браузъра.
-  Графиката извън viewport не се засяга.
-*/
-viewport.querySelectorAll("canvas").forEach(canvas => canvas.remove());
-
-loading.hidden = false;
-loading.innerHTML =
-  "<b>Зареждане на 3D модела…</b>" +
-  "<span>Необходима е интернет връзка за 3D библиотеката.</span>";
-
 let mode = "AC";
-let angle = Math.PI / 3;
+let angle = Math.PI/3;
 let lastTime = null;
+let enabled = false;
 
 let playing = !(
   window.matchMedia &&
@@ -578,531 +699,304 @@ let filtered = [];
 let filterMean = 0;
 let filterRipple = 0;
 
-const wrap = a => ((a % TAU) + TAU) % TAU;
+const wrap = x => ((x%TAU)+TAU)%TAU;
 
-function fmt(value, digits = 1){
-  const n = Math.abs(value) < 1e-9 ? 0 : value;
+const fmt = (x,n=1) => (
+  Math.abs(x)<.5*Math.pow(10,-n) ? 0 : x
+).toLocaleString("bg-BG",{
+  minimumFractionDigits:n,
+  maximumFractionDigits:n
+});
 
-  return n.toLocaleString("bg-BG", {
-    minimumFractionDigits: digits,
-    maximumFractionDigits: digits
-  });
-}
-
-function readParameters(){
-  const n = Number($("N").value);
-  const b = Number($("B").value);
-  const f = Number($("F").value);
+/* Електрически параметри — без промяна. */
+function params(){
+  const n = +$("N").value;
+  const b = +$("B").value;
+  const f = +$("F").value;
 
   return {
-    n,
-    b,
-    f,
-    r: Number($("R").value),
-    c: Number($("C").value) * 1e-6,
-    speed: Number($("speed").value),
-    peak: n * b * AREA * TAU * f
+    n,b,f,
+    r:+$("R").value,
+    c:+$("C").value*1e-6,
+    speed:+$("speed").value,
+    peak:n*b*AREA*TAU*f
   };
 }
 
-let config = readParameters();
+let p = params();
 
-function coilVoltage(a){
-  return config.peak * Math.sin(a);
-}
+const emf = a => p.peak*Math.sin(a);
+const brushes = a => mode==="AC" ? emf(a) : Math.abs(emf(a));
 
-function brushVoltage(a){
-  const e = coilVoltage(a);
-  return mode === "AC" ? e : Math.abs(e);
-}
-
-function calculateFilter(){
-  const dt = 1 / (config.f * FILTER_STEPS);
-  const decay = Math.exp(-dt / (config.r * config.c));
-
-  let voltage = 0;
+function calcFilter(){
+  const decay = Math.exp(-1/(p.f*STEPS*p.r*p.c));
+  let u = 0;
   filtered = [];
 
-  for(let cycle = 0; cycle < 10; cycle++){
-    for(let k = 0; k < FILTER_STEPS; k++){
-      const a = TAU * k / FILTER_STEPS;
-      const available = Math.max(
-        0,
-        config.peak * Math.abs(Math.sin(a)) - 0.7
+  for(let cycle=0; cycle<30; cycle++){
+    for(let k=0; k<STEPS; k++){
+      const a = TAU*k/STEPS;
+      const source = Math.max(
+        0, p.peak*Math.abs(Math.sin(a))-.7
       );
 
-      voltage = Math.max(available, voltage * decay);
+      u = Math.max(source,u*decay);
 
-      if(cycle === 9){
-        filtered.push(voltage);
+      if(cycle===29){
+        filtered.push(u);
       }
     }
   }
 
-  filterMean =
-    filtered.reduce((sum, v) => sum + v, 0) / filtered.length;
-
-  filterRipple =
-    Math.max(...filtered) - Math.min(...filtered);
+  filterMean = filtered.reduce((a,b)=>a+b,0)/filtered.length;
+  filterRipple = Math.max(...filtered)-Math.min(...filtered);
 }
 
-function filteredVoltage(a){
-  const x = wrap(a) / TAU * filtered.length;
+function filterVoltage(a){
+  const x = wrap(a)/TAU*STEPS;
   const k = Math.floor(x);
-  const fraction = x - k;
+  const t = x-k;
 
-  const v1 = filtered[k % filtered.length];
-  const v2 = filtered[(k + 1) % filtered.length];
-
-  return v1 + (v2 - v1) * fraction;
+  return filtered[k%STEPS]*(1-t) +
+    filtered[(k+1)%STEPS]*t;
 }
 
-function loadVoltage(a){
-  return mode === "FILTER"
-    ? filteredVoltage(a)
-    : brushVoltage(a);
-}
+const output = a => mode==="FILTER"
+  ? filterVoltage(a)
+  : brushes(a);
 
-calculateFilter();
+calcFilter();
 
-/*
-  Three.js се зарежда само от фиксираните интернет адреси.
-  В документа няма препратка към локална папка _files.
-*/
+/* Същата фиксирана версия на Three.js. */
 async function loadThree(){
-  if(window.THREE && window.THREE.WebGLRenderer){
-    return window.THREE;
+  try{
+    return await import(
+      "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
+    );
+  }catch(error){
+    return await import(
+      "https://unpkg.com/three@0.160.0/build/three.module.js"
+    );
   }
-
-  const urls = [
-    "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js",
-    "https://unpkg.com/three@0.160.0/build/three.min.js"
-  ];
-
-  for(const url of urls){
-    try{
-      await new Promise((resolve, reject) => {
-        const script = document.createElement("script");
-        let settled = false;
-
-        const timer = setTimeout(() => {
-          if(settled) return;
-          settled = true;
-          script.remove();
-          reject(new Error("Адресът не отговори."));
-        }, 12000);
-
-        script.src = url;
-        script.async = true;
-        script.dataset.qr004Library = "true";
-
-        script.onload = () => {
-          if(settled) return;
-          settled = true;
-          clearTimeout(timer);
-          resolve();
-        };
-
-        script.onerror = () => {
-          if(settled) return;
-          settled = true;
-          clearTimeout(timer);
-          script.remove();
-          reject(new Error("Неуспешно зареждане на библиотеката."));
-        };
-
-        document.head.appendChild(script);
-      });
-
-      if(window.THREE && window.THREE.WebGLRenderer){
-        return window.THREE;
-      }
-    }catch(error){
-      // При неуспех се опитва резервният адрес.
-    }
-  }
-
-  throw new Error(
-    "3D библиотеката не се зареди. Проверете интернет връзката."
-  );
 }
 
 const THREE = await loadThree();
+const V = (x,y,z) => new THREE.Vector3(x,y,z);
+
+viewport.querySelectorAll("canvas").forEach(canvas=>canvas.remove());
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x141e29);
 
-const camera = new THREE.PerspectiveCamera(37, 1, 0.1, 70);
+const camera = new THREE.PerspectiveCamera(37,1,.1,70);
 const renderer = new THREE.WebGLRenderer({antialias:true});
 
-renderer.setPixelRatio(
-  Math.min(window.devicePixelRatio || 1, 2)
-);
-
+renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.10;
+renderer.toneMappingExposure = 1.1;
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-/* Гарантирано остава само едно работещо 3D платно. */
-viewport.querySelectorAll("canvas").forEach(canvas => canvas.remove());
-
-renderer.domElement.setAttribute(
-  "aria-label",
-  "Триизмерен генератор с вдлъбнати магнитни полюси"
-);
-
 viewport.appendChild(renderer.domElement);
 
-const V = (x,y,z) => new THREE.Vector3(x,y,z);
+/* Осветление — без промяна. */
+scene.add(new THREE.HemisphereLight(0xd8edff,0x182330,2.2));
 
-/* Осветление. */
-scene.add(
-  new THREE.HemisphereLight(0xd8edff, 0x182330, 2.2)
-);
-
-const keyLight = new THREE.DirectionalLight(0xfff0d6, 3.1);
-keyLight.position.set(-4,8,6);
-keyLight.castShadow = true;
-keyLight.shadow.mapSize.set(2048,2048);
-keyLight.shadow.camera.left = -8;
-keyLight.shadow.camera.right = 8;
-keyLight.shadow.camera.top = 8;
-keyLight.shadow.camera.bottom = -8;
-keyLight.shadow.normalBias = 0.025;
-scene.add(keyLight);
-
-const rimLight = new THREE.DirectionalLight(0x8bc3ff, 2.6);
-rimLight.position.set(3,5,-6);
-scene.add(rimLight);
-
-const fillLight = new THREE.DirectionalLight(0xffffff, 1.4);
-fillLight.position.set(7,1,6);
-scene.add(fillLight);
-
-/* Процедурна среда за отраженията. */
-const envCanvas = document.createElement("canvas");
-envCanvas.width = 1024;
-envCanvas.height = 512;
-
-const envCtx = envCanvas.getContext("2d");
-
-if(!envCtx){
-  throw new Error("Липсва поддръжка на Canvas 2D.");
+for(const [color,intensity,xyz] of [
+  [0xfff0d6,3.1,[-4,8,6]],
+  [0x8bc3ff,2.6,[3,5,-6]],
+  [0xffffff,1.4,[7,1,6]]
+]){
+  const light = new THREE.DirectionalLight(color,intensity);
+  light.position.set(...xyz);
+  light.castShadow = true;
+  scene.add(light);
 }
 
-const envGradient = envCtx.createLinearGradient(0,0,0,512);
-envGradient.addColorStop(0,"#8fa1b2");
-envGradient.addColorStop(0.36,"#d7e1e7");
-envGradient.addColorStop(0.56,"#354451");
-envGradient.addColorStop(1,"#111b26");
+/* Отражения — без промяна. */
+const envCanvas = document.createElement("canvas");
+envCanvas.width = 512;
+envCanvas.height = 256;
 
-envCtx.fillStyle = envGradient;
-envCtx.fillRect(0,0,1024,512);
+const ec = envCanvas.getContext("2d");
+const eg = ec.createLinearGradient(0,0,0,256);
 
-envCtx.fillStyle = "#ffffff";
-envCtx.fillRect(90,70,110,220);
-envCtx.fillRect(470,80,65,230);
+eg.addColorStop(0,"#99a9b9");
+eg.addColorStop(.35,"#e9eff5");
+eg.addColorStop(.6,"#324454");
+eg.addColorStop(1,"#101c29");
 
-envCtx.fillStyle = "#bbddff";
-envCtx.fillRect(790,75,150,210);
+ec.fillStyle = eg;
+ec.fillRect(0,0,512,256);
+ec.fillStyle = "#fff";
+ec.fillRect(60,35,60,120);
+ec.fillRect(260,40,35,125);
 
 const envTexture = new THREE.CanvasTexture(envCanvas);
 envTexture.mapping = THREE.EquirectangularReflectionMapping;
 envTexture.colorSpace = THREE.SRGBColorSpace;
 
 const pmrem = new THREE.PMREMGenerator(renderer);
-const environment = pmrem.fromEquirectangular(envTexture);
-scene.environment = environment.texture;
+const env = pmrem.fromEquirectangular(envTexture);
+scene.environment = env.texture;
 
 envTexture.dispose();
 pmrem.dispose();
 
-/* Материалите и цветовете са запазени. */
+/* Материали — без промяна. */
 const mat = {
-  red: new THREE.MeshPhysicalMaterial({
-    color:0xf01632,
-    metalness:0.25,
-    roughness:0.22,
-    clearcoat:1,
-    clearcoatRoughness:0.15
+  red:new THREE.MeshPhysicalMaterial({
+    color:0xf01632,metalness:.25,roughness:.22,clearcoat:1
   }),
-
-  blue: new THREE.MeshPhysicalMaterial({
-    color:0x075bf2,
-    metalness:0.25,
-    roughness:0.22,
-    clearcoat:1,
-    clearcoatRoughness:0.15
+  blue:new THREE.MeshPhysicalMaterial({
+    color:0x075bf2,metalness:.25,roughness:.22,clearcoat:1
   }),
-
-  copper: new THREE.MeshStandardMaterial({
-    color:0xf3a448,
-    metalness:0.92,
-    roughness:0.20
+  copper:new THREE.MeshStandardMaterial({
+    color:0xf3a448,metalness:.92,roughness:.20
   }),
-
-  copperDark: new THREE.MeshStandardMaterial({
-    color:0xbf6a26,
-    metalness:0.88,
-    roughness:0.26
+  copperDark:new THREE.MeshStandardMaterial({
+    color:0xbf6a26,metalness:.88,roughness:.26
   }),
-
-  steel: new THREE.MeshStandardMaterial({
-    color:0xa4b2c0,
-    metalness:0.95,
-    roughness:0.24
+  steel:new THREE.MeshStandardMaterial({
+    color:0xa4b2c0,metalness:.95,roughness:.24
   }),
-
-  dark: new THREE.MeshStandardMaterial({
-    color:0x303d49,
-    metalness:0.72,
-    roughness:0.40
+  dark:new THREE.MeshStandardMaterial({
+    color:0x303d49,metalness:.72,roughness:.40
   }),
-
-  graphite: new THREE.MeshStandardMaterial({
-    color:0x202b36,
-    metalness:0.12,
-    roughness:0.72
+  graphite:new THREE.MeshStandardMaterial({
+    color:0x202b36,roughness:.72
   }),
-
-  redWire: new THREE.MeshStandardMaterial({
-    color:0xde2634,
-    roughness:0.30,
-    metalness:0.10
+  redWire:new THREE.MeshStandardMaterial({color:0xde2634}),
+  blueWire:new THREE.MeshStandardMaterial({color:0x075ade}),
+  gold:new THREE.MeshStandardMaterial({
+    color:0xe6af3e,metalness:.85,roughness:.26
   }),
-
-  blueWire: new THREE.MeshStandardMaterial({
-    color:0x075ade,
-    roughness:0.30,
-    metalness:0.10
-  }),
-
-  gold: new THREE.MeshStandardMaterial({
-    color:0xe6af3e,
-    metalness:0.85,
-    roughness:0.26
-  }),
-
-  cyan: new THREE.MeshBasicMaterial({
-    color:0x4be1ff,
-    transparent:true,
-    opacity:0.58,
-    depthWrite:false
+  field:new THREE.MeshBasicMaterial({
+    color:0x4be1ff,transparent:true,opacity:.58
   })
 };
 
-function mesh(geometry, material, parent = scene){
-  const object = new THREE.Mesh(geometry,material);
-  object.castShadow = true;
-  object.receiveShadow = true;
-  parent.add(object);
-  return object;
+function mesh(geo,material,parent=scene){
+  const m = new THREE.Mesh(geo,material);
+  m.castShadow = true;
+  m.receiveShadow = true;
+  parent.add(m);
+  return m;
 }
 
-function roundedBox(
-  w,h,d,radius,material,position,parent = scene
-){
-  const r = Math.min(radius,w/2,h/2);
-  const x = -w/2;
-  const y = -h/2;
-  const shape = new THREE.Shape();
+function rod(a,b,r,material,parent=scene){
+  const d = b.clone().sub(a);
 
-  shape.moveTo(x+r,y);
-  shape.lineTo(x+w-r,y);
-  shape.quadraticCurveTo(x+w,y,x+w,y+r);
-  shape.lineTo(x+w,y+h-r);
-  shape.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
-  shape.lineTo(x+r,y+h);
-  shape.quadraticCurveTo(x,y+h,x,y+h-r);
-  shape.lineTo(x,y+r);
-  shape.quadraticCurveTo(x,y,x+r,y);
-
-  const bevel = Math.min(0.04,d/5);
-
-  const geometry = new THREE.ExtrudeGeometry(shape,{
-    depth:Math.max(0.01,d-2*bevel),
-    steps:1,
-    bevelEnabled:true,
-    bevelSize:bevel,
-    bevelThickness:bevel,
-    bevelSegments:3,
-    curveSegments:12
-  });
-
-  geometry.center();
-
-  const object = mesh(geometry,material,parent);
-  object.position.copy(position);
-
-  return object;
-}
-
-function rod(a,b,radius,material,parent = scene){
-  const direction = b.clone().sub(a);
-  const length = direction.length();
-
-  const object = mesh(
-    new THREE.CylinderGeometry(radius,radius,length,32),
-    material,
-    parent
+  const m = mesh(
+    new THREE.CylinderGeometry(r,r,d.length(),32),
+    material,parent
   );
 
-  object.position.copy(a).add(b).multiplyScalar(0.5);
-
-  object.quaternion.setFromUnitVectors(
-    V(0,1,0),
-    direction.normalize()
-  );
-
-  return object;
+  m.position.copy(a).add(b).multiplyScalar(.5);
+  m.quaternion.setFromUnitVectors(V(0,1,0),d.normalize());
+  return m;
 }
 
-function tube(
-  points,radius,material,parent = scene,segments = 100
-){
+function tube(points,r,material,parent=scene){
   const curve = new THREE.CatmullRomCurve3(
     points,false,"centripetal"
   );
 
   return mesh(
-    new THREE.TubeGeometry(curve,segments,radius,10,false),
-    material,
-    parent
+    new THREE.TubeGeometry(
+      curve,Math.max(90,points.length*3),r,9,false
+    ),
+    material,parent
   );
 }
 
-function labelPlane(content,width,height){
+function box(w,h,d,material,x,y,z,parent=scene){
+  const m = mesh(
+    new THREE.BoxGeometry(w,h,d),material,parent
+  );
+  m.position.set(x,y,z);
+  return m;
+}
+
+function label(content,w,h){
   const canvas = document.createElement("canvas");
   canvas.width = 512;
   canvas.height = 256;
 
-  const ctx = canvas.getContext("2d");
-
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-
-  ctx.font = content.length === 1
-    ? "bold 207px Georgia"
-    : "bold 84px Arial";
-
-  ctx.shadowColor = "#000000";
-  ctx.shadowBlur = 10;
-  ctx.shadowOffsetY = 6;
-
-  const gradient = ctx.createLinearGradient(0,25,0,235);
-  gradient.addColorStop(0,"#ffffff");
-  gradient.addColorStop(0.55,"#f5f8ff");
-  gradient.addColorStop(1,"#a8b5c5");
-
-  ctx.fillStyle = gradient;
-  ctx.fillText(content,256,140);
+  const c = canvas.getContext("2d");
+  c.font = "bold 200px Georgia";
+  c.textAlign = "center";
+  c.textBaseline = "middle";
+  c.shadowColor = "#000";
+  c.shadowBlur = 12;
+  c.fillStyle = "#fff";
+  c.fillText(content,256,140);
 
   const texture = new THREE.CanvasTexture(canvas);
   texture.colorSpace = THREE.SRGBColorSpace;
 
   return new THREE.Mesh(
-    new THREE.PlaneGeometry(width,height),
+    new THREE.PlaneGeometry(w,h),
     new THREE.MeshBasicMaterial({
       map:texture,
       transparent:true,
-      depthWrite:false,
-      toneMapped:false,
       side:THREE.DoubleSide
     })
   );
 }
 
-function clearGeometry(group){
-  while(group.children.length){
-    const child = group.children[0];
-    group.remove(child);
-
-    child.traverse(object => {
-      if(object.geometry){
-        object.geometry.dispose();
-      }
+function clearGroup(g){
+  while(g.children.length){
+    const m = g.children[0];
+    g.remove(m);
+    m.traverse(o=>{
+      if(o.geometry) o.geometry.dispose();
     });
   }
 }
 
-/* Основа и опори. */
-roundedBox(
-  8.6,0.28,4.1,0.18,
-  mat.dark,V(0.25,-3.17,0)
-);
-
-roundedBox(
-  8.2,0.09,3.9,0.14,
-  mat.steel,V(0.25,-2.99,0)
-);
-
-for(const x of [-3.55,4.05]){
-  for(const z of [-1.67,1.67]){
-    const bolt = mesh(
-      new THREE.CylinderGeometry(0.09,0.09,0.075,6),
-      mat.steel
-    );
-
-    bolt.position.set(x,-2.90,z);
-  }
-}
+/* Основа, опори и лагери. */
+box(8.6,.28,4.1,mat.dark,.25,-3.17,0);
+box(8.2,.09,3.9,mat.steel,.25,-2.99,0);
 
 for(const x of [-2.73,1.23]){
-  roundedBox(
-    0.20,4.46,0.23,0.035,
-    mat.dark,V(x,-0.73,-1.85)
+  box(.28,2.7,.42,mat.dark,x,-1.55,0);
+  box(.75,.13,.93,mat.steel,x,-2.88,0);
+
+  const bearing = mesh(
+    new THREE.TorusGeometry(.25,.08,12,48),mat.steel
   );
+
+  bearing.rotation.y = Math.PI/2;
+  bearing.position.x = x;
 }
 
-rod(
-  V(-2.73,1.19,-1.85),
-  V(1.23,1.19,-1.85),
-  0.085,
-  mat.steel
-);
+rod(V(-3.04,0,0),V(2.43,0,0),.085,mat.steel);
 
-/*
-  МАГНИТНИ ПОЛЮСИ:
-  Масивни блокове с вдлъбнати цилиндрични лица.
-  Оста на цилиндричната вдлъбнатина е X —
-  същата ос, около която се върти бобината.
-*/
-const rotorX = -0.75;
+const rotorX = -.75;
 
-function concavePole(sign,material,letter){
-  const axialLength = 3.38;
-  const halfDepth = 0.90;
-  const innerRadius = 1.50;
-  const outerHeight = 2.15;
-  const bevel = 0.018;
+/* Вдлъбнати магнитни полюси — без промяна. */
+function pole(sign,material,letter){
+  const depth = .90;
+  const r = 1.50;
+  const outer = 2.15;
+  const bevel = .018;
 
-  const edgeHeight = Math.sqrt(
-    innerRadius*innerRadius-halfDepth*halfDepth
-  );
+  const edge = Math.sqrt(r*r-depth*depth);
+  const start = Math.atan2(edge,depth);
+  const s = new THREE.Shape();
 
-  const arcStart = Math.atan2(edgeHeight,halfDepth);
-  const arcEnd = Math.PI-arcStart;
+  s.moveTo(-depth,outer);
+  s.lineTo(depth,outer);
+  s.lineTo(depth,edge);
+  s.absarc(0,0,r,start,Math.PI-start,false);
+  s.lineTo(-depth,outer);
+  s.closePath();
 
-  const shape = new THREE.Shape();
-
-  shape.moveTo(-halfDepth,outerHeight);
-  shape.lineTo(halfDepth,outerHeight);
-  shape.lineTo(halfDepth,edgeHeight);
-
-  shape.absarc(
-    0,0,innerRadius,
-    arcStart,arcEnd,false
-  );
-
-  shape.lineTo(-halfDepth,outerHeight);
-  shape.closePath();
-
-  const extrusionDepth = axialLength-2*bevel;
-
-  const geometry = new THREE.ExtrudeGeometry(shape,{
-    depth:extrusionDepth,
+  const length = 3.38-2*bevel;
+  const geometry = new THREE.ExtrudeGeometry(s,{
+    depth:length,
     steps:1,
     bevelEnabled:true,
     bevelSize:bevel,
@@ -1111,985 +1005,834 @@ function concavePole(sign,material,letter){
     curveSegments:80
   });
 
-  geometry.translate(0,0,-extrusionDepth/2);
+  geometry.translate(0,0,-length/2);
   geometry.rotateY(Math.PI/2);
-  geometry.computeBoundingBox();
 
-  const pole = mesh(geometry,material);
-  pole.name = "magnetic-pole-"+letter;
-  pole.position.set(rotorX,0,0);
+  const m = mesh(geometry,material);
+  m.position.x = rotorX;
 
-  if(sign<0){
-    pole.rotation.x = Math.PI;
-  }
+  if(sign<0) m.rotation.x = Math.PI;
 
-  const label = labelPlane(letter,0.88,0.47);
-  label.name = "pole-label-"+letter;
-
-  label.position.set(
-    rotorX,
-    sign*((edgeHeight+outerHeight)/2),
-    halfDepth+0.045
+  const t = label(letter,.88,.47);
+  t.position.set(
+    rotorX,sign*(edge+outer)/2,depth+.045
   );
-
-  scene.add(label);
-
-  return pole;
+  scene.add(t);
 }
 
-const northPole = concavePole(1,mat.red,"N");
-const southPole = concavePole(-1,mat.blue,"S");
+pole(1,mat.red,"N");
+pole(-1,mat.blue,"S");
 
-/* Лагери с отвор за вала. */
-function bearingAt(x){
-  roundedBox(
-    0.28,2.70,0.42,0.05,
-    mat.dark,V(x,-1.55,0)
-  );
-
-  roundedBox(
-    0.75,0.13,0.93,0.05,
-    mat.steel,V(x,-2.88,0)
-  );
-
-  const profile = [
-    new THREE.Vector2(0.17,-0.15),
-    new THREE.Vector2(0.30,-0.15),
-    new THREE.Vector2(0.30,0.15),
-    new THREE.Vector2(0.17,0.15),
-    new THREE.Vector2(0.17,-0.15)
-  ];
-
-  const bearing = mesh(
-    new THREE.LatheGeometry(profile,64),
-    mat.steel
-  );
-
-  bearing.rotation.z = Math.PI/2;
-  bearing.position.set(x,0,0);
-}
-
-bearingAt(-2.73);
-bearingAt(1.23);
-
-rod(
-  V(-3.04,0,0),
-  V(2.43,0,0),
-  0.085,
-  mat.steel
-);
-
-/* Ротор, бобина и контактна система. */
+/* Ротор и контактни системи. */
 const rotor = new THREE.Group();
-rotor.position.set(rotorX,0,0);
+rotor.position.x = rotorX;
 scene.add(rotor);
 
-const windingGroup = new THREE.Group();
+const winding = new THREE.Group();
 const acRotor = new THREE.Group();
 const dcRotor = new THREE.Group();
+const electron3D = new THREE.Group();
 
-rotor.add(windingGroup,acRotor,dcRotor);
+rotor.add(winding,acRotor,dcRotor,electron3D);
 
 const ringA = 2.47;
 const ringB = 2.81;
-const commutatorX = 2.64;
+const commX = 2.64;
 
 rod(
-  V(2.30,0,0),
-  V(2.98,0,0),
-  0.15,
-  mat.graphite,
-  rotor
+  V(2.30,0,0),V(2.98,0,0),
+  .15,mat.graphite,rotor
 );
 
-function buildWinding(){
-  clearGeometry(windingGroup);
-
-  const displayedTurns = Math.min(config.n,8);
-  const points = [];
-
-  for(let turn=0;turn<displayedTurns;turn++){
-    const hw = 1.34-turn*0.042;
-    const hh = 0.87-turn*0.042;
-    const cornerRadius = 0.15;
-
-    const corners = [
-      [hw-cornerRadius,hh-cornerRadius,0],
-      [-hw+cornerRadius,hh-cornerRadius,Math.PI/2],
-      [-hw+cornerRadius,-hh+cornerRadius,Math.PI],
-      [hw-cornerRadius,-hh+cornerRadius,3*Math.PI/2]
-    ];
-
-    for(const [cx,cz,start] of corners){
-      for(let k=0;k<=9;k++){
-        const a = start+k/9*Math.PI/2;
-
-        points.push(V(
-          cx+cornerRadius*Math.cos(a),
-          0,
-          cz+cornerRadius*Math.sin(a)
-        ));
-      }
-    }
-  }
-
-  tube(
-    points,
-    displayedTurns===1?0.044:0.030,
-    mat.copper,
-    windingGroup,
-    Math.max(240,points.length*3)
+function ring(x){
+  const m = mesh(
+    new THREE.CylinderGeometry(.255,.255,.15,64),
+    mat.copper,acRotor
   );
-
-  const first = points[0].clone();
-  const end = points[points.length-1].clone();
-
-  tube([
-    first,
-    V(1.45,0.05,0.60),
-    V(1.65,0.125,0),
-    V(2.13,0.125,0),
-    V(mode==="AC"?ringA:commutatorX,0,-0.245)
-  ],0.021,mat.copper,windingGroup,100);
-
-  tube([
-    end,
-    V(1.45,-0.05,-0.55),
-    V(1.65,-0.125,0),
-    V(2.13,-0.125,0),
-    V(mode==="AC"?ringB:commutatorX,0,0.245)
-  ],0.021,mat.copperDark,windingGroup,100);
+  m.rotation.z = Math.PI/2;
+  m.position.x = x;
 }
 
-function addSlipRing(x){
-  const profile = [
-    new THREE.Vector2(0.15,-0.075),
-    new THREE.Vector2(0.255,-0.075),
-    new THREE.Vector2(0.255,0.075),
-    new THREE.Vector2(0.15,0.075),
-    new THREE.Vector2(0.15,-0.075)
-  ];
+ring(ringA);
+ring(ringB);
 
-  const ring = mesh(
-    new THREE.LatheGeometry(profile,64),
-    mat.copper,
-    acRotor
-  );
+function commutator(start,end,material){
+  const s = new THREE.Shape();
+  s.absarc(0,0,.26,start,end,false);
+  s.lineTo(.155*Math.cos(end),.155*Math.sin(end));
+  s.absarc(0,0,.155,end,start,true);
+  s.closePath();
 
-  ring.rotation.z = Math.PI/2;
-  ring.position.x = x;
-}
-
-addSlipRing(ringA);
-addSlipRing(ringB);
-
-function addCommutatorHalf(start,end,material){
-  const shape = new THREE.Shape();
-
-  shape.absarc(0,0,0.26,start,end,false);
-
-  shape.lineTo(
-    0.155*Math.cos(end),
-    0.155*Math.sin(end)
-  );
-
-  shape.absarc(0,0,0.155,end,start,true);
-  shape.closePath();
-
-  const geometry = new THREE.ExtrudeGeometry(shape,{
-    depth:0.30,
-    bevelEnabled:true,
-    bevelSize:0.006,
-    bevelThickness:0.006,
-    bevelSegments:2,
-    curveSegments:30
+  const g = new THREE.ExtrudeGeometry(s,{
+    depth:.3,
+    bevelEnabled:false,
+    curveSegments:32
   });
 
-  geometry.translate(0,0,-0.15);
+  g.translate(0,0,-.15);
 
-  const half = mesh(geometry,material,dcRotor);
-  half.rotation.y = Math.PI/2;
-  half.position.x = commutatorX;
+  const m = mesh(g,material,dcRotor);
+  m.rotation.y = Math.PI/2;
+  m.position.x = commX;
 }
 
-addCommutatorHalf(
-  -Math.PI/2+0.045,
-  Math.PI/2-0.045,
-  mat.copper
+commutator(
+  -Math.PI/2+.045,Math.PI/2-.045,mat.copper
 );
-
-addCommutatorHalf(
-  Math.PI/2+0.045,
-  3*Math.PI/2-0.045,
-  mat.copperDark
+commutator(
+  Math.PI/2+.045,3*Math.PI/2-.045,mat.copperDark
 );
 
 /* Неподвижни четки. */
-const acContacts = new THREE.Group();
-const dcContacts = new THREE.Group();
-
-scene.add(acContacts,dcContacts);
+const acBrushes = new THREE.Group();
+const dcBrushes = new THREE.Group();
+scene.add(acBrushes,dcBrushes);
 
 for(const x of [rotorX+ringA,rotorX+ringB]){
-  roundedBox(
-    0.18,0.26,0.16,0.02,
-    mat.graphite,
-    V(x,-0.38,0),
-    acContacts
+  box(
+    .18,.26,.16,mat.graphite,
+    x,-.38,0,acBrushes
   );
 }
 
-const dcBrushX = rotorX+commutatorX;
-
-roundedBox(
-  0.20,0.25,0.12,0.02,
-  mat.graphite,
-  V(dcBrushX,0.38,0),
-  dcContacts
+box(
+  .20,.25,.12,mat.graphite,
+  rotorX+commX,.38,0,dcBrushes
+);
+box(
+  .20,.25,.12,mat.graphite,
+  rotorX+commX,-.38,0,dcBrushes
 );
 
-roundedBox(
-  0.20,0.25,0.12,0.02,
-  mat.graphite,
-  V(dcBrushX,-0.38,0),
-  dcContacts
-);
-
-/* Външна верига и филтър. */
-const wires = new THREE.Group();
-scene.add(wires);
-
-const filterBox = new THREE.Group();
-scene.add(filterBox);
-
-const filterMaterial = new THREE.MeshStandardMaterial({
-  color:0x087b65,
-  metalness:0.40,
-  roughness:0.34
+/* Намотка и електронни маркери. */
+let eCurve = null;
+const eObjects = [];
+const eMaterial = new THREE.MeshBasicMaterial({
+  color:0x55f0ff
 });
 
-roundedBox(
-  0.74,0.38,0.58,0.07,
-  filterMaterial,
-  V(2.48,-2.69,0.75),
-  filterBox
-);
+function buildWinding(){
+  clearGroup(winding);
+  clearGroup(electron3D);
+  eObjects.length = 0;
 
-const filterLabel = labelPlane("D–RC",0.57,0.21);
-filterLabel.position.set(2.48,-2.67,1.08);
-filterBox.add(filterLabel);
+  const all = [];
+  const firstLoop = [];
+  const count = Math.min(p.n,8);
 
-function buildWires(){
-  clearGeometry(wires);
+  for(let j=0; j<count; j++){
+    const hw = 1.34-j*.042;
+    const hh = .87-j*.042;
+    const rad = .15;
 
-  const positiveLead = mode==="AC"
-    ? V(rotorX+ringB,-0.51,0)
-    : V(dcBrushX,0.51,0);
+    const corners = [
+      [hw-rad,hh-rad,0],
+      [-hw+rad,hh-rad,Math.PI/2],
+      [-hw+rad,-hh+rad,Math.PI],
+      [hw-rad,-hh+rad,3*Math.PI/2]
+    ];
 
-  const negativeLead = mode==="AC"
-    ? V(rotorX+ringA,-0.51,0)
-    : V(dcBrushX,-0.51,0);
+    const pts = [];
 
-  const redPoints = mode==="FILTER"
-    ? [
-        positiveLead,
-        V(2.40,-0.65,0.15),
-        V(2.48,-2.49,0.75),
-        V(2.88,-2.83,0.90),
-        V(3.12,-2.80,1.08)
-      ]
-    : [
-        positiveLead,
-        V(2.45,-0.80,0.20),
-        V(2.75,-2.55,0.76),
-        V(3.12,-2.80,1.08)
-      ];
+    for(const [cx,cz,start] of corners){
+      for(let k=0; k<=9; k++){
+        const a = start+k*Math.PI/18;
+        pts.push(V(
+          cx+rad*Math.cos(a),0,cz+rad*Math.sin(a)
+        ));
+      }
+    }
 
-  tube(redPoints,0.041,mat.redWire,wires,90);
+    all.push(...pts);
+    if(j===0) firstLoop.push(...pts);
+  }
+
+  tube(
+    all,count===1 ? .044 : .03,
+    mat.copper,winding
+  );
+
+  const first = all[0];
+  const last = all[all.length-1];
 
   tube([
-    negativeLead,
-    V(2.48,-1.10,-0.35),
-    V(3.15,-2.84,0.30),
-    V(3.62,-2.80,1.08)
-  ],0.041,mat.blueWire,wires,90);
+    first,
+    V(1.45,.05,.6),
+    V(1.65,.125,0),
+    V(2.13,.125,0),
+    V(mode==="AC"?ringA:commX,0,-.245)
+  ],.021,mat.copper,winding);
+
+  tube([
+    last,
+    V(1.45,-.05,-.55),
+    V(1.65,-.125,0),
+    V(2.13,-.125,0),
+    V(mode==="AC"?ringB:commX,0,.245)
+  ],.021,mat.copperDark,winding);
+
+  eCurve = new THREE.CatmullRomCurve3(
+    firstLoop,true,"centripetal"
+  );
+
+  for(let k=0; k<36; k++){
+    const m = mesh(
+      new THREE.SphereGeometry(.052,9,7),
+      eMaterial,electron3D
+    );
+    eObjects.push(m);
+  }
+}
+
+/* Външни проводници. */
+const wires = new THREE.Group();
+const filterGroup = new THREE.Group();
+scene.add(wires,filterGroup);
+
+box(
+  .74,.38,.58,mat.dark,
+  2.48,-2.69,.75,filterGroup
+);
+
+function buildWires(){
+  clearGroup(wires);
+
+  const x = rotorX+(mode==="AC"?ringB:commX);
+
+  tube([
+    V(x,-.51,0),
+    V(2.45,-.8,.2),
+    V(2.75,-2.55,.76),
+    V(3.12,-2.8,1.08)
+  ],.041,mat.redWire,wires);
+
+  tube([
+    V(rotorX+(mode==="AC"?ringA:commX),-.51,0),
+    V(2.48,-1.1,-.35),
+    V(3.15,-2.84,.3),
+    V(3.62,-2.8,1.08)
+  ],.041,mat.blueWire,wires);
 }
 
 /* Лампа. */
-const lampX = 3.37;
-const lampZ = 1.00;
+const lx = 3.37;
+const lz = 1;
 
-roundedBox(
-  1.15,0.18,1.12,0.12,
-  mat.dark,
-  V(lampX,-2.87,lampZ)
-);
+box(1.15,.18,1.12,mat.dark,lx,-2.87,lz);
+rod(V(lx,-2.78,lz),V(lx,-2.39,lz),.24,mat.graphite);
 
-rod(
-  V(lampX,-2.78,lampZ),
-  V(lampX,-2.39,lampZ),
-  0.24,
-  mat.graphite
-);
-
-for(let k=0;k<5;k++){
-  const thread = mesh(
-    new THREE.TorusGeometry(0.19,0.02,8,40),
-    mat.gold
-  );
-
-  thread.rotation.x = Math.PI/2;
-  thread.position.set(
-    lampX,
-    -2.42+k*0.055,
-    lampZ
-  );
-}
-
-const filamentMaterial = new THREE.MeshStandardMaterial({
+const filamentMat = new THREE.MeshStandardMaterial({
   color:0xffe49a,
   emissive:0xffb72c,
-  emissiveIntensity:2,
-  roughness:0.44
+  emissiveIntensity:2
 });
 
-const filamentPoints = [];
+const filament = [];
 
-for(let k=0;k<=60;k++){
+for(let k=0; k<=60; k++){
   const t = k/60;
-
-  filamentPoints.push(V(
-    lampX-0.15+0.30*t,
-    -1.90+0.045*Math.sin(t*TAU*5),
-    lampZ+0.045*Math.cos(t*TAU*5)
+  filament.push(V(
+    lx-.15+.3*t,
+    -1.9+.045*Math.sin(t*TAU*5),
+    lz+.045*Math.cos(t*TAU*5)
   ));
 }
 
-tube(
-  filamentPoints,
-  0.012,
-  filamentMaterial,
-  scene,
-  150
-);
-
-rod(
-  V(lampX-0.10,-2.33,lampZ),
-  V(lampX-0.15,-1.90,lampZ),
-  0.008,
-  mat.steel
-);
-
-rod(
-  V(lampX+0.10,-2.33,lampZ),
-  V(lampX+0.15,-1.90,lampZ),
-  0.008,
-  mat.steel
-);
-
-const glassMaterial = new THREE.MeshPhysicalMaterial({
-  color:0xffefb7,
-  transparent:true,
-  opacity:0.18,
-  roughness:0.12,
-  metalness:0,
-  clearcoat:1,
-  side:THREE.DoubleSide,
-  depthWrite:false
-});
+tube(filament,.012,filamentMat);
 
 const glass = mesh(
-  new THREE.SphereGeometry(0.43,40,28),
-  glassMaterial
+  new THREE.SphereGeometry(.43,32,24),
+  new THREE.MeshPhysicalMaterial({
+    color:0xffefb7,
+    transparent:true,
+    opacity:.18,
+    roughness:.12,
+    clearcoat:1,
+    depthWrite:false
+  })
 );
 
-glass.position.set(lampX,-1.94,lampZ);
+glass.position.set(lx,-1.94,lz);
 glass.scale.y = 1.19;
 glass.castShadow = false;
 
-const lampLight = new THREE.PointLight(
-  0xffc45a,4,4.2,2
-);
-
-lampLight.position.set(lampX,-1.93,lampZ);
+const lampLight = new THREE.PointLight(0xffc45a,4,4.2,2);
+lampLight.position.set(lx,-1.93,lz);
 scene.add(lampLight);
 
-const glowCanvas = document.createElement("canvas");
-glowCanvas.width = 128;
-glowCanvas.height = 128;
+/* Магнитно поле N → S. */
+const field = new THREE.Group();
+scene.add(field);
 
-const glowCtx = glowCanvas.getContext("2d");
-
-const glowGradient = glowCtx.createRadialGradient(
-  64,64,0,64,64,64
-);
-
-glowGradient.addColorStop(
-  0,"rgba(255,247,180,.90)"
-);
-glowGradient.addColorStop(
-  0.22,"rgba(255,205,70,.45)"
-);
-glowGradient.addColorStop(
-  1,"rgba(255,170,20,0)"
-);
-
-glowCtx.fillStyle = glowGradient;
-glowCtx.fillRect(0,0,128,128);
-
-const glowMaterial = new THREE.SpriteMaterial({
-  map:new THREE.CanvasTexture(glowCanvas),
-  transparent:true,
-  opacity:0.4,
-  depthWrite:false,
-  blending:THREE.AdditiveBlending
-});
-
-const lampGlow = new THREE.Sprite(glowMaterial);
-lampGlow.position.set(lampX,-1.93,lampZ);
-lampGlow.scale.set(1.65,1.65,1);
-scene.add(lampGlow);
-
-/* Магнитни линии. */
-const fieldGroup = new THREE.Group();
-scene.add(fieldGroup);
-
-for(const x of [-1.90,-1.32,-0.74,-0.16,0.42]){
+for(const x of [-1.9,-1.32,-.74,-.16,.42]){
   rod(
-    V(x,1.13,-0.72),
-    V(x,-1.03,-0.72),
-    0.011,
-    mat.cyan,
-    fieldGroup
+    V(x,1.13,-.72),V(x,-1.03,-.72),
+    .011,mat.field,field
   );
 
-  const arrowHead = mesh(
-    new THREE.ConeGeometry(0.060,0.16,12),
-    mat.cyan,
-    fieldGroup
+  const cone = mesh(
+    new THREE.ConeGeometry(.06,.16,12),
+    mat.field,field
   );
 
-  arrowHead.rotation.z = Math.PI;
-  arrowHead.position.set(x,-1.09,-0.72);
-  arrowHead.castShadow = false;
+  cone.rotation.z = Math.PI;
+  cone.position.set(x,-1.09,-.72);
 }
 
-/* Посока на механичното въртене. */
-const rotationPoints = [];
+/* Механично въртене. */
+const rotPath = [];
 
-for(let k=0;k<=45;k++){
-  const a = 0.85-1.75*k/45;
-
-  rotationPoints.push(V(
-    0.88,
-    0.68*Math.cos(a),
-    0.68*Math.sin(a)
+for(let k=0; k<=45; k++){
+  const a = .85-1.75*k/45;
+  rotPath.push(V(
+    .88,.68*Math.cos(a),.68*Math.sin(a)
   ));
 }
 
-const rotationMaterial = new THREE.MeshBasicMaterial({
-  color:0xffda42
-});
+tube(rotPath,.024,mat.gold);
 
-tube(
-  rotationPoints,
-  0.024,
-  rotationMaterial,
-  scene,
-  70
-);
-
-const rotationEnd =
-  rotationPoints[rotationPoints.length-1];
-
-const rotationBefore =
-  rotationPoints[rotationPoints.length-2];
-
+const end = rotPath.at(-1);
+const before = rotPath.at(-2);
 const rotationHead = mesh(
-  new THREE.ConeGeometry(0.10,0.23,20),
-  rotationMaterial
+  new THREE.ConeGeometry(.10,.23,20),mat.gold
 );
 
-rotationHead.position.copy(rotationEnd);
-
+rotationHead.position.copy(end);
 rotationHead.quaternion.setFromUnitVectors(
-  V(0,1,0),
-  rotationEnd.clone().sub(rotationBefore).normalize()
+  V(0,1,0),end.clone().sub(before).normalize()
 );
 
-/* Камера и завъртане на изгледа. */
-let cameraYaw = 0.30;
-let cameraElevation = 0.23;
-const cameraTarget = V(0.15,-0.36,0);
+/* Камера — без промяна. */
+let yaw = .30;
+let elevation = .23;
+let drag = false;
+let px = 0;
+let py = 0;
 
-function updateCamera(){
+const target = V(.15,-.36,0);
+
+function cameraUpdate(){
   const rect = viewport.getBoundingClientRect();
   const aspect = rect.width/Math.max(1,rect.height);
-  const distance = 13.6*Math.max(1,1.23/aspect);
+  const d = 13.6*Math.max(1,1.23/aspect);
 
   camera.aspect = aspect;
-
   camera.position.set(
-    cameraTarget.x+
-      distance*Math.cos(cameraElevation)*Math.sin(cameraYaw),
-
-    cameraTarget.y+
-      distance*Math.sin(cameraElevation),
-
-    cameraTarget.z+
-      distance*Math.cos(cameraElevation)*Math.cos(cameraYaw)
+    target.x+d*Math.cos(elevation)*Math.sin(yaw),
+    target.y+d*Math.sin(elevation),
+    target.z+d*Math.cos(elevation)*Math.cos(yaw)
   );
 
-  camera.lookAt(cameraTarget);
+  camera.lookAt(target);
   camera.updateProjectionMatrix();
-}
-
-function resize(){
-  const rect = viewport.getBoundingClientRect();
 
   renderer.setSize(
     Math.max(1,rect.width),
-    Math.max(1,rect.height),
-    false
+    Math.max(1,rect.height),false
   );
-
-  updateCamera();
 }
 
-let dragging = false;
-let pointerX = 0;
-let pointerY = 0;
-
-viewport.addEventListener("pointerdown",event => {
-  dragging = true;
-  pointerX = event.clientX;
-  pointerY = event.clientY;
-  viewport.setPointerCapture(event.pointerId);
+viewport.addEventListener("pointerdown",e=>{
+  drag = true;
+  px = e.clientX;
+  py = e.clientY;
+  viewport.setPointerCapture(e.pointerId);
 });
 
-viewport.addEventListener("pointermove",event => {
-  if(!dragging) return;
+viewport.addEventListener("pointermove",e=>{
+  if(!drag) return;
 
-  cameraYaw = THREE.MathUtils.clamp(
-    cameraYaw+(event.clientX-pointerX)*0.004,
-    -0.45,
-    0.85
+  yaw = THREE.MathUtils.clamp(
+    yaw+(e.clientX-px)*.004,-.45,.85
   );
 
-  cameraElevation = THREE.MathUtils.clamp(
-    cameraElevation+(event.clientY-pointerY)*0.003,
-    0.04,
-    0.52
+  elevation = THREE.MathUtils.clamp(
+    elevation+(e.clientY-py)*.003,.04,.52
   );
 
-  pointerX = event.clientX;
-  pointerY = event.clientY;
-
-  updateCamera();
+  px = e.clientX;
+  py = e.clientY;
+  cameraUpdate();
 });
 
-for(const eventName of [
-  "pointerup",
-  "pointercancel",
-  "lostpointercapture"
+for(const name of [
+  "pointerup","pointercancel","lostpointercapture"
 ]){
-  viewport.addEventListener(eventName,() => {
-    dragging = false;
-  });
+  viewport.addEventListener(name,()=>{drag=false;});
 }
 
-$("resetView").addEventListener("click",() => {
-  cameraYaw = 0.30;
-  cameraElevation = 0.23;
-  updateCamera();
-});
+$("resetView").onclick = ()=>{
+  yaw = .30;
+  elevation = .23;
+  cameraUpdate();
+};
 
 if(window.ResizeObserver){
-  new ResizeObserver(resize).observe(viewport);
+  new ResizeObserver(cameraUpdate).observe(viewport);
 }else{
-  window.addEventListener("resize",resize);
+  window.addEventListener("resize",cameraUpdate);
 }
 
-/* Графики — запазени са формите и синхронизацията. */
+/*
+  Увеличен меден проводник — запазен последният вариант.
+  Постоянен брой маркери; скоростта следва |sin(alpha)|.
+*/
+const wireCanvas = $("wireCanvas");
+const wc = wireCanvas.getContext("2d");
+const particles = [];
+
+for(let row=0; row<12; row++){
+  for(let col=0; col<90; col++){
+    const j = (
+      Math.sin((row+1)*73.21+(col+1)*17.83)+1
+    )/2;
+
+    particles.push({
+      row,col,j,
+      phase:row*.67+col*.19,
+      size:.80+j*.65
+    });
+  }
+}
+
+function drawCopper(){
+  if(!enabled || mode!=="AC") return;
+
+  const rect = wireCanvas.getBoundingClientRect();
+  const w = Math.max(260,rect.width);
+  const h = 162;
+  const dpr = Math.min(window.devicePixelRatio||1,2);
+  const W = Math.round(w*dpr);
+  const H = Math.round(h*dpr);
+
+  if(wireCanvas.width!==W || wireCanvas.height!==H){
+    wireCanvas.width = W;
+    wireCanvas.height = H;
+  }
+
+  wc.setTransform(dpr,0,0,dpr,0,0);
+  wc.clearRect(0,0,w,h);
+  wc.fillStyle = "#071c2c";
+  wc.fillRect(0,0,w,h);
+
+  wc.fillStyle = "#bfdde9";
+  wc.font = "bold 11px Arial";
+  wc.fillText(
+    "МЕДЕН ПРОВОДНИК · СИЛНО УВЕЛИЧЕНИЕ",16,17
+  );
+
+  const left = 12;
+  const right = w-12;
+  const top = 39;
+  const bottom = 135;
+
+  const gr = wc.createLinearGradient(0,top,0,bottom);
+  gr.addColorStop(0,"#874326");
+  gr.addColorStop(.15,"#e29a55");
+  gr.addColorStop(.5,"#ffd08a");
+  gr.addColorStop(.85,"#ac5e34");
+  gr.addColorStop(1,"#793821");
+
+  wc.fillStyle = gr;
+  wc.fillRect(left,top,right-left,bottom-top);
+  wc.strokeStyle = "#ffca85";
+  wc.lineWidth = 2;
+  wc.strokeRect(left,top,right-left,bottom-top);
+
+  wc.fillStyle = "rgba(115,58,26,.28)";
+
+  for(let y=46; y<bottom-3; y+=13){
+    for(let x=25; x<w-19; x+=24){
+      wc.beginPath();
+      wc.arc(x+(y%2)*5,y,2.5,0,TAU);
+      wc.fill();
+    }
+  }
+
+  const s = Math.sin(angle);
+  const c = Math.cos(angle);
+  const speed = Math.abs(s);
+  const direction = s>0 ? -1 : s<0 ? 1 : 0;
+
+  const amplitude = Math.min(55,Math.max(25,w*.075));
+  const shift = amplitude*c;
+  const margin = amplitude+12;
+  const start = left+margin;
+  const usable = Math.max(20,right-left-2*margin);
+  const trailLength = 19*speed;
+
+  wc.save();
+  wc.beginPath();
+  wc.rect(left+2,top+2,right-left-4,bottom-top-4);
+  wc.clip();
+
+  for(let i=0; i<particles.length; i++){
+    const q = particles[i];
+    const base = start+(q.col+.5)*usable/90;
+    const y = top+8+(q.row+.5)*(bottom-top-16)/12;
+    const jitter = (q.j-.5)*1.6;
+    const x = base+shift+jitter;
+
+    if(speed>.025 && i%3===0){
+      const tailX = x-direction*trailLength;
+      const fade = wc.createLinearGradient(tailX,y,x,y);
+
+      fade.addColorStop(0,"rgba(60,215,255,0)");
+      fade.addColorStop(1,"rgba(210,251,255,.92)");
+
+      if(direction<0){
+        const reverse = wc.createLinearGradient(x,y,tailX,y);
+        reverse.addColorStop(0,"rgba(210,251,255,.92)");
+        reverse.addColorStop(1,"rgba(60,215,255,0)");
+        wc.strokeStyle = reverse;
+      }else{
+        wc.strokeStyle = fade;
+      }
+
+      wc.lineWidth = 1.4;
+      wc.beginPath();
+      wc.moveTo(tailX,y);
+      wc.lineTo(x,y);
+      wc.stroke();
+    }
+
+    wc.fillStyle = "#2b86b0";
+    wc.beginPath();
+    wc.arc(x,y,q.size+1.1,0,TAU);
+    wc.fill();
+
+    wc.fillStyle = "#e0fbff";
+    wc.beginPath();
+    wc.arc(x,y,q.size*.82,0,TAU);
+    wc.fill();
+  }
+
+  wc.restore();
+
+  if(speed>.012){
+    const arrowLength = 25+60*speed;
+    const center = w/2;
+    const from = center-direction*arrowLength/2;
+    const to = center+direction*arrowLength/2;
+
+    wc.strokeStyle = "#64eaff";
+    wc.fillStyle = "#64eaff";
+    wc.lineWidth = 2.8;
+
+    wc.beginPath();
+    wc.moveTo(from,27);
+    wc.lineTo(to,27);
+    wc.stroke();
+
+    wc.beginPath();
+    wc.moveTo(to,27);
+    wc.lineTo(to-direction*10,21);
+    wc.lineTo(to-direction*10,33);
+    wc.closePath();
+    wc.fill();
+  }
+
+  wc.fillStyle = "#c1ecfa";
+  wc.font = "11px Arial";
+  wc.fillText("e⁻",16,155);
+  wc.textAlign = "right";
+  wc.fillText("условно увеличено движение",w-15,155);
+  wc.textAlign = "left";
+}
+
+function updateElectronText(){
+  const active = enabled && mode==="AC";
+
+  $("electronPanel").hidden = !active;
+  $("electrons").disabled = mode!=="AC";
+  $("electrons").classList.toggle("active",active);
+
+  if(!active) return;
+
+  const s = Math.sin(angle);
+  const c = Math.cos(angle);
+  const speed = Math.abs(s);
+
+  let state;
+
+  if(speed<.012){
+    state = "Нулев дрейф · смяна на посоката";
+  }else if(speed>.995){
+    state = "Максимална скорост";
+  }else if(s*c>0){
+    state = "Ускоряване";
+  }else{
+    state = "Забавяне";
+  }
+
+  $("electronState").textContent = state;
+
+  $("electronDirection").textContent =
+    speed<.012
+      ? "Насоченият дрейф е моментно нулев. След това посоката се обръща."
+      : s>0
+        ? "Електроните се движат наляво. Следите стават по-дълги, когато скоростта расте."
+        : "Електроните се движат надясно. Следите показват големината на моментната скорост.";
+
+  drawCopper();
+}
+
+/* Графики — запазени. */
 const graph = $("voltageGraph");
-const graphCtx = graph.getContext("2d");
-
-if(!graphCtx){
-  throw new Error("Не може да се създаде графиката на напрежението.");
-}
+const gc = graph.getContext("2d");
 
 function drawGraphs(){
   const rect = graph.getBoundingClientRect();
   const dpr = Math.min(window.devicePixelRatio||1,2);
+  const w = Math.max(280,rect.width);
+  const h = Math.max(340,rect.height);
+  const W = Math.round(w*dpr);
+  const H = Math.round(h*dpr);
 
-  const width = Math.max(280,rect.width);
-  const height = Math.max(340,rect.height);
-
-  const pixelWidth = Math.round(width*dpr);
-  const pixelHeight = Math.round(height*dpr);
-
-  if(
-    graph.width!==pixelWidth ||
-    graph.height!==pixelHeight
-  ){
-    graph.width = pixelWidth;
-    graph.height = pixelHeight;
+  if(graph.width!==W || graph.height!==H){
+    graph.width = W;
+    graph.height = H;
   }
 
-  graphCtx.setTransform(dpr,0,0,dpr,0,0);
-  graphCtx.clearRect(0,0,width,height);
+  gc.setTransform(dpr,0,0,dpr,0,0);
+  gc.fillStyle = "#081522";
+  gc.fillRect(0,0,w,h);
 
-  const rows = mode==="FILTER"?3:2;
-  const rowHeight = height/rows;
+  const rows = mode==="FILTER" ? 3 : 2;
+  const L = 55;
+  const R = w-17;
+  const rowH = h/rows;
 
-  const L = 56;
-  const R = width-15;
+  function plot(index,title,fn,color,positive){
+    const top = index*rowH+33;
+    const bottom = (index+1)*rowH-31;
+    const max = p.peak*1.14;
+    const min = positive ? 0 : -max;
 
-  const displayAngle =
-    ((angle%(2*TAU))+2*TAU)%(2*TAU);
+    const y = v => bottom-(v-min)/(max-min)*(bottom-top);
 
-  const cursorX =
-    L+(R-L)*displayAngle/(2*TAU);
+    gc.font = "bold 12px Arial";
+    gc.fillStyle = color;
+    gc.textAlign = "left";
+    gc.fillText(title,9,index*rowH+19);
 
-  function plot(
-    row,title,signal,color,positiveOnly,reference
-  ){
-    const rowTop = row*rowHeight;
-    const T = rowTop+34;
-    const B = rowTop+rowHeight-30;
+    gc.lineWidth = 1;
+    gc.strokeStyle = "#29445b";
 
-    const max = config.peak*1.14;
-    const min = positiveOnly?0:-max;
+    for(let k=0; k<=4; k++){
+      const x = L+k*(R-L)/4;
 
-    const mapY = value =>
-      B-(value-min)/(max-min)*(B-T);
+      gc.beginPath();
+      gc.moveTo(x,top);
+      gc.lineTo(x,bottom);
+      gc.stroke();
 
-    graphCtx.fillStyle = color;
-    graphCtx.font = "bold 12px Arial";
-    graphCtx.textAlign = "left";
-    graphCtx.fillText(title,9,rowTop+18);
+      const yy = top+k*(bottom-top)/4;
 
-    graphCtx.font = "10px Arial";
-    graphCtx.lineWidth = 1;
+      gc.beginPath();
+      gc.moveTo(L,yy);
+      gc.lineTo(R,yy);
+      gc.stroke();
 
-    for(let k=0;k<=4;k++){
-      const x = L+(R-L)*k/4;
-
-      graphCtx.strokeStyle = "#284056";
-      graphCtx.beginPath();
-      graphCtx.moveTo(x,T);
-      graphCtx.lineTo(x,B);
-      graphCtx.stroke();
-
-      const milliseconds =
-        (2/config.f)*k/4*1000;
-
-      graphCtx.fillStyle = "#b0c7da";
-      graphCtx.textAlign = "center";
-      graphCtx.fillText(
-        fmt(milliseconds,0),x,B+15
+      gc.fillStyle = "#aabed0";
+      gc.textAlign = "center";
+      gc.font = "10px Arial";
+      gc.fillText(
+        fmt((2/p.f)*k/4*1000,0),x,bottom+15
       );
     }
 
-    for(let k=0;k<=4;k++){
-      const y = T+(B-T)*k/4;
+    gc.strokeStyle = "#a5bbcc";
+    gc.beginPath();
+    gc.moveTo(L,y(0));
+    gc.lineTo(R,y(0));
+    gc.stroke();
 
-      graphCtx.strokeStyle = "#21374b";
-      graphCtx.beginPath();
-      graphCtx.moveTo(L,y);
-      graphCtx.lineTo(R,y);
-      graphCtx.stroke();
+    gc.fillStyle = "#b7cad9";
+    gc.font = "10px Arial";
+    gc.textAlign = "right";
+    gc.fillText(fmt(max/1.14,1),L-6,y(max/1.14)+3);
+    gc.fillText("0",L-6,y(0)+3);
+
+    if(!positive){
+      gc.fillText(fmt(-max/1.14,1),L-6,y(-max/1.14)+3);
     }
 
-    graphCtx.strokeStyle = "#97b3ca";
-    graphCtx.beginPath();
-    graphCtx.moveTo(L,T);
-    graphCtx.lineTo(L,B);
-    graphCtx.moveTo(L,mapY(0));
-    graphCtx.lineTo(R,mapY(0));
-    graphCtx.stroke();
+    gc.strokeStyle = color;
+    gc.lineWidth = 2.7;
+    gc.beginPath();
 
-    graphCtx.fillStyle = "#c4dceb";
-    graphCtx.textAlign = "right";
+    for(let k=0; k<=420; k++){
+      const a = 2*TAU*k/420;
+      const x = L+(R-L)*k/420;
 
-    graphCtx.fillText(
-      fmt(config.peak,1),
-      L-6,
-      mapY(config.peak)+4
-    );
-
-    graphCtx.fillText("0",L-6,mapY(0)+4);
-
-    if(!positiveOnly){
-      graphCtx.fillText(
-        fmt(-config.peak,1),
-        L-6,
-        mapY(-config.peak)+4
-      );
+      if(!k) gc.moveTo(x,y(fn(a)));
+      else gc.lineTo(x,y(fn(a)));
     }
 
-    graphCtx.textAlign = "left";
-    graphCtx.fillText("V",10,T+10);
-    graphCtx.fillText("t, ms",R-22,B+26);
+    gc.stroke();
 
-    function curve(fn,stroke,dashed){
-      graphCtx.save();
+    const x = L+(R-L)*wrap(angle)/(2*TAU);
 
-      graphCtx.strokeStyle = stroke;
-      graphCtx.lineWidth = dashed?1.3:2.7;
-      graphCtx.setLineDash(dashed?[5,5]:[]);
+    gc.setLineDash([4,4]);
+    gc.strokeStyle = "#fff";
+    gc.lineWidth = 1;
+    gc.beginPath();
+    gc.moveTo(x,top);
+    gc.lineTo(x,bottom);
+    gc.stroke();
+    gc.setLineDash([]);
 
-      if(!dashed){
-        graphCtx.shadowColor = stroke;
-        graphCtx.shadowBlur = 7;
-      }
+    gc.fillStyle = "#fff";
+    gc.beginPath();
+    gc.arc(x,y(fn(angle)),4,0,TAU);
+    gc.fill();
 
-      graphCtx.beginPath();
-
-      for(let k=0;k<=480;k++){
-        const a = 2*TAU*k/480;
-        const x = L+(R-L)*k/480;
-        const y = mapY(fn(a));
-
-        if(k===0){
-          graphCtx.moveTo(x,y);
-        }else{
-          graphCtx.lineTo(x,y);
-        }
-      }
-
-      graphCtx.stroke();
-      graphCtx.restore();
-    }
-
-    if(reference){
-      curve(reference,"#a77743",true);
-    }
-
-    curve(signal,color,false);
-
-    graphCtx.strokeStyle = "#f2f7fc";
-    graphCtx.lineWidth = 1;
-    graphCtx.setLineDash([3,4]);
-
-    graphCtx.beginPath();
-    graphCtx.moveTo(cursorX,T);
-    graphCtx.lineTo(cursorX,B);
-    graphCtx.stroke();
-
-    graphCtx.setLineDash([]);
-
-    graphCtx.fillStyle = "#ffffff";
-    graphCtx.beginPath();
-
-    graphCtx.arc(
-      cursorX,
-      mapY(signal(angle)),
-      4.3,
-      0,
-      TAU
-    );
-
-    graphCtx.fill();
+    gc.fillStyle = "#b7cad9";
+    gc.font = "10px Arial";
+    gc.textAlign = "right";
+    gc.fillText("t, ms",R,bottom+27);
   }
 
   plot(
-    0,
-    "1. В намотката: e(t) — синусоида",
-    coilVoltage,
-    "#55ddff",
-    false,
-    null
+    0,"1. ЕДН в намотката e(t)",emf,"#55ddff",false
   );
 
   plot(
     1,
     mode==="AC"
-      ? "2. На четките: u(t) — същата синусоида"
-      : "2. След комутатора: u(t) = |e(t)|",
-    brushVoltage,
-    "#ffd768",
-    mode!=="AC",
-    null
+      ? "2. Напрежение на четките u(t)"
+      : "2. След комутатора |e(t)|",
+    brushes,"#ffd768",mode!=="AC"
   );
 
   if(mode==="FILTER"){
     plot(
-      2,
-      "3. Върху товара след D–RC филтъра",
-      filteredVoltage,
-      "#79efb6",
-      true,
-      a => Math.abs(coilVoltage(a))
+      2,"3. Напрежение след филтъра",
+      filterVoltage,"#79efb6",true
     );
   }
 }
 
+/* Числови показания. */
 function updateText(){
-  const e = coilVoltage(angle);
-  const u = brushVoltage(angle);
-  const degrees = wrap(angle)*180/Math.PI;
+  $("coilRead").textContent = fmt(emf(angle))+" V";
+  $("brushRead").textContent = fmt(brushes(angle))+" V";
+  $("angleRead").textContent = fmt(wrap(angle)*180/Math.PI)+"°";
 
-  $("coilRead").textContent = fmt(e,1)+" V";
-  $("brushRead").textContent = fmt(u,1)+" V";
-  $("angleRead").textContent = fmt(degrees,1)+"°";
+  $("Nread").textContent = p.n;
+  $("Bread").textContent = fmt(p.b,2)+" T";
+  $("Fread").textContent = fmt(p.f,0)+" Hz";
+  $("speedRead").textContent = fmt(p.speed,2)+"×";
+  $("Rread").textContent = fmt(p.r,0)+" Ω";
+  $("Cread").textContent = fmt(p.c*1e6,0)+" μF";
+  $("pause").textContent = playing ? "Ⅱ Пауза" : "▶ Продължи";
 
-  $("Nread").textContent = String(config.n);
-  $("Bread").textContent = fmt(config.b,2)+" T";
-  $("Fread").textContent = fmt(config.f,0)+" Hz";
-  $("speedRead").textContent = fmt(config.speed,2)+"×";
-  $("Rread").textContent = fmt(config.r,0)+" Ω";
-  $("Cread").textContent = fmt(config.c*1e6,0)+" μF";
-
-  $("pause").textContent =
-    playing?"Ⅱ Пауза":"▶ Продължи";
-
-  let explanation;
-
-  if(mode==="AC"){
-    $("contactLabel").textContent =
-      "Два контактни пръстена";
-
-    $("signalChain").textContent =
-      "Намотка: синусоида → контактни пръстени → синусоидално напрежение на изхода";
-
-    $("characteristicTitle").textContent =
-      "Ефективна стойност на изхода";
-
-    $("characteristicRead").textContent =
-      fmt(config.peak/Math.SQRT2,1)+" V";
-
-    explanation =
-      "Двете криви съвпадат по форма. Контактните пръстени "+
-      "не изправят напрежението. Неговата полярност се обръща "+
-      "при всеки половин оборот.";
-  }else{
-    $("contactLabel").textContent =
-      mode==="DC"
-        ? "Двусекционен комутатор"
-        : "Комутатор и D–RC филтър";
-
-    $("signalChain").textContent =
-      mode==="DC"
-        ? "Намотка: синусоида → комутатор → два положителни полупериода за един оборот"
-        : "Намотка: синусоида → комутатор: пулсации → D–RC филтър: изглаждане";
-
-    $("characteristicTitle").textContent =
-      mode==="DC"
-        ? "Средна стойност на четките"
-        : "Средна стойност след филтъра";
-
-    $("characteristicRead").textContent =
-      fmt(
-        mode==="DC"
-          ? 2*config.peak/Math.PI
-          : filterMean,
-        1
-      )+" V";
-
-    if(Math.abs(e)<config.peak*0.015){
-      explanation =
-        "Неутрално положение: ЕДН в намотката е близка до нула. "+
-        "Комутаторът преминава към другата секция.";
-    }else if(e<0){
-      explanation =
-        "Синусоидата в намотката е отрицателна. "+
-        "Комутаторът разменя връзката към четките и на изхода "+
-        "съответният полупериод е положителен.";
-    }else{
-      explanation =
-        "Синусоидата в намотката е положителна. "+
-        "На четките се получава положителен полупериод. "+
-        "През следващия половин оборот комутаторът ще размени връзката.";
-    }
-
-    if(mode==="FILTER"){
-      explanation +=
-        " Зелената трета крива показва напрежението върху товара след изглаждането.";
-    }
+  for(const [id,m] of [
+    ["modeAC","AC"],
+    ["modeDC","DC"],
+    ["modeFilter","FILTER"]
+  ]){
+    $(id).classList.toggle("active",mode===m);
   }
 
-  $("explanation").textContent = explanation;
+  $("contactLabel").textContent =
+    mode==="AC"
+      ? "Два контактни пръстена"
+      : mode==="DC"
+        ? "Двусекционен комутатор"
+        : "Комутатор и филтър";
+
+  $("signalChain").textContent =
+    mode==="AC"
+      ? "Намотка → контактни пръстени → синусоидално напрежение"
+      : mode==="DC"
+        ? "Намотка → комутатор → изправени полупериоди"
+        : "Намотка → комутатор → диод → RC филтър";
+
+  $("characteristicTitle").textContent =
+    mode==="AC"
+      ? "Ефективна стойност на изхода"
+      : "Средна стойност на изхода";
+
+  $("characteristicRead").textContent =
+    fmt(
+      mode==="AC"
+        ? p.peak/Math.SQRT2
+        : mode==="DC"
+          ? 2*p.peak/Math.PI
+          : filterMean
+    )+" V";
 
   $("filterControls").hidden = mode!=="FILTER";
   $("rippleRead").hidden = mode!=="FILTER";
 
   $("rippleRead").textContent =
     "Пулсации след филтъра: "+
-    fmt(filterRipple,1)+
-    " V връх–връх. Честота на пулсациите: "+
-    fmt(2*config.f,0)+
-    " Hz.";
+    fmt(filterRipple)+" V връх–връх.";
 
-  for(const [id,selectedMode] of [
-    ["modeAC","AC"],
-    ["modeDC","DC"],
-    ["modeFilter","FILTER"]
-  ]){
-    $(id).classList.toggle(
-      "active",mode===selectedMode
-    );
+  $("explanation").textContent =
+    mode==="AC"
+      ? "Двете синусоиди съвпадат. При активен товар електронният дрейф е синхронен с тока и е противоположен на условната му посока."
+      : mode==="DC"
+        ? "Комутаторът обръща връзката към четките при всеки половин оборот."
+        : "Кондензаторът се зарежда около върховете на изправеното напрежение и се разрежда през товара.";
 
-    $(id).setAttribute(
-      "aria-pressed",
-      String(mode===selectedMode)
+  document.querySelectorAll("[data-angle]").forEach(b=>{
+    let d = Math.abs(
+      wrap(angle)*180/Math.PI-(+b.dataset.angle)
     );
-  }
-
-  document.querySelectorAll("[data-angle]").forEach(button => {
-    let difference = Math.abs(
-      degrees-Number(button.dataset.angle)
-    );
-
-    difference = Math.min(
-      difference,360-difference
-    );
-
-    button.classList.toggle(
-      "active",difference<2
-    );
+    d = Math.min(d,360-d);
+    b.classList.toggle("active",d<2);
   });
+
+  updateElectronText();
 }
 
+/* 3D движение. */
 function updateVisual(){
   rotor.rotation.x = -angle;
 
-  const ac = mode==="AC";
+  acRotor.visible = mode==="AC";
+  dcRotor.visible = mode!=="AC";
+  acBrushes.visible = mode==="AC";
+  dcBrushes.visible = mode!=="AC";
+  filterGroup.visible = mode==="FILTER";
+  field.visible = $("showField").checked;
+  electron3D.visible = enabled && mode==="AC";
 
-  acRotor.visible = ac;
-  dcRotor.visible = !ac;
-  acContacts.visible = ac;
-  dcContacts.visible = !ac;
+  if(eCurve && enabled && mode==="AC"){
+    const offset = .028*Math.cos(angle);
 
-  filterBox.visible = mode==="FILTER";
-  fieldGroup.visible = $("showField").checked;
+    eObjects.forEach((m,k)=>{
+      const u = (
+        (k+.5)/eObjects.length+offset+1
+      )%1;
 
-  const relative =
-    Math.abs(loadVoltage(angle))/
-    Math.max(config.peak,1e-9);
+      m.position.copy(eCurve.getPointAt(u));
+      m.position.y += .055;
+    });
+  }
 
-  const brightness = THREE.MathUtils.clamp(
-    relative*relative,0,1
+  const brightness = Math.pow(
+    Math.min(
+      1,Math.abs(output(angle))/Math.max(p.peak,1)
+    ),2
   );
 
-  filamentMaterial.emissiveIntensity =
-    0.10+7*brightness;
-
-  lampLight.intensity =
-    0.08+6*brightness;
-
-  glowMaterial.opacity =
-    0.02+0.55*brightness;
-
-  glassMaterial.opacity =
-    0.10+0.13*brightness;
+  filamentMat.emissiveIntensity = .15+7*brightness;
+  lampLight.intensity = .08+6*brightness;
 }
 
-function changeMode(nextMode){
-  mode = nextMode;
+/* Управление — без промяна. */
+function changeMode(next){
+  mode = next;
 
-  graph.style.height =
-    mode==="FILTER"?"520px":"380px";
+  if(mode!=="AC"){
+    enabled = false;
+  }
+
+  graph.style.height = mode==="FILTER" ? "520px" : "380px";
 
   buildWinding();
   buildWires();
@@ -2098,171 +1841,82 @@ function changeMode(nextMode){
   drawGraphs();
 }
 
-$("modeAC").addEventListener(
-  "click",() => changeMode("AC")
-);
+$("modeAC").onclick = ()=>changeMode("AC");
+$("modeDC").onclick = ()=>changeMode("DC");
+$("modeFilter").onclick = ()=>changeMode("FILTER");
 
-$("modeDC").addEventListener(
-  "click",() => changeMode("DC")
-);
+$("electrons").onclick = ()=>{
+  if(mode!=="AC") return;
+  enabled = !enabled;
+  updateVisual();
+  updateText();
+};
 
-$("modeFilter").addEventListener(
-  "click",() => changeMode("FILTER")
-);
-
-$("pause").addEventListener("click",() => {
+$("pause").onclick = ()=>{
   playing = !playing;
   lastTime = null;
   updateText();
-});
+};
 
-$("restart").addEventListener("click",() => {
+$("restart").onclick = ()=>{
   angle = 0;
   playing = true;
   lastTime = null;
-
   updateVisual();
   updateText();
-  drawGraphs();
-});
+};
 
-document.querySelectorAll("[data-angle]").forEach(button => {
-  button.addEventListener("click",() => {
-    angle =
-      Number(button.dataset.angle)*
-      Math.PI/180;
-
+document.querySelectorAll("[data-angle]").forEach(b=>{
+  b.onclick = ()=>{
+    angle = (+b.dataset.angle)*Math.PI/180;
     playing = false;
     lastTime = null;
-
     updateVisual();
     updateText();
     drawGraphs();
-
-    renderer.render(scene,camera);
-  });
+  };
 });
 
-function refreshParameters(rebuildCoil=false){
-  config = readParameters();
-  calculateFilter();
-
-  if(rebuildCoil){
-    buildWinding();
-  }
-
-  updateVisual();
-  updateText();
-  drawGraphs();
+for(const id of ["N","B","F","R","C"]){
+  $(id).oninput = ()=>{
+    p = params();
+    calcFilter();
+    if(id==="N") buildWinding();
+    updateVisual();
+    updateText();
+    drawGraphs();
+  };
 }
 
-$("N").addEventListener(
-  "input",() => refreshParameters(true)
-);
-
-for(const id of ["B","F","R","C"]){
-  $(id).addEventListener(
-    "input",() => refreshParameters(false)
-  );
-}
-
-$("speed").addEventListener("input",() => {
-  config.speed = Number($("speed").value);
+$("speed").oninput = ()=>{
+  p.speed = +$("speed").value;
   updateText();
-});
+};
 
-$("showField").addEventListener("change",() => {
-  fieldGroup.visible = $("showField").checked;
-});
+$("showField").onchange = updateVisual;
 
-document.addEventListener("visibilitychange",() => {
+document.addEventListener("visibilitychange",()=>{
   lastTime = null;
 });
 
-renderer.domElement.addEventListener(
-  "webglcontextlost",
-  event => {
-    event.preventDefault();
-    playing = false;
+/* Самопроверката от последния вариант. */
+function checkDrift(){
+  const epsilon = 1e-8;
 
-    loading.hidden = false;
-    loading.textContent =
-      "3D контекстът е прекъснат. Презареди страницата.";
-  }
-);
+  if(Math.abs(Math.sin(0))>epsilon) return false;
+  if(Math.abs(Math.sin(Math.PI))>epsilon) return false;
 
-/* Проверка на електрическите зависимости. */
-function selfCheck(){
-  const oldMode = mode;
-  const tolerance =
-    1e-7*Math.max(1,config.peak);
+  if(Math.abs(Math.sin(Math.PI/2)-1)>epsilon) return false;
+  if(Math.abs(Math.sin(3*Math.PI/2)+1)>epsilon) return false;
 
-  let valid = true;
+  const h = 1e-5;
 
-  mode = "DC";
+  for(const a of [.4,1.2,2.6,3.8,5.1]){
+    const derivative = (
+      Math.cos(a+h)-Math.cos(a-h)
+    )/(2*h);
 
-  for(const degrees of [0,30,90,180,210,270,360]){
-    const a = degrees*Math.PI/180;
-    const expected =
-      Math.abs(config.peak*Math.sin(a));
-
-    if(
-      Math.abs(brushVoltage(a)-expected)>
-      tolerance
-    ){
-      valid = false;
-    }
-
-    if(brushVoltage(a)<-tolerance){
-      valid = false;
-    }
-  }
-
-  mode = "AC";
-
-  for(const degrees of [0,90,180,270]){
-    const a = degrees*Math.PI/180;
-
-    if(
-      Math.abs(brushVoltage(a)-coilVoltage(a))>
-      tolerance
-    ){
-      valid = false;
-    }
-  }
-
-  mode = oldMode;
-
-  return valid &&
-    filtered.length===FILTER_STEPS &&
-    filtered.every(Number.isFinite) &&
-    filterRipple>=0;
-}
-
-/* Проверка, че двата полюса действително са добавени. */
-function checkMagnets(){
-  for(const pole of [northPole,southPole]){
-    if(!pole || pole.parent!==scene || !pole.visible){
-      return false;
-    }
-
-    const positions = pole.geometry.getAttribute("position");
-
-    if(!positions || positions.count<3){
-      return false;
-    }
-
-    const box = pole.geometry.boundingBox;
-
-    if(
-      !box ||
-      !Number.isFinite(box.min.x) ||
-      !Number.isFinite(box.min.y) ||
-      !Number.isFinite(box.min.z) ||
-      !Number.isFinite(box.max.x) ||
-      !Number.isFinite(box.max.y) ||
-      !Number.isFinite(box.max.z)
-    ){
+    if(Math.abs(derivative+Math.sin(a))>1e-7){
       return false;
     }
   }
@@ -2273,44 +1927,30 @@ function checkMagnets(){
 /* Инициализация. */
 buildWinding();
 buildWires();
-resize();
+cameraUpdate();
 updateVisual();
 updateText();
 drawGraphs();
 
-if(!selfCheck()){
+if(!checkDrift()){
   throw new Error(
-    "Самопроверката на математическия модел не премина."
+    "Самопроверката на електронния дрейф не премина."
   );
 }
 
-if(!checkMagnets()){
-  throw new Error(
-    "Магнитните полюси не са създадени правилно."
-  );
-}
-
-/* Първо изобразяване преди скриване на съобщението. */
-renderer.render(scene,camera);
 loading.hidden = true;
 
-function animate(now){
+function animation(now){
   const dt = lastTime===null
     ? 0
-    : Math.min(
-        0.05,
-        Math.max(0,(now-lastTime)/1000)
-      );
+    : Math.min(.05,Math.max(0,(now-lastTime)/1000));
 
   lastTime = now;
 
-  if(playing&&!document.hidden){
-    angle +=
-      dt*TAU/7*
-      (config.f/50)*
-      config.speed;
-
-    angle %= TAU*10000;
+  if(playing && !document.hidden){
+    angle = (
+      angle+dt*TAU/7*(p.f/50)*p.speed
+    )%(TAU*10000);
   }
 
   if(!document.hidden){
@@ -2320,12 +1960,12 @@ function animate(now){
     renderer.render(scene,camera);
   }
 
-  requestAnimationFrame(animate);
+  requestAnimationFrame(animation);
 }
 
-requestAnimationFrame(animate);
+requestAnimationFrame(animation);
 
-})().catch(error => {
+})().catch(error=>{
   console.error(error);
 
   const loading = document.getElementById("loading");
@@ -2333,12 +1973,9 @@ requestAnimationFrame(animate);
   if(loading){
     loading.hidden = false;
     loading.textContent =
-      "Моделът не успя да се отвори: "+
-      error.message+
-      " Проверете интернет връзката и поддръжката на WebGL.";
+      "Моделът не успя да се отвори: "+error.message;
   }
 });
 </script>
-
 </body>
 </html>

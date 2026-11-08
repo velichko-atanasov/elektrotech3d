@@ -1,272 +1,1278 @@
-<!DOCTYPE html>
-<!-- saved from url=(0050)file:///C:/Users/Rosi/Downloads/preview%20(1).html -->
-<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Анимация 57 – Въртящо магнитно поле</title>
+<meta name="author"
+ content="доц. д-р инж. Величко Атанасов">
+<meta name="copyright"
+ content="© 2026 доц. д-р инж. Величко Атанасов">
+
+<title>Анимация 57 – Трифазно въртящо магнитно поле</title>
+
 <style>
+:root{
+ --bg:#f1f6fa;
+ --panel:#fff;
+ --ink:#17324a;
+ --muted:#60778b;
+ --line:#c9d8e4;
+ --red:#d52c31;
+ --green:#18934b;
+ --blue:#2369d5;
+ --purple:#7945c9;
+}
 *{box-sizing:border-box}
-body{margin:0;background:#f4f7fa;font-family:Arial,sans-serif;color:#17212b}
-.wrap{max-width:1420px;margin:12px auto;background:#fff;border:1px solid #b8c6d5;border-radius:12px;padding:15px}
-h1{text-align:center;color:#173f70;margin:2px 0 5px;font-size:27px}
-.sub{text-align:center;font-weight:700;margin-bottom:10px}
-.steps{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:10px 0}
-button{border:1px solid #aabaca;background:#f8fafc;border-radius:7px;padding:9px 14px;font-weight:700;cursor:pointer}
-button.on{background:#173f70;color:white}
-.grid{display:grid;grid-template-columns:1.05fr .95fr;gap:14px}
-.card{border:1px solid #ccd7e2;border-radius:10px;padding:12px;background:#fff}
-canvas{width:100%;display:block}
-#field{height:560px}
-#waves{height:290px}
-.formula{text-align:center;font:21px "Cambria Math","Times New Roman",serif;margin:8px}
-.explain{margin-top:12px;background:#f5f8fc;border-left:4px solid #173f70;padding:11px 13px;line-height:1.5}
-.values{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:10px 0}
-.val{text-align:center;padding:8px;border:1px solid #d7e0e8;border-radius:7px;font-weight:700}
-.controls{display:flex;justify-content:center;gap:18px;align-items:center;flex-wrap:wrap;border-top:1px solid #e2e7ec;margin-top:10px;padding-top:10px;font-weight:700}
-.note{font-size:13px;color:#4b5563;text-align:center;margin-top:6px}
-@media(max-width:950px){.grid{grid-template-columns:1fr}.values{grid-template-columns:1fr}}
+body{
+ margin:0;
+ font:15px/1.55 "Segoe UI",Arial,sans-serif;
+ color:var(--ink);
+ background:linear-gradient(160deg,#eaf3fa,#f8fbfe);
+ -webkit-user-select:none;
+ user-select:none;
+}
+.wrap{max-width:1440px;margin:auto;padding:15px}
+header{text-align:center;margin-bottom:16px}
+h1{
+ font-size:clamp(24px,3vw,36px);
+ margin:5px 0;
+ color:#123f70
+}
+.subtitle{color:var(--muted);margin:5px 0}
+.eyebrow{
+ font-weight:800;
+ letter-spacing:1px;
+ font-size:12px;
+ color:#2369a3
+}
+.toolbar{
+ display:flex;
+ flex-wrap:wrap;
+ align-items:center;
+ gap:8px;
+ margin-bottom:13px
+}
+.steps{
+ display:flex;
+ flex:1;
+ flex-wrap:wrap;
+ gap:7px
+}
+button{
+ border:1px solid #a5bdcf;
+ background:white;
+ color:#1d4160;
+ border-radius:9px;
+ padding:10px 13px;
+ cursor:pointer;
+ font-weight:700;
+ font-size:13px
+}
+button:hover{background:#e8f3fb}
+button.active{
+ background:#194d83;
+ color:white;
+ border-color:#194d83
+}
+button:focus-visible,input:focus-visible{
+ outline:3px solid #79b8e6;
+ outline-offset:2px
+}
+.panel{
+ background:var(--panel);
+ border:1px solid var(--line);
+ border-radius:17px;
+ box-shadow:0 7px 24px #15385212;
+ min-width:0;
+ overflow:hidden
+}
+.main{
+ display:grid;
+ grid-template-columns:minmax(0,1.12fr) minmax(330px,.88fr);
+ gap:13px;
+ align-items:start
+}
+.panel-head{
+ padding:13px 16px;
+ border-bottom:1px solid var(--line);
+ display:flex;
+ justify-content:space-between;
+ gap:10px;
+ flex-wrap:wrap
+}
+.panel-head strong{font-size:16px}
+.panel-head small{color:var(--muted)}
+#fieldSvg,#waveSvg{
+ width:100%;
+ height:auto;
+ display:block
+}
+.field-area{
+ background:radial-gradient(circle,#fff,#f7fbff);
+ padding:7px
+}
+.right{display:grid;gap:12px;min-width:0}
+.panel-body{padding:13px}
+.values{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:8px;
+ padding:12px
+}
+.value{
+ background:#f7fbff;
+ border:1px solid #d5e2ec;
+ border-radius:10px;
+ padding:9px;
+ text-align:center;
+ font-size:12px;
+ color:var(--muted)
+}
+.value b{
+ display:block;
+ margin-top:4px;
+ font-size:18px;
+ color:#17324a
+}
+.controls{
+ display:flex;
+ flex-wrap:wrap;
+ gap:14px;
+ align-items:center;
+ padding:13px;
+ border-top:1px solid var(--line)
+}
+.slider-control{
+ min-width:150px;
+ flex:1;
+ font-size:12px;
+ font-weight:700
+}
+.slider-control label{
+ display:flex;
+ justify-content:space-between
+}
+.slider-control input{
+ width:100%;
+ accent-color:#2467a5;
+ margin-top:7px
+}
+.formula{
+ text-align:center;
+ font:19px/1.65 Cambria,Georgia,serif;
+ margin:7px 0
+}
+.explain{
+ background:#eff6fd;
+ border-left:4px solid #3475af;
+ border-radius:7px;
+ padding:12px;
+ line-height:1.7;
+ font-size:13px
+}
+.note{
+ font-size:12px;
+ line-height:1.7;
+ color:var(--muted)
+}
+.legend{
+ display:flex;
+ flex-wrap:wrap;
+ gap:12px;
+ padding:10px 13px;
+ font-size:12px
+}
+.dot{
+ display:inline-block;
+ width:10px;
+ height:10px;
+ border-radius:50%;
+ margin-right:5px
+}
+.status{
+ color:#237046;
+ font-weight:800;
+ font-size:13px
+}
+#fault{
+ background:#fff0f0;
+ border:1px solid #e6aaaa;
+ border-radius:10px;
+ padding:12px;
+ margin-top:12px;
+ color:#a42c2c
+}
+footer{
+ margin-top:18px;
+ border-top:1px solid var(--line);
+ padding:16px;
+ text-align:center;
+ color:var(--muted);
+ font-size:13px
+}
+[hidden]{display:none!important}
+@media(max-width:1080px){
+ .main{grid-template-columns:1fr}
+}
+@media(max-width:700px){
+ .values{grid-template-columns:repeat(2,1fr)}
+ .wrap{padding:8px}
+}
 </style>
 </head>
+
 <body>
 <div class="wrap">
-<h1>Анимация 57: Въртящо магнитно поле на трифазна система</h1>
-<div class="sub">Три статорни намотки A–A′, B–B′ и C–C′, разположени пространствено на 120°</div>
 
+<header>
+<div class="eyebrow">ИНТЕРАКТИВНА ЕЛЕКТРОТЕХНИКА · QR-057</div>
+<h1>Трифазно въртящо магнитно поле</h1>
+<p class="subtitle">
+Три статорни намотки A–A′, B–B′ и C–C′ —
+пространствено изместване 120°
+</p>
+</header>
+
+<div class="toolbar">
 <div class="steps">
-<button class="" data-mode="0">1. Трите намотки</button>
-<button data-mode="1" class="">2. Фазови полета</button>
-<button data-mode="2" class="">3. Резултантно поле</button>
-<button data-mode="3" class="on">4. Пълна анимация</button>
+<button data-step="1" type="button">
+1. Трите намотки
+</button>
+<button data-step="2" type="button">
+2. Фазови полета
+</button>
+<button data-step="3" type="button">
+3. Резултантно поле
+</button>
+<button data-step="4" type="button" class="active">
+4. Пълна анимация
+</button>
+</div>
+<div class="status" id="status">● Анимацията работи</div>
 </div>
 
-<div class="grid">
-<div class="card">
-<canvas id="field" width="654" height="560"></canvas>
+<div class="main">
+
+<section class="panel">
+<div class="panel-head">
+<strong>Статор — напречно сечение</strong>
+<small>Схематичен двуполюсен трифазен статор</small>
+</div>
+
+<div class="field-area">
+<svg id="fieldSvg" viewBox="0 0 760 660"
+ role="img"
+ aria-label="Въртящо магнитно поле на трифазна система">
+
+<defs>
+<radialGradient id="statorMetal">
+<stop offset="0" stop-color="#f9fcff"/>
+<stop offset=".73" stop-color="#d7e4ed"/>
+<stop offset="1" stop-color="#9db2c3"/>
+</radialGradient>
+
+<radialGradient id="fieldLight">
+<stop offset="0" stop-color="#a983ee" stop-opacity=".52"/>
+<stop offset=".55" stop-color="#a983ee" stop-opacity=".18"/>
+<stop offset="1" stop-color="#a983ee" stop-opacity="0"/>
+</radialGradient>
+
+<linearGradient id="copper" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0" stop-color="#a65324"/>
+<stop offset=".55" stop-color="#ffd68e"/>
+<stop offset="1" stop-color="#bd6b32"/>
+</linearGradient>
+
+<marker id="headRed" viewBox="0 0 10 10"
+ refX="9" refY="5" markerWidth="7" markerHeight="7"
+ orient="auto">
+<path d="M0 0L10 5L0 10Z" fill="#d52c31"/>
+</marker>
+
+<marker id="headGreen" viewBox="0 0 10 10"
+ refX="9" refY="5" markerWidth="7" markerHeight="7"
+ orient="auto">
+<path d="M0 0L10 5L0 10Z" fill="#18934b"/>
+</marker>
+
+<marker id="headBlue" viewBox="0 0 10 10"
+ refX="9" refY="5" markerWidth="7" markerHeight="7"
+ orient="auto">
+<path d="M0 0L10 5L0 10Z" fill="#2369d5"/>
+</marker>
+
+<marker id="headPurple" viewBox="0 0 10 10"
+ refX="9" refY="5" markerWidth="7" markerHeight="7"
+ orient="auto">
+<path d="M0 0L10 5L0 10Z" fill="#7945c9"/>
+</marker>
+</defs>
+
+<text x="360" y="31"
+ text-anchor="middle"
+ font-size="16"
+ font-weight="bold"
+ fill="#17456e">
+ТРИ ПРОСТРАНСТВЕНО ИЗМЕСТЕНИ НАМОТКИ
+</text>
+
+<!-- Външен пръстен на статора -->
+<circle cx="360" cy="324" r="240"
+ fill="url(#statorMetal)"
+ stroke="#839bad" stroke-width="3"/>
+
+<!-- Контур на въздушната междина -->
+<circle cx="360" cy="324" r="166"
+ fill="#fff"
+ stroke="#a5b7c6" stroke-width="3"/>
+
+<circle cx="360" cy="324" r="156"
+ fill="none" stroke="#dbe6ed"
+ stroke-width="1.5" stroke-dasharray="5 7"/>
+
+<!-- Статорни канали и намотки -->
+<g id="slotLayer"></g>
+<g id="coilLayer"></g>
+<g id="axisLayer"></g>
+
+<!-- Светлинна визуализация на резултантното поле -->
+<g id="fieldGlow">
+<ellipse cx="371" cy="324" rx="137" ry="57"
+ fill="url(#fieldLight)"/>
+<ellipse cx="390" cy="324" rx="79" ry="20"
+ fill="#946be3" opacity=".12"/>
+</g>
+
+<!-- Окръжност на върха на резултантния вектор -->
+<circle id="tipOrbit" cx="360" cy="324" r="147"
+ fill="none" stroke="#bca6e7"
+ stroke-width="1.8" stroke-dasharray="4 7"/>
+
+<!-- Следа от въртенето -->
+<g id="trailLayer"></g>
+
+<!-- Фазови магнитни полета -->
+<g id="phaseVectors">
+<line id="vA" x1="360" y1="324" x2="360" y2="324"
+ stroke="#d52c31" stroke-width="3.5"
+ marker-end="url(#headRed)"/>
+
+<line id="vB" x1="360" y1="324" x2="360" y2="324"
+ stroke="#18934b" stroke-width="3.5"
+ marker-end="url(#headGreen)"/>
+
+<line id="vC" x1="360" y1="324" x2="360" y2="324"
+ stroke="#2369d5" stroke-width="3.5"
+ marker-end="url(#headBlue)"/>
+</g>
+
+<!-- Резултантен магнитен вектор -->
+<line id="vResult"
+ x1="360" y1="324"
+ x2="507" y2="324"
+ stroke="#7945c9" stroke-width="6"
+ stroke-linecap="round"
+ marker-end="url(#headPurple)"/>
+
+<text id="resultLabel"
+ x="515" y="311"
+ font-size="20"
+ font-weight="bold"
+ fill="#7945c9">
+BΣ
+</text>
+
+<circle id="tipDot"
+ cx="507" cy="324" r="6"
+ fill="#7945c9" stroke="white" stroke-width="2"/>
+
+<!-- Център -->
+<circle cx="360" cy="324" r="6" fill="#17324a"/>
+
+<text x="346" y="345"
+ font-size="13" fill="#17324a">O</text>
+
+<!-- Текущ ъгъл -->
+<path id="angleArc"
+ d="" fill="none"
+ stroke="#b17b24" stroke-width="2.5"/>
+
+<text id="angleLabel"
+ x="419" y="302"
+ font-size="15"
+ font-weight="bold"
+ fill="#a47524">
+θ
+</text>
+
+<text id="directionLabel"
+ x="360" y="604" text-anchor="middle"
+ font-size="16" font-weight="bold"
+ fill="#7945c9">
+Посока: обратно на часовниковата стрелка
+</text>
+
+<text x="360" y="631" text-anchor="middle"
+ font-size="13" fill="#60778b">
+● ток към наблюдателя · × ток от наблюдателя
+</text>
+
+<text x="748" y="653" text-anchor="end"
+ font-size="11" fill="#a2b4c4">
+© 2026 Величко Атанасов
+</text>
+
+</svg>
+</div>
 
 <div class="values">
-<div class="val" id="va" style="color:#d52323">iA = 0.55 Im</div>
-<div class="val" id="vb" style="color:#21843f">iB = 0.45 Im</div>
-<div class="val" id="vc" style="color:#1559d5">iC = -1.00 Im</div>
+<div class="value">
+Ток i<sub>A</sub>
+<b id="iA" style="color:#d52c31">—</b>
+</div>
+<div class="value">
+Ток i<sub>B</sub>
+<b id="iB" style="color:#18934b">—</b>
+</div>
+<div class="value">
+Ток i<sub>C</sub>
+<b id="iC" style="color:#2369d5">—</b>
+</div>
+<div class="value">
+Резултантно поле
+<b id="bTotal" style="color:#7945c9">—</b>
+</div>
 </div>
 
 <div class="controls">
-<button id="play">Пауза</button>
-<button id="reset">Начало</button>
-<label>Скорост:
-<input id="speed" type="range" min="20" max="150" value="70">
+<button id="play" type="button">Ⅱ Пауза</button>
+<button id="reset" type="button">↺ Начало</button>
+<button id="reverse" type="button">
+Размени фази B и C
+</button>
+
+<div class="slider-control">
+<label for="speed">
+Учебна скорост
+<output id="speedValue">1,00×</output>
 </label>
-</div>
-<div class="note">Движението е умишлено забавено за учебни цели.</div>
+<input id="speed" type="range"
+ min="20" max="150" step="5" value="70">
 </div>
 
-<div>
-<div class="card"><canvas id="waves" width="590" height="290"></canvas></div>
-<div class="card" style="margin-top:14px">
-<div class="formula">i<sub>A</sub> = I<sub>m</sub> cos ωt</div>
-<div class="formula">i<sub>B</sub> = I<sub>m</sub> cos(ωt − 120°)</div>
-<div class="formula">i<sub>C</sub> = I<sub>m</sub> cos(ωt − 240°)</div>
-<div class="formula"><b>B⃗ = B⃗<sub>A</sub> + B⃗<sub>B</sub> + B⃗<sub>C</sub></b></div>
-<div class="formula"><b>|B⃗| = 3B<sub>m</sub>/2 = const.</b></div>
-<div class="explain" id="info"><b>Стъпка 4.</b> Натиснете „Старт“. Ще видите как трите фазови полета пулсират, а резултантното магнитно поле се върти равномерно в статора. Това е физическата основа на въртящото поле в трифазните електрически машини.</div>
+<div class="slider-control">
+<label for="amp">
+Амплитуда
+<output id="ampValue">1,00×</output>
+</label>
+<input id="amp" type="range"
+ min=".5" max="1.4" step=".05" value="1">
 </div>
 </div>
+
+<p class="note" style="padding:0 15px 12px">
+Точката и кръстът обозначават посоката на тока
+в активните страни на намотките. Движението на
+магнитното поле е учебно забавено.
+</p>
+</section>
+
+<div class="right">
+
+<section class="panel">
+<div class="panel-head">
+<strong>Трифазни синусоидални токове</strong>
+<small>Един общ момент за графиките и векторите</small>
 </div>
+
+<div class="panel-body">
+<svg id="waveSvg" viewBox="0 0 540 270"
+ role="img"
+ aria-label="Три синусоидални тока с фазово отместване 120 градуса">
+
+<line x1="54" y1="135" x2="510" y2="135"
+ stroke="#98adbd" stroke-width="1.3"/>
+
+<line x1="54" y1="31" x2="54" y2="238"
+ stroke="#98adbd" stroke-width="1.3"/>
+
+<g id="waveGrid"></g>
+
+<path id="waveA" fill="none"
+ stroke="#d52c31" stroke-width="3"/>
+
+<path id="waveB" fill="none"
+ stroke="#18934b" stroke-width="3"/>
+
+<path id="waveC" fill="none"
+ stroke="#2369d5" stroke-width="3"/>
+
+<line id="timeCursor" x1="54" y1="30"
+ x2="54" y2="237" stroke="#7945c9"
+ stroke-width="1.6" stroke-dasharray="5 5"/>
+
+<circle id="dotA" r="5.5" fill="#d52c31"/>
+<circle id="dotB" r="5.5" fill="#18934b"/>
+<circle id="dotC" r="5.5" fill="#2369d5"/>
+
+<text x="68" y="21" fill="#d52c31"
+ font-size="15" font-weight="bold">iA</text>
+<text x="105" y="21" fill="#18934b"
+ font-size="15" font-weight="bold">iB</text>
+<text x="142" y="21" fill="#2369d5"
+ font-size="15" font-weight="bold">iC</text>
+
+<text x="515" y="142"
+ font-size="12" fill="#60778b">ωt</text>
+
+</svg>
+
+<p class="note">
+Можеш да натиснеш върху графиката, за да
+зададеш конкретен момент и да разгледаш
+разположението на магнитните вектори.
+</p>
+</div>
+</section>
+
+<section class="panel">
+<div class="panel-head">
+<strong>Математически модел</strong>
+</div>
+
+<div class="panel-body">
+
+<div class="formula">
+i<sub>A</sub> = I<sub>m</sub> cos(ωt)
+</div>
+
+<div class="formula" id="eqB">
+i<sub>B</sub> = I<sub>m</sub> cos(ωt − 120°)
+</div>
+
+<div class="formula" id="eqC">
+i<sub>C</sub> = I<sub>m</sub> cos(ωt − 240°)
+</div>
+
+<div class="formula">
+\(\vec B_{\Sigma}=\vec B_A+\vec B_B+\vec B_C\)
+</div>
+
+<div class="formula">
+\(|\vec B_\Sigma|=\dfrac{3}{2}B_m=\mathrm{const.}\)
+</div>
+
+<div class="explain" id="stepInfo"></div>
+
+<div class="explain">
+**Текущ електрически ъгъл:**
+<strong id="angleValue">0°</strong>
+
+<div style="height:8px"></div>
+
+**Фазова последователност:**
+<strong id="sequenceValue">A–B–C</strong>
+
+<div style="height:8px"></div>
+
+**Посока на въртене:**
+<strong id="rotationValue">
+Обратно на часовниковата стрелка
+</strong>
+</div>
+
+<p class="note">
+Тук всяка фаза се представя с една магнитна ос.
+Това е идеализиран двуполюсен модел с равни
+амплитуди и синусоидално разпределение на полето.
+</p>
+
+</div>
+</section>
+
+<div class="legend">
+<span><i class="dot" style="background:#d52c31"></i>Фаза A</span>
+<span><i class="dot" style="background:#18934b"></i>Фаза B</span>
+<span><i class="dot" style="background:#2369d5"></i>Фаза C</span>
+<span><i class="dot" style="background:#7945c9"></i>Резултанта</span>
+</div>
+
+</div>
+</div>
+
+<div id="fault" hidden role="alert"></div>
+
+<footer>
+© 2026 доц. д-р инж. Величко Атанасов.
+Всички права запазени.
+</footer>
+
 </div>
 
 <script>
-const f=document.getElementById('field'),c=f.getContext('2d');
-const wcan=document.getElementById('waves'),q=wcan.getContext('2d');
-const colors=['#d52323','#21843f','#1559d5'],purple='#7030a0',ink='#17212b';
-let mode=0,theta=0,running=false,last=0;
+(() => {
+"use strict";
 
-function fit(x,z){
-  let r=x.getBoundingClientRect(),d=devicePixelRatio||1;
-  x.width=r.width*d;x.height=r.height*d;
-  z.setTransform(d,0,0,d,0,0);
+const $ = id => document.getElementById(id);
+const NS = "http://www.w3.org/2000/svg";
+const TAU = 2*Math.PI;
+
+const CX=360;
+const CY=324;
+
+const axes=[
+ 0,
+ 2*Math.PI/3,
+  4*Math.PI/3
+];
+
+const colors=[
+ "#d52c31",
+ "#18934b",
+ "#2369d5"
+];
+
+let mode=4;
+let running=true;
+let theta=0;
+let swapped=false;
+let lastTime=null;
+let stoppedOnError=false;
+
+const conductorGroups=[];
+const trailDots=[];
+
+function svg(tag,attrs={}){
+ const node=document.createElementNS(NS,tag);
+
+ for(const [name,value] of Object.entries(attrs)){
+  node.setAttribute(name,String(value));
+ }
+
+ return node;
 }
-function line(z,x1,y1,x2,y2,col=ink,lw=1.5,d=[]){
-  z.save();z.strokeStyle=col;z.lineWidth=lw;z.setLineDash(d);z.lineCap='round';
-  z.beginPath();z.moveTo(x1,y1);z.lineTo(x2,y2);z.stroke();z.restore();
+
+function wrap(a){
+ return ((a%TAU)+TAU)%TAU;
 }
-function arrow(z,x1,y1,x2,y2,col=ink,lw=2){
-  line(z,x1,y1,x2,y2,col,lw);
-  let a=Math.atan2(y2-y1,x2-x1),s=9;
-  z.save();z.fillStyle=col;z.beginPath();z.moveTo(x2,y2);
-  z.lineTo(x2-s*Math.cos(a-.45),y2-s*Math.sin(a-.45));
-  z.lineTo(x2-s*Math.cos(a+.45),y2-s*Math.sin(a+.45));
-  z.closePath();z.fill();z.restore();
+
+function fmt(x,n=2){
+ const value=Math.abs(x)<.5*Math.pow(10,-n)?0:x;
+
+ return value.toLocaleString("bg-BG",{
+  minimumFractionDigits:n,
+  maximumFractionDigits:n
+ });
 }
-function text(z,s,x,y,n=15,col=ink,b=false){
-  z.save();z.fillStyle=col;z.font=(b?'bold ':'')+n+'px Arial';
-  z.textAlign='center';z.textBaseline='middle';z.fillText(s,x,y);z.restore();
+
+function clamp(x,a,b){
+ return Math.min(b,Math.max(a,x));
 }
-function drawCoil(ctx,cx,cy,angle,r,col,label){
-  // Една фазова намотка = две активни страни, разположени диаметрално,
-  // свързани с видима крайна връзка. Така ясно се вижда, че имаме 3 намотки,
-  // а не 6 отделни.
-  const ux=Math.cos(angle), uy=-Math.sin(angle);
-  const px=-uy, py=ux;
-  const sideR=r-8;
-  const x1=cx+ux*sideR, y1=cy+uy*sideR;
-  const x2=cx-ux*sideR, y2=cy-uy*sideR;
 
-  // Класически активни страни на намотката: два малки проводника от всяка страна.
-  function side(x,y,sgn){
-    const sep=9;
-    for(let k=-1;k<=1;k+=2){
-      let xx=x+px*k*sep, yy=y+py*k*sep;
-      ctx.save();
-      ctx.strokeStyle=col; ctx.lineWidth=2.2;
-      ctx.beginPath(); ctx.arc(xx,yy,7,0,Math.PI*2); ctx.stroke();
-      ctx.restore();
+function setLine(id,x1,y1,x2,y2){
+ const node=$(id);
 
-      // точка / кръст за посока на тока през проводника
-      if(sgn>0){
-        ctx.save();ctx.fillStyle=col;ctx.beginPath();ctx.arc(xx,yy,2.4,0,Math.PI*2);ctx.fill();ctx.restore();
-      }else{
-        line(ctx,xx-3,yy-3,xx+3,yy+3,col,1.5);
-        line(ctx,xx-3,yy+3,xx+3,yy-3,col,1.5);
-      }
-    }
-  }
-
-  side(x1,y1,1);
-  side(x2,y2,-1);
-
-  // Видима крайна връзка между двете страни на същата намотка,
-  // изнесена малко извън статора, за да не пресича работната зона.
-  const rr=r+22;
-  const a1=Math.atan2(-(y1-cy),(x1-cx));
-  const a2=Math.atan2(-(y2-cy),(x2-cx));
-
-  ctx.save();
-  ctx.strokeStyle=col;ctx.lineWidth=2.2;
-  ctx.beginPath();
-  ctx.arc(cx,cy,rr,-a1,-a2,false);
-  ctx.stroke();
-  ctx.restore();
-
-  // Ясни крайни означения A–A′, B–B′, C–C′.
-  text(ctx,label,cx+ux*(r+45),cy+uy*(r+45),18,col,true);
-  text(ctx,label+"′",cx-ux*(r+45),cy-uy*(r+45),18,col,true);
+ node.setAttribute("x1",x1);
+ node.setAttribute("y1",y1);
+ node.setAttribute("x2",x2);
+ node.setAttribute("y2",y2);
 }
-function field(){
-  let W=f.clientWidth,H=f.clientHeight;c.clearRect(0,0,W,H);
-  let x=W/2,y=H*.52,R=Math.min(W,H)*.37,stator=R+48;
 
-  text(c,'Три фазови намотки: A–A′, B–B′ и C–C′',x,22,16,'#173f70',true);
+function makeText(parent,content,x,y,color,size=14){
+ const t=svg("text",{
+  x,y,
+  "text-anchor":"middle",
+  "font-size":size,
+  "font-weight":"bold",
+  fill:color
+ });
 
-  // stator circles
-  c.save();c.strokeStyle='#8794a1';c.lineWidth=2;
-  c.beginPath();c.arc(x,y,stator,0,Math.PI*2);c.stroke();
-  c.strokeStyle='#c1c8cf';c.lineWidth=1.4;
-  c.beginPath();c.arc(x,y,R,0,Math.PI*2);c.stroke();
-  c.restore();
+ t.textContent=content;
+ parent.appendChild(t);
+ return t;
+}
 
-  // spatial magnetic axes
-  const ax=[Math.PI/2,-Math.PI/6,7*Math.PI/6], nm=['A','B','C'];
-  ax.forEach((a,k)=>{
-    line(c,x-(R-12)*Math.cos(a),y+(R-12)*Math.sin(a),
-           x+(R-12)*Math.cos(a),y-(R-12)*Math.sin(a),
-           colors[k],1.3,[6,4]);
-    drawCoil(c,x,y,a,stator-8,colors[k],nm[k]);
+/*
+ ФИЗИЧЕСКИ ПРАВИЛНО РАЗПОЛОЖЕНИЕ:
+
+ Фазовите магнитни оси са на 0°, 120° и 240°.
+ Активните страни на всяка намотка са на
+ 90° спрямо собствената магнитна ос.
+
+ Ток към наблюдателя в страната на +90°
+ създава положително поле по фазовата ос.
+*/
+
+/* Статорни канали */
+for(let i=0;i<36;i++){
+ const a=TAU*i/36;
+
+ const x1=CX+209*Math.cos(a);
+ const y1=CY-209*Math.sin(a);
+
+ const x2=CX+231*Math.cos(a);
+ const y2=CY-231*Math.sin(a);
+
+ $("slotLayer").appendChild(
+  svg("line",{
+   x1,y1,x2,y2,
+   stroke:"#91a9ba",
+   "stroke-width":3,
+   "stroke-linecap":"round",
+   opacity:.55
+  })
+ );
+}
+
+/* Активна страна на фазова намотка */
+function conductorSide(phaseIndex,beta,positiveSide,label){
+ const color=colors[phaseIndex];
+ const x=CX+192*Math.cos(beta);
+ const y=CY-192*Math.sin(beta);
+
+ const container=svg("g");
+ $("coilLayer").appendChild(container);
+
+ const tangent={
+  x:-Math.sin(beta),
+  y:-Math.cos(beta)
+ };
+
+ const symbols=[];
+
+ for(const offset of [-11,0,11]){
+  const px=x+tangent.x*offset;
+  const py=y+tangent.y*offset;
+
+  container.appendChild(svg("circle",{
+   cx:px,cy:py,r:9,
+   fill:"url(#copper)",
+   stroke:color,
+   "stroke-width":2
+  }));
+
+  const dot=svg("circle",{
+   cx:px,cy:py,r:2.8,
+   fill:color
   });
 
-  c.fillStyle=ink;c.beginPath();c.arc(x,y,3,0,Math.PI*2);c.fill();
-  text(c,'O',x-13,y+16,14);
+  const cross=svg("g");
 
-  const cur=[
-    Math.cos(theta),
-    Math.cos(theta-2*Math.PI/3),
-    Math.cos(theta-4*Math.PI/3)
-  ];
+  cross.appendChild(svg("line",{
+   x1:px-4,y1:py-4,
+   x2:px+4,y2:py+4,
+   stroke:color,"stroke-width":2
+  }));
 
-  if(mode>=1){
-    cur.forEach((v,k)=>{
-      let len=R*.47*v,a=ax[k],ex=x+len*Math.cos(a),ey=y-len*Math.sin(a);
-      arrow(c,x,y,ex,ey,colors[k],2.7);
-      if(Math.abs(v)>.07){
-        text(c,'B'+nm[k],ex+16*Math.sign(v)*Math.cos(a),ey-16*Math.sign(v)*Math.sin(a),14,colors[k],true);
-      }
-    });
-  }
+  cross.appendChild(svg("line",{
+   x1:px-4,y1:py+4,
+   x2:px+4,y2:py-4,
+   stroke:color,"stroke-width":2
+  }));
 
-  if(mode>=2){
-    let sx=0,sy=0;
-    cur.forEach((v,k)=>{sx+=v*Math.cos(ax[k]);sy+=v*Math.sin(ax[k])});
-    let scale=R*.47,ex=x+scale*sx,ey=y-scale*sy;
-    arrow(c,x,y,ex,ey,purple,4.5);
-    text(c,'B – резултантно поле',ex,ey-24,16,purple,true);
+  container.appendChild(dot);
+  container.appendChild(cross);
 
-    // rotation direction
-    c.save();c.strokeStyle=purple;c.lineWidth=2;c.beginPath();
-    c.arc(x,y,R*.72,-0.15,-1.05,true);c.stroke();c.restore();
-    arrow(c,x+R*.72*Math.cos(-.98),y+R*.72*Math.sin(-.98),
-            x+R*.72*Math.cos(-1.05),y+R*.72*Math.sin(-1.05),purple,2);
-    text(c,'посока на въртене',x+R*.48,y-R*.60,14,purple,true);
-  }
+  symbols.push({dot,cross});
+ }
+
+ const lx=CX+237*Math.cos(beta);
+ const ly=CY-237*Math.sin(beta)+5;
+
+ makeText(
+  $("coilLayer"),label,lx,ly,color,15
+ );
+
+ conductorGroups.push({
+  phaseIndex,positiveSide,symbols
+ });
 }
-function waves(){
-  let W=wcan.clientWidth,H=wcan.clientHeight;
-  q.clearRect(0,0,W,H);
-  let L=42,R=W-14,T=30,B=H-35,M=(T+B)/2,A=(B-T)*.31;
-  line(q,L,M,R,M,'#555',1);
-  line(q,L,T,L,B,'#555',1);
 
-  const ph=[0,-2*Math.PI/3,-4*Math.PI/3],nm=['iA','iB','iC'];
-  ph.forEach((p,k)=>{
-    q.save();q.strokeStyle=colors[k];q.lineWidth=2;q.beginPath();
-    for(let px=L;px<=R;px++){
-      let u=(px-L)/(R-L)*2*Math.PI;
-      let yy=M-A*Math.cos(u+p);
-      px===L?q.moveTo(px,yy):q.lineTo(px,yy);
-    }
-    q.stroke();q.restore();
-    text(q,nm[k],L+24,T+14+k*20,13,colors[k],true);
+/* Три фазови намотки с две активни страни */
+for(let k=0;k<3;k++){
+ const axis=axes[k];
+
+ conductorSide(
+  k,axis+Math.PI/2,true,
+  ["A","B","C"][k]
+ );
+
+ conductorSide(
+  k,axis+3*Math.PI/2,false,
+  ["A′","B′","C′"][k]
+ );
+
+ const a=axis;
+
+ $("axisLayer").appendChild(
+  svg("line",{
+   x1:CX-148*Math.cos(a),
+   y1:CY+148*Math.sin(a),
+   x2:CX+148*Math.cos(a),
+   y2:CY-148*Math.sin(a),
+   stroke:colors[k],
+   "stroke-width":1.4,
+   "stroke-dasharray":"6 6",
+   opacity:.30
+  })
+ );
+}
+
+/* Следа от въртенето */
+for(let i=0;i<24;i++){
+ const dot=svg("circle",{
+  cx:CX,cy:CY,r:3.2,
+  fill:"#7945c9",
+  opacity:.25
+ });
+
+ $("trailLayer").appendChild(dot);
+ trailDots.push(dot);
+}
+
+/* Математически модел */
+function phaseShifts(){
+ return swapped
+  ?[0,-4*Math.PI/3,-2*Math.PI/3]
+  :[0,-2*Math.PI/3,-4*Math.PI/3];
+}
+
+function phaseCurrents(){
+ const shifts=phaseShifts();
+ const amp=Number($("amp").value);
+
+ return shifts.map(
+  s=>amp*Math.cos(theta+s)
+ );
+}
+
+function resultant(currents){
+ let x=0,y=0;
+
+ for(let i=0;i<3;i++){
+  x+=currents[i]*Math.cos(axes[i]);
+  y+=currents[i]*Math.sin(axes[i]);
+ }
+
+ return {
+  x,y,
+  magnitude:Math.hypot(x,y),
+  angle:Math.atan2(y,x)
+ };
+}
+
+/* Графики — построяват се при смяна на фазите */
+function wavePath(shift){
+ let d="";
+
+ for(let i=0;i<=240;i++){
+  const a=TAU*i/240;
+
+  const x=54+456*i/240;
+  const y=135-68*Math.cos(a+shift);
+
+  d+=(i===0?"M":"L")+
+    x.toFixed(2)+" "+y.toFixed(2)+" ";
+ }
+
+ return d;
+}
+
+function drawWaveShapes(){
+ const shifts=phaseShifts();
+
+ ["waveA","waveB","waveC"].forEach((id,i)=>{
+  $(id).setAttribute(
+   "d",wavePath(shifts[i])
+  );
+ });
+
+ $("eqB").innerHTML=swapped
+  ?"i<sub>B</sub> = I<sub>m</sub> cos(ωt − 240°)"
+  :"i<sub>B</sub> = I<sub>m</sub> cos(ωt − 120°)";
+
+ $("eqC").innerHTML=swapped
+  ?"i<sub>C</sub> = I<sub>m</sub> cos(ωt − 120°)"
+  :"i<sub>C</sub> = I<sub>m</sub> cos(ωt − 240°)";
+}
+
+/* Деления на времевата ос */
+for(let i=0;i<=4;i++){
+ const x=54+456*i/4;
+
+ $("waveGrid").appendChild(
+  svg("line",{
+   x1:x,y1:40,x2:x,y2:237,
+   stroke:"#dbe5ee",
+   "stroke-width":1
+  })
+ );
+
+ makeText(
+  $("waveGrid"),
+  ["0°","90°","180°","270°","360°"][i],
+  x,255,"#60778b",12
+ );
+}
+
+function setMode(next){
+ mode=next;
+
+ document.querySelectorAll("[data-step]").forEach(button=>{
+  button.classList.toggle(
+   "active",
+   Number(button.dataset.step)===mode
+  );
+ });
+
+ $("phaseVectors").style.display=
+  mode>=2?"":"none";
+
+ $("vResult").style.display=
+  mode>=3?"":"none";
+
+ $("resultLabel").style.display=
+  mode>=3?"":"none";
+
+ $("tipDot").style.display=
+  mode>=3?"":"none";
+
+ $("tipOrbit").style.display=
+  mode>=3?"":"none";
+
+ $("fieldGlow").style.display=
+  mode>=3?"":"none";
+
+ $("trailLayer").style.display=
+  mode===4?"":"none";
+
+ $("angleArc").style.display=
+  mode>=3?"":"none";
+
+ $("angleLabel").style.display=
+  mode>=3?"":"none";
+
+ const explanations={
+  1:"Стъпка 1. Трите намотки A–A′, B–B′ и C–C′ са неподвижни. Магнитните им оси са изместени пространствено на 120°. Точките и кръстовете показват моментните посоки на токовете в активните страни.",
+  2:"Стъпка 2. През намотките протичат три синусоидални тока, изместени на 120°. Всеки ток създава пулсиращо магнитно поле по оста на собствената фаза.",
+  3:"Стъпка 3. Виолетовият вектор е сумата на трите фазови полета. При равни амплитуди неговата големина остава постоянна: 3Bₘ/2.",
+  4:"Стъпка 4. Трите фазови полета пулсират, а резултантното магнитно поле се върти с постоянна големина. Светлинната следа показва движението. Размяната на две фази обръща посоката."
+ };
+
+ $("stepInfo").textContent=explanations[mode];
+
+ draw();
+}
+
+/* Текущо изчертаване */
+function draw(){
+ const currents=phaseCurrents();
+ const result=resultant(currents);
+ const amp=Number($("amp").value);
+
+ const scale=98;
+
+ const tipX=CX+scale*result.x;
+ const tipY=CY-scale*result.y;
+
+ const angle=result.angle;
+ const angleDeg=angle*180/Math.PI;
+
+ /* Токови символи */
+ conductorGroups.forEach(side=>{
+  const current=currents[side.phaseIndex];
+  const dotVisible=(current>=0)===side.positiveSide;
+
+  side.symbols.forEach(symbol=>{
+   symbol.dot.style.display=
+    dotVisible?"":"none";
+
+   symbol.cross.style.display=
+    dotVisible?"none":"";
   });
+ });
 
-  let xx=L+(((theta%(2*Math.PI)+2*Math.PI)%(2*Math.PI))/(2*Math.PI))*(R-L);
-  line(q,xx,T,xx,B,purple,1.6,[4,3]);
-  text(q,'текущ момент',xx,B+16,12,purple);
+ /* Фазови вектори */
+ for(let i=0;i<3;i++){
+  setLine(
+   ["vA","vB","vC"][i],
+   CX,CY,
+   CX+scale*currents[i]*Math.cos(axes[i]),
+   CY-scale*currents[i]*Math.sin(axes[i])
+  );
+ }
+
+ /* Резултантно поле */
+ setLine("vResult",CX,CY,tipX,tipY);
+
+ $("resultLabel").setAttribute(
+  "x",tipX+(result.x>=0?12:-38)
+ );
+
+ $("resultLabel").setAttribute(
+  "y",tipY+(result.y>=0?-12:22)
+ );
+
+ $("tipDot").setAttribute("cx",tipX);
+ $("tipDot").setAttribute("cy",tipY);
+
+ $("tipOrbit").setAttribute(
+  "r",scale*result.magnitude
+ );
+
+ $("fieldGlow").setAttribute(
+  "transform",
+  "rotate("+(-angleDeg)+" "+CX+" "+CY+")"
+ );
+
+ $("fieldGlow").setAttribute(
+  "opacity",Math.min(1,.45+.4*amp)
+ );
+
+ /* Следа от движещата се резултанта */
+ trailDots.forEach((dot,i)=>{
+  const direction=swapped?-1:1;
+
+  const a=angle-direction*i*.072;
+  const r=scale*result.magnitude;
+
+  dot.setAttribute(
+   "cx",CX+r*Math.cos(a)
+  );
+
+  dot.setAttribute(
+   "cy",CY-r*Math.sin(a)
+  );
+
+  dot.setAttribute(
+   "opacity",.62*(1-i/trailDots.length)
+  );
+
+  dot.setAttribute(
+   "r",3.8*(1-.55*i/trailDots.length)
+  );
+ });
+
+ /* Ъгъл */
+ const a=wrap(angle);
+ const radius=52;
+
+ const ex=CX+radius*Math.cos(a);
+ const ey=CY-radius*Math.sin(a);
+
+ /*
+  За положителната фазова последователност
+  ориентацията е обратна на часовниковата стрелка.
+  При обратна последователност се отчита
+  отрицателният текущ ъгъл.
+ */
+ const sweep=angle>=0?0:1;
+ const large=a>Math.PI?1:0;
+
+ const arc=
+  "M"+(CX+radius)+" "+CY+
+  " A"+radius+" "+radius+
+  " 0 "+large+" "+sweep+
+  " "+ex+" "+ey;
+
+ $("angleArc").setAttribute("d",arc);
+
+ $("angleLabel").setAttribute(
+  "x",CX+72*Math.cos(angle/2)
+ );
+
+ $("angleLabel").setAttribute(
+  "y",CY-72*Math.sin(angle/2)
+ );
+
+ /* Цифрови показания */
+ ["iA","iB","iC"].forEach((id,i)=>{
+  $(id).textContent=fmt(currents[i],2)+" Iₘ";
+ });
+
+ $("bTotal").textContent=
+  fmt(result.magnitude,3)+" Bₘ";
+
+ $("angleValue").textContent=
+  fmt(angleDeg,1)+"°";
+
+ $("sequenceValue").textContent=
+  swapped?"A–C–B":"A–B–C";
+
+ const rotationText=swapped
+  ?"По часовниковата стрелка"
+  :"Обратно на часовниковата стрелка";
+
+ $("rotationValue").textContent=rotationText;
+
+ $("directionLabel").textContent=
+  "Посока: "+rotationText.toLowerCase();
+
+ /* Точки по фазовите синусоиди */
+ const fraction=wrap(theta)/TAU;
+ const x=54+456*fraction;
+
+ setLine("timeCursor",x,30,x,237);
+
+ const shifts=phaseShifts();
+
+ ["dotA","dotB","dotC"].forEach((id,i)=>{
+  $(id).setAttribute("cx",x);
+
+  $(id).setAttribute(
+   "cy",135-68*Math.cos(theta+shifts[i])
+  );
+ });
+
+ $("speedValue").textContent=
+  fmt(Number($("speed").value)/70,2)+"×";
+
+ $("ampValue").textContent=
+  fmt(amp,2)+"×";
 }
-function update(){
-  let cur=[
-    Math.cos(theta),
-    Math.cos(theta-2*Math.PI/3),
-    Math.cos(theta-4*Math.PI/3)
-  ];
-  ['va','vb','vc'].forEach((id,k)=>{
-    document.getElementById(id).textContent='i'+['A','B','C'][k]+' = '+cur[k].toFixed(2)+' Im';
-  });
 
-  const info=document.getElementById('info');
-  if(mode===0) info.innerHTML='<b>Стъпка 1.</b> Намотките A, B и C са неподвижни в статора. Магнитните им оси са разположени на 120° една спрямо друга. Всяка фаза е една намотка с две противоположни активни страни. Точката и кръстът показват противоположните посоки на тока в двете страни.';
-  if(mode===1) info.innerHTML='<b>Стъпка 2.</b> През трите намотки протичат синусоидални токове, изместени по фаза на 120°. Всеки ток създава пулсиращо магнитно поле по оста на собствената намотка.';
-  if(mode===2) info.innerHTML='<b>Стъпка 3.</b> Виолетовият вектор е сумата B⃗A + B⃗B + B⃗C. При симетрична трифазна система неговата големина е постоянна: <b>|B⃗| = 3Bm/2</b>. Променя се само посоката му.';
-  if(mode===3) info.innerHTML='<b>Стъпка 4.</b> Натиснете „Старт“. Ще видите как трите фазови полета пулсират, а резултантното магнитно поле се върти равномерно в статора. Това е физическата основа на въртящото поле в трифазните електрически машини.';
-
-  field();waves();
-}
-document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{
-  mode=+b.dataset.mode;
-  document.querySelectorAll('[data-mode]').forEach(x=>x.classList.toggle('on',x===b));
-  if(mode<3){running=false;play.textContent='Старт'}
-  update();
+/* Управление */
+document.querySelectorAll("[data-step]").forEach(button=>{
+ button.addEventListener("click",()=>{
+  setMode(Number(button.dataset.step));
+ });
 });
-play.onclick=()=>{running=!running;play.textContent=running?'Пауза':'Старт'};
-reset.onclick=()=>{theta=0;running=false;play.textContent='Старт';update()};
-function resize(){fit(f,c);fit(wcan,q);update()}
-window.onresize=resize;resize();
-function loop(ts){
-  if(!last)last=ts;
-  let dt=Math.min((ts-last)/1000,.04);last=ts;
-  if(running){
-    theta+=dt*(+document.getElementById('speed').value/70)*.9;
-    update();
+
+$("play").addEventListener("click",()=>{
+ running=!running;
+ lastTime=null;
+
+ $("play").textContent=running
+  ?"Ⅱ Пауза"
+  :"▶ Продължи";
+
+ $("status").textContent=running
+  ?"● Анимацията работи"
+  :"● Пауза";
+});
+
+$("reset").addEventListener("click",()=>{
+ theta=0;
+ running=true;
+ swapped=false;
+ lastTime=null;
+
+ $("speed").value=70;
+ $("amp").value=1;
+
+ $("play").textContent="Ⅱ Пауза";
+ $("reverse").textContent="Размени фази B и C";
+ $("status").textContent="● Анимацията работи";
+
+ drawWaveShapes();
+ setMode(4);
+});
+
+$("reverse").addEventListener("click",()=>{
+ swapped=!swapped;
+
+ $("reverse").textContent=swapped
+  ?"Върни последователност A–B–C"
+  :"Размени фази B и C";
+
+ drawWaveShapes();
+ draw();
+});
+
+["speed","amp"].forEach(id=>{
+ $(id).addEventListener("input",draw);
+});
+
+/* Избор на момент от графиката */
+$("waveSvg").addEventListener("pointerdown",event=>{
+ const rect=$("waveSvg").getBoundingClientRect();
+
+ const x=(event.clientX-rect.left)*540/
+  Math.max(1,rect.width);
+
+ const fraction=clamp((x-54)/456,0,1);
+
+ theta=TAU*fraction;
+ running=false;
+ lastTime=null;
+
+ $("play").textContent="▶ Продължи";
+ $("status").textContent="● Избран момент";
+
+ draw();
+});
+
+document.addEventListener("visibilitychange",()=>{
+ lastTime=null;
+});
+
+/* Единствен анимационен цикъл */
+function animate(now){
+ if(stoppedOnError)return;
+
+ try{
+  const dt=lastTime===null
+   ?0
+   :Math.min(.05,Math.max(0,(now-lastTime)/1000));
+
+  lastTime=now;
+
+  if(running&&!document.hidden){
+   const speed=Number($("speed").value)/70;
+
+   /* Един оборот за около 7 секунди при 1× */
+   theta=wrap(theta+dt*TAU*speed/7);
   }
-  requestAnimationFrame(loop);
+
+  if(!document.hidden){
+   draw();
+  }
+
+ }catch(error){
+  console.error(error);
+  stoppedOnError=true;
+
+  $("fault").hidden=false;
+  $("fault").textContent=
+   "Грешка в анимацията: "+error.message;
+
+  $("status").textContent="● Грешка";
+ }
+
+ requestAnimationFrame(animate);
 }
-requestAnimationFrame(loop);
+
+/* Ограничения срещу обичайно копиране */
+document.addEventListener("contextmenu",event=>{
+ event.preventDefault();
+});
+
+document.addEventListener("copy",event=>{
+ event.preventDefault();
+});
+
+window.addEventListener("keydown",event=>{
+ const modifier=event.ctrlKey||event.metaKey;
+ const key=String(event.key).toLowerCase();
+
+ if(
+  (modifier&&["s","u"].includes(key))||
+  event.key==="F12"||
+  (modifier&&event.shiftKey&&
+   ["i","j","c"].includes(key))
+ ){
+  event.preventDefault();
+ }
+},true);
+
+/* Стартиране */
+drawWaveShapes();
+setMode(4);
+requestAnimationFrame(animate);
+
+})();
 </script>
 
-</body></html>
+</body>
+</html>

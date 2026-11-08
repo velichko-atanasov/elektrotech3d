@@ -5,831 +5,637 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="author" content="доц. д-р инж. Величко Атанасов">
-<meta name="copyright" content="© 2026 доц. д-р инж. Величко Атанасов">
-<title>Q059 – Метод на контурните токове</title>
+<meta name="copyright" content="© 2026 Величко Атанасов">
+<title>QR-077 – Еквивалентни преобразувания</title>
 
 <style>
 :root{
- --bg:#f7f9fc;
- --panel:#fff;
- --text:#172033;
- --muted:#657086;
- --border:#d9e0ea;
- --blue:#2563eb;
- --green:#16a34a;
- --purple:#9333ea;
- --warn:#fff7d6;
- --soft:#eef4ff;
+  --blue:#075fca;
+  --green:#16843b;
+  --ink:#17202a;
+  --line:#d7e0ea;
+  --bg:#f5f7fa;
 }
 *{box-sizing:border-box}
 body{
- margin:0;
- font:15px/1.6 Arial,Helvetica,sans-serif;
- background:var(--bg);
- color:var(--text);
- -webkit-user-select:none;
- user-select:none;
- -webkit-touch-callout:none;
+  margin:0;
+  background:var(--bg);
+  font:15px/1.6 Arial,Helvetica,sans-serif;
+  color:var(--ink);
+  -webkit-user-select:none;
+  user-select:none;
 }
-.wrap{max-width:1180px;margin:auto;padding:18px}
-h1{text-align:center;margin:4px 0 7px;font-size:29px}
-.subtitle{
- text-align:center;color:var(--muted);margin-bottom:18px
+.wrap{
+  max-width:1180px;
+  margin:16px auto;
+  padding:0 14px;
 }
-.panel{
- background:var(--panel);
- border:1px solid var(--border);
- border-radius:18px;
- padding:17px;
- margin-bottom:14px;
+h1{
+  text-align:center;
+  font-size:clamp(23px,3vw,31px);
+  margin:4px;
 }
-.control-grid{
- display:grid;
- grid-template-columns:repeat(3,1fr);
- gap:14px;
+.sub{
+  text-align:center;
+  color:#52606d;
+  margin:6px 0 14px;
 }
-.slider-card{
- border:1px solid var(--border);
- background:white;
- border-radius:14px;
- padding:12px;
-}
-.slider-card label{
- display:flex;
- justify-content:space-between;
- gap:8px;
- font-weight:bold;
- margin-bottom:8px;
-}
-.slider-card input{
- display:block;width:100%;accent-color:#2563eb
-}
-.small{font-size:13px;color:var(--muted)}
-.note,.explain,.okbox{
- border-radius:12px;
- padding:12px;
- margin-top:12px;
- line-height:1.6;
-}
-.note{
- background:var(--warn);
- border:1px solid #eadb90;
-}
-.explain{
- background:var(--soft);
- border:1px solid #cddcff;
-}
-.okbox{
- background:#effcf3;
- border:1px solid #bde6c8;
-}
-.controls{
- display:flex;
- gap:8px;
- flex-wrap:wrap;
- align-items:center;
- margin:14px 0;
+.toolbar{
+  display:flex;
+  gap:8px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-bottom:12px;
 }
 button{
- border:1px solid var(--border);
- background:white;
- border-radius:10px;
- padding:10px 14px;
- font-size:15px;
- cursor:pointer;
+  padding:10px 13px;
+  border:1px solid #aab8c8;
+  border-radius:8px;
+  background:#fff;
+  cursor:pointer;
+  font-weight:600;
+  color:var(--ink);
 }
-button:hover:not(:disabled){background:#f1f5f9}
-button:disabled{opacity:.45;cursor:not-allowed}
-button:focus-visible,input:focus-visible{
- outline:3px solid #a4c1fb;outline-offset:2px
+button:hover:not(:disabled){
+  background:#e8f2ff;
 }
-.badge{
- display:inline-flex;
- align-items:center;
- padding:8px 12px;
- border-radius:999px;
- background:#eaf1ff;
- color:#1947a3;
- font-weight:bold;
+button.active{
+  color:var(--blue);
+  border-color:var(--blue);
+  background:#edf5ff;
 }
-.svgbox{width:100%;overflow:hidden}
-.svgbox svg{
- display:block;
- width:100%;
- height:auto;
- max-width:980px;
- margin:auto;
+button:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
+button:focus-visible,
+input:focus-visible{
+  outline:3px solid #7fb8ed;
+  outline-offset:2px;
+}
+.card,.calc{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:14px;
+  box-shadow:0 2px 8px #0000000d;
+}
+.stage{
+  max-width:1000px;
+  margin:auto;
+}
+.stage svg{
+  width:100%;
+  height:auto;
+  display:block;
 }
 .wire{
- fill:none;
- stroke:#172033;
- stroke-width:3.4;
- stroke-linecap:round;
- stroke-linejoin:round;
+  fill:none;
+  stroke:#182c40;
+  stroke-width:4;
+  stroke-linejoin:round;
+  stroke-linecap:round;
 }
 .element{
- fill:white;
- stroke:#172033;
- stroke-width:3;
+  fill:#fff;
+  stroke:#182c40;
+  stroke-width:3;
 }
-.node{fill:#9333ea}
-.mesh{
- fill:none;
- stroke-width:3.2;
- stroke-dasharray:12 10;
- animation:flow 1.8s linear infinite;
+.node{fill:#182c40}
+.term{
+  fill:#fff;
+  stroke:#182c40;
+  stroke-width:3;
 }
-@keyframes flow{
- to{stroke-dashoffset:-88}
+.diagram-label{
+  fill:#182c40;
+  font-size:21px;
+  font-weight:bold;
 }
-#mesh1{stroke:var(--blue)}
-#mesh2{stroke:var(--green)}
-.trace{
- fill:none;
- stroke:var(--purple);
- stroke-width:3.8;
+.caption{
+  fill:#63778a;
+  font-size:15px;
 }
-.hiddenArrow{opacity:.12}
-.visibleArrow{opacity:1;transition:opacity .3s}
-.legend{
- display:flex;
- flex-wrap:wrap;
- gap:15px;
- font-size:13px;
- margin-top:8px;
+.flow-dot{
+  fill:#00a5d9;
+  stroke:#fff;
+  stroke-width:2;
+  filter:drop-shadow(0 0 3px #38c9ff);
 }
-.dot{
- display:inline-block;
- width:11px;height:11px;
- border-radius:50%;
- margin-right:5px;
+.controls{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  margin-top:12px;
+}
+.control{
+  padding:11px;
+  background:#fbfdff;
+  border:1px solid var(--line);
+  border-radius:9px;
+}
+.control label{
+  font-size:14px;
+  font-weight:bold;
+}
+input[type=range]{
+  display:block;
+  width:100%;
+  margin-top:9px;
+  accent-color:var(--blue);
+}
+.val{color:var(--blue)}
+.note{
+  text-align:center;
+  font-size:13px;
+  color:#53606d;
+  margin-top:11px;
+}
+.calc{
+  max-width:1000px;
+  margin:12px auto 0;
+}
+.stepTitle{
+  text-align:center;
+  font-weight:bold;
+  color:var(--blue);
+  font-size:16px;
+  margin-bottom:6px;
 }
 .step{
- display:none;
- background:#fff;
- border:1px solid var(--border);
- border-radius:14px;
- padding:17px;
- margin-top:10px;
- line-height:1.7;
+  display:none;
+  text-align:center;
+  font:19px/1.7 Cambria,Georgia,serif;
+  padding:10px;
+  overflow-wrap:anywhere;
 }
-.step.active{
- display:block;
- border-color:#9bb7ff;
- background:#f8faff;
+.step.show{display:block}
+.step.result{
+  color:var(--blue);
+  font-weight:bold;
 }
-.step h3{margin:0 0 9px;font-size:19px}
-.eq{
- font:20px/1.7 "Cambria Math",Cambria,Georgia,serif;
- text-align:center;
- margin:10px 0;
- overflow-wrap:anywhere;
+.step .minor{
+  display:block;
+  font:13px/1.6 Arial,sans-serif;
+  color:#5d7080;
+  margin-top:6px;
 }
-.step .eq{color:#1b4d87}
-.calcbox{
- background:#fbfcff;
- border:1px solid var(--border);
- border-radius:14px;
- padding:14px;
- margin-top:13px;
+.resultBox{
+  max-width:1000px;
+  margin:12px auto;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
 }
-.calcbox .eq{font-size:18px}
-.results{
- display:grid;
- grid-template-columns:repeat(3,1fr);
- gap:10px;
- margin-top:14px;
+.metric{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:12px;
+  text-align:center;
 }
-.r{
- background:white;
- border:1px solid var(--border);
- border-radius:14px;
- padding:13px;
- text-align:center;
+.metric span{
+  display:block;
+  color:#63778a;
+  font-size:13px;
 }
-.r strong{
- display:block;
- font-size:18px;
- margin:6px 0;
+.metric strong{
+  display:block;
+  font-size:20px;
+  color:#075fca;
+  margin:5px 0;
 }
-.r span{
- display:block;
- color:var(--muted);
- font-size:12px;
+.verification{
+  max-width:1000px;
+  margin:12px auto;
+  padding:12px;
+  background:#eefaf1;
+  border:1px solid #a7dfb7;
+  border-radius:11px;
+  color:#176437;
+  text-align:center;
+}
+.verification div{
+  font:17px/1.65 Cambria,Georgia,serif;
+  overflow-wrap:anywhere;
 }
 footer{
- text-align:center;
- padding:18px;
- border-top:1px solid var(--border);
- color:var(--muted);
- font-size:13px;
+  margin-top:16px;
+  padding:15px;
+  border-top:1px solid var(--line);
+  text-align:center;
+  font-size:13px;
+  color:#52606d;
 }
 #notice{
- position:fixed;
- bottom:15px;right:15px;
- max-width:350px;
- padding:12px;
- border-radius:9px;
- background:#20394f;
- color:white;
- z-index:50;
- font-size:13px;
+  position:fixed;
+  bottom:16px;
+  right:16px;
+  z-index:10;
+  background:#19354c;
+  color:white;
+  border-radius:9px;
+  padding:10px 14px;
+  max-width:350px;
 }
 [hidden]{display:none!important}
-@media(max-width:800px){
- .control-grid,.results{grid-template-columns:1fr}
- h1{font-size:24px}
+@media(max-width:760px){
+  .controls{grid-template-columns:1fr 1fr}
+  .resultBox{grid-template-columns:1fr}
 }
-@media(max-width:520px){
- .wrap{padding:9px}
- .eq{font-size:17px}
+@media(max-width:450px){
+  .wrap{padding:0 8px}
+  .controls{grid-template-columns:1fr}
+  .step{font-size:17px}
 }
 @media(prefers-reduced-motion:reduce){
- .mesh{animation:none}
+  .flow-dot{filter:none}
 }
 </style>
 </head>
 
 <body>
+
 <div class="wrap">
 
-<h1>Q059 – Метод на контурните токове</h1>
+<h1>Еквивалентни преобразувания без индуктивни връзки</h1>
 
-<div class="subtitle">
-Интерактивно решение по шестте стъпки от учебника
-</div>
-
-<section class="panel">
-
-<div class="control-grid">
-
-<div class="slider-card">
-<label for="z1">
-Z<sub>1</sub> = R<sub>1</sub>
-<span id="z1v">4,0 Ω</span>
-</label>
-<input id="z1" type="range"
- min="1" max="12" step=".5" value="4">
-<div class="small">
-Активен импеданс на левия клон.
-</div>
+<div class="sub">
+Последователно и паралелно свързване на комплексни импеданси
 </div>
 
-<div class="slider-card">
-<label for="z2">
-Z<sub>2</sub> = R<sub>2</sub>
-<span id="z2v">6,0 Ω</span>
-</label>
-<input id="z2" type="range"
- min="1" max="12" step=".5" value="6">
-<div class="small">
-Активен импеданс на десния клон.
-</div>
-</div>
+<div class="toolbar">
 
-<div class="slider-card">
-<label for="z3">
-Z<sub>3</sub> = jX
-<span id="z3v">j2,0 Ω</span>
-</label>
-<input id="z3" type="range"
- min=".5" max="8" step=".5" value="2">
-<div class="small">
-Общ индуктивен импеданс на двата контура.
-</div>
-</div>
+<button id="series" class="active" type="button">
+Последователно
+</button>
+
+<button id="parallel" type="button">
+Паралелно
+</button>
+
+<button id="prev" type="button">
+← Предишна
+</button>
+
+<button id="next" type="button">
+Следваща →
+</button>
+
+<button id="all" type="button">
+Всички стъпки
+</button>
+
+<button id="motion" class="active" type="button">
+Движение на токовете
+</button>
 
 </div>
 
-<div class="note">
-<b>Източник:</b>
-Ė<sub>1</sub> = 20 + j0 V.
+<section class="card">
 
-Избраните контурни токове са по часовниковата стрелка.
-Променяй импедансите и наблюдавай комплексните токове.
-</div>
+<div class="stage">
 
-</section>
-
-<section class="panel">
-
-<div class="svgbox">
-
-<svg viewBox="0 0 960 420"
- role="img"
- aria-label="Два независими контура с три клона и общ реактивен импеданс">
+<svg viewBox="0 0 940 435"
+     role="img"
+     aria-label="Електрически схеми на последователни и паралелни импеданси">
 
 <defs>
+  <marker id="arrowBlue"
+    viewBox="0 0 10 10"
+    refX="9" refY="5"
+    markerWidth="7" markerHeight="7"
+    orient="auto">
+    <path d="M0 0L10 5L0 10Z" fill="#075fca"/>
+  </marker>
 
-<marker id="blueHead" viewBox="0 0 10 10"
- refX="9" refY="5"
- markerWidth="7" markerHeight="7" orient="auto">
-<path d="M0 0L10 5L0 10Z" fill="#2563eb"/>
-</marker>
-
-<marker id="greenHead" viewBox="0 0 10 10"
- refX="9" refY="5"
- markerWidth="7" markerHeight="7" orient="auto">
-<path d="M0 0L10 5L0 10Z" fill="#16a34a"/>
-</marker>
-
-<marker id="purpleHead" viewBox="0 0 10 10"
- refX="9" refY="5"
- markerWidth="7" markerHeight="7" orient="auto">
-<path d="M0 0L10 5L0 10Z" fill="#9333ea"/>
-</marker>
-
+  <marker id="arrowGreen"
+    viewBox="0 0 10 10"
+    refX="9" refY="5"
+    markerWidth="7" markerHeight="7"
+    orient="auto">
+    <path d="M0 0L10 5L0 10Z" fill="#16843b"/>
+  </marker>
 </defs>
 
-<!-- ДВА ОБЩИ ВЪЗЕЛА -->
-<path class="wire" d="M155 105H745"/>
-<path class="wire" d="M155 350H745"/>
+<!-- ПОСЛЕДОВАТЕЛНО СВЪРЗВАНЕ -->
 
-<circle cx="450" cy="105" r="5" class="node"/>
-<circle cx="450" cy="350" r="5" class="node"/>
+<g id="seriesCircuit">
 
-<text x="790" y="108" font-size="16" fill="#657086">
-Възел A
-</text>
-<text x="790" y="355" font-size="16" fill="#657086">
-Възел B
-</text>
+  <text x="470" y="52"
+        text-anchor="middle" class="diagram-label">
+    Последователно свързване
+  </text>
 
-<!-- ЛЯВ КЛОН: Z1 + E1 -->
-<path class="wire" d="M155 105V155"/>
+  <!-- Извод A -->
+  <circle cx="115" cy="215" r="7" class="term"/>
 
-<rect x="137" y="155"
- width="36" height="65" rx="3" class="element"/>
+  <text x="115" y="187"
+        text-anchor="middle" class="diagram-label">
+    A
+  </text>
 
-<text x="100" y="190" font-size="20">
-Z<tspan baseline-shift="sub" font-size="12">1</tspan>
-</text>
+  <!-- Проводник до Z1 -->
+  <line x1="122" y1="215"
+        x2="275" y2="215" class="wire"/>
 
-<text id="z1svg" x="91" y="216" font-size="15">
-4,0 Ω
-</text>
+  <!-- Импеданс Z1 -->
+  <rect x="275" y="186"
+        width="130" height="58"
+        rx="3" class="element"/>
 
-<path class="wire" d="M155 220V245"/>
+  <text x="340" y="223"
+        text-anchor="middle" class="diagram-label">
+    Z₁
+  </text>
 
-<circle cx="155" cy="272" r="27" class="element"/>
+  <text x="340" y="160"
+        text-anchor="middle" class="caption">
+    R₁ + jX₁
+  </text>
 
-<text x="155" y="254" text-anchor="middle"
- font-size="18" fill="#b83232">+</text>
+  <!-- Непрекъсната връзка Z1 → Z2 -->
+  <line x1="405" y1="215"
+        x2="550" y2="215" class="wire"/>
 
-<text x="155" y="300" text-anchor="middle"
- font-size="18" fill="#b83232">−</text>
+  <!-- Импеданс Z2 -->
+  <rect x="550" y="186"
+        width="130" height="58"
+        rx="3" class="element"/>
 
-<text x="155" y="281" text-anchor="middle"
- font-size="23">Ė</text>
+  <text x="615" y="223"
+        text-anchor="middle" class="diagram-label">
+    Z₂
+  </text>
 
-<path class="wire" d="M155 299V350"/>
+  <text x="615" y="160"
+        text-anchor="middle" class="caption">
+    R₂ + jX₂
+  </text>
 
-<text x="78" y="261" font-size="19">
-Ė<tspan baseline-shift="sub" font-size="12">1</tspan>
-</text>
+  <!-- Проводник до B -->
+  <line x1="680" y1="215"
+        x2="818" y2="215" class="wire"/>
 
-<text x="63" y="284" font-size="15">
-20 + j0 V
-</text>
+  <circle cx="825" cy="215" r="7" class="term"/>
 
-<!-- ОБЩ КЛОН: Z3=jX -->
-<path class="wire" d="M450 105V165"/>
+  <text x="825" y="187"
+        text-anchor="middle" class="diagram-label">
+    B
+  </text>
 
-<path class="wire"
- d="M450 165
- C421 175 421 188 450 197
- C421 207 421 220 450 229
- C421 239 421 252 450 261"/>
+  <!-- Условна посока -->
+  <line x1="180" y1="215"
+        x2="250" y2="215"
+        stroke="#075fca" stroke-width="3"
+        marker-end="url(#arrowBlue)"/>
 
-<path class="wire" d="M450 261V350"/>
+  <text x="215" y="193"
+        text-anchor="middle" fill="#075fca"
+        font-size="19" font-weight="bold">
+    I
+  </text>
 
-<text x="470" y="212" font-size="20">
-Z<tspan baseline-shift="sub" font-size="12">3</tspan>
-</text>
+  <text x="470" y="318"
+        text-anchor="middle" class="caption">
+    Един и същ ток през двата импеданса
+  </text>
 
-<text id="z3svg" x="485" y="239" font-size="15">
-j2,0 Ω
-</text>
-
-<!-- ДЕСЕН КЛОН: Z2 -->
-<path class="wire" d="M745 105V155"/>
-
-<rect x="727" y="155"
- width="36" height="65" rx="3" class="element"/>
-
-<path class="wire" d="M745 220V350"/>
-
-<text x="785" y="188" font-size="20">
-Z<tspan baseline-shift="sub" font-size="12">2</tspan>
-</text>
-
-<text id="z2svg" x="786" y="215" font-size="15">
-6,0 Ω
-</text>
-
-<!-- ЛЯВ КОНТУР ПО ЧАСОВНИКОВАТА СТРЕЛКА -->
-<g id="mesh1Group" class="hiddenArrow">
-
-<ellipse id="mesh1"
- cx="302" cy="230"
- rx="87" ry="104" class="mesh"/>
-
-<path d="M280 128Q330 119 368 156"
- fill="none" stroke="#2563eb" stroke-width="3"
- marker-end="url(#blueHead)"/>
-
-<text x="290" y="232" text-anchor="middle"
- font-size="23" font-weight="bold" fill="#2563eb">
-İ<tspan baseline-shift="sub" font-size="14">к1</tspan>
-</text>
-
-<text x="290" y="257" text-anchor="middle"
- font-size="13" fill="#2563eb">
-по часовниковата стрелка
-</text>
+  <!-- Траектория на условното движение -->
+  <path id="seriesTrack"
+        d="M125 215H815"
+        fill="none" stroke="none"/>
 
 </g>
 
-<!-- ДЕСЕН КОНТУР ПО ЧАСОВНИКОВАТА СТРЕЛКА -->
-<g id="mesh2Group" class="hiddenArrow">
+<!-- ПАРАЛЕЛНО СВЪРЗВАНЕ -->
 
-<ellipse id="mesh2"
- cx="594" cy="230"
- rx="87" ry="104" class="mesh"/>
+<g id="parallelCircuit" style="display:none">
 
-<path d="M574 128Q624 119 661 156"
- fill="none" stroke="#16a34a" stroke-width="3"
- marker-end="url(#greenHead)"/>
+  <text x="470" y="40"
+        text-anchor="middle" class="diagram-label">
+    Паралелно свързване
+  </text>
 
-<text x="590" y="232" text-anchor="middle"
- font-size="23" font-weight="bold" fill="#16a34a">
-İ<tspan baseline-shift="sub" font-size="14">к2</tspan>
-</text>
+  <!-- Извод A -->
+  <circle cx="455" cy="69" r="7" class="term"/>
 
-<text x="590" y="257" text-anchor="middle"
- font-size="13" fill="#16a34a">
-по часовниковата стрелка
-</text>
+  <text x="480" y="75" class="diagram-label">
+    A
+  </text>
+
+  <!-- Захранване до горната шина -->
+  <line x1="455" y1="76"
+        x2="455" y2="118" class="wire"/>
+
+  <!-- Горна шина -->
+  <line x1="320" y1="118"
+        x2="630" y2="118" class="wire"/>
+
+  <!-- Ляв клон -->
+  <line x1="320" y1="118"
+        x2="320" y2="194" class="wire"/>
+
+  <rect x="294" y="194"
+        width="52" height="70"
+        rx="3" class="element"/>
+
+  <line x1="320" y1="264"
+        x2="320" y2="340" class="wire"/>
+
+  <text x="320" y="235"
+        text-anchor="middle" class="diagram-label">
+    Z₁
+  </text>
+
+  <!-- Десен клон -->
+  <line x1="630" y1="118"
+        x2="630" y2="194" class="wire"/>
+
+  <rect x="604" y="194"
+        width="52" height="70"
+        rx="3" class="element"/>
+
+  <line x1="630" y1="264"
+        x2="630" y2="340" class="wire"/>
+
+  <text x="630" y="235"
+        text-anchor="middle" class="diagram-label">
+    Z₂
+  </text>
+
+  <!-- Долна шина -->
+  <line x1="320" y1="340"
+        x2="630" y2="340" class="wire"/>
+
+  <!-- Извод B -->
+  <line x1="455" y1="340"
+        x2="455" y2="382" class="wire"/>
+
+  <circle cx="455" cy="389" r="7" class="term"/>
+
+  <text x="480" y="396" class="diagram-label">
+    B
+  </text>
+
+  <!-- Възли -->
+  <circle cx="455" cy="118" r="5" class="node"/>
+  <circle cx="455" cy="340" r="5" class="node"/>
+
+  <!-- Условни посоки -->
+  <line x1="320" y1="143"
+        x2="320" y2="180"
+        stroke="#075fca" stroke-width="3"
+        marker-end="url(#arrowBlue)"/>
+
+  <line x1="630" y1="143"
+        x2="630" y2="180"
+        stroke="#16843b" stroke-width="3"
+        marker-end="url(#arrowGreen)"/>
+
+  <text x="278" y="166"
+        fill="#075fca" font-size="19"
+        font-weight="bold">
+    I₁
+  </text>
+
+  <text x="654" y="166"
+        fill="#16843b" font-size="19"
+        font-weight="bold">
+    I₂
+  </text>
+
+  <text x="455" y="290"
+        text-anchor="middle" class="caption">
+    U₁ = U₂
+  </text>
+
+  <path id="parallelTrack1"
+        d="M455 78V118H320V340H455V380"
+        fill="none" stroke="none"/>
+
+  <path id="parallelTrack2"
+        d="M455 78V118H630V340H455V380"
+        fill="none" stroke="none"/>
 
 </g>
 
-<!-- ПОЛОЖИТЕЛНА ПОСОКА НА ТОКА В ОБЩИЯ КЛОН -->
-<g id="physicalGroup" class="hiddenArrow">
-
-<path class="trace" d="M450 276V324"
- marker-end="url(#purpleHead)"/>
-
-<text x="482" y="305"
- font-size="18" font-weight="bold" fill="#9333ea">
-İ<tspan baseline-shift="sub" font-size="12">12</tspan>
-</text>
-
+<!-- ДВИЖЕЩИ СЕ МАРКЕРИ -->
+<g id="particleGroup">
+  <circle id="particle1" r="7" class="flow-dot"/>
+  <circle id="particle2" r="7" class="flow-dot"/>
+  <circle id="particle3" r="7" class="flow-dot"/>
+  <circle id="particle4" r="7" class="flow-dot"/>
 </g>
 
-<text x="475" y="398" text-anchor="middle"
- font-size="14" fill="#657086">
-Три клона · Два възела · Два независими контура
-</text>
-
-<text x="935" y="415" text-anchor="end"
- font-size="11" fill="#91a4b7">
-© Величко Атанасов
+<text x="470" y="424"
+      text-anchor="middle"
+      font-size="12" fill="#8da0ad">
+  © 2026 Величко Атанасов
 </text>
 
 </svg>
 </div>
 
-<div class="legend">
-
-<span>
-<i class="dot" style="background:#2563eb"></i>
-İ<sub>к1</sub> — първи контур
-</span>
-
-<span>
-<i class="dot" style="background:#16a34a"></i>
-İ<sub>к2</sub> — втори контур
-</span>
-
-<span>
-<i class="dot" style="background:#9333ea"></i>
-İ<sub>12</sub> — общ клон
-</span>
-
-</div>
-
-<div class="explain">
-<b>Посоки:</b> двата контурни тока са избрани по часовниковата
-стрелка. В общия клон първият контурен ток е насочен
-надолу, а вторият — нагоре. Затова при положителна
-посока на клоновия ток надолу:
-
-<div class="eq">
-İ<sub>12</sub> =
-İ<sub>к1</sub> − İ<sub>к2</sub>
-</div>
-</div>
-
-</section>
-
-<!-- УПРАВЛЕНИЕ НА ШЕСТТЕ СТЪПКИ -->
-
-<section class="panel">
-
 <div class="controls">
-<button id="prev" type="button">Назад</button>
-<button id="next" type="button">Следваща стъпка</button>
-<button id="auto" type="button">Автоматично</button>
-<button id="reset" type="button">Отначало</button>
-<span id="badge" class="badge">Стъпка 1 от 6</span>
+
+<div class="control">
+<label>
+R<sub>1</sub> =
+<span class="val" id="r1v">4</span> Ω
+</label>
+<input id="r1" type="range"
+       min="1" max="20" step="1" value="4">
 </div>
 
-<!-- СТЪПКА 1 -->
-<section id="st1" class="step active">
-
-<h3>Стъпка 1. Определяне на независимите контури</h3>
-
-<p>
-Определя се броят на независимите контури
-<b>k</b> по зависимостта:
-</p>
-
-<div class="eq">
-k = m − n + 1
+<div class="control">
+<label>
+X<sub>1</sub> =
+<span class="val" id="x1v">3</span> Ω
+</label>
+<input id="x1" type="range"
+       min="-10" max="10" step="1" value="3">
 </div>
 
-<p>
-Където <b>m</b> е броят на клоновете, а
-<b>n</b> — броят на възлите на електрическата верига.
-</p>
-
-<div class="eq">
-k = 3 − 2 + 1 = 2
+<div class="control">
+<label>
+R<sub>2</sub> =
+<span class="val" id="r2v">6</span> Ω
+</label>
+<input id="r2" type="range"
+       min="1" max="20" step="1" value="6">
 </div>
 
-<div class="explain">
-За разглежданата свързана схема имаме
-<b>три клона</b> и <b>два възела</b>.
-Следователно има два независими контура.
+<div class="control">
+<label>
+X<sub>2</sub> =
+<span class="val" id="x2v">−1</span> Ω
+</label>
+<input id="x2" type="range"
+       min="-10" max="10" step="1" value="-1">
 </div>
 
-</section>
-
-<!-- СТЪПКА 2 -->
-<section id="st2" class="step">
-
-<h3>Стъпка 2. Избор на контурни токове</h3>
-
-<p>
-Избират се независимите контури и се задават
-контурни токове İ<sub>к1</sub>,
-İ<sub>к2</sub>, …, İ<sub>кk</sub>.
-</p>
-
-<p>
-Посоките им се избират условно; удобно е всички
-да бъдат в една и съща посока, например по
-часовниковата стрелка.
-</p>
-
-<div class="eq">
-İ<sub>к1</sub> ↻
-&nbsp;&nbsp;&nbsp;
-İ<sub>к2</sub> ↻
 </div>
-
-<div class="explain">
-В нашата схема левият и десният контурен ток
-са избрани по часовниковата стрелка.
-В общия клон те имат противоположни посоки.
-</div>
-
-</section>
-
-<!-- СТЪПКА 3 -->
-<section id="st3" class="step">
-
-<h3>Стъпка 3. Съставяне на контурните уравнения</h3>
-
-<p>
-За всеки независим контур се съставя уравнение
-по втория закон на Кирхоф.
-</p>
-
-<p>
-Собственият импеданс на контура е равен на сумата
-от всички импеданси, включени в него, а взаимният
-импеданс между два контура се определя от
-импедансите на общите им клонове.
-</p>
-
-<p>
-Знакът на взаимните членове зависи от относителните
-посоки на контурните токове в общите клонове.
-</p>
-
-<div class="eq">
-(Z<sub>1</sub> + Z<sub>3</sub>)İ<sub>к1</sub>
-− Z<sub>3</sub>İ<sub>к2</sub>
-= Ė<sub>1</sub>
-</div>
-
-<div class="eq">
-−Z<sub>3</sub>İ<sub>к1</sub>
-+ (Z<sub>2</sub> + Z<sub>3</sub>)İ<sub>к2</sub>
-= 0
-</div>
-
-<div id="eq1" class="eq"></div>
-<div id="eq2" class="eq"></div>
 
 <div class="note">
-<b>Правило:</b> по главния диагонал на системата
-са собствените импеданси на контурите.
-Извън главния диагонал са взаимните импеданси,
-включени със знаци според избраните посоки.
+Положителна реактивна съставка X означава индуктивен
+характер, отрицателна — капацитивен.
+Движещите се маркери показват условно избраните посоки,
+а не моментните стойности на променливите токове.
 </div>
 
 </section>
 
-<!-- СТЪПКА 4 -->
-<section id="st4" class="step">
+<section class="calc">
 
-<h3>Стъпка 4. Решаване на системата</h3>
-
-<p>
-Решава се получената система от <b>k</b>
-уравнения и се определят <b>k</b> контурните токове.
-</p>
-
-<div class="eq">
-Δ = Z<sub>11</sub>Z<sub>22</sub>
-− Z<sub>12</sub>Z<sub>21</sub>
+<div class="stepTitle" id="st">
+Стъпка 1 от 5
 </div>
 
-<div id="detStep" class="eq"></div>
-
-<div class="eq">
-İ<sub>к1</sub> =
-Ė<sub>1</sub>Z<sub>22</sub>/Δ
-</div>
-
-<div class="eq">
-İ<sub>к2</sub> =
-−Ė<sub>1</sub>Z<sub>21</sub>/Δ
-</div>
-
-<div id="i1eq" class="eq"></div>
-<div id="i2eq" class="eq"></div>
-
-<div class="explain">
-Решението е в комплексна алгебрична форма.
-То се преизчислява автоматично при промяна
-на импедансите.
-</div>
+<div class="step show" data-s="1" id="s1"></div>
+<div class="step" data-s="2" id="s2"></div>
+<div class="step" data-s="3" id="s3"></div>
+<div class="step" data-s="4" id="s4"></div>
+<div class="step result" data-s="5" id="s5"></div>
 
 </section>
 
-<!-- СТЪПКА 5 -->
-<section id="st5" class="step">
+<div class="resultBox">
 
-<h3>Стъпка 5. Определяне на клоновите токове</h3>
+<div class="metric">
+<span>Еквивалентен импеданс</span>
+<strong id="resultZ">—</strong>
+</div>
 
-<p>
-Определят се клоновите токове като алгебрична
-сума на контурните токове, които преминават през
-съответния клон.
+<div class="metric">
+<span>Модул |Z<sub>екв</sub>|</span>
+<strong id="resultMag">—</strong>
+</div>
+
+<div class="metric">
+<span>Аргумент φ<sub>Z</sub></span>
+<strong id="resultAngle">—</strong>
+<span id="character"></span>
+</div>
+
+</div>
+
+<div class="verification">
+<strong>Проверка на резултата</strong>
+<div id="verificationText"></div>
+</div>
+
+<section class="calc">
+
+<strong>Физично пояснение</strong>
+<p id="physicsNote"></p>
+
+<p class="note">
+Формулите са валидни за линейни двуполюсни импеданси,
+изчислени при една и съща честота, без взаимни
+индуктивни връзки. При реални индуктивности и
+капацитети реактивната съставка зависи от честотата.
 </p>
-
-<p>
-За клон, принадлежащ само на един контур,
-клоновият ток е равен на съответния контурен ток.
-За общ клон токът се определя от алгебричната сума
-или разлика на контурните токове според избраните
-им посоки.
-</p>
-
-<div class="eq">
-İ<sub>1</sub> = İ<sub>к1</sub>
-</div>
-
-<div class="eq">
-İ<sub>2</sub> = İ<sub>к2</sub>
-</div>
-
-<div class="eq">
-İ<sub>12</sub> =
-İ<sub>к1</sub> − İ<sub>к2</sub>
-</div>
-
-<div id="i12eq" class="eq"></div>
-
-<div class="explain">
-Положителната посока на İ<sub>12</sub>
-е избрана надолу през общия импеданс Z<sub>3</sub>.
-</div>
-
-</section>
-
-<!-- СТЪПКА 6 -->
-<section id="st6" class="step">
-
-<h3>Стъпка 6. Проверка чрез обратно заместване</h3>
-
-<p>
-Прави се проверка на поне едно от контурните
-уравнения чрез обратно заместване.
-</p>
-
-<div class="eq">
-(Z<sub>1</sub>+Z<sub>3</sub>)İ<sub>к1</sub>
-− Z<sub>3</sub>İ<sub>к2</sub>
-= Ė<sub>1</sub>
-</div>
-
-<div id="checkEq1" class="eq"></div>
-
-<div class="eq">
-−Z<sub>3</sub>İ<sub>к1</sub>
-+ (Z<sub>2</sub>+Z<sub>3</sub>)İ<sub>к2</sub>
-= 0
-</div>
-
-<div id="checkEq2" class="eq"></div>
-
-<div id="checkResult" class="okbox"></div>
-
-<div class="note">
-Проверката се извършва с незакръглените
-комплексни стойности на токовете.
-</div>
-
-</section>
-
-<!-- ДИНАМИЧНИ УРАВНЕНИЯ -->
-<div class="calcbox">
-
-<h3>Текущи контурни уравнения</h3>
-
-<div id="liveEq1" class="eq"></div>
-<div id="liveEq2" class="eq"></div>
-
-<div class="eq" style="font-size:16px">
-Z<sub>11</sub> = Z<sub>1</sub> + Z<sub>3</sub>
-&nbsp;&nbsp;
-Z<sub>22</sub> = Z<sub>2</sub> + Z<sub>3</sub>
-</div>
-
-<div class="eq" style="font-size:16px">
-Z<sub>12</sub> = Z<sub>21</sub> = −Z<sub>3</sub>
-</div>
-
-</div>
-
-<!-- РЕШЕНИЕ -->
-<div class="calcbox">
-
-<h3>Изчисляване на контурните токове</h3>
-
-<div id="detCalc" class="eq"></div>
-<div id="i1Calc" class="eq"></div>
-<div id="i2Calc" class="eq"></div>
-<div id="i12Calc" class="eq"></div>
-
-</div>
-
-<!-- КРАЙНИ РЕЗУЛТАТИ -->
-<div class="results">
-
-<div class="r">
-Контурен ток İ<sub>к1</sub>
-<strong id="r1m">—</strong>
-<span id="r1a"></span>
-</div>
-
-<div class="r">
-Контурен ток İ<sub>к2</sub>
-<strong id="r2m">—</strong>
-<span id="r2a"></span>
-</div>
-
-<div class="r">
-Ток в общия клон İ<sub>12</sub>
-<strong id="r12m">—</strong>
-<span id="r12a"></span>
-</div>
-
-</div>
-
-<div class="explain">
-<b>Извод:</b>
-Методът на контурните токове позволява
-да се определи разпределението на клоновите токове
-чрез решаване на система с толкова неизвестни,
-колкото са независимите контури. Токът в общ клон
-се намира като алгебрична сума на участващите
-контурни токове с отчитане на посоките им.
-</div>
 
 </section>
 
@@ -846,370 +652,371 @@ Z<sub>12</sub> = Z<sub>21</sub> = −Z<sub>3</sub>
 (() => {
 "use strict";
 
-const el=id=>document.getElementById(id);
+const $=id=>document.getElementById(id);
 
-const E=20;
-const MAX_STEP=6;
-
+let mode="series";
 let step=1;
-let timer=null;
+let all=false;
+let moving=true;
+let phase=0;
 
-/* Комплексни числа */
+const inputs=["r1","x1","r2","x2"];
+
 function C(re,im){
- return {re,im};
+  return {re,im};
 }
 
 function add(a,b){
- return C(a.re+b.re,a.im+b.im);
-}
-
-function sub(a,b){
- return C(a.re-b.re,a.im-b.im);
+  return C(a.re+b.re,a.im+b.im);
 }
 
 function mul(a,b){
- return C(
-  a.re*b.re-a.im*b.im,
-  a.re*b.im+a.im*b.re
- );
+  return C(
+    a.re*b.re-a.im*b.im,
+    a.re*b.im+a.im*b.re
+  );
 }
 
 function div(a,b){
- const d=b.re*b.re+b.im*b.im;
+  const denominator=b.re*b.re+b.im*b.im;
 
- return C(
-  (a.re*b.re+a.im*b.im)/d,
-  (a.im*b.re-a.re*b.im)/d
- );
+  return C(
+    (a.re*b.re+a.im*b.im)/denominator,
+    (a.im*b.re-a.re*b.im)/denominator
+  );
 }
 
 function magnitude(a){
- return Math.hypot(a.re,a.im);
+  return Math.hypot(a.re,a.im);
 }
 
-function angleDeg(a){
- return Math.atan2(a.im,a.re)*180/Math.PI;
+function angle(a){
+  return Math.atan2(a.im,a.re)*180/Math.PI;
 }
 
-function fmt(x,d=3){
- const v=Math.abs(x)<.5*Math.pow(10,-d)?0:x;
- return v.toLocaleString("bg-BG",{
-  minimumFractionDigits:d,
-  maximumFractionDigits:d
- });
+function fmt(x,n=3){
+  const v=Math.abs(x)<.5*Math.pow(10,-n)?0:x;
+
+  return v.toLocaleString("bg-BG",{
+    minimumFractionDigits:n,
+    maximumFractionDigits:n
+  });
 }
 
-function rect(a,unit=""){
- const sign=a.im>=0?" + ":" − ";
+function complexText(z,n=3){
+  const sign=z.im<0?" − ":" + ";
 
- return fmt(a.re)+sign+
-  "j"+fmt(Math.abs(a.im))+
-  (unit?" "+unit:"");
+  return fmt(z.re,n)+sign+
+    "j"+fmt(Math.abs(z.im),n);
 }
 
-/* Комплексна система от две уравнения */
-function solve(){
- const R1=Number(el("z1").value);
- const R2=Number(el("z2").value);
- const X=Number(el("z3").value);
-
- const Z1=C(R1,0);
- const Z2=C(R2,0);
- const Z3=C(0,X);
- const source=C(E,0);
-
- const Z11=add(Z1,Z3);
- const Z22=add(Z2,Z3);
- const Z12=C(0,-X);
- const Z21=C(0,-X);
-
- const determinant=sub(
-  mul(Z11,Z22),
-  mul(Z12,Z21)
- );
-
- const I1=div(
-  mul(source,Z22),
-  determinant
- );
-
- const I2=div(
-  mul(C(-E,0),Z21),
-  determinant
- );
-
- const I12=sub(I1,I2);
-
- const lhs1=add(
-  mul(Z11,I1),
-  mul(Z12,I2)
- );
-
- const lhs2=add(
-  mul(Z21,I1),
-  mul(Z22,I2)
- );
-
- const residual1=sub(lhs1,source);
- const residual2=lhs2;
-
- return {
-  R1,R2,X,
-  source,Z11,Z22,Z12,Z21,
-  determinant,I1,I2,I12,
-  lhs1,lhs2,residual1,residual2
- };
+function read(){
+  return {
+    z1:C(Number($("r1").value),Number($("x1").value)),
+    z2:C(Number($("r2").value),Number($("x2").value))
+  };
 }
 
-function update(){
- const q=solve();
+function calculate(){
+  const {z1,z2}=read();
+  const sum=add(z1,z2);
+  const product=mul(z1,z2);
 
- el("z1v").textContent=fmt(q.R1,1)+" Ω";
- el("z2v").textContent=fmt(q.R2,1)+" Ω";
- el("z3v").textContent="j"+fmt(q.X,1)+" Ω";
+  const y1=div(C(1,0),z1);
+  const y2=div(C(1,0),z2);
+  const yeq=add(y1,y2);
 
- el("z1svg").textContent=fmt(q.R1,1)+" Ω";
- el("z2svg").textContent=fmt(q.R2,1)+" Ω";
- el("z3svg").textContent="j"+fmt(q.X,1)+" Ω";
+  const series=sum;
+  const parallel=div(C(1,0),yeq);
+  const parallelCheck=div(product,sum);
 
- const equation1=
-  "("+fmt(q.R1,1)+" + j"+fmt(q.X,1)+
-  ") İк1 − j"+fmt(q.X,1)+
-  " İк2 = 20 + j0";
-
- const equation2=
-  "−j"+fmt(q.X,1)+" İк1 + ("+
-  fmt(q.R2,1)+" + j"+fmt(q.X,1)+
-  ") İк2 = 0";
-
- el("eq1").textContent=equation1;
- el("eq2").textContent=equation2;
-
- el("liveEq1").textContent=equation1;
- el("liveEq2").textContent=equation2;
-
- el("detStep").innerHTML=
-  "Δ = "+rect(q.determinant,"Ω²");
-
- el("i1eq").innerHTML=
-  "İ<sub>к1</sub> = "+
-  rect(q.I1,"A");
-
- el("i2eq").innerHTML=
-  "İ<sub>к2</sub> = "+
-  rect(q.I2,"A");
-
- el("i12eq").innerHTML=
-  "<b>İ<sub>12</sub> = "+
-  rect(q.I12,"A")+"</b>";
-
- el("detCalc").innerHTML=
-  "Δ = Z<sub>11</sub>Z<sub>22</sub> − "+
-  "Z<sub>12</sub>Z<sub>21</sub> = "+
-  rect(q.determinant,"Ω²");
-
- el("i1Calc").innerHTML=
-  "İ<sub>к1</sub> = Ė<sub>1</sub>Z<sub>22</sub>/Δ = "+
-  rect(q.I1,"A");
-
- el("i2Calc").innerHTML=
-  "İ<sub>к2</sub> = −Ė<sub>1</sub>Z<sub>21</sub>/Δ = "+
-  rect(q.I2,"A");
-
- el("i12Calc").innerHTML=
-  "İ<sub>12</sub> = İ<sub>к1</sub> − "+
-  "İ<sub>к2</sub> = "+
-  rect(q.I12,"A");
-
- el("r1m").textContent=rect(q.I1,"A");
- el("r2m").textContent=rect(q.I2,"A");
- el("r12m").textContent=rect(q.I12,"A");
-
- el("r1a").textContent=
-  "|Iк1| = "+fmt(magnitude(q.I1))+
-  " A; φ = "+fmt(angleDeg(q.I1),1)+"°";
-
- el("r2a").textContent=
-  "|Iк2| = "+fmt(magnitude(q.I2))+
-  " A; φ = "+fmt(angleDeg(q.I2),1)+"°";
-
- el("r12a").textContent=
-  "|I12| = "+fmt(magnitude(q.I12))+
-  " A; φ = "+fmt(angleDeg(q.I12),1)+"°";
-
- /* Проверка чрез обратно заместване */
- el("checkEq1").innerHTML=
-  "Лява страна = "+rect(q.lhs1,"V")+
-  "<br>Дясна страна = 20 + j0 V";
-
- el("checkEq2").innerHTML=
-  "Лява страна = "+rect(q.lhs2,"V")+
-  "<br>Дясна страна = 0 + j0 V";
-
- const r1=magnitude(q.residual1);
- const r2=magnitude(q.residual2);
-
- const correct=r1<1e-9&&r2<1e-9;
-
- el("checkResult").innerHTML=correct
-  ?"<b>Проверката е изпълнена.</b><br>"+
-   "И двете контурни уравнения се удовлетворяват. "+
-   "Остатъкът е практически нулев."
-  :"<b>Внимание:</b> установен е ненулев остатък.";
-
+  return {
+    z1,z2,sum,product,
+    y1,y2,yeq,
+    series,parallel,parallelCheck,
+    result:mode==="series"?series:parallel
+  };
 }
 
-/* Шестте стъпки */
-function render(){
- for(let n=1;n<=MAX_STEP;n++){
-  el("st"+n).classList.toggle(
-   "active",n===step
-  );
- }
+function paintSteps(q){
+  const z1=complexText(q.z1,2);
+  const z2=complexText(q.z2,2);
 
- el("badge").textContent=
-  "Стъпка "+step+" от "+MAX_STEP;
+  $("s1").innerHTML=
+    "Дадено: Z<sub>1</sub> = ("+z1+") Ω; "+
+    "Z<sub>2</sub> = ("+z2+") Ω";
 
- const showMeshes=step>=2;
- const showPhysical=step>=5;
+  if(mode==="series"){
 
- for(const id of ["mesh1Group","mesh2Group"]){
-  el(id).classList.toggle(
-   "visibleArrow",showMeshes
-  );
+    $("s2").innerHTML=
+      "Z<sub>екв</sub> = "+
+      "Z<sub>1</sub> + Z<sub>2</sub>";
 
-  el(id).classList.toggle(
-   "hiddenArrow",!showMeshes
-  );
- }
+    $("s3").innerHTML=
+      "Z<sub>екв</sub> = ("+z1+") + ("+z2+") Ω";
 
- el("physicalGroup").classList.toggle(
-  "visibleArrow",showPhysical
- );
+    $("s4").innerHTML=
+      "Re(Z<sub>екв</sub>) = "+
+      fmt(q.z1.re,2)+" + "+fmt(q.z2.re,2)+
+      " = "+fmt(q.series.re,2)+" Ω"+
+      "<br>"+
+      "Im(Z<sub>екв</sub>) = "+
+      fmt(q.z1.im,2)+" + ("+
+      fmt(q.z2.im,2)+") = "+
+      fmt(q.series.im,2)+" Ω";
 
- el("physicalGroup").classList.toggle(
-  "hiddenArrow",!showPhysical
- );
+    $("s5").innerHTML=
+      "Z<sub>екв</sub> = ("+
+      complexText(q.series,3)+") Ω";
 
- el("prev").disabled=step===1;
- el("next").disabled=step===MAX_STEP;
-}
-
-function stopAuto(){
- if(timer!==null){
-  clearInterval(timer);
-  timer=null;
- }
-
- el("auto").textContent="Автоматично";
-}
-
-el("prev").addEventListener("click",()=>{
- stopAuto();
- step=Math.max(1,step-1);
- render();
-});
-
-el("next").addEventListener("click",()=>{
- stopAuto();
- step=Math.min(MAX_STEP,step+1);
- render();
-});
-
-el("reset").addEventListener("click",()=>{
- stopAuto();
-
- el("z1").value=4;
- el("z2").value=6;
- el("z3").value=2;
-
- step=1;
-
- update();
- render();
-});
-
-el("auto").addEventListener("click",()=>{
- if(timer!==null){
-  stopAuto();
-  return;
- }
-
- if(step===MAX_STEP){
-  step=1;
- }
-
- render();
-
- el("auto").textContent="Пауза";
-
- timer=setInterval(()=>{
-  if(step<MAX_STEP){
-   step++;
-   render();
   }else{
-   stopAuto();
-  }
- },3000);
-});
 
-for(const id of ["z1","z2","z3"]){
- el(id).addEventListener("input",update);
+    $("s2").innerHTML=
+      "Y<sub>1</sub> = 1/Z<sub>1</sub> = ("+
+      complexText(q.y1,5)+") S"+
+      "<br>"+
+      "Y<sub>2</sub> = 1/Z<sub>2</sub> = ("+
+      complexText(q.y2,5)+") S";
+
+    $("s3").innerHTML=
+      "Y<sub>екв</sub> = "+
+      "Y<sub>1</sub> + Y<sub>2</sub>"+
+      "<br>"+
+      "Y<sub>екв</sub> = ("+
+      complexText(q.yeq,5)+") S";
+
+    $("s4").innerHTML=
+      "Z<sub>екв</sub> = 1/Y<sub>екв</sub>"+
+      "<br>"+
+      "Z<sub>екв</sub> = "+
+      "Z<sub>1</sub>Z<sub>2</sub>"+
+      "/(Z<sub>1</sub>+Z<sub>2</sub>)";
+
+    $("s5").innerHTML=
+      "Z<sub>екв</sub> = ("+
+      complexText(q.parallel,3)+") Ω";
+
+  }
+
+  document.querySelectorAll(".step").forEach(e=>{
+    e.classList.toggle(
+      "show",all||Number(e.dataset.s)===step
+    );
+  });
+
+  $("st").textContent=all
+    ?"Всички стъпки"
+    :"Стъпка "+step+" от 5";
+
+  $("prev").disabled=!all&&step===1;
+  $("next").disabled=!all&&step===5;
+  $("all").classList.toggle("active",all);
 }
 
-/* Ограничения срещу обичайно копиране */
-const notice=el("notice");
+function render(){
+  inputs.forEach(id=>{
+    $(""+id+"v").textContent=$(""+id).value
+      .replace("-", "−");
+  });
+
+  const q=calculate();
+
+  paintSteps(q);
+
+  $("resultZ").textContent=
+    complexText(q.result,3)+" Ω";
+
+  $("resultMag").textContent=
+    fmt(magnitude(q.result),3)+" Ω";
+
+  $("resultAngle").textContent=
+    fmt(angle(q.result),2)+"°";
+
+  const x=q.result.im;
+
+  $("character").textContent=
+    Math.abs(x)<1e-10
+      ?"Чисто активен характер"
+      :x>0
+        ?"Индуктивен характер"
+        :"Капацитивен характер";
+
+  const recheck=mode==="series"
+    ?q.sum
+    :q.parallelCheck;
+
+  const error=Math.hypot(
+    q.result.re-recheck.re,
+    q.result.im-recheck.im
+  );
+
+  $("verificationText").innerHTML=
+    (mode==="series"
+      ?"Проверка: (R<sub>1</sub>+R<sub>2</sub>)"+
+       "+j(X<sub>1</sub>+X<sub>2</sub>)"
+      :"Проверка: Z<sub>1</sub>Z<sub>2</sub>"+
+       "/(Z<sub>1</sub>+Z<sub>2</sub>)")+
+    "<br>Получено: ("+
+    complexText(recheck,3)+") Ω"+
+    "<br>Числово отклонение: "+
+    fmt(error,9)+" Ω";
+
+  $("physicsNote").innerHTML=mode==="series"
+    ?"При последователно свързване през двата "+
+     "импеданса протича един и същ ток. "+
+     "Комплексните спадове на напрежение се "+
+     "сумират, следователно "+
+     "<b>Z<sub>екв</sub> = Z<sub>1</sub> + "+
+     "Z<sub>2</sub></b>."
+    :"При паралелно свързване напрежението "+
+     "върху двата импеданса е еднакво. "+
+     "Клоновите токове се сумират, затова "+
+     "се събират комплексните проводимости: "+
+     "<b>Y<sub>екв</sub> = Y<sub>1</sub> + "+
+     "Y<sub>2</sub></b>.";
+}
+
+function changeMode(next){
+  mode=next;
+  step=1;
+  all=false;
+
+  $("series").classList.toggle("active",mode==="series");
+  $("parallel").classList.toggle("active",mode==="parallel");
+
+  $("seriesCircuit").style.display=
+    mode==="series"?"":"none";
+
+  $("parallelCircuit").style.display=
+    mode==="parallel"?"":"none";
+
+  render();
+}
+
+$("series").onclick=()=>changeMode("series");
+$("parallel").onclick=()=>changeMode("parallel");
+
+$("prev").onclick=()=>{
+  all=false;
+  step=Math.max(1,step-1);
+  render();
+};
+
+$("next").onclick=()=>{
+  all=false;
+  step=Math.min(5,step+1);
+  render();
+};
+
+$("all").onclick=()=>{
+  all=!all;
+  render();
+};
+
+$("motion").onclick=()=>{
+  moving=!moving;
+  $("motion").classList.toggle("active",moving);
+  $("particleGroup").style.display=moving?"":"none";
+};
+
+inputs.forEach(id=>{
+  $(id).addEventListener("input",render);
+});
+
+/* УЧЕБНО ДВИЖЕНИЕ ПО ИЗБРАНИТЕ ПОСОКИ */
+const particles=[
+  $("particle1"),
+  $("particle2"),
+  $("particle3"),
+  $("particle4")
+];
+
+let lastTime=null;
+
+function animate(now){
+  if(lastTime!==null && moving){
+    phase+=Math.min(.05,(now-lastTime)/1000)*.12;
+  }
+
+  lastTime=now;
+  phase%=1;
+
+  const tracks=mode==="series"
+    ?[$("seriesTrack"),$("seriesTrack"),
+      $("seriesTrack"),$("seriesTrack")]
+    :[$("parallelTrack1"),$("parallelTrack2"),
+      $("parallelTrack1"),$("parallelTrack2")];
+
+  particles.forEach((p,i)=>{
+    const track=tracks[i];
+    const offset=mode==="series"
+      ?i/4
+      :Math.floor(i/2)/2;
+
+    const progress=(phase+offset)%1;
+    const point=track.getPointAtLength(
+      track.getTotalLength()*progress
+    );
+
+    p.setAttribute("cx",point.x);
+    p.setAttribute("cy",point.y);
+
+    p.setAttribute(
+      "fill",
+      mode==="parallel"&&i%2===1
+        ?"#16a34a"
+        :"#075fca"
+    );
+  });
+
+  requestAnimationFrame(animate);
+}
+
+/* ОГРАНИЧЕНИЯ СРЕЩУ ОБИЧАЙНО КОПИРАНЕ */
+const notice=$("notice");
 let noticeTimer=null;
 
-function showRights(){
- notice.hidden=false;
+function showNotice(){
+  notice.textContent=
+    "© 2026 доц. д-р инж. Величко Атанасов. "+
+    "Всички права запазени.";
 
- notice.textContent=
-  "© доц. д-р инж. Величко Атанасов. "+
-  "Всички права запазени.";
+  notice.hidden=false;
+  clearTimeout(noticeTimer);
 
- clearTimeout(noticeTimer);
-
- noticeTimer=setTimeout(()=>{
-  notice.hidden=true;
- },2300);
+  noticeTimer=setTimeout(()=>{
+    notice.hidden=true;
+  },2200);
 }
 
-document.addEventListener("contextmenu",event=>{
- event.preventDefault();
- showRights();
+document.addEventListener("contextmenu",e=>{
+  e.preventDefault();
+  showNotice();
 });
 
-document.addEventListener("copy",event=>{
- event.preventDefault();
- showRights();
+document.addEventListener("copy",e=>{
+  e.preventDefault();
+  showNotice();
 });
 
-document.addEventListener("dragstart",event=>{
- if(event.target.closest("svg,img,canvas")){
-  event.preventDefault();
- }
-});
+window.addEventListener("keydown",e=>{
+  const mod=e.ctrlKey||e.metaKey;
+  const key=e.key.toLowerCase();
 
-window.addEventListener("keydown",event=>{
- const modifier=event.ctrlKey||event.metaKey;
- const key=event.key.toLowerCase();
+  const blocked=
+    mod&&["s","u"].includes(key)
+    ||e.key==="F12"
+    ||mod&&e.shiftKey&&["i","j","c"].includes(key);
 
- const blocked=
-  modifier&&["s","u","c"].includes(key)
-  ||event.key==="F12"
-  ||modifier&&event.shiftKey&&
-    ["i","j","c"].includes(key);
-
- if(blocked){
-  event.preventDefault();
-  showRights();
- }
+  if(blocked){
+    e.preventDefault();
+    showNotice();
+  }
 },true);
 
-/* Начало */
-update();
-render();
+/* НАЧАЛО */
+changeMode("series");
+requestAnimationFrame(animate);
 
 })();
 </script>

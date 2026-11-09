@@ -1,179 +1,2127 @@
 <!DOCTYPE html>
-<!-- saved from url=(0064)file:///C:/Users/velichko.atanasov/Downloads/preview%20(25).html -->
-<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>QR-031 – Мощности при синусоидален променлив ток</title>
+<meta name="author" content="доц. д-р инж. Величко Атанасов">
+<meta name="copyright"
+      content="© 2026 доц. д-р инж. Величко Атанасов">
+<title>QR-031 – Управление на мощностите</title>
+
 <style>
+:root{
+  --bg:#eef4f8;
+  --ink:#18364d;
+  --muted:#60798c;
+  --line:#c6d6e2;
+  --blue:#1769aa;
+  --orange:#cf781b;
+  --green:#168451;
+  --violet:#6a4aaa;
+  --old:#8796a6;
+  --red:#b83e4b;
+}
 *{box-sizing:border-box}
-:root{--ink:#18364d;--blue:#1769aa;--orange:#d77b17;--green:#168451;--violet:#6a4aaa;--line:#bdccd7;--muted:#60798c}
-body{margin:0;background:#eef4f8;color:var(--ink);font-family:Segoe UI,Arial,sans-serif}
-.wrap{max-width:1240px;margin:auto;padding:14px}
-h1{text-align:center;color:#174f88;margin:4px 0;font-size:clamp(24px,4vw,37px)}
-.sub{text-align:center;color:var(--muted);margin:6px 0 14px}
-.main{display:grid;grid-template-columns:1.45fr .55fr;gap:14px}
-.stage{min-height:720px;background:#fff;border:1px solid var(--line);border-radius:18px;position:relative;overflow:hidden}
-svg{position:absolute;inset:0;width:100%;height:100%}
-.side{background:#fff;border:1px solid var(--line);border-radius:18px;padding:11px}
-.card{border:1px solid #c7d5e0;border-radius:13px;padding:10px;margin-bottom:10px;background:#fbfdff}
-.title{font-weight:900;color:#174f88;margin-bottom:8px}
-label{display:flex;justify-content:space-between;gap:8px;font-weight:750;margin:7px 0}
-input[type=range]{width:100%;accent-color:#1769aa}
-.result{line-height:1.62;font-size:14px}.note{font-size:13px;color:#536d80;line-height:1.45}
-button{width:100%;padding:9px;border:1px solid #8aaac1;border-radius:9px;background:#edf6fc;color:#174f88;font-weight:850;cursor:pointer}
-.lab{fill:#18364d;font-size:17px;font-weight:850}.small{fill:#5b7180;font-size:13px;font-weight:700}
-.box{fill:#f8fbfd;stroke:#bdccd7;stroke-width:2}.axis{stroke:#71828d;stroke-width:2}
-.pvec{stroke:#1769aa;stroke-width:4}.qvec{stroke:#d77b17;stroke-width:4}.svec{stroke:#6a4aaa;stroke-width:4}
-.waveU{fill:none;stroke:#1769aa;stroke-width:3}.waveI{fill:none;stroke:#d77b17;stroke-width:3}
-.arc{fill:none;stroke:#6a4aaa;stroke-width:2}
-@media(max-width:900px){.main{grid-template-columns:1fr}.stage{min-height:720px}}
-</style></head>
-<body><div class="wrap">
-<h1>QR-031 – Мощности при синусоидален променлив ток</h1>
-<div class="sub">Активна P, реактивна Q, привидна S и коефициент на мощността cos φ</div>
-<div class="main"><section class="stage"><svg viewBox="0 0 900 720">
-<defs>
-<!-- deliberately small arrowheads -->
-<marker id="aP" markerWidth="4" markerHeight="4" refX="3.5" refY="1.5" orient="auto"><path d="M0 0L0 3L3.8 1.5z" fill="#1769aa"></path></marker>
-<marker id="aQ" markerWidth="4" markerHeight="4" refX="3.5" refY="1.5" orient="auto"><path d="M0 0L0 3L3.8 1.5z" fill="#d77b17"></path></marker>
-<marker id="aS" markerWidth="4" markerHeight="4" refX="3.5" refY="1.5" orient="auto"><path d="M0 0L0 3L3.8 1.5z" fill="#6a4aaa"></path></marker>
-</defs>
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font:15px/1.55 "Segoe UI",Arial,sans-serif;
+}
+.wrap{max-width:1380px;margin:auto;padding:15px}
+header{text-align:center;margin-bottom:15px}
+.eyebrow{
+  color:#477c9d;
+  font-size:11px;
+  letter-spacing:1.4px;
+  font-weight:800;
+}
+h1{
+  color:#174f88;
+  font-size:clamp(24px,3.5vw,36px);
+  margin:5px 0;
+}
+.subtitle{color:var(--muted);margin:5px 0}
+button{
+  padding:10px 13px;
+  border:1px solid #9db6c9;
+  border-radius:9px;
+  background:#fff;
+  color:#174f88;
+  font:750 13px "Segoe UI",Arial,sans-serif;
+  cursor:pointer;
+}
+button:hover:not(:disabled){background:#e7f2fb}
+button.active{
+  color:#fff;
+  background:#1769aa;
+  border-color:#1769aa;
+}
+button:disabled{opacity:.45;cursor:not-allowed}
+button:focus-visible,input:focus-visible{
+  outline:3px solid #75b5e2;
+  outline-offset:3px;
+}
+.toolbar{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:8px;
+  margin:13px 0;
+}
+.toolbar .spacer{flex:1}
+.autoButton{
+  border-color:#75aa8b;
+  color:#17673d;
+  background:#f0faf3;
+}
+.autoBar{
+  padding:12px 14px;
+  margin-bottom:13px;
+  border:1px solid #b9d1e2;
+  border-radius:11px;
+  background:#f8fcff;
+}
+.autoTop{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:8px;
+}
+#autoText{font-weight:750;color:#205b83}
+#runStatus{font-size:12px;color:var(--muted)}
+progress{
+  display:block;
+  width:100%;
+  height:7px;
+  margin-top:9px;
+  accent-color:#258352;
+}
+.kpis{
+  display:grid;
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  gap:9px;
+  margin-bottom:13px;
+}
+.kpi{
+  padding:11px 7px;
+  background:white;
+  border:1px solid var(--line);
+  border-radius:11px;
+  text-align:center;
+}
+.kpi span{
+  display:block;
+  font-size:12px;
+  color:var(--muted);
+}
+.kpi strong{
+  display:block;
+  margin-top:4px;
+  font-size:clamp(17px,2vw,23px);
+  font-variant-numeric:tabular-nums;
+}
+.main{
+  display:grid;
+  grid-template-columns:minmax(0,1.45fr) minmax(310px,.75fr);
+  gap:14px;
+  align-items:start;
+}
+.card{
+  min-width:0;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:14px;
+  overflow:hidden;
+}
+.cardHead{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:8px;
+  padding:12px 14px;
+  border-bottom:1px solid var(--line);
+}
+.cardHead strong{color:#174f88;font-size:17px}
+.cardHead small{color:var(--muted);font-size:12px}
+.body{padding:13px}
+.side{display:grid;gap:12px}
+.control{margin-bottom:15px}
+.control label{
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  align-items:center;
+  font-size:14px;
+  font-weight:750;
+}
+.control output{
+  white-space:nowrap;
+  font-variant-numeric:tabular-nums;
+}
+input[type=range]{
+  width:100%;
+  margin-top:10px;
+  accent-color:var(--blue);
+}
+.adjust{
+  display:grid;
+  grid-template-columns:42px minmax(0,1fr) 42px;
+  align-items:center;
+  gap:9px;
+}
+.adjust input{margin-top:0}
+.adjust button{
+  padding:8px 0;
+  font-size:23px;
+  line-height:1;
+}
+.powerControl{
+  padding:12px;
+  border:1px solid #d3e0e9;
+  border-radius:10px;
+  margin-bottom:10px;
+}
+.powerControl label{margin-bottom:10px}
+.pControl{border-left:4px solid var(--blue)}
+.lControl{border-left:4px solid var(--orange)}
+.cControl{border-left:4px solid var(--green)}
+.lControl input{accent-color:var(--orange)}
+.cControl input{accent-color:var(--green)}
+.note{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.75;
+}
+.formula{
+  margin:8px 0;
+  text-align:center;
+  font:19px/1.75 Cambria,Georgia,serif;
+}
+.formula sub{font-size:.72em}
+.explain{
+  padding:11px 12px;
+  background:#f1f7fc;
+  border-left:4px solid #317db4;
+  border-radius:6px;
+  font-size:13px;
+  line-height:1.7;
+}
+.mode{
+  padding:5px 9px;
+  border-radius:15px;
+  background:#edf5fb;
+  font-size:12px;
+  font-weight:800;
+}
+.mode.inductive{background:#fff4e4;color:#9e5c12}
+.mode.capacitive{background:#eaf8ef;color:#176f46}
+.mode.active{background:#e8f2fc;color:#1769aa}
+canvas{
+  display:block;
+  width:100%;
+  touch-action:pan-y;
+}
+#triangle{height:340px}
+.plot{height:270px;cursor:crosshair}
+#powerPlot{height:330px}
+.legend{
+  display:flex;
+  flex-wrap:wrap;
+  gap:13px;
+  margin:9px 0;
+  color:var(--muted);
+  font-size:12px;
+}
+.key{
+  display:inline-block;
+  width:22px;
+  height:0;
+  border-top:3px solid;
+  vertical-align:middle;
+  margin-right:5px;
+}
+.key.dashed{border-top-style:dashed}
+.compare{
+  width:100%;
+  border-collapse:collapse;
+  font-size:14px;
+}
+.compare th,.compare td{
+  padding:8px 9px;
+  border-bottom:1px solid #e3ebf1;
+}
+.compare th{
+  background:#f4f8fb;
+  color:#45647b;
+  font-size:12px;
+  text-align:right;
+}
+.compare th:first-child,.compare td:first-child{text-align:left}
+.compare td{
+  text-align:right;
+  font-variant-numeric:tabular-nums;
+}
+.compare td:last-child{font-weight:750;color:#174f88}
+.compare tr:last-child td{border-bottom:0}
+.changeBox{
+  padding:11px;
+  background:#edf9f1;
+  color:#1b7146;
+  border:1px solid #b9ddc7;
+  border-radius:9px;
+  text-align:center;
+  font-weight:750;
+}
+.changeBox.increase{
+  color:#a73d42;
+  border-color:#e2b8bd;
+  background:#fff1f2;
+}
+.section{margin-top:14px}
+.twoPlots{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+.instant{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:15px;
+  padding:10px;
+  font-size:14px;
+  font-weight:750;
+  font-variant-numeric:tabular-nums;
+}
+.energy{
+  margin:0 13px 13px;
+  padding:10px;
+  border:1px solid #c0dfcd;
+  border-radius:9px;
+  background:#eff9f2;
+  color:#1a6d43;
+  text-align:center;
+  font-weight:750;
+}
+.energy.negative{
+  border-color:#e8b8be;
+  background:#fff0f2;
+  color:#a93241;
+}
+.timeControls{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:13px;
+  padding:12px 14px;
+  border-top:1px solid var(--line);
+}
+.timeControls label{font-size:13px;font-weight:750}
+.angleControl{flex:1;min-width:180px}
+.speedControl{min-width:150px}
+.speedControl input{width:130px;vertical-align:middle}
+.check{
+  padding:11px;
+  border:1px solid #bddbc9;
+  border-radius:9px;
+  background:#f0faf4;
+  color:#236c47;
+  font-size:13px;
+}
+details{
+  margin-top:14px;
+  padding:12px 14px;
+  border:1px solid var(--line);
+  border-radius:11px;
+  background:white;
+  color:#526d81;
+  font-size:13px;
+  line-height:1.8;
+}
+summary{cursor:pointer;color:#174f88;font-weight:800}
+details a{color:#1769aa}
+footer{
+  margin-top:17px;
+  padding:16px;
+  border-top:1px solid var(--line);
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+}
+#error{
+  margin-top:14px;
+  padding:14px;
+  border:1px solid #dda2ab;
+  border-radius:10px;
+  background:#fff0f2;
+  color:#932333;
+}
+#rights{
+  position:fixed;
+  right:14px;
+  bottom:14px;
+  z-index:1000;
+  max-width:340px;
+  padding:12px;
+  border-radius:9px;
+  background:#183d59;
+  color:#fff;
+  font-size:13px;
+}
+[hidden]{display:none!important}
+@media(max-width:980px){
+  .main{grid-template-columns:1fr}
+  .kpis{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:650px){
+  .wrap{padding:9px}
+  .twoPlots{grid-template-columns:1fr}
+  .kpis{gap:6px}
+  .kpi{padding:9px 5px}
+  .kpi strong{font-size:18px}
+  #triangle{height:320px}
+  .compare{font-size:12px}
+}
+</style>
+</head>
 
-<!-- Waveforms -->
-<text x="255" y="38" class="lab" text-anchor="middle">Напрежение и ток</text>
-<rect x="45" y="58" width="430" height="250" rx="14" class="box"></rect>
-<line x1="70" y1="180" x2="450" y2="180" class="axis"></line>
-<path id="uWave" class="waveU" d="M70 180 L72.375 175.1355360648736 L74.75 170.30106316750567 L77.125 165.52638744093386 L79.5 160.84094634875325 L81.875 156.27362719336443 L84.25 151.8525890161481 L86.625 147.60508898761117 L89 143.55731435786666 L91.375 139.7342210035286 L93.75 136.15937956643404 L96.125 132.8548301327981 L98.5 129.84094634875325 L100.875 127.13630981004628 L103.25 124.7575955003212 L105.625 122.71946898430022 L108 121.03449598970047 L110.375 119.71306493534405 L112.75 118.76332288310147 L115.125 118.19112530854606 L117.5 118 L119.875 118.19112530854606 L122.25 118.76332288310147 L124.625 119.71306493534405 L127 121.03449598970047 L129.375 122.71946898430022 L131.75 124.75759550032119 L134.125 127.13630981004627 L136.5 129.84094634875325 L138.875 132.85483013279807 L141.25 136.15937956643404 L143.625 139.7342210035286 L146 143.55731435786666 L148.375 147.60508898761117 L150.75 151.8525890161481 L153.125 156.27362719336443 L155.5 160.84094634875325 L157.875 165.52638744093386 L160.25 170.30106316750567 L162.625 175.1355360648736 L165 180 L167.375 184.86446393512634 L169.75 189.6989368324943 L172.125 194.47361255906614 L174.5 199.15905365124672 L176.875 203.72637280663557 L179.25 208.1474109838519 L181.625 212.39491101238883 L184 216.4426856421333 L186.375 220.26577899647137 L188.75 223.84062043356596 L191.125 227.1451698672019 L193.5 230.15905365124672 L195.875 232.86369018995373 L198.25 235.2424044996788 L200.625 237.28053101569978 L203 238.96550401029953 L205.375 240.28693506465595 L207.75 241.23667711689853 L210.125 241.80887469145392 L212.5 242 L214.875 241.80887469145392 L217.25 241.23667711689853 L219.625 240.28693506465595 L222 238.96550401029953 L224.375 237.2805310156998 L226.75 235.2424044996788 L229.125 232.86369018995373 L231.5 230.15905365124675 L233.875 227.1451698672019 L236.25 223.84062043356596 L238.625 220.26577899647137 L241 216.44268564213334 L243.375 212.39491101238886 L245.75 208.1474109838519 L248.125 203.7263728066356 L250.5 199.15905365124675 L252.875 194.4736125590661 L255.25 189.69893683249433 L257.625 184.86446393512637 L260 180.00000000000003 L262.375 175.13553606487366 L264.75 170.30106316750576 L267.125 165.52638744093386 L269.5 160.84094634875328 L271.875 156.27362719336443 L274.25 151.8525890161481 L276.625 147.60508898761123 L279 143.55731435786674 L281.375 139.7342210035286 L283.75 136.15937956643407 L286.125 132.8548301327981 L288.5 129.84094634875328 L290.875 127.1363098100463 L293.25 124.75759550032117 L295.625 122.71946898430022 L298 121.03449598970047 L300.375 119.71306493534405 L302.75 118.76332288310147 L305.125 118.19112530854606 L307.5 118 L309.875 118.19112530854606 L312.25 118.76332288310145 L314.625 119.71306493534404 L317 121.03449598970047 L319.375 122.71946898430022 L321.75 124.7575955003212 L324.125 127.13630981004626 L326.5 129.84094634875325 L328.875 132.854830132798 L331.25 136.15937956643407 L333.625 139.73422100352857 L336 143.55731435786666 L338.375 147.60508898761117 L340.75 151.85258901614804 L343.125 156.2736271933645 L345.5 160.84094634875325 L347.875 165.52638744093386 L350.25 170.30106316750562 L352.625 175.13553606487358 L355 179.99999999999997 L357.375 184.8644639351264 L359.75 189.69893683249435 L362.125 194.47361255906608 L364.5 199.15905365124672 L366.875 203.72637280663548 L369.25 208.14741098385193 L371.625 212.39491101238877 L374 216.4426856421333 L376.375 220.2657789964714 L378.75 223.8406204335659 L381.125 227.14516986720196 L383.5 230.15905365124672 L385.875 232.86369018995373 L388.25 235.24240449967877 L390.625 237.28053101569975 L393 238.96550401029953 L395.375 240.28693506465595 L397.75 241.23667711689853 L400.125 241.80887469145392 L402.5 242 L404.875 241.80887469145392 L407.25 241.23667711689853 L409.625 240.28693506465595 L412 238.96550401029953 L414.375 237.28053101569978 L416.75 235.24240449967886 L419.125 232.86369018995367 L421.5 230.15905365124675 L423.875 227.1451698672019 L426.25 223.84062043356602 L428.625 220.26577899647143 L431 216.44268564213337 L433.375 212.39491101238883 L435.75 208.14741098385187 L438.125 203.72637280663562 L440.5 199.15905365124678 L442.875 194.47361255906625 L445.25 189.6989368324943 L447.625 184.86446393512645 L450 180.00000000000003 "></path>
-<path id="iWave" class="waveI" d="M70 211 L72.375 206.6916880021143 L74.75 202.2188128718086 L77.125 197.6089513716432 L79.5 192.89052483070105 L81.875 188.09262391764318 L84.25 183.24482928706252 L86.625 178.37702920491185 L89 173.51923527740547 L91.375 168.70139741948685 L93.75 163.9532192036437 L96.125 159.30397472750622 L98.5 154.78232812930037 L100.875 150.41615686390426 L103.25 146.23237982906832 L105.625 142.2567914014593 L108 138.5139024057508 L110.375 135.02678899723816 L112.75 131.8169503896678 L115.125 128.90417630543504 L117.5 126.3064249653648 L119.875 124.03971237030865 L122.25 122.1180135571735 L124.625 120.55317643817203 L127 119.35484875450405 L129.375 118.53041859482376 L131.75 118.08496884521642 L134.125 118.02124585151546 L136.5 118.33964248716705 L138.875 119.03819573103482 L141.25 120.11259877007777 L143.625 121.55622755228495 L146 123.36018162615875 L148.375 125.51333901495815 L150.75 128.00242478738372 L153.125 130.81209290194343 L155.5 133.92502082040156 L157.875 137.32201630698725 L160.25 140.98213575491008 L162.625 144.88281331066037 L165 149 L167.375 153.30831199788568 L169.75 157.7811871281914 L172.125 162.3910486283568 L174.5 167.1094751692989 L176.875 171.9073760823568 L179.25 176.75517071293748 L181.625 181.62297079508815 L184 186.48076472259453 L186.375 191.29860258051312 L188.75 196.0467807963563 L191.125 200.69602527249378 L193.5 205.2176718706996 L195.875 209.58384313609574 L198.25 213.76762017093168 L200.625 217.74320859854072 L203 221.4860975942492 L205.375 224.97321100276181 L207.75 228.18304961033218 L210.125 231.09582369456496 L212.5 233.69357503463522 L214.875 235.96028762969138 L217.25 237.8819864428265 L219.625 239.44682356182796 L222 240.64515124549595 L224.375 241.46958140517623 L226.75 241.91503115478358 L229.125 241.97875414848454 L231.5 241.66035751283295 L233.875 240.96180426896518 L236.25 239.88740122992223 L238.625 238.44377244771505 L241 236.63981837384125 L243.375 234.48666098504188 L245.75 231.9975752126163 L248.125 229.18790709805657 L250.5 226.07497917959842 L252.875 222.67798369301272 L255.25 219.01786424508995 L257.625 215.11718668933963 L260 210.99999999999997 L262.375 206.69168800211435 L264.75 202.21881287180864 L267.125 197.6089513716432 L269.5 192.89052483070105 L271.875 188.09262391764315 L274.25 183.24482928706254 L276.625 178.37702920491188 L279 173.51923527740558 L281.375 168.7013974194868 L283.75 163.95321920364376 L286.125 159.30397472750622 L288.5 154.78232812930037 L290.875 150.41615686390435 L293.25 146.23237982906826 L295.625 142.25679140145934 L298 138.51390240575077 L300.375 135.0267889972382 L302.75 131.81695038966782 L305.125 128.90417630543504 L307.5 126.30642496536478 L309.875 124.03971237030862 L312.25 122.1180135571735 L314.625 120.55317643817203 L317 119.35484875450405 L319.375 118.53041859482374 L321.75 118.08496884521642 L324.125 118.02124585151546 L326.5 118.33964248716705 L328.875 119.0381957310348 L331.25 120.1125987700778 L333.625 121.55622755228494 L336 123.36018162615875 L338.375 125.51333901495818 L340.75 128.0024247873837 L343.125 130.8120929019435 L345.5 133.92502082040158 L347.875 137.32201630698728 L350.25 140.98213575491005 L352.625 144.88281331066037 L355 149 L357.375 153.30831199788574 L359.75 157.78118712819145 L362.125 162.39104862835677 L364.5 167.10947516929895 L366.875 171.90737608235673 L369.25 176.75517071293754 L371.625 181.62297079508812 L374 186.48076472259453 L376.375 191.29860258051318 L378.75 196.04678079635624 L381.125 200.6960252724939 L383.5 205.21767187069963 L385.875 209.58384313609577 L388.25 213.76762017093165 L390.625 217.74320859854066 L393 221.4860975942492 L395.375 224.97321100276184 L397.75 228.18304961033223 L400.125 231.09582369456496 L402.5 233.69357503463522 L404.875 235.96028762969132 L407.25 237.88198644282653 L409.625 239.44682356182796 L412 240.64515124549595 L414.375 241.46958140517626 L416.75 241.91503115478358 L419.125 241.97875414848454 L421.5 241.66035751283295 L423.875 240.96180426896518 L426.25 239.88740122992223 L428.625 238.44377244771508 L431 236.63981837384125 L433.375 234.48666098504182 L435.75 231.99757521261625 L438.125 229.1879070980566 L440.5 226.07497917959844 L442.875 222.6779836930128 L445.25 219.01786424508987 L447.625 215.11718668933963 L450 211 "></path>
-<text x="78" y="88" fill="#1769aa" font-size="15" font-weight="900">u(t)</text>
-<text x="125" y="88" fill="#d77b17" font-size="15" font-weight="900">i(t)</text>
-<text id="phaseInfo" x="260" y="288" class="small" text-anchor="middle">Текущ фазов ъгъл след компенсация: φ = 30.0°</text>
+<body>
+<div class="wrap">
 
-<!-- Power triangle -->
-<text x="690" y="38" class="lab" text-anchor="middle">Триъгълник на мощностите</text>
-<rect x="515" y="58" width="340" height="250" rx="14" class="box"></rect>
-<line x1="555" y1="185" x2="825" y2="185" class="axis"></line>
-<line x1="555" y1="80" x2="555" y2="290" class="axis"></line>
-<line id="pVec" x1="555" y1="185" x2="740" y2="185" class="pvec" marker-end="url(#aP)"></line>
-<line id="qVec" x1="740" y1="185" x2="740" y2="78.19020019991926" class="qvec" marker-end="url(#aQ)" style=""></line>
-<line id="sVec" x1="555" y1="185" x2="740" y2="78.19020019991926" class="svec" marker-end="url(#aS)"></line>
-<path id="phiArc" class="arc" d="M593 185 L592.9909570290365 184.1710343686867 L592.9638324201106 183.34246328011724 L592.918639083067 182.51468108925457 L592.8553985274864 181.68808177558898 L592.7741408524481 180.86305875562536 L592.6749047322048 180.04000469563803 L592.5577373977749 179.21931132478318 L592.4226946144639 178.40136924865664 L592.2698406553227 177.58656776338714 L592.0992482705575 176.77529467035208 L591.9109986529039 175.96793609160542 L591.7051813989846 175.1648762861042 L591.4818944666653 174.3664974668223 L591.2412441284326 173.57317961883763 L590.983344920814 172.78530031847987 L590.7083195898646 172.0032345536246 L590.4162990327463 171.22735454521933 L590.1074222354289 170.4580295701266 L589.781836206539 169.69562578536798 L589.4396959073927 168.94050605385343 L589.0811641782421 168.19302977167797 L588.7064116607725 167.45355269706872 L588.3156167168853 166.72242678106326 L587.9089653438086 166 "></path>
-<text id="phiLab" fill="#6a4aaa" font-size="15" font-weight="900" x="606.1940687933206" y="171.2825906095664" style="">φ</text>
-<text id="pLab" fill="#1769aa" font-size="15" font-weight="900" x="647.5" y="207">P</text>
-<text id="qLab" fill="#d77b17" font-size="15" font-weight="900" x="752" y="131.59510009995964" style="">Q</text>
-<text id="sLab" fill="#6a4aaa" font-size="15" font-weight="900" x="656.75" y="116.25461010995559">S</text>
+<header>
+  <div class="eyebrow">ИНТЕРАКТИВНА ЕЛЕКТРОТЕХНИКА · QR-031</div>
+  <h1>Мощности при синусоидален променлив ток</h1>
+  <p class="subtitle">
+    Управление на активна и реактивна мощност ·
+    автоматична компенсация
+  </p>
+</header>
 
-<!-- formulas -->
-<rect x="45" y="335" width="430" height="320" rx="14" class="box"></rect>
-<text x="260" y="370" class="lab" text-anchor="middle">Основни зависимости</text>
-<text x="75" y="415" class="lab">P = UI cos φ</text>
-<text x="75" y="455" class="lab">Q = UI sin φ</text>
-<text x="75" y="495" class="lab">S = UI</text>
-<text x="75" y="535" class="lab">S² = P² + Q²</text>
-<text x="75" y="575" class="lab">cos φ = P/S</text>
-<text x="75" y="615" fill="#6a4aaa" font-size="18" font-weight="900">S̲ = P + jQ</text>
+<div class="toolbar">
+  <button type="button" data-mode="active">Активен режим</button>
+  <button type="button" data-mode="inductive">Индуктивен режим</button>
+  <button type="button" data-mode="capacitive">Капацитивен режим</button>
 
-<!-- interpretation -->
-<rect x="515" y="335" width="340" height="320" rx="14" class="box"></rect>
-<text x="685" y="370" class="lab" text-anchor="middle">Енергиен характер</text>
-<text id="mode" x="685" y="420" font-size="21" font-weight="900" text-anchor="middle" fill="#d77b17">ИНДУКТИВЕН РЕЖИМ</text>
-<text id="rule" x="685" y="458" class="small" text-anchor="middle">Q &gt; 0 → токът изостава спрямо напрежението</text>
-<text id="pText" x="550" y="505" class="lab">P = 1992 W</text>
-<text id="qText" x="550" y="545" class="lab">Q = 1150 var</text>
-<text id="sText" x="550" y="585" class="lab">S = 2300 VA</text>
-<text id="cosText" x="550" y="625" fill="#6a4aaa" font-size="18" font-weight="900">cos φ = 0.866</text>
-</svg></section>
+  <span class="spacer"></span>
+
+  <button id="compensate" type="button" class="autoButton">
+    Компенсирай автоматично
+  </button>
+  <button id="demo" type="button" class="autoButton">
+    ▶ Автоматична демонстрация
+  </button>
+  <button id="stopAuto" type="button" disabled>Спри автоматиката</button>
+  <button id="reset" type="button">Начало</button>
+</div>
+
+<div class="autoBar">
+  <div class="autoTop">
+    <span id="autoText" role="status">Ръчно управление</span>
+    <span id="runStatus">● Движение</span>
+  </div>
+  <progress id="autoProgress" max="1" value="0"
+            aria-label="Напредък на автоматичния режим"></progress>
+</div>
+
+<div class="kpis">
+  <div class="kpi">
+    <span>Активна мощност P</span>
+    <strong id="kP" style="color:var(--blue)">—</strong>
+  </div>
+  <div class="kpi">
+    <span>Обща реактивна Q</span>
+    <strong id="kQ" style="color:var(--orange)">—</strong>
+  </div>
+  <div class="kpi">
+    <span>Пълна мощност S</span>
+    <strong id="kS" style="color:var(--violet)">—</strong>
+  </div>
+  <div class="kpi">
+    <span>Ток от мрежата I</span>
+    <strong id="kI" style="color:var(--green)">—</strong>
+  </div>
+  <div class="kpi">
+    <span>Коефициент cos φ</span>
+    <strong id="kPF">—</strong>
+  </div>
+  <div class="kpi">
+    <span>Фазов ъгъл φ</span>
+    <strong id="kPhi">—</strong>
+  </div>
+</div>
+
+<div class="main">
+
+<section class="card">
+  <div class="cardHead">
+    <strong>Триъгълник на мощностите</strong>
+    <span id="modeBadge" class="mode">—</span>
+  </div>
+
+  <canvas id="triangle"
+          role="img"
+          aria-label="Триъгълници на мощностите">
+  </canvas>
+
+  <div class="body" style="padding-top:0">
+    <div class="legend">
+      <span><i class="key" style="color:var(--blue)"></i>P</span>
+      <span><i class="key" style="color:var(--orange)"></i>Q</span>
+      <span><i class="key" style="color:var(--violet)"></i>S</span>
+      <span>
+        <i class="key dashed" style="color:var(--old)"></i>
+        товар без капацитивната съставка
+      </span>
+    </div>
+
+    <div id="modeExplanation" class="explain"></div>
+
+    <p class="note">
+      Двата триъгълника са в общ мащаб.
+      При автоматична демонстрация мащабът се избира
+      за целия цикъл и не се променя между неговите етапи.
+    </p>
+
+    <label style="font-size:13px">
+      <input id="showReference" type="checkbox" checked>
+      Показвай режима без |Q<sub>C</sub>|
+    </label>
+  </div>
+
+  <table class="compare">
+    <thead>
+      <tr>
+        <th>Величина</th>
+        <th>Товар P + jQ<sub>L</sub><br>без |Q<sub>C</sub>|</th>
+        <th>Мрежа<br>с |Q<sub>C</sub>|</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>P, W</td><td id="tP0">—</td><td id="tP">—</td></tr>
+      <tr><td>Q, var</td><td id="tQ0">—</td><td id="tQ">—</td></tr>
+      <tr><td>S, VA</td><td id="tS0">—</td><td id="tS">—</td></tr>
+      <tr><td>I, A</td><td id="tI0">—</td><td id="tI">—</td></tr>
+      <tr><td>cos φ</td><td id="tPF0">—</td><td id="tPF">—</td></tr>
+      <tr><td>φ, °</td><td id="tPhi0">—</td><td id="tPhi">—</td></tr>
+    </tbody>
+  </table>
+
+  <div class="body">
+    <div id="currentChange" class="changeBox"></div>
+  </div>
+</section>
 
 <aside class="side">
-<div class="card"><div class="title">Електрически величини</div>
-<label>U <b id="uOut">230 V</b></label><input id="U" type="range" min="50" max="400" step="1" value="230">
-<label>I <b id="iOut">10.0 A</b></label><input id="I" type="range" min="1" max="30" step="0.1" value="10">
-<label>φ <b id="phiOut">30°</b></label><input id="PHI" type="range" min="-80" max="80" step="1" value="30">
+
+  <section class="card">
+    <div class="cardHead">
+      <strong>Регулиране на мощностите</strong>
+      <small>„−“ и „+“: стъпка 100</small>
+    </div>
+
+    <div class="body">
+
+      <div class="control">
+        <label for="U">
+          Ефективно напрежение U
+          <output id="Uout">230 V</output>
+        </label>
+        <input id="U" type="range"
+               min="50" max="400" step="1" value="230">
+      </div>
+
+      <div class="powerControl pControl">
+        <label for="P" style="display:flex;justify-content:space-between">
+          <b>Активна P</b>
+          <output id="Pout">2000 W</output>
+        </label>
+        <div class="adjust">
+          <button type="button" data-key="P" data-dir="-1"
+                  aria-label="Намали активната мощност">−</button>
+          <input id="P" type="range"
+                 min="0" max="6000" step="any" value="2000">
+          <button type="button" data-key="P" data-dir="1"
+                  aria-label="Увеличи активната мощност">+</button>
+        </div>
+      </div>
+
+      <div class="powerControl lControl">
+        <label for="L" style="display:flex;justify-content:space-between">
+          <b>Индуктивна Q<sub>L</sub></b>
+          <output id="Lout">1500 var</output>
+        </label>
+        <div class="adjust">
+          <button type="button" data-key="L" data-dir="-1"
+                  aria-label="Намали индуктивната мощност">−</button>
+          <input id="L" type="range"
+                 min="0" max="6000" step="any" value="1500">
+          <button type="button" data-key="L" data-dir="1"
+                  aria-label="Увеличи индуктивната мощност">+</button>
+        </div>
+      </div>
+
+      <div class="powerControl cControl">
+        <label for="C" style="display:flex;justify-content:space-between">
+          <b>Капацитивна |Q<sub>C</sub>|</b>
+          <output id="Cout">0 var</output>
+        </label>
+        <div class="adjust">
+          <button type="button" data-key="C" data-dir="-1"
+                  aria-label="Намали капацитивната мощност">−</button>
+          <input id="C" type="range"
+                 min="0" max="6000" step="any" value="0">
+          <button type="button" data-key="C" data-dir="1"
+                  aria-label="Увеличи капацитивната мощност">+</button>
+        </div>
+      </div>
+
+      <div class="formula">
+        Q = Q<sub>L</sub> − |Q<sub>C</sub>|
+      </div>
+
+      <div id="balanceText" class="explain"></div>
+
+      <p class="note">
+        Капацитивната реактивна мощност има отрицателен знак.
+        Плъзгачът задава нейния положителен модул |Q<sub>C</sub>|.
+        I, φ, S и cos φ се изчисляват автоматично.
+      </p>
+
+      <p class="note">
+        „Компенсирай автоматично“ променя само
+        |Q<sub>C</sub>| до Q<sub>L</sub>.
+        P и Q<sub>L</sub> се запазват.
+      </p>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="cardHead"><strong>Зависимости</strong></div>
+    <div class="body">
+      <div class="formula">S = √(P² + Q²)</div>
+      <div class="formula">I = S/U</div>
+      <div class="formula">φ = atan2(Q, P)</div>
+      <div class="formula">cos φ = P/S</div>
+
+      <div id="branchCurrents" class="explain"></div>
+
+      <p class="note">
+        При P = Q = 0 токът от източника е нула.
+        Тогава cos φ и φ не са определени и се показват с „—“.
+      </p>
+    </div>
+  </section>
+
+</aside>
 </div>
-<div class="card result" id="results">Преди компенсация:<br>P = <b>1992 W</b><br>Q = <b>1150 var</b><br>S = <b>2300 VA</b><br><br>Текущ режим:<br>P = <b>1992 W</b><br>Q = <b>1150 var</b><br>S = <b>2300 VA</b><br>I = <b>10.00 A</b><br>cos φ = <b>0.866</b></div>
-<div class="card"><div class="title">Компенсация</div>
-<label>Компенсация на Q <b id="compOut">0%</b></label>
-<input id="COMP" type="range" min="0" max="100" step="1" value="0">
-<div class="note">При компенсация активната мощност P се запазва. Реактивната мощност Q намалява, cos φ се повишава и необходимият ток от мрежата намалява.</div>
+
+<div class="twoPlots section">
+
+<section class="card">
+  <div class="cardHead">
+    <strong>Напрежение u(t)</strong>
+    <small>Ефективна стойност U</small>
+  </div>
+  <canvas id="voltagePlot" class="plot"
+          role="img" aria-label="Моментно напрежение"></canvas>
+  <div class="body" style="padding-top:0">
+    <div class="formula">u(t) = √2 U sin θ</div>
+  </div>
+</section>
+
+<section class="card">
+  <div class="cardHead">
+    <strong>Ток от мрежата</strong>
+    <small>Общ мащаб на двете токови криви</small>
+  </div>
+  <canvas id="currentPlot" class="plot"
+          role="img" aria-label="Ток преди и след компенсация"></canvas>
+  <div class="body" style="padding-top:0">
+    <div class="legend">
+      <span><i class="key dashed" style="color:var(--old)"></i>без |Q<sub>C</sub>|</span>
+      <span><i class="key" style="color:var(--orange)"></i>текущ ток</span>
+    </div>
+    <div class="formula">
+      i(t) = (√2/U)(P sin θ − Q cos θ)
+    </div>
+  </div>
+</section>
+
 </div>
-<div class="card"><button id="reset">Начални стойности</button></div>
-</aside></div></div>
+
+<section class="card section">
+  <div class="cardHead">
+    <strong>Моментна мощност p(t)</strong>
+    <small>На входа на товара и компенсатора</small>
+  </div>
+
+  <canvas id="powerPlot" class="plot"
+          role="img" aria-label="Моментна мощност"></canvas>
+
+  <div class="body" style="padding-top:0">
+    <div class="legend">
+      <span><i class="key dashed" style="color:var(--old)"></i>без |Q<sub>C</sub>|</span>
+      <span><i class="key" style="color:var(--violet)"></i>текуща p(t)</span>
+      <span><i class="key dashed" style="color:var(--green)"></i>средна P</span>
+    </div>
+
+    <div class="formula">
+      p(t) = u(t)i(t) = P(1 − cos 2θ) − Q sin 2θ
+    </div>
+  </div>
+
+  <div class="instant">
+    <span id="instantU">—</span>
+    <span id="instantI">—</span>
+    <span id="instantP">—</span>
+  </div>
+
+  <div id="energyState" class="energy"></div>
+
+  <div class="timeControls">
+    <button id="play" type="button">Ⅱ Пауза</button>
+    <button id="step" type="button">+10°</button>
+
+    <label class="angleControl" for="ANGLE">
+      Избран момент: <output id="angleOut">0°</output>
+      <input id="ANGLE" type="range"
+             min="0" max="360" step="1" value="0">
+    </label>
+
+    <label class="speedControl" for="SPEED">
+      Учебна скорост
+      <input id="SPEED" type="range"
+             min=".25" max="2" step=".25" value="1">
+      <output id="speedOut">1,00×</output>
+    </label>
+  </div>
+
+  <div class="body">
+    <div id="checks" class="check"></div>
+
+    <p class="note">
+      Натискането върху графика избира момент и спира
+      както курсора, така и автоматичното регулиране.
+      „Продължи“ възстановява движението.
+    </p>
+  </div>
+</section>
+
+<details>
+  <summary>Допускания на учебния модел</summary>
+
+  <p>
+    Разглежда се еднофазна синусоидална система при f = 50 Hz.
+    P, Q<sub>L</sub> и |Q<sub>C</sub>| са зададени мощности
+    при текущото ефективно напрежение U.
+  </p>
+
+  <p>
+    Товарът P + jQ<sub>L</sub> и капацитивният компенсатор
+    са представени като паралелни клонове. При промяна само
+    на |Q<sub>C</sub>| токът в товара остава същият,
+    но токът от мрежата се изменя.
+  </p>
+
+  <p>
+    Плавното автоматично регулиране показва поредица от
+    установени режими. То не е симулация на преходните
+    процеси при включване на реална кондензаторна батерия.
+  </p>
+
+  <p>
+    Пълната компенсация до Q = 0 е учебна цел на бутона.
+    Моделът не избира реално защитно устройство,
+    кондензаторна батерия или настройка на регулатор.
+  </p>
+
+  <p>
+    При Q<sub>L</sub> = |Q<sub>C</sub>| и P &gt; 0
+    мрежата вижда активен режим. Индуктивният и
+    капацитивният клон не изчезват.
+  </p>
+
+  <p>
+    При P = 0 и Q<sub>L</sub> = |Q<sub>C</sub>| &gt; 0
+    идеалният модел допуска обмен между двата реактивни
+    клона при нулев ток от източника.
+  </p>
+
+  <p id="selfCheck"></p>
+
+  <p>
+    Източник:
+    <a href="https://www.electrical-installation.org/enwiki/Theoretical_principles_to_improve_power_factor"
+       target="_blank" rel="noopener noreferrer">
+      Schneider Electric — принципи на компенсацията
+    </a>.
+  </p>
+</details>
+
+<div id="error" hidden role="alert"></div>
+
+<footer>
+© 2026 доц. д-р инж. Величко Атанасов.
+Всички права запазени.
+</footer>
+
+</div>
+
+<div id="rights" hidden role="status"></div>
 
 <script>
-const $=id=>document.getElementById(id);
+(() => {
+"use strict";
 
-function calc(){
- const U=+$("U").value, I0=+$("I").value, phi0=+$("PHI").value*Math.PI/180, comp=+$("COMP").value/100;
- const P=U*I0*Math.cos(phi0);
- const Q0=U*I0*Math.sin(phi0);
- // Compensation reduces magnitude of reactive power toward zero, never reverses it.
- const Q=Q0*(1-comp);
- const S=Math.hypot(P,Q);
- const I=S/U;
- const phi=Math.atan2(Q,P);
- const deg=phi*180/Math.PI;
- const pf=S?P/S:1;
+const $ = id => document.getElementById(id);
+const TAU = 2*Math.PI;
+const ROOT2 = Math.SQRT2;
+const EPS = 1e-9;
+const KEYS = ["U","P","L","C"];
 
- $("uOut").textContent=U.toFixed(0)+" V";
- $("iOut").textContent=I0.toFixed(1)+" A";
- $("phiOut").textContent=(+$("PHI").value).toFixed(0)+"°";
- $("compOut").textContent=Math.round(comp*100)+"%";
+const colors = {
+  blue:"#1769aa",
+  orange:"#cf781b",
+  green:"#168451",
+  violet:"#6a4aaa",
+  old:"#8796a6",
+  red:"#b83e4b",
+  ink:"#18364d",
+  muted:"#60798c",
+  grid:"#dfe8ef"
+};
 
- $("results").innerHTML=
- `Преди компенсация:<br>P = <b>${P.toFixed(0)} W</b><br>Q = <b>${Q0.toFixed(0)} var</b><br>S = <b>${(U*I0).toFixed(0)} VA</b><br><br>`+
- `Текущ режим:<br>P = <b>${P.toFixed(0)} W</b><br>Q = <b>${Q.toFixed(0)} var</b><br>S = <b>${S.toFixed(0)} VA</b><br>I = <b>${I.toFixed(2)} A</b><br>cos φ = <b>${pf.toFixed(3)}</b>`;
+/*
+  ЕДИНСТВЕН ИЗТОЧНИК НА ВХОДНИТЕ СТОЙНОСТИ.
+  C е положителният модул |QC|.
+*/
+const params = {
+  U:230,
+  P:2000,
+  L:1500,
+  C:0
+};
 
- $("pText").textContent=`P = ${P.toFixed(0)} W`;
- $("qText").textContent=`Q = ${Q.toFixed(0)} var`;
- $("sText").textContent=`S = ${S.toFixed(0)} VA`;
- $("cosText").textContent=`cos φ = ${pf.toFixed(3)}`;
- $("phaseInfo").textContent=`Текущ фазов ъгъл след компенсация: φ = ${deg.toFixed(1)}°`;
+const state = {
+  theta:0,
+  running:true,
+  last:null,
+  lastPaint:0,
+  frame:null,
+  failed:false,
+  dirty:true,
+  automatic:null,
+  message:"Ръчно управление"
+};
 
- if(Math.abs(Q)<1){
-   $("mode").textContent="АКТИВЕН РЕЖИМ";$("mode").setAttribute("fill","#1769aa");
-   $("rule").textContent="Q = 0 → токът и напрежението са във фаза";
- }else if(Q>0){
-   $("mode").textContent="ИНДУКТИВЕН РЕЖИМ";$("mode").setAttribute("fill","#d77b17");
-   $("rule").textContent="Q > 0 → токът изостава спрямо напрежението";
- }else{
-   $("mode").textContent="КАПАЦИТИВЕН РЕЖИМ";$("mode").setAttribute("fill","#168451");
-   $("rule").textContent="Q < 0 → токът изпреварва напрежението";
- }
- drawTriangle(P,Q,phi);
- drawWaves(phi);
+let model = null;
+let bounds = null;
+let views = null;
+
+function fmt(value,digits=2) {
+  if (value===null || !Number.isFinite(value)) return "—";
+
+  const v = Math.abs(value)<.5*10**(-digits) ? 0 : value;
+
+  return v.toLocaleString("bg-BG",{
+    minimumFractionDigits:digits,
+    maximumFractionDigits:digits
+  }).replace("-","−");
 }
 
-function drawTriangle(P,Q,phi){
- const ox=555,oy=185,m=Math.max(Math.abs(P),Math.abs(Q),1),s=185/m;
- const dx=P*s,dy=Q*s,ex=ox+dx,ey=oy-dy;
- $("pVec").setAttribute("x2",ex);
- $("qVec").setAttribute("x1",ex);$("qVec").setAttribute("y1",oy);$("qVec").setAttribute("x2",ex);$("qVec").setAttribute("y2",ey);
- $("sVec").setAttribute("x2",ex);$("sVec").setAttribute("y2",ey);
- $("pLab").setAttribute("x",ox+dx/2);$("pLab").setAttribute("y",oy+22);
- $("qLab").setAttribute("x",ex+12);$("qLab").setAttribute("y",(oy+ey)/2);
- $("sLab").setAttribute("x",ox+dx*.55);$("sLab").setAttribute("y",oy-dy*.55-10);
+function setText(id,text) {
+  const node = $(id);
+  if (!node) throw new Error("Липсва елемент: "+id);
 
- if(Math.abs(Q)<1){
-   $("qVec").style.display="none";$("qLab").style.display="none";$("phiArc").setAttribute("d","");$("phiLab").style.display="none";
-   $("sLab").textContent="S = P";
- }else{
-   $("qVec").style.display="";$("qLab").style.display="";$("phiLab").style.display="";$("sLab").textContent="S";
-   const r=38,n=24;let d="";
-   for(let k=0;k<=n;k++){let t=phi*k/n,x=ox+r*Math.cos(t),y=oy-r*Math.sin(t);d+=(k?"L":"M")+x+" "+y+" ";}
-   $("phiArc").setAttribute("d",d);
-   $("phiLab").setAttribute("x",ox+53*Math.cos(phi/2));$("phiLab").setAttribute("y",oy-53*Math.sin(phi/2));
- }
+  if (node.textContent!==text) node.textContent = text;
 }
-function drawWaves(phi){
- const x0=70,x1=450,mid=180,amp=62,n=160;
- let du="",di="";
- for(let k=0;k<=n;k++){
-   const x=x0+(x1-x0)*k/n,t=4*Math.PI*k/n;
-   const yu=mid-amp*Math.sin(t), yi=mid-amp*Math.sin(t-phi);
-   du+=(k?"L":"M")+x+" "+yu+" ";di+=(k?"L":"M")+x+" "+yi+" ";
- }
- $("uWave").setAttribute("d",du);$("iWave").setAttribute("d",di);
+
+function clamp(x,a,b) {
+  return Math.max(a,Math.min(b,x));
 }
-["U","I","PHI","COMP"].forEach(id=>$(id).addEventListener("input",calc));
-$("reset").onclick=()=>{$("U").value=230;$("I").value=10;$("PHI").value=30;$("COMP").value=0;calc()};
-calc();
-</script></body></html>
+
+function wrap(x) {
+  return ((x%TAU)+TAU)%TAU;
+}
+
+function copyValues(source=params) {
+  return {
+    U:source.U,
+    P:source.P,
+    L:source.L,
+    C:source.C
+  };
+}
+
+function fail(error) {
+  state.failed = true;
+  state.running = false;
+  state.automatic = null;
+
+  if (state.frame!==null) {
+    cancelAnimationFrame(state.frame);
+    state.frame = null;
+  }
+
+  $("error").hidden = false;
+  $("error").textContent =
+    "Анимацията е спряна: "+
+    (error && error.message ? error.message : String(error));
+
+  setText("play","Спряна");
+  setText("runStatus","● Грешка");
+  console.error(error);
+}
+
+function safe(fn) {
+  return (...args) => {
+    if (state.failed) return;
+
+    try {
+      return fn(...args);
+    } catch(error) {
+      fail(error);
+    }
+  };
+}
+
+/* =====================================================
+   МАТЕМАТИЧЕСКИ МОДЕЛ
+   ===================================================== */
+
+function calculate(input) {
+  const U = input.U;
+  const P = input.P;
+  const L = input.L;
+  const C = input.C;
+
+  let Q = L-C;
+
+  if (Math.abs(Q)<1e-11*Math.max(1,L,C)) Q = 0;
+
+  const S = Math.hypot(P,Q);
+  const S0 = Math.hypot(P,L);
+
+  const phi = S>EPS ? Math.atan2(Q,P) : null;
+  const phi0 = S0>EPS ? Math.atan2(L,P) : null;
+
+  return {
+    U,P,L,C,Q,S,S0,
+    I:S/U,
+    I0:S0/U,
+    phi,
+    phi0,
+    pf:S>EPS ? P/S : null,
+    pf0:S0>EPS ? P/S0 : null,
+    IR:P/U,
+    IL:L/U,
+    IC:C/U
+  };
+}
+
+function moments(m,angle) {
+  const sin = Math.sin(angle);
+  const cos = Math.cos(angle);
+
+  const u = ROOT2*m.U*sin;
+  const i = ROOT2/m.U*(m.P*sin-m.Q*cos);
+  const i0 = ROOT2/m.U*(m.P*sin-m.L*cos);
+
+  return {
+    u,i,i0,
+    p:u*i,
+    p0:u*i0
+  };
+}
+
+/*
+  Общи графични граници.
+  При автоматичен цикъл включват всички негови цели.
+*/
+function limitsFor(list) {
+  let p = 0;
+  let q = 0;
+  let s = 0;
+
+  list.forEach(values => {
+    const m = calculate(values);
+    p = Math.max(p,m.P);
+    q = Math.max(q,m.L,Math.abs(m.Q));
+    s = Math.max(s,m.S,m.S0);
+  });
+
+  return {p,q,s};
+}
+
+function extendLimits(values) {
+  const next = limitsFor([values]);
+
+  bounds = {
+    p:Math.max(bounds.p,next.p),
+    q:Math.max(bounds.q,next.q),
+    s:Math.max(bounds.s,next.s)
+  };
+}
+
+function selfTest() {
+  function check(condition,message) {
+    if (!condition) throw new Error("Самопроверка: "+message);
+  }
+
+  const first = calculate({U:230,P:2000,L:1500,C:0});
+  check(Math.abs(first.S-2500)<1e-8,"Начална S.");
+  check(Math.abs(first.pf-.8)<1e-10,"Начален cos φ.");
+
+  const full = calculate({U:230,P:2000,L:1500,C:1500});
+  check(full.Q===0,"Пълна компенсация.");
+  check(Math.abs(full.S-2000)<1e-8,"S при компенсация.");
+
+  const over = calculate({U:230,P:2000,L:1500,C:3000});
+  check(over.Q<0,"Капацитивен знак.");
+  check(Math.abs(over.S-2500)<1e-8,"Прекомпенсация.");
+
+  const samples = [
+    {U:230,P:2000,L:1500,C:0},
+    {U:230,P:2000,L:1500,C:750},
+    {U:230,P:2000,L:1500,C:1500},
+    {U:230,P:2000,L:1500,C:4000},
+    {U:230,P:0,L:1000,C:0},
+    {U:230,P:0,L:0,C:1000},
+    {U:230,P:0,L:1000,C:1000},
+    {U:230,P:0,L:0,C:0},
+    {U:50,P:6000,L:6000,C:0}
+  ];
+
+  samples.forEach(values => {
+    const m = calculate(values);
+    const tolerance = 1e-8*Math.max(1,m.S,m.S0);
+
+    check(
+      Math.abs(m.S-Math.hypot(m.P,m.Q))<tolerance,
+      "Баланс на мощностите."
+    );
+
+    let average = 0;
+    const count = 720;
+
+    for (let n=0;n<count;n++) {
+      const angle = TAU*n/count;
+      const t = moments(m,angle);
+
+      const analytic =
+        m.P*(1-Math.cos(2*angle)) -
+        m.Q*Math.sin(2*angle);
+
+      check(
+        Math.abs(t.p-analytic)<tolerance,
+        "Моментна мощност."
+      );
+
+      average += t.p/count;
+    }
+
+    check(
+      Math.abs(average-m.P)<tolerance,
+      "Средна активна мощност."
+    );
+
+    if (m.S<EPS) {
+      check(m.pf===null && m.phi===null,"Нулев режим.");
+    }
+  });
+}
+
+/* =====================================================
+   АВТОМАТИЧНО УПРАВЛЕНИЕ
+   ===================================================== */
+
+function stopAutomatic(message="Автоматиката е спряна. Стойностите са запазени.") {
+  state.automatic = null;
+  state.message = message;
+  state.dirty = true;
+}
+
+function stage(label,target,move=3,hold=1) {
+  return {
+    label,
+    target:copyValues(target),
+    move,
+    hold
+  };
+}
+
+function startSequence(stages,finishMessage) {
+  bounds = limitsFor([
+    copyValues(),
+    ...stages.map(item => item.target)
+  ]);
+
+  state.automatic = {
+    stages,
+    index:0,
+    elapsed:0,
+    from:copyValues(),
+    finishMessage
+  };
+
+  state.running = true;
+  state.last = null;
+  state.dirty = true;
+
+  renderAll();
+}
+
+/* Плавно преминаване без промяна на P. */
+function chooseMode(name) {
+  const target = copyValues();
+
+  if (name==="active") {
+    target.L = 0;
+    target.C = 0;
+
+    startSequence([
+      stage("Преминаване към активен режим",target,2.5,.4)
+    ],"Активен режим — ръчно управление");
+
+  } else if (name==="inductive") {
+    target.L = Math.min(6000,Math.max(1500,params.L));
+    target.C = 0;
+
+    startSequence([
+      stage("Преминаване към индуктивен режим",target,2.5,.4)
+    ],"Индуктивен режим — ръчно управление");
+
+  } else {
+    target.C = Math.min(
+      6000,Math.max(1500,params.C,params.L)
+    );
+    target.L = 0;
+
+    startSequence([
+      stage("Преминаване към капацитивен режим",target,2.5,.4)
+    ],"Капацитивен режим — ръчно управление");
+  }
+}
+
+function automaticCompensation() {
+  if (Math.abs(params.C-params.L)<EPS) {
+    stopAutomatic("Вече е изпълнено Qₗ = |Q꜀|. Общата Q е нула.");
+    renderAll();
+    return;
+  }
+
+  const target = copyValues();
+  target.C = params.L;
+
+  startSequence([
+    stage("Автоматична компенсация: |Q꜀| → Qₗ",target,5,.5)
+  ],"Компенсацията завърши: Q = 0. P е запазена.");
+}
+
+function automaticDemo() {
+  const base = copyValues();
+
+  const amount = Math.min(
+    4000,Math.max(1500,base.L,base.C)
+  );
+
+  function target(L,C) {
+    return {
+      U:base.U,
+      P:base.P,
+      L,
+      C
+    };
+  }
+
+  startSequence([
+    stage("1/7 · Активен режим",target(0,0),2.5,1.2),
+    stage("2/7 · Индуктивен режим",target(amount,0),3,1.2),
+    stage("3/7 · Частична компенсация",target(amount,amount*.5),3,1.2),
+    stage("4/7 · Пълна компенсация",target(amount,amount),3,1.5),
+    stage("5/7 · Прекомпенсация",target(amount,amount*1.5),3,1.5),
+    stage("6/7 · Капацитивен режим",target(0,amount),3,1.2),
+    stage("7/7 · Връщане към активен режим",target(0,0),3,1.2)
+  ],"Демонстрацията завърши. Активната мощност P беше запазена.");
+}
+
+function advanceAutomatic(dt) {
+  const automatic = state.automatic;
+  if (!automatic) return;
+
+  automatic.elapsed += dt;
+
+  const current = automatic.stages[automatic.index];
+  const fraction = clamp(automatic.elapsed/current.move,0,1);
+
+  /* Плавен старт и плавно спиране на регулирането. */
+  const smooth = fraction*fraction*(3-2*fraction);
+
+  for (const key of KEYS) {
+    params[key] =
+      automatic.from[key] +
+      (current.target[key]-automatic.from[key])*smooth;
+  }
+
+  if (fraction===1) {
+    Object.assign(params,current.target);
+  }
+
+  state.dirty = true;
+
+  if (automatic.elapsed>=current.move+current.hold) {
+    automatic.index++;
+
+    if (automatic.index>=automatic.stages.length) {
+      state.message = automatic.finishMessage;
+      state.automatic = null;
+    } else {
+      automatic.from = copyValues();
+      automatic.elapsed = 0;
+    }
+  }
+}
+
+function manualChange(key,value) {
+  stopAutomatic("Ръчно управление — всички резултати се преизчисляват.");
+
+  params[key] = key==="U"
+    ? clamp(value,50,400)
+    : clamp(value,0,6000);
+
+  /*
+    При регулиране само на капацитивната съставка
+    мащабът не се свива, когато токът намалява.
+  */
+  if (key==="C") {
+    extendLimits(params);
+  } else {
+    bounds = limitsFor([params]);
+  }
+
+  renderAll();
+}
+
+/* =====================================================
+   CANVAS — СТАТИЧЕН СЛОЙ И ДВИЖЕЩ СЕ КУРСОР
+   ===================================================== */
+
+class View {
+  constructor(id) {
+    this.element = $(id);
+    this.ctx = this.element.getContext("2d");
+    this.cache = document.createElement("canvas");
+    this.bg = this.cache.getContext("2d");
+
+    if (!this.ctx || !this.bg) {
+      throw new Error("Не е наличен Canvas 2D.");
+    }
+
+    this.width = 0;
+    this.height = 0;
+    this.dpr = 1;
+    this.axes = null;
+  }
+
+  resize() {
+    const rect = this.element.getBoundingClientRect();
+
+    this.width = Math.max(1,rect.width);
+    this.height = Math.max(1,rect.height);
+    this.dpr = Math.min(window.devicePixelRatio||1,2);
+
+    const width = Math.round(this.width*this.dpr);
+    const height = Math.round(this.height*this.dpr);
+
+    if (
+      this.element.width!==width ||
+      this.element.height!==height
+    ) {
+      this.element.width = width;
+      this.element.height = height;
+    }
+
+    if (
+      this.cache.width!==width ||
+      this.cache.height!==height
+    ) {
+      this.cache.width = width;
+      this.cache.height = height;
+    }
+
+    this.bg.setTransform(this.dpr,0,0,this.dpr,0,0);
+  }
+
+  build(draw) {
+    this.resize();
+
+    this.bg.clearRect(0,0,this.width,this.height);
+    this.bg.fillStyle = "#ffffff";
+    this.bg.fillRect(0,0,this.width,this.height);
+
+    draw(this.bg,this);
+    this.present();
+  }
+
+  present(draw) {
+    const c = this.ctx;
+
+    c.setTransform(1,0,0,1,0,0);
+    c.clearRect(0,0,this.element.width,this.element.height);
+    c.drawImage(this.cache,0,0);
+
+    c.setTransform(this.dpr,0,0,this.dpr,0,0);
+    if (draw) draw(c,this);
+  }
+}
+
+function text(c,value,x,y,color=colors.muted,size=12,align="left") {
+  c.save();
+  c.fillStyle = color;
+  c.font = size+"px Segoe UI,Arial,sans-serif";
+  c.textAlign = align;
+  c.textBaseline = "middle";
+  c.fillText(value,x,y);
+  c.restore();
+}
+
+function line(c,x1,y1,x2,y2,color,width=1,dash=[]) {
+  c.save();
+  c.strokeStyle = color;
+  c.lineWidth = width;
+  c.lineCap = "round";
+  c.setLineDash(dash);
+  c.beginPath();
+  c.moveTo(x1,y1);
+  c.lineTo(x2,y2);
+  c.stroke();
+  c.restore();
+}
+
+function arrow(c,x1,y1,x2,y2,color,width=3) {
+  const length = Math.hypot(x2-x1,y2-y1);
+  if (length<.1) return;
+
+  line(c,x1,y1,x2,y2,color,width);
+
+  const a = Math.atan2(y2-y1,x2-x1);
+  const head = Math.min(8,length*.4);
+
+  c.save();
+  c.fillStyle = color;
+  c.beginPath();
+  c.moveTo(x2,y2);
+  c.lineTo(
+    x2-head*Math.cos(a-.45),
+    y2-head*Math.sin(a-.45)
+  );
+  c.lineTo(
+    x2-head*Math.cos(a+.45),
+    y2-head*Math.sin(a+.45)
+  );
+  c.closePath();
+  c.fill();
+  c.restore();
+}
+
+/* =====================================================
+   ТРИЪГЪЛНИК НА МОЩНОСТИТЕ
+   ===================================================== */
+
+function drawTriangle(c,v) {
+  const m = model;
+  const ox = 57;
+  const oy = v.height/2;
+  const roomX = Math.max(20,v.width-ox-72);
+  const roomY = Math.max(20,Math.min(oy-40,v.height-oy-48));
+
+  const scaleX = bounds.p>EPS ? roomX/bounds.p : Infinity;
+  const scaleY = bounds.q>EPS ? roomY/bounds.q : Infinity;
+
+  let scale = Math.min(scaleX,scaleY);
+  if (!Number.isFinite(scale)) scale = 1;
+
+  const ex = ox+m.P*scale;
+  const oldY = oy-m.L*scale;
+  const newY = oy-m.Q*scale;
+
+  line(c,ox-12,oy,v.width-22,oy,"#b5c6d4",1.3);
+  line(c,ox,28,ox,v.height-32,"#b5c6d4",1.3);
+
+  text(c,"+Q",ox-8,22,colors.muted,12,"right");
+  text(c,"−Q",ox-8,v.height-23,colors.muted,12,"right");
+  text(c,"P",v.width-17,oy-10,colors.muted,12,"right");
+  text(c,"O",ox-15,oy+16,colors.muted,12);
+
+  if ($("showReference").checked && m.S0>EPS) {
+    line(c,ox,oy,ex,oy,colors.old,2,[6,5]);
+    line(c,ex,oy,ex,oldY,colors.old,2,[6,5]);
+    line(c,ox,oy,ex,oldY,colors.old,2,[6,5]);
+
+    if (m.L>EPS) {
+      text(c,"S₀",ex-4,oldY-14,colors.old,13,"right");
+    }
+  }
+
+  if (m.S<EPS) {
+    text(
+      c,"Нулева мощност от източника",
+      v.width/2,oy-28,colors.muted,14,"center"
+    );
+  } else {
+    if (m.P>EPS && Math.abs(m.Q)>EPS) {
+      c.save();
+      c.fillStyle = "#1769aa0c";
+      c.beginPath();
+      c.moveTo(ox,oy);
+      c.lineTo(ex,oy);
+      c.lineTo(ex,newY);
+      c.closePath();
+      c.fill();
+      c.restore();
+    }
+
+    arrow(c,ox,oy,ex,newY,colors.violet,3.5);
+
+    if (Math.abs(m.Q)>EPS) {
+      arrow(c,ex,oy,ex,newY,colors.orange,3.4);
+      text(c,"Q",ex+15,(oy+newY)/2,colors.orange,14);
+    }
+
+    if (m.P>EPS) {
+      arrow(c,ox,oy,ex,oy,colors.blue,3.4);
+
+      text(
+        c,m.Q===0 ? "P = S" : "P",
+        (ox+ex)/2,
+        oy+(m.Q>=0 ? 24 : -23),
+        colors.blue,14,"center"
+      );
+    }
+
+    if (Math.abs(m.Q)>EPS) {
+      text(
+        c,"S",
+        ox+(ex-ox)*.55-8,
+        oy+(newY-oy)*.55+(m.Q>0 ? -17 : 18),
+        colors.violet,14,"center"
+      );
+    }
+
+    if (m.phi!==null && Math.abs(m.phi)>.001) {
+      const r = Math.min(
+        34,Math.hypot(ex-ox,newY-oy)*.28
+      );
+
+      c.save();
+      c.strokeStyle = colors.violet;
+      c.lineWidth = 1.6;
+      c.beginPath();
+
+      for (let n=0;n<=32;n++) {
+        const a = m.phi*n/32;
+        const x = ox+r*Math.cos(a);
+        const y = oy-r*Math.sin(a);
+
+        if (n===0) c.moveTo(x,y);
+        else c.lineTo(x,y);
+      }
+
+      c.stroke();
+      c.restore();
+    }
+  }
+
+  text(
+    c,
+    "Q = "+fmt(m.L,1)+" − "+fmt(m.C,1)+
+    " = "+fmt(m.Q,1)+" var",
+    v.width/2,v.height-17,
+    colors.muted,12,"center"
+  );
+}
+
+/* =====================================================
+   ГРАФИКИ
+   ===================================================== */
+
+function axes(v,min,max) {
+  const a = {
+    left:68,
+    right:v.width-22,
+    top:29,
+    bottom:v.height-42,
+    min,max
+  };
+
+  a.x = angle =>
+    a.left+(a.right-a.left)*angle/TAU;
+
+  a.y = value =>
+    a.bottom-(value-min)/(max-min)*(a.bottom-a.top);
+
+  v.axes = a;
+  return a;
+}
+
+function plotGrid(c,v,unit) {
+  const a = v.axes;
+  const maximum = Math.max(Math.abs(a.min),Math.abs(a.max));
+  const digits = maximum>=100 ? 0 : maximum>=10 ? 1 : 2;
+
+  for (let n=0;n<=4;n++) {
+    const value = a.min+(a.max-a.min)*n/4;
+    const y = a.y(value);
+
+    line(c,a.left,y,a.right,y,colors.grid);
+    text(c,fmt(value,digits),a.left-8,y,colors.muted,11,"right");
+  }
+
+  for (let n=0;n<=4;n++) {
+    const x = a.x(TAU*n/4);
+
+    line(c,x,a.top,x,a.bottom,colors.grid);
+    text(c,String(n*90)+"°",x,a.bottom+17,colors.muted,11,"center");
+  }
+
+  line(c,a.left,a.y(0),a.right,a.y(0),"#9cb1c1",1.3);
+  line(c,a.left,a.top,a.left,a.bottom,"#a9bdcc",1.2);
+
+  text(c,unit,10,13,colors.muted,12);
+  text(c,"θ = ωt",a.right,v.height-8,colors.muted,11,"right");
+}
+
+function clip(c,a) {
+  c.beginPath();
+  c.rect(a.left,a.top,a.right-a.left,a.bottom-a.top);
+  c.clip();
+}
+
+function curve(c,v,fn,color,width=2.7,dash=[]) {
+  const a = v.axes;
+
+  c.save();
+  clip(c,a);
+  c.strokeStyle = color;
+  c.lineWidth = width;
+  c.lineJoin = "round";
+  c.setLineDash(dash);
+  c.beginPath();
+
+  for (let n=0;n<=360;n++) {
+    const angle = TAU*n/360;
+    const x = a.x(angle);
+    const y = a.y(fn(angle));
+
+    if (n===0) c.moveTo(x,y);
+    else c.lineTo(x,y);
+  }
+
+  c.stroke();
+  c.restore();
+}
+
+function powerFill(c,v,positive,color) {
+  const a = v.axes;
+
+  c.save();
+  clip(c,a);
+  c.fillStyle = color;
+  c.beginPath();
+  c.moveTo(a.left,a.y(0));
+
+  for (let n=0;n<=480;n++) {
+    const angle = TAU*n/480;
+    const value = moments(model,angle).p;
+    const part = positive ? Math.max(0,value) : Math.min(0,value);
+
+    c.lineTo(a.x(angle),a.y(part));
+  }
+
+  c.lineTo(a.right,a.y(0));
+  c.closePath();
+  c.fill();
+  c.restore();
+}
+
+function drawVoltage(c,v) {
+  const amplitude = ROOT2*model.U;
+
+  axes(v,-1.12*amplitude,1.12*amplitude);
+  plotGrid(c,v,"u, V");
+
+  curve(c,v,a => moments(model,a).u,colors.blue);
+}
+
+function drawCurrent(c,v) {
+  const amplitude = ROOT2*Math.max(bounds.s,1)/model.U;
+
+  axes(v,-1.12*amplitude,1.12*amplitude);
+  plotGrid(c,v,"i, A");
+
+  if ($("showReference").checked) {
+    curve(c,v,a => moments(model,a).i0,colors.old,2,[6,5]);
+  }
+
+  curve(c,v,a => moments(model,a).i,colors.orange,3);
+}
+
+function drawPower(c,v) {
+  const limit = Math.max(bounds.s,1);
+
+  axes(v,-1.12*limit,2.12*limit);
+
+  powerFill(c,v,true,"#e0f0e7");
+  powerFill(c,v,false,"#f7dfe3");
+
+  plotGrid(c,v,"p, W");
+
+  if ($("showReference").checked) {
+    curve(c,v,a => moments(model,a).p0,colors.old,2,[6,5]);
+  }
+
+  const a = v.axes;
+
+  line(
+    c,a.left,a.y(model.P),a.right,a.y(model.P),
+    colors.green,1.7,[7,5]
+  );
+
+  text(
+    c,"P = "+fmt(model.P,1)+" W",
+    a.right-6,a.y(model.P)-10,
+    colors.green,12,"right"
+  );
+
+  curve(c,v,a => moments(model,a).p,colors.violet,3);
+}
+
+function cursor(c,v,points) {
+  const a = v.axes;
+  if (!a) return;
+
+  const x = a.x(state.theta);
+
+  line(c,x,a.top,x,a.bottom,"#657d90",1.2,[4,4]);
+
+  points.forEach(point => {
+    c.save();
+    c.fillStyle = point.color;
+    c.strokeStyle = "#fff";
+    c.lineWidth = 1.5;
+    c.beginPath();
+    c.arc(x,a.y(point.value),4.6,0,TAU);
+    c.fill();
+    c.stroke();
+    c.restore();
+  });
+}
+
+/* =====================================================
+   ПОКАЗАНИЯ
+   ===================================================== */
+
+function updateControls() {
+  const outputs = {
+    U:fmt(params.U,0)+" V",
+    P:fmt(params.P,1)+" W",
+    L:fmt(params.L,1)+" var",
+    C:fmt(params.C,1)+" var"
+  };
+
+  KEYS.forEach(key => {
+    /*
+      При ръчно плъзгане не преместваме текущия
+      активен контрол от JavaScript.
+    */
+    if (document.activeElement!==$(key) || state.automatic) {
+      $(key).value = String(params[key]);
+    }
+
+    setText(key+"out",outputs[key]);
+  });
+}
+
+function updateAutomaticUI() {
+  const a = state.automatic;
+
+  $("stopAuto").disabled = !a;
+  $("demo").classList.toggle("active",!!a && a.stages.length>1);
+  $("compensate").classList.toggle(
+    "active",
+    !!a && a.stages[0].label.includes("Автоматична компенсация")
+  );
+
+  if (a) {
+    const current = a.stages[a.index];
+    const fraction = clamp(
+      a.elapsed/(current.move+current.hold),0,1
+    );
+
+    $("autoProgress").value =
+      (a.index+fraction)/a.stages.length;
+
+    setText(
+      "autoText",
+      current.label+(state.running ? "" : " · пауза")
+    );
+  } else {
+    $("autoProgress").value = 0;
+    setText("autoText",state.message);
+  }
+
+  setText("runStatus",state.running ? "● Движение" : "● Пауза");
+  setText("play",state.running ? "Ⅱ Пауза" : "▶ Продължи");
+}
+
+function updateNumbers() {
+  const m = model;
+
+  setText("kP",fmt(m.P,1)+" W");
+  setText("kQ",fmt(m.Q,1)+" var");
+  setText("kS",fmt(m.S,1)+" VA");
+  setText("kI",fmt(m.I,3)+" A");
+  setText("kPF",fmt(m.pf,3));
+  setText("kPhi",m.phi===null ? "—" : fmt(m.phi*180/Math.PI,2)+"°");
+
+  const values = {
+    tP0:fmt(m.P,2), tP:fmt(m.P,2),
+    tQ0:fmt(m.L,2), tQ:fmt(m.Q,2),
+    tS0:fmt(m.S0,2), tS:fmt(m.S,2),
+    tI0:fmt(m.I0,3), tI:fmt(m.I,3),
+    tPF0:fmt(m.pf0,3), tPF:fmt(m.pf,3),
+    tPhi0:m.phi0===null ? "—" : fmt(m.phi0*180/Math.PI,2),
+    tPhi:m.phi===null ? "—" : fmt(m.phi*180/Math.PI,2)
+  };
+
+  Object.entries(values).forEach(([id,value]) => setText(id,value));
+
+  const change = $("currentChange");
+  change.classList.toggle("increase",m.I>m.I0+EPS);
+
+  if (m.I0>EPS) {
+    const percent = 100*(m.I0-m.I)/m.I0;
+
+    setText(
+      "currentChange",
+      "Ток от мрежата: "+fmt(m.I0,3)+" → "+fmt(m.I,3)+" A · "+
+      (percent>=0 ? "намаление " : "увеличение ")+
+      fmt(Math.abs(percent),2)+"%"
+    );
+  } else {
+    setText(
+      "currentChange",
+      "Без |Q꜀| токът е 0 A. Текущ ток: "+fmt(m.I,3)+" A."
+    );
+  }
+
+  const badge = $("modeBadge");
+  let modeName;
+
+  if (m.S<EPS) {
+    modeName = "none";
+    badge.className = "mode";
+    badge.textContent = "НУЛЕВ ТОК ОТ МРЕЖАТА";
+
+    $("modeExplanation").innerHTML =
+      m.L>EPS
+        ? "<b>P = 0 и Qₗ = |Q꜀|.</b> В идеалния модел "+
+          "реактивните токове се компенсират при източника. "+
+          "В отделните L и C клонове може да има ток."
+        : "<b>Всички мощности са нула.</b> "+
+          "Няма ток от източника.";
+
+  } else if (m.Q===0) {
+    modeName = "active";
+    badge.className = "mode active";
+    badge.textContent = "АКТИВЕН РЕЖИМ КЪМ МРЕЖАТА";
+
+    $("modeExplanation").innerHTML =
+      "<b>Q = 0 и S = P.</b> Токът от мрежата е във фаза "+
+      "с напрежението. При Qₗ = |Q꜀| двата реактивни "+
+      "клона остават включени, но се компенсират.";
+
+  } else if (m.Q>0) {
+    modeName = "inductive";
+    badge.className = "mode inductive";
+    badge.textContent = "ИНДУКТИВЕН РЕЖИМ";
+
+    $("modeExplanation").innerHTML =
+      "<b>Qₗ &gt; |Q꜀|, следователно Q &gt; 0.</b> "+
+      "Токът от мрежата изостава спрямо напрежението.";
+
+  } else {
+    modeName = "capacitive";
+    badge.className = "mode capacitive";
+    badge.textContent = m.L>EPS
+      ? "КАПАЦИТИВЕН · ПРЕКОМПЕНСАЦИЯ"
+      : "КАПАЦИТИВЕН РЕЖИМ";
+
+    $("modeExplanation").innerHTML =
+      "<b>|Q꜀| &gt; Qₗ, следователно Q &lt; 0.</b> "+
+      "Токът от мрежата изпреварва напрежението. "+
+      "След точката Q = 0 допълнителното увеличаване "+
+      "на |Q꜀| увеличава тока от мрежата.";
+  }
+
+  document.querySelectorAll("[data-mode]").forEach(button => {
+    const active = button.dataset.mode===modeName;
+    button.classList.toggle("active",active);
+    button.setAttribute("aria-pressed",String(active));
+  });
+
+  $("balanceText").innerHTML =
+    "Q = "+fmt(m.L,1)+" − "+fmt(m.C,1)+
+    " = <b>"+fmt(m.Q,1)+" var</b>";
+
+  $("branchCurrents").innerHTML =
+    "Активна съставка: P/U = <b>"+fmt(m.IR,3)+" A</b><br>"+
+    "Индуктивна съставка: Qₗ/U = <b>"+fmt(m.IL,3)+" A</b><br>"+
+    "Капацитивна съставка: |Q꜀|/U = <b>"+fmt(m.IC,3)+" A</b>";
+
+  const error = Math.abs(m.S-Math.hypot(m.P,m.Q));
+
+  $("checks").innerHTML =
+    "<b>Числова проверка:</b> "+
+    "|S − √(P² + Q²)| = "+fmt(error,9)+" VA.<br>"+
+    "Във всеки текущ установен режим средната стойност на p(t) е P.";
+
+  updateControls();
+  updateAutomaticUI();
+}
+
+function renderDynamic() {
+  if (!views || !model) return;
+
+  const t = moments(model,state.theta);
+
+  views.voltage.present((c,v) => {
+    cursor(c,v,[{value:t.u,color:colors.blue}]);
+  });
+
+  views.current.present((c,v) => {
+    const points = [];
+
+    if ($("showReference").checked) {
+      points.push({value:t.i0,color:colors.old});
+    }
+
+    points.push({value:t.i,color:colors.orange});
+    cursor(c,v,points);
+  });
+
+  views.power.present((c,v) => {
+    cursor(c,v,[{value:t.p,color:colors.violet}]);
+  });
+
+  setText("instantU","u(t) = "+fmt(t.u,2)+" V");
+  setText("instantI","i(t) = "+fmt(t.i,3)+" A");
+  setText("instantP","p(t) = "+fmt(t.p,2)+" W");
+
+  const tolerance = 1e-9*Math.max(1,model.S);
+  const negative = t.p < -tolerance;
+
+  $("energyState").classList.toggle("negative",negative);
+
+  setText(
+    "energyState",
+    Math.abs(t.p)<=tolerance
+      ? "В този момент p(t) = 0."
+      : negative
+        ? "p(t) < 0 — енергия се връща към източника."
+        : "p(t) > 0 — енергия постъпва от източника."
+  );
+
+  const degrees = state.theta*180/Math.PI;
+  const milliseconds = 20*state.theta/TAU;
+
+  $("ANGLE").value = String(degrees);
+
+  setText(
+    "angleOut",
+    fmt(degrees,1)+"° · "+fmt(milliseconds,2)+" ms"
+  );
+}
+
+function renderAll() {
+  if (!views) return;
+
+  model = calculate(params);
+
+  updateNumbers();
+
+  views.triangle.build(drawTriangle);
+  views.voltage.build(drawVoltage);
+  views.current.build(drawCurrent);
+  views.power.build(drawPower);
+
+  renderDynamic();
+  state.dirty = false;
+}
+
+/* =====================================================
+   УПРАВЛЕНИЕ НА ВРЕМЕТО
+   ===================================================== */
+
+function stopAt(angle) {
+  state.theta = clamp(angle,0,TAU);
+  state.running = false;
+  state.last = null;
+
+  updateAutomaticUI();
+  renderDynamic();
+}
+
+function connectPlot(view) {
+  view.element.addEventListener("pointerdown",safe(event => {
+    const a = view.axes;
+    const rect = view.element.getBoundingClientRect();
+
+    if (!a || rect.width<=0) return;
+
+    const x = (event.clientX-rect.left)*view.width/rect.width;
+    const part = clamp((x-a.left)/(a.right-a.left),0,1);
+
+    stopAt(part*TAU);
+  }));
+}
+
+function connectControls() {
+  KEYS.forEach(key => {
+    $(key).addEventListener("input",safe(() => {
+      manualChange(key,Number($(key).value));
+    }));
+  });
+
+  document.querySelectorAll("[data-key]").forEach(button => {
+    button.addEventListener("click",safe(() => {
+      const key = button.dataset.key;
+      const direction = Number(button.dataset.dir);
+
+      manualChange(key,params[key]+100*direction);
+    }));
+  });
+
+  document.querySelectorAll("[data-mode]").forEach(button => {
+    button.addEventListener("click",safe(() => {
+      chooseMode(button.dataset.mode);
+    }));
+  });
+
+  $("compensate").addEventListener(
+    "click",safe(automaticCompensation)
+  );
+
+  $("demo").addEventListener("click",safe(automaticDemo));
+
+  $("stopAuto").addEventListener("click",safe(() => {
+    stopAutomatic();
+    renderAll();
+  }));
+
+  $("showReference").addEventListener("change",safe(renderAll));
+
+  $("play").addEventListener("click",safe(() => {
+    state.running = !state.running;
+    state.last = null;
+    updateAutomaticUI();
+    renderDynamic();
+  }));
+
+  $("step").addEventListener("click",safe(() => {
+    stopAt(wrap(state.theta+Math.PI/18));
+  }));
+
+  $("ANGLE").addEventListener("input",safe(() => {
+    stopAt(Number($("ANGLE").value)*Math.PI/180);
+  }));
+
+  $("SPEED").addEventListener("input",safe(() => {
+    setText("speedOut",fmt(Number($("SPEED").value),2)+"×");
+  }));
+
+  $("reset").addEventListener("click",safe(() => {
+    Object.assign(params,{U:230,P:2000,L:1500,C:0});
+
+    state.theta = 0;
+    state.running = true;
+    state.last = null;
+    state.automatic = null;
+    state.message = "Начални стойности — ръчно управление";
+
+    $("SPEED").value = 1;
+    $("showReference").checked = true;
+
+    bounds = limitsFor([params]);
+
+    setText("speedOut","1,00×");
+    renderAll();
+  }));
+
+  document.addEventListener("visibilitychange",() => {
+    state.last = null;
+  });
+
+  connectPlot(views.voltage);
+  connectPlot(views.current);
+  connectPlot(views.power);
+
+  if (window.ResizeObserver) {
+    const observer = new ResizeObserver(safe(() => {
+      state.dirty = true;
+    }));
+
+    Object.values(views).forEach(v => observer.observe(v.element));
+  } else {
+    window.addEventListener("resize",safe(() => {
+      state.dirty = true;
+    }));
+  }
+}
+
+/* =====================================================
+   АВТОРСКО ПРАВО И ОГРАНИЧЕНИЯ НА ИНТЕРФЕЙСА
+   ===================================================== */
+
+function installRestrictions() {
+  let timer = null;
+
+  function notice() {
+    setText(
+      "rights",
+      "© доц. д-р инж. Величко Атанасов. "+
+      "Командата е ограничена в учебната страница."
+    );
+
+    $("rights").hidden = false;
+    clearTimeout(timer);
+
+    timer = setTimeout(() => {
+      $("rights").hidden = true;
+    },2200);
+  }
+
+  function editable(target) {
+    return target instanceof Element &&
+      !!target.closest(
+        "input,textarea,[contenteditable='true']"
+      );
+  }
+
+  document.addEventListener("contextmenu",event => {
+    if (editable(event.target)) return;
+    event.preventDefault();
+    notice();
+  });
+
+  document.addEventListener("copy",event => {
+    if (editable(event.target)) return;
+    event.preventDefault();
+    notice();
+  });
+
+  document.addEventListener("dragstart",event => {
+    if (
+      event.target instanceof Element &&
+      event.target.closest("canvas")
+    ) {
+      event.preventDefault();
+    }
+  });
+
+  window.addEventListener("keydown",event => {
+    const modifier = event.ctrlKey || event.metaKey;
+
+    if (
+      modifier &&
+      ["KeyS","KeyU"].includes(event.code) &&
+      !editable(event.target)
+    ) {
+      event.preventDefault();
+      notice();
+    }
+  },true);
+}
+
+/* =====================================================
+   ЕДИНСТВЕН АНИМАЦИОНЕН ЦИКЪЛ
+   ===================================================== */
+
+function frame(now) {
+  if (state.failed) return;
+
+  try {
+    const dt = state.last===null
+      ? 0
+      : Math.min(.1,Math.max(0,(now-state.last)/1000));
+
+    state.last = now;
+
+    if (state.running && !document.hidden) {
+      const speed = Number($("SPEED").value);
+
+      state.theta = wrap(
+        state.theta+dt*TAU*speed/6
+      );
+
+      advanceAutomatic(dt*speed);
+    }
+
+    /*
+      Около 30 кадъра в секунда за графиките.
+      Всички части се обновяват от едно състояние.
+    */
+    if (!document.hidden && now-state.lastPaint>=33) {
+      if (state.dirty) {
+        renderAll();
+      } else {
+        renderDynamic();
+      }
+
+      state.lastPaint = now;
+    }
+
+    state.frame = requestAnimationFrame(frame);
+
+  } catch(error) {
+    fail(error);
+  }
+}
+
+/* НАЧАЛО */
+try {
+  selfTest();
+
+  setText(
+    "selfCheck",
+    "Вградените самопроверки са изпълнени: "+
+    "баланс на мощностите, средна моментна мощност, "+
+    "пълна компенсация, прекомпенсация и нулев режим."
+  );
+
+  views = {
+    triangle:new View("triangle"),
+    voltage:new View("voltagePlot"),
+    current:new View("currentPlot"),
+    power:new View("powerPlot")
+  };
+
+  bounds = limitsFor([params]);
+
+  connectControls();
+  installRestrictions();
+  renderAll();
+
+  state.frame = requestAnimationFrame(frame);
+
+} catch(error) {
+  fail(error);
+}
+
+})();
+</script>
+</body>
+</html>

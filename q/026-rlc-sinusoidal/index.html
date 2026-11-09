@@ -1,278 +1,969 @@
-<!DOCTYPE html>
-<!-- saved from url=(0071)https://velichko-atanasov.github.io/elektrotech3d/q/026-rlc-sinusoidal/ -->
-<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="доц. д-р инж. Величко Атанасов">
 <title>QR-026 – R, L и C в синусоидален режим</title>
+
 <style>
-*{box-sizing:border-box}
 :root{
- --bg:#071523;--panel:#0d2236;--line:#3c617d;--txt:#f3f8fc;--muted:#b9ccdb;
- --u:#ff6b5e;--i:#55c7ff;--good:#72e39a;--gold:#ffe06b;--violet:#b07cff;
+  --bg:#071523;
+  --panel:#0d2236;
+  --line:#3c617d;
+  --txt:#f3f8fc;
+  --muted:#b9ccdb;
+  --u:#ff6b5e;
+  --i:#55c7ff;
+  --gold:#ffe06b;
+  --violet:#b07cff;
 }
-body{margin:0;background:radial-gradient(circle at 50% 0,#1a4f73,#071523 62%,#030810);color:var(--txt);font-family:Segoe UI,Arial,sans-serif}
-.wrap{max-width:1240px;margin:auto;padding:12px}
-h1{text-align:center;margin:3px 0;font-size:clamp(24px,4vw,38px)}
-.sub{text-align:center;color:var(--muted);margin:5px 0 12px}
-.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
-.tab{padding:12px;border:1px solid #4b7290;background:#12314c;color:white;border-radius:12px;font-weight:900;cursor:pointer}
-.tab.on{background:#256da4;border-color:#78c5ff}
-.main{display:grid;grid-template-columns:1.48fr .52fr;gap:12px}
-.stage{position:relative;min-height:700px;border:1px solid var(--line);border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#102b43,#081726)}
-svg{position:absolute;inset:0;width:100%;height:100%}
-.side{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:11px}
-.card{background:#ffffff07;border:1px solid #3b607c;border-radius:14px;padding:10px;margin-bottom:9px}
-.title{font-size:16px;font-weight:900;color:var(--gold);margin-bottom:6px}
-.eq{text-align:center;font:800 21px Cambria Math,Georgia,serif;color:var(--gold);line-height:1.55}
-.result{font-size:15px;line-height:1.55;font-weight:800;color:#dff4ff}
-.note{font-size:13px;line-height:1.48;color:var(--muted)}
-label{display:flex;justify-content:space-between;gap:8px;font-weight:800;margin:7px 0}
-input[type=range]{width:100%;accent-color:#58bfff}
-button.ctrl{width:100%;padding:9px;margin:4px 0;border:1px solid #456b88;background:#15334e;color:white;border-radius:10px;font-weight:850;cursor:pointer}
-.wire{stroke:#e0eaf0;stroke-width:5;fill:none;stroke-linecap:round;stroke-linejoin:round}
-.meter{fill:#edf3f6;stroke:#698699;stroke-width:3}
-.mtxt{fill:#132a3a;font-size:14px;font-weight:900;text-anchor:middle}
-.elem{fill:#d9c59f;stroke:#5e4b31;stroke-width:3}
-.coil{fill:none;stroke:#e0a044;stroke-width:7;stroke-linecap:round}
-.cap{stroke:#e4c057;stroke-width:7}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:radial-gradient(circle at 50% 0,
+  #1a4f73,#071523 62%,#030810);
+  color:var(--txt);
+  font:15px/1.55 "Segoe UI",Arial,sans-serif;
+}
+.wrap{
+  max-width:1240px;
+  margin:auto;
+  padding:12px;
+}
+h1{
+  text-align:center;
+  margin:3px 0;
+  font-size:clamp(24px,4vw,38px);
+}
+.sub{
+  text-align:center;
+  color:var(--muted);
+  margin:5px 0 12px;
+}
+.tabs{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin-bottom:10px;
+}
+.tab{
+  padding:12px;
+  border:1px solid #4b7290;
+  background:#12314c;
+  color:white;
+  border-radius:12px;
+  font-weight:900;
+  cursor:pointer;
+}
+.tab.on{
+  background:#256da4;
+  border-color:#78c5ff;
+}
+button:focus-visible,input:focus-visible{
+  outline:3px solid #ffe06b;
+  outline-offset:3px;
+}
+.main{
+  display:grid;
+  grid-template-columns:1.48fr .52fr;
+  gap:12px;
+}
+.stage{
+  position:relative;
+  min-height:700px;
+  border:1px solid var(--line);
+  border-radius:20px;
+  overflow:hidden;
+  background:linear-gradient(180deg,#102b43,#081726);
+}
+.stage svg{
+  display:block;
+  width:100%;
+  height:100%;
+  min-height:700px;
+}
+.side{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:11px;
+}
+.card{
+  background:#ffffff07;
+  border:1px solid #3b607c;
+  border-radius:14px;
+  padding:11px;
+  margin-bottom:9px;
+}
+.title{
+  font-size:16px;
+  font-weight:900;
+  color:var(--gold);
+  margin-bottom:6px;
+}
+.eq{
+  text-align:center;
+  font:800 21px/1.55 Cambria,Georgia,serif;
+  color:var(--gold);
+}
+.result{
+  font-size:15px;
+  line-height:1.7;
+  font-weight:800;
+  color:#dff4ff;
+}
+.note{
+  font-size:13px;
+  line-height:1.55;
+  color:var(--muted);
+}
+label{
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  font-weight:800;
+  margin:7px 0;
+}
+input[type=range]{
+  width:100%;
+  accent-color:#58bfff;
+}
+button.ctrl{
+  width:100%;
+  padding:10px;
+  margin:4px 0;
+  border:1px solid #456b88;
+  background:#15334e;
+  color:white;
+  border-radius:10px;
+  font-weight:850;
+  cursor:pointer;
+}
+.wire{
+  stroke:#e0eaf0;
+  stroke-width:4;
+  fill:none;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.meter{
+  fill:#edf3f6;
+  stroke:#698699;
+  stroke-width:3;
+}
+.mtxt{
+  fill:#132a3a;
+  font-size:14px;
+  font-weight:900;
+  text-anchor:middle;
+}
+.elem{
+  fill:#d9c59f;
+  stroke:#5e4b31;
+  stroke-width:3;
+}
+.coil{
+  fill:none;
+  stroke:#e0a044;
+  stroke-width:6;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.cap{
+  stroke:#e4c057;
+  stroke-width:6;
+  stroke-linecap:round;
+}
 .axis{stroke:#8da9ba;stroke-width:2}
 .gridline{stroke:#29475d;stroke-width:1}
-.waveU{fill:none;stroke:var(--u);stroke-width:4}
-.waveI{fill:none;stroke:var(--i);stroke-width:4}
-.lab{fill:white;font-size:16px;font-weight:850}
-.small{fill:#c6d8e5;font-size:13px;font-weight:700}
-.gold{fill:var(--gold);font-size:14px;font-weight:850}
-.phase{fill:var(--violet);font-size:15px;font-weight:900}
-.phU{stroke:var(--u);stroke-width:5}
-.phI{stroke:var(--i);stroke-width:5}
-.dashU{stroke:var(--u);stroke-width:2;stroke-dasharray:7 5}
-.dashI{stroke:var(--i);stroke-width:2;stroke-dasharray:7 5}
-@media(max-width:870px){.main{grid-template-columns:1fr}.tabs{grid-template-columns:1fr}.stage{min-height:620px}}
+.waveU{
+  fill:none;
+  stroke:var(--u);
+  stroke-width:3.5;
+}
+.waveI{
+  fill:none;
+  stroke:var(--i);
+  stroke-width:3.5;
+}
+.lab{
+  fill:white;
+  font-size:16px;
+  font-weight:850;
+}
+.small{
+  fill:#c6d8e5;
+  font-size:13px;
+  font-weight:700;
+}
+.gold{
+  fill:var(--gold);
+  font-size:14px;
+  font-weight:850;
+}
+.phase{
+  fill:var(--violet);
+  font-size:15px;
+  font-weight:900;
+}
+.phU{stroke:var(--u);stroke-width:3.5}
+.phI{stroke:var(--i);stroke-width:3.5}
+.dashU{
+  stroke:var(--u);
+  stroke-width:1.6;
+  stroke-dasharray:6 5;
+}
+.dashI{
+  stroke:var(--i);
+  stroke-width:1.6;
+  stroke-dasharray:6 5;
+}
+footer{
+  text-align:center;
+  padding:14px;
+  margin-top:12px;
+  border-top:1px solid var(--line);
+  color:var(--muted);
+  font-size:13px;
+}
+#error{
+  color:#ffbbbb;
+  padding:10px;
+  border:1px solid #bd6871;
+  border-radius:9px;
+  background:#45212c;
+}
+[hidden]{display:none!important}
+@media(max-width:870px){
+  .main{grid-template-columns:1fr}
+  .tabs{grid-template-columns:1fr}
+  .stage{min-height:620px}
+  .stage svg{min-height:620px}
+}
 </style>
 </head>
+
 <body>
 <div class="wrap">
+
 <h1>QR-026 – R, L и C в синусоидален режим</h1>
-<div class="sub">Синусоиди, фазово отместване, фазори и влияние на честотата – U = 230 V RMS</div>
+
+<div class="sub">
+Синусоиди, фазово отместване, фазори и влияние на честотата
+— U = 230 V RMS при началните настройки
+</div>
 
 <div class="tabs">
-<button class="tab on" data-mode="R">Резистор R</button>
-<button class="tab" data-mode="L">Индуктивност L</button>
-<button class="tab" data-mode="C">Капацитет C</button>
+  <button class="tab on" data-mode="R" type="button">
+    Резистор R
+  </button>
+  <button class="tab" data-mode="L" type="button">
+    Индуктивност L
+  </button>
+  <button class="tab" data-mode="C" type="button">
+    Капацитет C
+  </button>
 </div>
 
 <div class="main">
+
 <section class="stage">
-<svg viewBox="0 0 900 700">
+<svg viewBox="0 0 900 700"
+     role="img"
+     aria-label="Схеми R, L, C с амперметър и волтметър">
+
 <defs>
- <marker id="arrU" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L0 6L9 3z" fill="#ff6b5e"></path></marker>
- <marker id="arrI" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L0 6L9 3z" fill="#55c7ff"></path></marker>
+  <!-- Малки стрелки -->
+  <marker id="arrU"
+          viewBox="0 0 10 10"
+          markerWidth="5.5"
+          markerHeight="5.5"
+          refX="8" refY="5"
+          orient="auto">
+    <path d="M0 0L10 5L0 10Z"
+          fill="#ff6b5e"/>
+  </marker>
+
+  <marker id="arrI"
+          viewBox="0 0 10 10"
+          markerWidth="5.5"
+          markerHeight="5.5"
+          refX="8" refY="5"
+          orient="auto">
+    <path d="M0 0L10 5L0 10Z"
+          fill="#55c7ff"/>
+  </marker>
 </defs>
 
-<!-- circuit -->
-<text x="220" y="52" class="lab" text-anchor="middle">Електрическа схема</text>
-<circle cx="100" cy="170" r="40" fill="#edf3f6" stroke="#698699" stroke-width="3"></circle>
-<path d="M72 170 C83 145 94 195 105 170 C116 145 127 195 138 170" fill="none" stroke="#1f5c88" stroke-width="4"></path>
-<text x="100" y="225" class="small" text-anchor="middle">AC източник</text>
+<!-- ЕЛЕКТРИЧЕСКА СХЕМА -->
+<text x="275" y="47"
+      class="lab" text-anchor="middle">
+Електрическа схема
+</text>
 
-<path class="wire" d="M100 130 V90 H345"></path>
-<path class="wire" d="M345 90 H500 V250 H100 V210"></path>
-<!-- current arrow -->
-<path id="iArrow" d="M155 105 H215" stroke="#55c7ff" stroke-width="4" fill="none" marker-end="url(#arrI)"></path>
-<text x="185" y="128" class="lab" text-anchor="middle">I</text>
+<!-- Източник на синусоидално напрежение -->
+<circle cx="100" cy="170" r="38"
+        class="meter"/>
 
-<!-- element placeholder -->
-<g id="Rdraw" style="">
- <rect x="345" y="72" width="120" height="36" rx="5" class="elem"></rect>
- <text x="405" y="45" class="lab" text-anchor="middle">R</text>
+<!-- Правилен знак за променливотоков източник ~ -->
+<path
+  d="M76 170
+     C84 151 92 151 100 170
+     C108 189 116 189 124 170"
+  fill="none"
+  stroke="#1f5c88"
+  stroke-width="4"
+  stroke-linecap="round"/>
+
+<text x="100" y="224"
+      class="small" text-anchor="middle">
+AC източник
+</text>
+
+<!--
+  СЪЩЕСТВЕНА ПОПРАВКА:
+  Проводникът НЕ преминава под/през R, L или C.
+  Отделни участъци: източник → A → елемент → източник.
+-->
+
+<!-- От горната клема на източника до амперметъра -->
+<path class="wire" d="M100 132V90H240"/>
+
+<!-- От амперметъра до левия извод на елемента -->
+<path class="wire" d="M300 90H345"/>
+
+<!-- От десния извод на елемента до източника -->
+<path class="wire" d="M465 90H500V250H100V208"/>
+
+<!-- По-малка стрелка за избраната посока на тока -->
+<path id="iArrow"
+      d="M157 90H216"
+      stroke="#55c7ff"
+      stroke-width="2.7"
+      fill="none"
+      marker-end="url(#arrI)"/>
+
+<text x="184" y="76"
+      class="lab" text-anchor="middle"
+      fill="#55c7ff">
+I
+</text>
+
+<!-- РЕЗИСТОР -->
+<g id="Rdraw">
+  <rect x="345" y="72"
+        width="120" height="36"
+        rx="3" class="elem"/>
+
+  <text x="405" y="58"
+        text-anchor="middle" class="lab">
+    R
+  </text>
 </g>
-<g id="Ldraw" style="display: none;">
- <path class="wire" d="M345 90 H360"></path>
- <path class="coil" d="M360 90 c12-26 24-26 36 0 c12-26 24-26 36 0 c12-26 24-26 36 0"></path>
- <text x="414" y="42" class="lab" text-anchor="middle">L</text>
+
+<!-- БОБИНА -->
+<g id="Ldraw" style="display:none">
+
+  <!--
+    Четири класически полукръга.
+    НЯМА хоризонтален проводник под тях.
+  -->
+  <path class="coil"
+        d="M345 90
+           A15 15 0 0 1 375 90
+           A15 15 0 0 1 405 90
+           A15 15 0 0 1 435 90
+           A15 15 0 0 1 465 90"/>
+
+  <text x="405" y="48"
+        text-anchor="middle" class="lab">
+    L
+  </text>
 </g>
-<g id="Cdraw" style="display: none;">
- <path class="wire" d="M345 90 H390 M420 90 H465"></path>
- <line x1="390" y1="62" x2="390" y2="118" class="cap"></line>
- <line x1="420" y1="62" x2="420" y2="118" class="cap"></line>
- <text x="405" y="38" class="lab" text-anchor="middle">C</text>
+
+<!-- КОНДЕНЗАТОР -->
+<g id="Cdraw" style="display:none">
+
+  <!-- Ляв извод: стига само до лявата плоча -->
+  <path class="wire" d="M345 90H391"/>
+
+  <!-- Дясната плоча започва отделен проводник -->
+  <path class="wire" d="M419 90H465"/>
+
+  <!-- Двете плочи са разделени с въздушна междина -->
+  <line x1="391" y1="62"
+        x2="391" y2="118"
+        class="cap"/>
+
+  <line x1="419" y1="62"
+        x2="419" y2="118"
+        class="cap"/>
+
+  <text x="405" y="47"
+        text-anchor="middle" class="lab">
+    C
+  </text>
 </g>
 
-<!-- ammeter -->
-<circle cx="270" cy="90" r="30" class="meter"></circle>
-<text x="270" y="86" class="mtxt">A</text><text id="amm" x="270" y="105" class="mtxt">2.300 A</text>
+<!-- АМПЕРМЕТЪР: ПОСЛЕДОВАТЕЛНО -->
+<circle cx="270" cy="90" r="30" class="meter"/>
 
-<!-- voltmeter parallel -->
-<circle cx="405" cy="185" r="34" class="meter"></circle>
-<text x="405" y="180" class="mtxt">V</text><text id="volt" x="405" y="200" class="mtxt">230.0 V</text>
-<path d="M371 185 H330 V90 M439 185 H480 V90" fill="none" stroke="#ffe06b" stroke-width="3" stroke-dasharray="6 5"></path>
-<text x="405" y="238" class="small" text-anchor="middle">волтметърът е успоредно</text>
+<text x="270" y="86" class="mtxt">A</text>
 
-<!-- wave graph -->
-<text x="250" y="328" class="lab" text-anchor="middle">Моментни стойности u(t) и i(t)</text>
-<line x1="70" y1="470" x2="590" y2="470" class="axis"></line>
-<line x1="70" y1="350" x2="70" y2="590" class="axis"></line>
-<line x1="70" y1="380" x2="590" y2="380" class="gridline"></line>
-<line x1="70" y1="560" x2="590" y2="560" class="gridline"></line>
-<path id="waveU" class="waveU" d="M70 525.794708102981 L72 529.1413634082309 L74 532.3498913189053 L76 535.4127981694005 L78 538.3229303988464 L80 541.0734912585791 L82 543.6580566862626 L84 546.0705903095837 L86 548.3054575444796 L88 550.3574387549698 L90 552.221741443858 L92 553.8940114458311 L94 555.3703430968144 L96 556.6472883558306 L98 557.7218648580597 L100 558.5915628802896 L102 559.254351202492 L104 559.7086818518295 L106 559.9534937180192 L108 559.9882150316041 L110 559.8127646993477 L112 559.4275524936302 L114 558.8334780954073 L116 558.0319289929624 L118 557.0247772413645 L120 555.8143750901963 L122 554.4035494897661 L124 552.7955954886347 L126 550.994268537877 L128 549.0037757200515 L130 546.8287659233646 L132 544.4743189839761 L134 541.9459338218071 L136 539.2495155975575 L138 536.3913619209295 L140 533.3781481422684 L142 530.2169117619726 L144 526.9150359940851 L146 523.4802325224556 L148 519.9205234897447 L150 516.2442227613387 L152 512.4599165079316 L154 508.5764431521252 L156 504.60287272588414 L158 500.54848568705563 L160 496.4227512444304 L162 492.23530524196644 L164 487.9959276538293 L166 483.71451974280905 L168 479.40108093546246 L170 475.06568546798877 L172 470.7184588573843 L174 466.3695542528283 L176 462.02912872253285 L178 457.707319531439 L180 453.4142204651651 L182 449.1598582555026 L184 444.95416916251963 L186 440.8069757679648 L188 436.7279640341728 L190 432.72666068205035 L192 428.8124109409781 L194 424.9943567225944 L196 421.2814152694371 L198 417.68225832831064 L200 414.2052918970191 L202 410.8586365917692 L204 407.6501086810948 L206 404.58720183059955 L208 401.6770696011536 L210 398.9265087414209 L212 396.34194331373743 L214 393.9294096904163 L216 391.69454245552043 L218 389.6425612450302 L220 387.7782585561421 L222 386.1059885541689 L224 384.6296569031856 L226 383.35271164416935 L228 382.2781351419403 L230 381.40843711971036 L232 380.74564879750807 L234 380.2913181481705 L236 380.0465062819808 L238 380.01178496839583 L240 380.18723530065233 L242 380.57244750636977 L244 381.16652190459274 L246 381.96807100703757 L248 382.97522275863537 L250 384.18562490980366 L252 385.596450510234 L254 387.2044045113653 L256 389.005731462123 L258 390.9962242799484 L260 393.1712340766354 L262 395.5256810160239 L264 398.05406617819284 L266 400.75048440244245 L268 403.60863807907043 L270 406.6218518577316 L272 409.78308823802746 L274 413.08496400591486 L276 416.51976747754446 L278 420.07947651025535 L280 423.75577723866127 L282 427.54008349206845 L284 431.4235568478748 L286 435.3971272741159 L288 439.4515143129443 L290 443.5772487555696 L292 447.76469475803356 L294 452.00407234617074 L296 456.28548025719095 L298 460.5989190645375 L300 464.9343145320112 L302 469.28154114261577 L304 473.6304457471717 L306 477.97087127746715 L308 482.2926804685609 L310 486.58577953483496 L312 490.8401417444974 L314 495.0458308374803 L316 499.19302423203516 L318 503.2720359658271 L320 507.2733393179496 L322 511.1875890590219 L324 515.0056432774056 L326 518.718584730563 L328 522.3177416716893 L330 525.794708102981 L332 529.1413634082309 L334 532.3498913189052 L336 535.4127981694004 L338 538.3229303988463 L340 541.0734912585792 L342 543.6580566862626 L344 546.0705903095837 L346 548.3054575444796 L348 550.3574387549697 L350 552.2217414438579 L352 553.8940114458311 L354 555.3703430968144 L356 556.6472883558306 L358 557.7218648580597 L360 558.5915628802896 L362 559.254351202492 L364 559.7086818518295 L366 559.9534937180192 L368 559.9882150316041 L370 559.8127646993477 L372 559.4275524936302 L374 558.8334780954073 L376 558.0319289929624 L378 557.0247772413646 L380 555.8143750901963 L382 554.4035494897661 L384 552.7955954886347 L386 550.994268537877 L388 549.0037757200515 L390 546.8287659233646 L392 544.4743189839761 L394 541.9459338218071 L396 539.2495155975575 L398 536.3913619209296 L400 533.3781481422685 L402 530.2169117619726 L404 526.915035994085 L406 523.4802325224556 L408 519.9205234897447 L410 516.2442227613387 L412 512.4599165079316 L414 508.57644315212514 L416 504.60287272588425 L418 500.5484856870558 L420 496.42275124443034 L422 492.2353052419664 L424 487.9959276538292 L426 483.7145197428091 L428 479.4010809354625 L430 475.0656854679888 L432 470.7184588573843 L434 466.3695542528284 L436 462.0291287225329 L438 457.707319531439 L440 453.4142204651651 L442 449.1598582555026 L444 444.95416916251963 L446 440.80697576796496 L448 436.72796403417294 L450 432.72666068205046 L452 428.812410940978 L454 424.9943567225943 L456 421.28141526943716 L458 417.6822583283107 L460 414.2052918970191 L462 410.8586365917692 L464 407.6501086810948 L466 404.5872018305996 L468 401.6770696011537 L470 398.92650874142083 L472 396.3419433137374 L474 393.92940969041626 L476 391.6945424555205 L478 389.64256124503027 L480 387.7782585561421 L482 386.1059885541689 L484 384.6296569031856 L486 383.3527116441694 L488 382.2781351419403 L490 381.40843711971036 L492 380.745648797508 L494 380.2913181481705 L496 380.0465062819808 L498 380.01178496839583 L500 380.18723530065233 L502 380.5724475063698 L504 381.16652190459274 L506 381.96807100703757 L508 382.97522275863537 L510 384.18562490980366 L512 385.5964505102339 L514 387.2044045113653 L516 389.0057314621229 L518 390.9962242799484 L520 393.1712340766354 L522 395.5256810160239 L524 398.0540661781929 L526 400.7504844024424 L528 403.6086380790704 L530 406.62185185773154 L532 409.7830882380274 L534 413.08496400591497 L536 416.5197674775444 L538 420.0794765102553 L540 423.75577723866127 L542 427.54008349206845 L544 431.4235568478748 L546 435.39712727411575 L548 439.4515143129442 L550 443.5772487555696 L552 447.7646947580336 L554 452.0040723461708 L556 456.28548025719084 L558 460.5989190645375 L560 464.9343145320112 L562 469.28154114261565 L564 473.6304457471716 L566 477.9708712774671 L568 482.292680468561 L570 486.5857795348349 L572 490.8401417444974 L574 495.04583083748037 L576 499.19302423203504 L578 503.27203596582706 L580 507.27333931794954 L582 511.18758905902195 L584 515.0056432774057 L586 518.7185847305628 L588 522.3177416716893 L590 525.7947081029808 "></path>
-<path id="waveI" class="waveI" d="M70 513.3917730914386 L72 515.994480634108 L74 518.4897659360862 L76 520.8718011429305 L78 523.1350229010429 L80 525.2741453511403 L82 527.2841724736234 L84 529.1604097570123 L86 530.8984751621957 L88 532.4943093568858 L90 533.9441851963772 L92 535.2447164284666 L94 536.3928656022008 L96 537.3859511619846 L98 538.2216537104781 L100 538.8980214256568 L102 539.4134746193822 L104 539.7668094268366 L106 539.9572006182053 L108 539.9842035260391 L110 539.8477550837954 L112 539.5481739731335 L114 539.0861598796187 L116 538.4627918585738 L118 537.679525814896 L120 536.7381911027232 L122 535.6409862528928 L124 534.3904738381709 L126 532.989574488245 L128 531.4415600684581 L130 529.7500460382153 L132 527.918983006911 L134 525.952647507098 L136 523.8556320064469 L138 521.6328341818253 L140 519.2894454805466 L142 516.8309389955048 L144 514.2630566825111 L146 511.5917959496913 L148 508.8233956502607 L150 505.9643215113934 L152 503.02125103321697 L154 500.0010578932013 L156 496.91079589236665 L158 493.7576824808043 L160 490.54908190098763 L162 487.2924879882423 L164 483.9955066685471 L166 480.6658381945407 L168 477.3112591612258 L170 473.93960434337004 L172 470.55874839702744 L174 467.17658746791375 L176 463.8010207495925 L178 460.4399320345425 L180 457.10117130119494 L182 453.79253637994503 L184 450.5217547409583 L186 447.2964654463052 L188 444.1242013085785 L190 441.0123712976597 L192 437.96824323672706 L194 434.99892682791756 L196 432.1113570472883 L198 429.3122779478586 L200 426.60822690856133 L202 424.00551936589204 L204 421.5102340639138 L206 419.1281988570695 L208 416.864977098957 L210 414.7258546488597 L212 412.71582752637664 L214 410.83959024298764 L216 409.10152483780433 L218 407.5056906431143 L220 406.05581480362275 L222 404.75528357153337 L224 403.6071343977992 L226 402.61404883801544 L228 401.7783462895219 L230 401.10197857434315 L232 400.5865253806178 L234 400.23319057316337 L236 400.0427993817947 L238 400.01579647396096 L240 400.1522449162046 L242 400.45182602686646 L244 400.9138401203813 L246 401.53720814142616 L248 402.32047418510393 L250 403.2618088972767 L252 404.35901374710716 L254 405.609526161829 L256 407.01042551175493 L258 408.5584399315419 L260 410.24995396178474 L262 412.08101699308895 L264 414.04735249290195 L266 416.14436799355315 L268 418.3671658181747 L270 420.7105545194533 L272 423.16906100449523 L274 425.7369433174889 L276 428.4082040503087 L278 431.1766043497393 L280 434.0356784886066 L282 436.9787489667831 L284 439.99894210679867 L286 443.08920410763335 L288 446.24231751919564 L290 449.45091809901237 L292 452.7075120117577 L294 456.0044933314529 L296 459.33416180545925 L298 462.6887408387742 L300 466.06039565662996 L302 469.4412516029726 L304 472.82341253208625 L306 476.19897925040743 L308 479.5600679654574 L310 482.8988286988051 L312 486.20746362005497 L314 489.47824525904167 L316 492.70353455369474 L318 495.8757986914215 L320 498.9876287023403 L322 502.03175676327294 L324 505.0010731720824 L326 507.8886429527117 L328 510.6877220521414 L330 513.3917730914386 L332 515.994480634108 L334 518.4897659360861 L336 520.8718011429305 L338 523.1350229010429 L340 525.2741453511403 L342 527.2841724736234 L344 529.1604097570123 L346 530.8984751621956 L348 532.4943093568857 L350 533.9441851963772 L352 535.2447164284666 L354 536.3928656022008 L356 537.3859511619846 L358 538.2216537104781 L360 538.8980214256568 L362 539.4134746193822 L364 539.7668094268366 L366 539.9572006182053 L368 539.9842035260391 L370 539.8477550837954 L372 539.5481739731335 L374 539.0861598796187 L376 538.4627918585738 L378 537.6795258148961 L380 536.7381911027232 L382 535.6409862528928 L384 534.390473838171 L386 532.9895744882451 L388 531.4415600684581 L390 529.7500460382153 L392 527.918983006911 L394 525.952647507098 L396 523.8556320064469 L398 521.6328341818253 L400 519.2894454805468 L402 516.8309389955048 L404 514.263056682511 L406 511.5917959496913 L408 508.8233956502607 L410 505.9643215113934 L412 503.0212510332169 L414 500.0010578932013 L416 496.91079589236676 L418 493.7576824808044 L420 490.5490819009876 L422 487.29248798824227 L424 483.995506668547 L426 480.6658381945408 L428 477.31125916122585 L430 473.9396043433701 L432 470.55874839702744 L434 467.17658746791375 L436 463.80102074959257 L438 460.43993203454255 L440 457.1011713011949 L442 453.79253637994503 L444 450.5217547409583 L446 447.2964654463053 L448 444.12420130857856 L450 441.0123712976598 L452 437.968243236727 L454 434.9989268279175 L456 432.1113570472884 L458 429.3122779478586 L460 426.6082269085614 L462 424.005519365892 L464 421.5102340639138 L466 419.12819885706955 L468 416.86497709895707 L470 414.72585464885964 L472 412.7158275263766 L474 410.83959024298764 L476 409.1015248378044 L478 407.5056906431143 L480 406.05581480362275 L482 404.75528357153337 L484 403.6071343977992 L486 402.61404883801544 L488 401.7783462895219 L490 401.10197857434315 L492 400.5865253806178 L494 400.23319057316337 L496 400.0427993817947 L498 400.01579647396096 L500 400.1522449162046 L502 400.45182602686646 L504 400.91384012038134 L506 401.53720814142616 L508 402.32047418510393 L510 403.2618088972767 L512 404.35901374710716 L514 405.609526161829 L516 407.0104255117549 L518 408.5584399315419 L520 410.24995396178474 L522 412.08101699308895 L524 414.047352492902 L526 416.1443679935531 L528 418.3671658181747 L530 420.71055451945324 L532 423.1690610044952 L534 425.73694331748897 L536 428.4082040503087 L538 431.1766043497393 L540 434.0356784886066 L542 436.97874896678303 L544 439.9989421067987 L546 443.08920410763324 L548 446.2423175191956 L550 449.4509180990124 L552 452.70751201175773 L554 456.004493331453 L556 459.3341618054592 L558 462.68874083877415 L560 466.0603956566299 L562 469.44125160297256 L564 472.82341253208625 L566 476.19897925040743 L568 479.56006796545745 L570 482.8988286988051 L572 486.20746362005497 L574 489.4782452590417 L576 492.7035345536947 L578 495.8757986914214 L580 498.9876287023402 L582 502.031756763273 L584 505.0010731720825 L586 507.8886429527116 L588 510.6877220521414 L590 513.3917730914386 "></path>
-<line id="uLevel" x1="70" y1="380" x2="590" y2="380" class="dashU"></line>
-<line id="iLevel" x1="70" y1="400.00663125575466" x2="590" y2="400.00663125575466" class="dashI"></line>
-<text x="575" y="370" class="small" text-anchor="end">u(t)</text>
-<text x="575" y="405" class="small" text-anchor="end">i(t)</text>
-<text id="phaseTxt" x="330" y="620" class="phase" text-anchor="middle">R: φ = 0°</text>
-<text x="330" y="646" class="small" text-anchor="middle">u(t) и i(t) са показани с отделни визуални мащаби</text>
+<text id="amm"
+      x="270" y="105"
+      class="mtxt">
+2.300 A
+</text>
 
-<!-- phasor -->
-<text x="745" y="328" class="lab" text-anchor="middle">Фазорна диаграма</text>
-<circle cx="745" cy="470" r="105" fill="none" stroke="#6f8fa5" stroke-width="2"></circle>
-<line x1="625" y1="470" x2="865" y2="470" class="axis"></line>
-<line x1="745" y1="350" x2="745" y2="590" class="axis"></line>
-<line id="phasorU" x1="745" y1="470" x2="817.1876408112652" y2="527.0345905052694" class="phU" marker-end="url(#arrU)"></line>
-<line id="phasorI" x1="745" y1="470" x2="804.6332684962625" y2="517.1155312869616" class="phI" marker-end="url(#arrI)"></line>
-<text id="uPhLab" x="833.1876408112652" y="513.0345905052694" fill="#ff6b5e" font-size="16" font-weight="900">U</text>
-<text id="iPhLab" x="820.6332684962625" y="539.1155312869616" fill="#55c7ff" font-size="16" font-weight="900">I</text>
-<text id="phasorNote" x="745" y="625" class="gold" text-anchor="middle">U и I са в една фаза</text>
+<!--
+  ВОЛТМЕТЪР: УСПОРЕДНО НА ЕЛЕМЕНТА.
+  Лявата точка е x330, дясната е x480.
+  Между плочите на кондензатора няма метална връзка.
+-->
+<path d="M330 90V184H371"
+      fill="none"
+      stroke="#ffe06b"
+      stroke-width="2.5"
+      stroke-dasharray="6 5"/>
+
+<path d="M439 184H480V90"
+      fill="none"
+      stroke="#ffe06b"
+      stroke-width="2.5"
+      stroke-dasharray="6 5"/>
+
+<circle cx="405" cy="184" r="34"
+        class="meter"/>
+
+<text x="405" y="180"
+      class="mtxt">V</text>
+
+<text id="volt" x="405" y="199"
+      class="mtxt">
+230.0 V
+</text>
+
+<text x="405" y="238"
+      text-anchor="middle"
+      class="small">
+Волтметърът е свързан паралелно
+</text>
+
+<!-- КЛАСИЧЕСКИ ОЗНАЧЕНИЯ -->
+<text x="100" y="285"
+      class="small" text-anchor="middle">
+~ синусоидален източник
+</text>
+
+<!-- ГРАФИКИ -->
+<text x="330" y="328"
+      class="lab" text-anchor="middle">
+Моментни стойности u(t) и i(t)
+</text>
+
+<line x1="70" y1="470" x2="590" y2="470"
+      class="axis"/>
+<line x1="70" y1="350" x2="70" y2="590"
+      class="axis"/>
+
+<line x1="70" y1="380" x2="590" y2="380"
+      class="gridline"/>
+<line x1="70" y1="560" x2="590" y2="560"
+      class="gridline"/>
+
+<path id="waveU" class="waveU"/>
+<path id="waveI" class="waveI"/>
+
+<line id="uLevel"
+      x1="70" y1="380" x2="590" y2="380"
+      class="dashU"/>
+
+<line id="iLevel"
+      x1="70" y1="405" x2="590" y2="405"
+      class="dashI"/>
+
+<text x="78" y="365"
+      fill="#ff6b5e"
+      font-size="15" font-weight="900">
+u(t)
+</text>
+
+<text x="124" y="365"
+      fill="#55c7ff"
+      font-size="15" font-weight="900">
+i(t)
+</text>
+
+<text id="phaseTxt"
+      x="330" y="620"
+      class="phase" text-anchor="middle">
+R: φ = 0°
+</text>
+
+<text x="330" y="646"
+      class="small" text-anchor="middle">
+u(t) и i(t) са с отделни визуални мащаби
+</text>
+
+<!-- ФАЗОРНА ДИАГРАМА -->
+<text x="745" y="328"
+      class="lab" text-anchor="middle">
+Фазорна диаграма
+</text>
+
+<circle cx="745" cy="470" r="105"
+        fill="none"
+        stroke="#6f8fa5"
+        stroke-width="2"/>
+
+<line x1="625" y1="470"
+      x2="865" y2="470"
+      class="axis"/>
+
+<line x1="745" y1="350"
+      x2="745" y2="590"
+      class="axis"/>
+
+<!-- По-малки фазорни стрелки -->
+<line id="phasorU"
+      x1="745" y1="470"
+      x2="837" y2="470"
+      class="phU"
+      marker-end="url(#arrU)"/>
+
+<line id="phasorI"
+      x1="745" y1="470"
+      x2="821" y2="470"
+      class="phI"
+      marker-end="url(#arrI)"/>
+
+<text id="uPhLab"
+      x="845" y="455"
+      fill="#ff6b5e"
+      font-size="16"
+      font-weight="900">U</text>
+
+<text id="iPhLab"
+      x="827" y="492"
+      fill="#55c7ff"
+      font-size="16"
+      font-weight="900">I</text>
+
+<text id="phasorNote"
+      x="745" y="625"
+      class="gold" text-anchor="middle">
+U и I са в една фаза
+</text>
+
+<text x="880" y="688"
+      text-anchor="end"
+      fill="#8da9ba" font-size="11">
+© 2026 Величко Атанасов
+</text>
+
 </svg>
 </section>
 
 <aside class="side">
-<div class="card">
-<div class="title">Общи параметри</div>
-<label>Ефективно напрежение U <b id="Uout">230 V</b></label>
-<input id="U" type="range" min="100" max="250" step="1" value="230">
-<label>Честота f <b id="Fout">50 Hz</b></label>
-<input id="F" type="range" min="10" max="100" step="1" value="50">
-</div>
-
-<div class="card" id="paramCard">
-<div class="title" id="paramTitle">Съпротивление R</div>
-<label id="paramLabel">R <b id="Pout">100 Ω</b></label>
-<input id="P" type="range" min="20" max="500" step="5" value="100">
-</div>
-
-<div class="card eq" id="formula">I = U/R<br>φ = 0°</div>
-<div class="card result" id="results">R = 100.0 Ω<br>I = 2.300 A<br>φ = 0°</div>
-<div class="card note" id="explain"><b>Резистор:</b> токът и напрежението са в една фаза. Максимумите и нулевите им стойности настъпват едновременно.</div>
 
 <div class="card">
-<button class="ctrl" id="preset">Базови стойности</button>
-<button class="ctrl" id="pause">Пауза</button>
+  <div class="title">Общи параметри</div>
+
+  <label for="U">
+    Ефективно напрежение U
+    <b id="Uout">230 V</b>
+  </label>
+  <input id="U" type="range"
+         min="100" max="250" step="1" value="230">
+
+  <label for="F">
+    Честота f
+    <b id="Fout">50 Hz</b>
+  </label>
+  <input id="F" type="range"
+         min="10" max="100" step="1" value="50">
 </div>
+
+<div class="card">
+  <div class="title" id="paramTitle">
+    Съпротивление R
+  </div>
+
+  <label for="P" id="paramLabel">
+    <span id="paramName">R</span>
+    <b id="Pout">100 Ω</b>
+  </label>
+
+  <input id="P" type="range"
+         min="20" max="500" step="5" value="100">
+</div>
+
+<div class="card eq" id="formula">
+  I = U/R
+  <div>φ = 0°</div>
+</div>
+
+<div class="card result" id="results"></div>
+
+<div class="card note" id="explain"></div>
+
+<div class="card">
+  <button class="ctrl" id="preset" type="button">
+    Базови стойности
+  </button>
+
+  <button class="ctrl" id="pause" type="button">
+    Ⅱ Пауза
+  </button>
+</div>
+
+<div class="card note">
+  <b>Електротехническа точност</b>
+
+  <p>
+    При идеален резистор токът и напрежението са във фаза.
+    При идеална бобина токът изостава с 90°,
+    а при идеален кондензатор изпреварва с 90°.
+  </p>
+
+  <p>
+    Амперметърът е последователно на елемента,
+    а волтметърът е паралелно.
+    Уредите се приемат за идеални.
+  </p>
+</div>
+
 </aside>
 </div>
+
+<div id="error" hidden role="alert"></div>
+
+<footer>
+© 2026 доц. д-р инж. Величко Атанасов.
+Всички права запазени.
+</footer>
+
 </div>
 
 <script>
+(() => {
+"use strict";
+
 const $=id=>document.getElementById(id);
-let mode="R",theta=0,last=performance.now(),running=true;
-const state={
- R:{p:100,min:20,max:500,step:5},
- L:{p:0.318,min:0.02,max:1.0,step:0.002},
- C:{p:31.8,min:2,max:200,step:0.2}
+const TAU=2*Math.PI;
+
+let mode="R";
+let theta=0;
+let last=null;
+let running=true;
+let failed=false;
+
+const valuesByMode={
+  R:{p:100,min:20,max:500,step:5},
+  L:{p:.318,min:.02,max:1,step:.002},
+  C:{p:31.8,min:2,max:200,step:.2}
 };
 
-function configure(){
- ["Rdraw","Ldraw","Cdraw"].forEach(id=>$(id).style.display=id[0]===mode?"":"none");
- document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("on",b.dataset.mode===mode));
- const s=state[mode], p=$("P");
- p.min=s.min;p.max=s.max;p.step=s.step;p.value=s.p;
- if(mode==="R"){
-  $("paramTitle").textContent="Съпротивление R";
-  $("paramLabel").firstChild.textContent="R ";
- }else if(mode==="L"){
-  $("paramTitle").textContent="Индуктивност L";
-  $("paramLabel").firstChild.textContent="L ";
- }else{
-  $("paramTitle").textContent="Капацитет C";
-  $("paramLabel").firstChild.textContent="C ";
- }
- update();
+function calculate(){
+  const U=Number($("U").value);
+  const f=Number($("F").value);
+  const p=Number($("P").value);
+
+  const omega=TAU*f;
+
+  let X=0;
+  let I=0;
+  let phi=0;
+
+  if(mode==="R"){
+    X=p;
+    I=U/p;
+    phi=0;
+  } else if(mode==="L"){
+    X=omega*p;
+    I=U/X;
+    phi=-Math.PI/2;
+  } else {
+    X=1/(omega*p*1e-6);
+    I=U/X;
+    phi=Math.PI/2;
+  }
+
+  return {U,f,p,omega,X,I,phi};
 }
 
-function values(){
- let U=+$("U").value,f=+$("F").value,p=+$("P").value,w=2*Math.PI*f,X=0,I=0,phi=0;
- if(mode==="R"){X=p;I=U/p;phi=0}
- if(mode==="L"){X=w*p;I=U/X;phi=-Math.PI/2}
- if(mode==="C"){X=1/(w*p*1e-6);I=U/X;phi=Math.PI/2}
- return {U,f,p,w,X,I,phi};
+function configure(){
+  ["R","L","C"].forEach(key=>{
+    $(key+"draw").style.display=
+      key===mode ? "" : "none";
+  });
+
+  document.querySelectorAll(".tab").forEach(button=>{
+    button.classList.toggle(
+      "on",
+      button.dataset.mode===mode
+    );
+  });
+
+  const p=$("P");
+  const settings=valuesByMode[mode];
+
+  p.min=settings.min;
+  p.max=settings.max;
+  p.step=settings.step;
+  p.value=settings.p;
+
+  const names={
+    R:["Съпротивление R","R"],
+    L:["Индуктивност L","L"],
+    C:["Капацитет C","C"]
+  };
+
+  $("paramTitle").textContent=names[mode][0];
+  $("paramName").textContent=names[mode][1];
+
+  update();
 }
 
 function update(){
- state[mode].p=+$("P").value;
- const v=values();
- $("amm").style.display="";
- $("Uout").textContent=v.U.toFixed(0)+" V"; $("Fout").textContent=v.f.toFixed(0)+" Hz";
- $("volt").textContent=v.U.toFixed(1)+" V"; $("amm").textContent=v.I.toFixed(3)+" A";
- if(mode==="R"){
-  $("Pout").textContent=v.p.toFixed(0)+" Ω";
-  $("formula").innerHTML="I = U/R<br>φ = 0°";
-  $("results").innerHTML=`R = ${v.p.toFixed(1)} Ω<br>I = ${v.I.toFixed(3)} A<br>φ = 0°`;
-  $("explain").innerHTML="<b>Резистор:</b> токът и напрежението са в една фаза. Максимумите и нулевите им стойности настъпват едновременно.";
-  $("phaseTxt").textContent="R: φ = 0°";
-  $("phasorNote").textContent="U и I са в една фаза";
- }else if(mode==="L"){
-  $("Pout").textContent=v.p.toFixed(3)+" H";
-  $("formula").innerHTML="X<sub>L</sub> = 2πfL<br>I = U/X<sub>L</sub>";
-  $("results").innerHTML=`X<sub>L</sub> = ${v.X.toFixed(2)} Ω<br>I = ${v.I.toFixed(3)} A<br>φ = −90°`;
-  $("explain").innerHTML="<b>Индуктивност:</b> напрежението изпреварва тока с 90°. При увеличаване на честотата X<sub>L</sub> нараства и токът намалява.";
-  $("phaseTxt").textContent="L: токът изостава с 90°";
-  $("phasorNote").textContent="U изпреварва I с 90°";
- }else{
-  $("Pout").textContent=v.p.toFixed(1)+" µF";
-  $("formula").innerHTML="X<sub>C</sub> = 1/(2πfC)<br>I = U/X<sub>C</sub>";
-  $("results").innerHTML=`X<sub>C</sub> = ${v.X.toFixed(2)} Ω<br>I = ${v.I.toFixed(3)} A<br>φ = +90°`;
-  $("explain").innerHTML="<b>Капацитет:</b> токът изпреварва напрежението с 90°. При увеличаване на честотата X<sub>C</sub> намалява и токът нараства.";
-  $("phaseTxt").textContent="C: токът изпреварва с 90°";
-  $("phasorNote").textContent="I изпреварва U с 90°";
- }
- draw();
+  valuesByMode[mode].p=Number($("P").value);
+
+  const v=calculate();
+
+  $("Uout").textContent=v.U.toFixed(0)+" V";
+  $("Fout").textContent=v.f.toFixed(0)+" Hz";
+
+  $("volt").textContent=v.U.toFixed(1)+" V";
+  $("amm").textContent=v.I.toFixed(3)+" A";
+
+  if(mode==="R"){
+    $("Pout").textContent=v.p.toFixed(0)+" Ω";
+
+    $("formula").innerHTML=
+      "I = U/R<div>φ = 0°</div>";
+
+    $("results").innerHTML=
+      "R = "+v.p.toFixed(1)+" Ω"+
+      "<div>I = "+v.I.toFixed(3)+" A</div>"+
+      "<div>φ = 0°</div>";
+
+    $("explain").innerHTML=
+      "<b>Резистор:</b> токът и напрежението "+
+      "са в една фаза. Максимумите и нулевите "+
+      "им стойности настъпват едновременно.";
+
+    $("phaseTxt").textContent="R: φ = 0°";
+    $("phasorNote").textContent="U и I са в една фаза";
+
+  } else if(mode==="L"){
+    $("Pout").textContent=v.p.toFixed(3)+" H";
+
+    $("formula").innerHTML=
+      "X<sub>L</sub> = 2πfL"+
+      "<div>I = U/X<sub>L</sub></div>";
+
+    $("results").innerHTML=
+      "X<sub>L</sub> = "+v.X.toFixed(2)+" Ω"+
+      "<div>I = "+v.I.toFixed(3)+" A</div>"+
+      "<div>φ = −90°</div>";
+
+    $("explain").innerHTML=
+      "<b>Индуктивност:</b> напрежението "+
+      "изпреварва тока с 90°. При увеличаване "+
+      "на честотата X<sub>L</sub> нараства и "+
+      "токът намалява.";
+
+    $("phaseTxt").textContent=
+      "L: токът изостава с 90°";
+
+    $("phasorNote").textContent=
+      "U изпреварва I с 90°";
+
+  } else {
+    $("Pout").textContent=v.p.toFixed(1)+" µF";
+
+    $("formula").innerHTML=
+      "X<sub>C</sub> = 1/(2πfC)"+
+      "<div>I = U/X<sub>C</sub></div>";
+
+    $("results").innerHTML=
+      "X<sub>C</sub> = "+v.X.toFixed(2)+" Ω"+
+      "<div>I = "+v.I.toFixed(3)+" A</div>"+
+      "<div>φ = +90°</div>";
+
+    $("explain").innerHTML=
+      "<b>Капацитет:</b> токът изпреварва "+
+      "напрежението с 90°. При увеличаване "+
+      "на честотата X<sub>C</sub> намалява и "+
+      "токът нараства.";
+
+    $("phaseTxt").textContent=
+      "C: токът изпреварва с 90°";
+
+    $("phasorNote").textContent=
+      "I изпреварва U с 90°";
+  }
+
+  draw();
 }
 
 function draw(){
- const v=values();
- const x0=70,x1=590,cy=470,Au=90;
- // normalize current visually but retain correct phase and measured magnitude
- let Ai=Math.max(32,Math.min(70,48+22*Math.tanh((v.I-0.1)*2)));
- let du="",di="",cycles=2;
- for(let x=x0;x<=x1;x+=2){
-   let q=(x-x0)/(x1-x0)*cycles*2*Math.PI;
-   let yu=cy-Au*Math.sin(theta-q);
-   let yi=cy-Ai*Math.sin(theta-q+v.phi);
-   du+=(x===x0?"M":"L")+x+" "+yu+" ";
-   di+=(x===x0?"M":"L")+x+" "+yi+" ";
- }
- $("waveU").setAttribute("d",du);$("waveI").setAttribute("d",di);
- $("uLevel").setAttribute("y1",cy-Au);$("uLevel").setAttribute("y2",cy-Au);
- $("iLevel").setAttribute("y1",cy-Ai);$("iLevel").setAttribute("y2",cy-Ai);
+  const v=calculate();
 
- // rotating phasors with fixed relative phase
- let ru=92,ri=76,aU=theta,aI=theta+v.phi;
- let ux=745+ru*Math.cos(aU),uy=470-ru*Math.sin(aU);
- let ix=745+ri*Math.cos(aI),iy=470-ri*Math.sin(aI);
- $("phasorU").setAttribute("x2",ux);$("phasorU").setAttribute("y2",uy);
- $("phasorI").setAttribute("x2",ix);$("phasorI").setAttribute("y2",iy);
- $("uPhLab").setAttribute("x",ux+16);$("uPhLab").setAttribute("y",uy-14);
- $("iPhLab").setAttribute("x",ix+16);$("iPhLab").setAttribute("y",iy+22);
+  const x0=70;
+  const x1=590;
+  const center=470;
+  const amplitudeU=90;
+
+  /* Токът има отделен визуален мащаб. */
+  const amplitudeI=Math.max(
+    30,
+    Math.min(72,48+22*Math.tanh((v.I-.1)*2))
+  );
+
+  let pathU="";
+  let pathI="";
+
+  const cycles=2;
+
+  for(let x=x0;x<=x1;x+=2){
+    const q=(x-x0)/(x1-x0)*cycles*TAU;
+
+    const u=center-amplitudeU*Math.sin(theta-q);
+    const i=center-amplitudeI*
+      Math.sin(theta-q+v.phi);
+
+    pathU+=(x===x0?"M":"L")+x+" "+u+" ";
+    pathI+=(x===x0?"M":"L")+x+" "+i+" ";
+  }
+
+  $("waveU").setAttribute("d",pathU);
+  $("waveI").setAttribute("d",pathI);
+
+  $("uLevel").setAttribute("y1",center-amplitudeU);
+  $("uLevel").setAttribute("y2",center-amplitudeU);
+
+  $("iLevel").setAttribute("y1",center-amplitudeI);
+  $("iLevel").setAttribute("y2",center-amplitudeI);
+
+  /* Фазори: малки стрелки, същото отместване. */
+  const ru=92;
+  const ri=76;
+
+  const aU=theta;
+  const aI=theta+v.phi;
+
+  const ux=745+ru*Math.cos(aU);
+  const uy=470-ru*Math.sin(aU);
+
+  const ix=745+ri*Math.cos(aI);
+  const iy=470-ri*Math.sin(aI);
+
+  $("phasorU").setAttribute("x2",ux);
+  $("phasorU").setAttribute("y2",uy);
+
+  $("phasorI").setAttribute("x2",ix);
+  $("phasorI").setAttribute("y2",iy);
+
+  $("uPhLab").setAttribute("x",ux+12);
+  $("uPhLab").setAttribute("y",uy-12);
+
+  $("iPhLab").setAttribute("x",ix+12);
+  $("iPhLab").setAttribute("y",iy+17);
 }
 
-function animate(t){
- let dt=(t-last)/1000;last=t;
- if(running){
-   let f=+$("F").value;
-   theta=(theta+dt*2.2*(f/50))%(2*Math.PI);
- }
- draw();requestAnimationFrame(animate);
+function animate(now){
+  if(failed)return;
+
+  try{
+    const dt=last===null
+      ?0
+      :Math.min(.05,Math.max(0,(now-last)/1000));
+
+    last=now;
+
+    if(running&&!document.hidden){
+      const f=Number($("F").value);
+
+      /* Забавена за обучение скорост. */
+      theta=(theta+dt*2.2*(f/50))%TAU;
+    }
+
+    if(!document.hidden){
+      draw();
+    }
+
+    requestAnimationFrame(animate);
+
+  }catch(error){
+    failed=true;
+    console.error(error);
+
+    $("error").hidden=false;
+    $("error").textContent=
+      "Грешка в анимацията: "+error.message;
+  }
 }
 
-document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>{mode=b.dataset.mode;configure()}));
-["U","F","P"].forEach(id=>$(id).addEventListener("input",update));
-$("pause").addEventListener("click",()=>{running=!running;$("pause").textContent=running?"Пауза":"Продължи"});
-$("preset").addEventListener("click",()=>{
- $("U").value=230;$("F").value=50;
- state.R.p=100;state.L.p=0.318;state.C.p=31.8;
- configure();
+/* Бутони */
+document.querySelectorAll(".tab").forEach(button=>{
+  button.addEventListener("click",()=>{
+    mode=button.dataset.mode;
+    configure();
+  });
 });
-configure();requestAnimationFrame(animate);
+
+["U","F","P"].forEach(id=>{
+  $(id).addEventListener("input",update);
+});
+
+$("pause").addEventListener("click",()=>{
+  running=!running;
+  last=null;
+
+  $("pause").textContent=running
+    ?"Ⅱ Пауза"
+    :"▶ Продължи";
+});
+
+$("preset").addEventListener("click",()=>{
+  $("U").value=230;
+  $("F").value=50;
+
+  valuesByMode.R.p=100;
+  valuesByMode.L.p=.318;
+  valuesByMode.C.p=31.8;
+
+  theta=0;
+  running=true;
+  last=null;
+
+  $("pause").textContent="Ⅱ Пауза";
+
+  configure();
+});
+
+document.addEventListener("visibilitychange",()=>{
+  last=null;
+});
+
+/*
+  Няма бутони за изтегляне.
+  Ограниченията не могат напълно да
+  защитят публично публикуван HTML.
+*/
+document.addEventListener("contextmenu",event=>{
+  event.preventDefault();
+});
+
+configure();
+requestAnimationFrame(animate);
+
+})();
 </script>
-</body></html>
+
+</body>
+</html>

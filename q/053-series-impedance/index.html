@@ -1,293 +1,1177 @@
-<!DOCTYPE html>
-<!-- saved from url=(0085)file:///C:/Users/velichko.atanasov/Downloads/preview%20-%202026-08-29T130426.577.html -->
-<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="доц. д-р инж. Величко Атанасов">
 <title>Анимация 53 – Последователен импеданс в RLC верига</title>
 <style>
 :root{
-  --blue:#006BFF; --blue2:#008CFF; --red:#c9302c; --green:#17823b;
-  --purple:#7b3fb4; --ink:#172235; --line:#cad8eb; --bg:#f4f8fd;
+ --blue:#006bff;
+ --red:#c9302c;
+ --green:#17823b;
+ --purple:#7b3fb4;
+ --ink:#172235;
+ --line:#cad8eb;
+ --bg:#f4f8fd;
 }
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}
-.wrap{max-width:1500px;margin:10px auto;background:#fff;border:2px solid #4d83c7;border-radius:18px;padding:14px}
-h1{text-align:center;color:#153f7c;margin:4px 0 14px;font-size:30px}
-.grid{display:grid;grid-template-columns:300px 1.15fr 1fr;gap:12px}
-.card{border:1.5px solid var(--line);border-radius:13px;background:#fff;padding:12px}
-h2{margin:0 0 10px;color:#006BFF;font-size:20px}
+body{
+ margin:0;
+ background:var(--bg);
+ color:var(--ink);
+ font:15px/1.55 Arial,Helvetica,sans-serif;
+}
+.wrap{
+ max-width:1500px;
+ margin:10px auto;
+ padding:14px;
+ background:white;
+ border:2px solid #4d83c7;
+ border-radius:18px;
+}
+h1{
+ text-align:center;
+ color:#153f7c;
+ margin:4px 0 14px;
+ font-size:clamp(24px,3vw,32px);
+}
+.grid{
+ display:grid;
+ grid-template-columns:300px minmax(0,1.15fr) minmax(280px,1fr);
+ gap:12px;
+ align-items:start;
+}
+.card{
+ border:1.5px solid var(--line);
+ border-radius:13px;
+ background:white;
+ padding:12px;
+ min-width:0;
+}
+h2{
+ margin:0 0 10px;
+ color:var(--blue);
+ font-size:20px;
+}
 .control{margin:11px 0}
-.control label{display:flex;justify-content:space-between;font-weight:700;margin-bottom:5px}
-input[type=range]{width:100%}
-button{padding:10px 15px;border-radius:9px;border:1px solid #a8bfdc;font-size:16px;cursor:pointer;background:#edf4fc}
-button.go{background:#006BFF;color:#fff;border:0}
+.control label{
+ display:flex;
+ justify-content:space-between;
+ gap:9px;
+ font-weight:bold;
+ margin-bottom:5px;
+}
+input[type=range]{
+ width:100%;
+ accent-color:#006bff;
+}
+button{
+ padding:10px 13px;
+ border:1px solid #a8bfdc;
+ border-radius:9px;
+ background:#edf4fc;
+ color:#174779;
+ font-weight:bold;
+ cursor:pointer;
+}
+button:hover{background:#deecfd}
+button.go{
+ background:#006bff;
+ color:white;
+ border-color:#006bff;
+}
+button:focus-visible,input:focus-visible{
+ outline:3px solid #86b9ed;
+ outline-offset:3px;
+}
 .row{display:flex;gap:8px;flex-wrap:wrap}
-canvas{width:100%;height:360px;display:block;background:#fff;border-radius:10px}
-.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
-.metric{border:1px solid var(--line);border-radius:9px;padding:9px;text-align:center;background:#fbfdff}
-.metric b{display:block;color:#006BFF;margin-bottom:4px}
-.metric span{font-family:"Times New Roman";font-size:20px}
-.formula{margin-top:12px;border:1px solid #9fc3ed;background:#f7fbff;border-radius:11px;padding:14px;text-align:center;font-family:"Cambria Math","Times New Roman",serif;font-size:30px;color:#006BFF;font-weight:700;line-height:1.6}
-.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.02;margin:0 .12em}
-.frac .top{padding:0 .2em .08em;border-bottom:2px solid #006BFF}
-.frac .bottom{padding:.08em .2em 0}
-.mathblue{color:#006BFF}
-.status{margin-top:10px;padding:10px;border-radius:9px;text-align:center;font-weight:700}
-.ind{background:#eef5ff;color:#006BFF}.cap{background:#fff1f1;color:#a92d29}.res{background:#eef9f0;color:#187338}
-.note{font-size:15px;line-height:1.45;margin-top:10px}
-@media(max-width:1050px){.grid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}canvas{height:320px}}
+canvas{
+ display:block;
+ width:100%;
+ border-radius:9px;
+ background:#fff;
+}
+#wave{height:320px}
+#phasor{height:365px}
+.metrics{
+ display:grid;
+ grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:8px;
+ margin-top:10px;
+}
+.metric{
+ padding:9px;
+ border:1px solid var(--line);
+ border-radius:9px;
+ text-align:center;
+ background:#fbfdff;
+}
+.metric b{
+ display:block;
+ color:#006bff;
+ margin-bottom:4px;
+}
+.metric span{
+ font:19px Georgia,serif;
+ font-variant-numeric:tabular-nums;
+}
+.formula{
+ margin-top:12px;
+ padding:12px;
+ background:#f7fbff;
+ border:1px solid #9fc3ed;
+ border-radius:11px;
+ text-align:center;
+ color:#006bff;
+ font:23px/1.7 Cambria,Georgia,serif;
+}
+.formula sub{font-size:.7em}
+.status{
+ margin-top:10px;
+ padding:11px;
+ border-radius:9px;
+ text-align:center;
+ font-weight:bold;
+ line-height:1.6;
+}
+.ind{background:#eef5ff;color:#006bff}
+.cap{background:#fff1f1;color:#a92d29}
+.res{background:#eef9f0;color:#187338}
+.near{background:#fff8e9;color:#9a6118}
+.note{
+ font-size:13px;
+ color:#536478;
+ line-height:1.65;
+}
+.fraction{
+ display:inline-flex;
+ flex-direction:column;
+ align-items:center;
+ vertical-align:middle;
+ line-height:1.1;
+}
+.fraction .num{
+ padding:0 .2em .08em;
+ border-bottom:2px solid #006bff;
+}
+.fraction .den{padding:.08em .2em 0}
+.legend{
+ display:flex;
+ flex-wrap:wrap;
+ gap:14px;
+ margin:9px 0;
+ font-size:12px;
+ color:#586b80;
+}
+.swatch{
+ display:inline-block;
+ width:23px;
+ height:3px;
+ vertical-align:middle;
+ margin-right:6px;
+}
+footer{
+ margin-top:16px;
+ padding:16px;
+ text-align:center;
+ color:#60768b;
+ font-size:13px;
+ border-top:1px solid var(--line);
+}
+#error{
+ padding:12px;
+ background:#fff1f1;
+ border:1px solid #dfa1a1;
+ color:#9a2424;
+ border-radius:9px;
+ margin-top:12px;
+}
+[hidden]{display:none!important}
+@media(max-width:1060px){
+ .grid{grid-template-columns:1fr 1fr}
+ .controlsCard{grid-column:1}
+ .diagramCard{grid-column:2}
+ .phasorCard{grid-column:1/-1}
+}
+@media(max-width:730px){
+ .grid{grid-template-columns:1fr}
+ .controlsCard,.diagramCard,.phasorCard{grid-column:auto}
+ .wrap{padding:8px}
+ .metrics{grid-template-columns:repeat(2,1fr)}
+}
 </style>
 </head>
+
 <body>
 <div class="wrap">
-<h1>Анимация 53: Последователен импеданс в RLC верига</h1>
+
+<h1>Анимация 53 – Последователен импеданс в RLC верига</h1>
 
 <div class="grid">
 
-<div class="card">
+<!-- УПРАВЛЕНИЕ -->
+<section class="card controlsCard">
+
 <h2>Параметри</h2>
-<div class="control"><label>R <span id="Rv">40 Ω</span></label><input id="R" type="range" min="1" max="200" value="40"></div>
-<div class="control"><label>L <span id="Lv">0.127 H</span></label><input id="L" type="range" min="0" max="1" step="0.001" value="0.127"></div>
-<div class="control"><label>C <span id="Cv">79.6 µF</span></label><input id="C" type="range" min="1" max="500" step="0.1" value="79.6"></div>
-<div class="control"><label>f <span id="fv">50 Hz</span></label><input id="f" type="range" min="10" max="200" value="50"></div>
-<div class="control"><label>U <span id="Uv">230 V</span></label><input id="U" type="range" min="24" max="400" value="230"></div>
+
+<div class="control">
+ <label for="R">
+  Съпротивление R
+  <span id="Rv">40 Ω</span>
+ </label>
+ <input id="R" type="range"
+  min="1" max="200" step="1" value="40">
+</div>
+
+<div class="control">
+ <label for="L">
+  Индуктивност L
+  <span id="Lv">0,127 H</span>
+ </label>
+ <input id="L" type="range"
+  min="0" max="1" step="0.001" value="0.127">
+</div>
+
+<div class="control">
+ <label for="C">
+  Капацитет C
+  <span id="Cv">79,6 µF</span>
+ </label>
+ <input id="C" type="range"
+  min="1" max="500" step="0.1" value="79.6">
+</div>
+
+<div class="control">
+ <label for="f">
+  Честота f
+  <span id="fv">50 Hz</span>
+ </label>
+ <input id="f" type="range"
+  min="10" max="200" step="1" value="50">
+</div>
+
+<div class="control">
+ <label for="U">
+  Ефективно напрежение U
+  <span id="Uv">230 V</span>
+ </label>
+ <input id="U" type="range"
+  min="24" max="400" step="1" value="230">
+</div>
 
 <div class="row">
-<button class="go" id="play">▶ Пуск</button>
-<button id="pause">Ⅱ Пауза</button>
-<button id="reset">↻ Нулиране</button>
+ <button class="go" id="play" type="button">▶ Пуск</button>
+ <button id="pause" type="button">Ⅱ Пауза</button>
+ <button id="reset" type="button">↻ Начало</button>
 </div>
 
-<div id="status" class="status res">Резонансен режим: XL ≈ XC, φ ≈ 0°, Z ≈ R</div>
-<div class="note"><b>Наблюдавай:</b> при промяна на L, C или f се изменят X<sub>L</sub>, X<sub>C</sub>, фазовият ъгъл и токът. При L = 0 H индуктивното реактивно съпротивление е X<sub>L</sub> = 0.</div>
+<div id="status" class="status near">
+Близо до последователен резонанс
 </div>
 
-<div class="card">
-<h2 style="text-align:center">Последователна RLC верига</h2>
-<svg id="rlcScheme" viewBox="0 0 760 235" style="width:100%;height:220px;display:block;margin-bottom:8px">
-  <defs>
-    <marker id="curArrow53" markerWidth="6" markerHeight="6" refX="5.2" refY="2.2" orient="auto">
-      <path d="M0 0L0 4.4L5.8 2.2z" fill="#00A8FF"></path>
-    </marker>
-  </defs>
+<p class="note">
+При промяна на L, C или f се изменят
+реактивните съпротивления, импедансът,
+токът и фазовият ъгъл.
+</p>
 
-  <!-- AC source -->
-  <circle cx="78" cy="125" r="34" fill="none" stroke="#00A8FF" stroke-width="4"></circle>
-  <path d="M56 125 C62 107 69 107 75 125 C81 143 88 143 94 125" fill="none" stroke="#00A8FF" stroke-width="4" stroke-linecap="round"></path>
-  <text x="78" y="176" fill="#006BFF" font-size="16" font-weight="700" text-anchor="middle">U</text>
+<p class="note">
+При L = 0 H бобината се замества с идеален
+проводник. Това е последователна верига,
+а не паралелно свързване.
+</p>
 
-  <!-- conductors -->
-  <path d="M78 91 V62 H205" fill="none" stroke="#d9e5ec" stroke-width="5" stroke-linecap="round"></path>
+</section>
 
-  <!-- resistor -->
-  <rect x="205" y="44" width="105" height="36" rx="2" fill="none" stroke="#00A8FF" stroke-width="4"></rect>
-  <text x="257.5" y="31" fill="#006BFF" font-size="17" font-weight="700" text-anchor="middle">R</text>
+<!-- СХЕМА И ГРАФИКИ -->
+<section class="card diagramCard">
 
-  <!-- lead to centered coil -->
-  <path d="M310 62 H367" fill="none" stroke="#d9e5ec" stroke-width="5" stroke-linecap="round"></path>
+<h2 style="text-align:center">
+Последователна RLC верига
+</h2>
 
-  <!-- four-turn blue coil -->
-  <path d="M367 62
-           C367 38 386 38 386 62
-           C386 38 405 38 405 62
-           C405 38 424 38 424 62
-           C424 38 443 38 443 62" fill="none" stroke="#00A8FF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"></path>
-  <text x="405" y="24" fill="#006BFF" font-size="17" font-weight="700" text-anchor="middle">L</text>
+<svg viewBox="0 0 760 235"
+ style="display:block;width:100%;height:auto"
+ role="img"
+ aria-label="Последователна RLC схема с променливотоков източник">
 
-  <!-- lead to capacitor -->
-  <path d="M443 62 H500" fill="none" stroke="#d9e5ec" stroke-width="5" stroke-linecap="round"></path>
+<defs>
+ <marker id="currentHead"
+  viewBox="0 0 10 10"
+  refX="8" refY="5"
+  markerWidth="5" markerHeight="5"
+  orient="auto">
+  <path d="M0 0L10 5L0 10Z" fill="#00a8ff"/>
+ </marker>
+</defs>
 
-  <!-- capacitor -->
-  <line x1="500" y1="34" x2="500" y2="90" stroke="#00A8FF" stroke-width="5"></line>
-  <line x1="530" y1="34" x2="530" y2="90" stroke="#00A8FF" stroke-width="5"></line>
-  <text x="515" y="24" fill="#006BFF" font-size="17" font-weight="700" text-anchor="middle">C</text>
+<!-- Източник -->
+<circle cx="78" cy="125" r="34"
+ fill="white" stroke="#006bff" stroke-width="3"/>
 
-  <!-- return conductor -->
-  <path d="M530 62 H650 V185 H78 V159" fill="none" stroke="#d9e5ec" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"></path>
+<!-- Правилен синусоидален знак ~ -->
+<path d="M54 125
+ C62 109 70 109 78 125
+ C86 141 94 141 102 125"
+ fill="none"
+ stroke="#006bff"
+ stroke-width="3.5"
+ stroke-linecap="round"/>
 
-  <!-- current arrow -->
-  <path d="M125 43 H175" fill="none" stroke="#00A8FF" stroke-width="3.5" marker-end="url(#curArrow53)"></path>
-  <text x="150" y="30" fill="#006BFF" font-size="17" font-weight="700" text-anchor="middle">I</text>
+<text x="78" y="180"
+ text-anchor="middle"
+ fill="#006bff" font-size="16" font-weight="bold">
+U~
+</text>
 
-  <!-- dynamic values -->
-  <text id="schemeR" x="257.5" y="102" fill="#6b7785" font-size="14" text-anchor="middle">40 Ω</text>
-  <text id="schemeL" x="405" y="102" fill="#6b7785" font-size="14" text-anchor="middle">0.127 H</text>
-  <text id="schemeC" x="515" y="112" fill="#6b7785" font-size="14" text-anchor="middle">79.6 µF</text>
-  <text id="schemeU" x="78" y="198" fill="#6b7785" font-size="14" text-anchor="middle">230 V</text>
+<!-- Проводник към резистора -->
+<path d="M78 91V62H205"
+ fill="none" stroke="#d9e5ec"
+ stroke-width="4.5" stroke-linejoin="round"/>
+
+<!-- R -->
+<rect x="205" y="44"
+ width="105" height="36" rx="2"
+ fill="none" stroke="#006bff" stroke-width="3.5"/>
+
+<text x="257" y="32"
+ text-anchor="middle"
+ fill="#006bff" font-size="17" font-weight="bold">
+R
+</text>
+
+<path d="M310 62H367"
+ fill="none" stroke="#d9e5ec" stroke-width="4.5"/>
+
+<!-- Индуктивност -->
+<g id="coilSymbol">
+ <path d="M367 62
+  A9.5 9.5 0 0 1 386 62
+  A9.5 9.5 0 0 1 405 62
+  A9.5 9.5 0 0 1 424 62
+  A9.5 9.5 0 0 1 443 62"
+  fill="none"
+  stroke="#006bff"
+  stroke-width="5"
+  stroke-linecap="round"/>
+
+ <text x="405" y="25"
+  text-anchor="middle"
+  fill="#006bff" font-size="17" font-weight="bold">
+ L
+ </text>
+</g>
+
+<!-- При L=0 се показва само прав проводник -->
+<path id="coilWire" d="M367 62H443"
+ fill="none" stroke="#d9e5ec"
+ stroke-width="4.5"
+ style="display:none"/>
+
+<path d="M443 62H500"
+ fill="none" stroke="#d9e5ec" stroke-width="4.5"/>
+
+<!-- Кондензатор без шунтираща връзка -->
+<line x1="500" y1="34"
+ x2="500" y2="90"
+ stroke="#006bff" stroke-width="5"/>
+
+<line x1="530" y1="34"
+ x2="530" y2="90"
+ stroke="#006bff" stroke-width="5"/>
+
+<text x="515" y="25"
+ text-anchor="middle"
+ fill="#006bff" font-size="17" font-weight="bold">
+C
+</text>
+
+<!-- Връщащ проводник -->
+<path d="M530 62H650V185H78V159"
+ fill="none" stroke="#d9e5ec"
+ stroke-width="4.5"
+ stroke-linejoin="round"/>
+
+<!-- Токова стрелка -->
+<path d="M125 43H174"
+ fill="none"
+ stroke="#00a8ff"
+ stroke-width="2.5"
+ marker-end="url(#currentHead)"/>
+
+<text x="150" y="29"
+ text-anchor="middle"
+ fill="#006bff" font-size="16" font-weight="bold">
+I
+</text>
+
+<!-- Динамични означения -->
+<text id="schemeR" x="257" y="105"
+ text-anchor="middle" fill="#586a7d" font-size="13">
+40 Ω
+</text>
+
+<text id="schemeL" x="405" y="105"
+ text-anchor="middle" fill="#586a7d" font-size="13">
+0,127 H
+</text>
+
+<text id="schemeC" x="515" y="113"
+ text-anchor="middle" fill="#586a7d" font-size="13">
+79,6 µF
+</text>
+
+<text id="schemeU" x="78" y="202"
+ text-anchor="middle" fill="#586a7d" font-size="13">
+230 V
+</text>
+
 </svg>
 
-<h2 style="text-align:center;margin-top:4px">Времеви зависимости</h2>
-<canvas id="wave" width="733" height="450"></canvas>
+<h2 style="text-align:center;margin-top:8px">
+Времеви зависимости
+</h2>
 
-<div class="formula" style="font-size:25px;margin-bottom:10px">
-<span class="mathblue">X<sub>L</sub> = 2πfL</span>
-&nbsp;&nbsp;&nbsp;&nbsp;
-<span class="mathblue">X<sub>C</sub> = </span>
-<span class="frac"><span class="top">1</span><span class="bottom">2πfC</span></span>
-&nbsp;&nbsp;&nbsp;&nbsp;
-<span class="mathblue">I = </span>
-<span class="frac"><span class="top">U</span><span class="bottom">Z</span></span>
+<canvas id="wave"
+ role="img"
+ aria-label="Напрежение, ток и начална токова крива">
+</canvas>
+
+<div class="legend">
+ <span>
+  <i class="swatch" style="background:#006bff"></i>
+  Напрежение u(t)
+ </span>
+ <span>
+  <i class="swatch" style="background:#c9302c"></i>
+  Текущ ток i(t)
+ </span>
+ <span>
+  <i class="swatch" style="background:#94a3b8;border-top:2px dashed #94a3b8"></i>
+  Начален ток
+ </span>
 </div>
+
+<p class="note">
+Напрежението и токът са в отделни графични полета,
+със скали съответно във V и A.
+Текущият ток и началният ток използват една и
+съща амперна скала.
+</p>
+
+<div class="formula">
+ X<sub>L</sub> = 2πfL
+ &nbsp;&nbsp;
+ X<sub>C</sub> =
+ <span class="fraction">
+  <span class="num">1</span>
+  <span class="den">2πfC</span>
+ </span>
+</div>
+
 <div class="metrics">
-<div class="metric"><b>X<sub>L</sub></b><span id="xl">39.90 Ω</span></div>
-<div class="metric"><b>X<sub>C</sub></b><span id="xc">39.99 Ω</span></div>
-<div class="metric"><b>X = X<sub>L</sub> − X<sub>C</sub></b><span id="x">-0.09 Ω</span></div>
-<div class="metric"><b>|Z|</b><span id="z">40.00 Ω</span></div>
-<div class="metric"><b>φ</b><span id="phi">-0.13°</span></div>
-<div class="metric"><b>I</b><span id="i">5.750 A</span></div>
+
+ <div class="metric">
+  <b>X<sub>L</sub></b>
+  <span id="xl">—</span>
+ </div>
+
+ <div class="metric">
+  <b>X<sub>C</sub></b>
+  <span id="xc">—</span>
+ </div>
+
+ <div class="metric">
+  <b>X = X<sub>L</sub> − X<sub>C</sub></b>
+  <span id="react">—</span>
+ </div>
+
+ <div class="metric">
+  <b>|Z|</b>
+  <span id="z">—</span>
+ </div>
+
+ <div class="metric">
+  <b>φ</b>
+  <span id="phi">—</span>
+ </div>
+
+ <div class="metric">
+  <b>I</b>
+  <span id="i">—</span>
+ </div>
+
 </div>
 
-<div class="formula"><span class="mathblue">Z = √<span style="text-decoration:overline;text-decoration-thickness:2px">R² + (X<sub>L</sub> − X<sub>C</sub>)²</span></span></div>
+<div class="formula">
+ |Z| = √[R² + (X<sub>L</sub> − X<sub>C</sub>)²]
 </div>
 
-<div class="card">
-<h2 style="text-align:center">Импедансна и фазорна диаграма</h2>
-<canvas id="phasor" width="633" height="450"></canvas>
-<div class="formula"><span class="mathblue">Ż = R + j(X<sub>L</sub> − X<sub>C</sub>)</span></div>
+</section>
+
+<!-- ФАЗОРИ -->
+<section class="card phasorCard">
+
+<h2 style="text-align:center">
+Импедансна и фазорна диаграма
+</h2>
+
+<canvas id="phasor"
+ role="img"
+ aria-label="Комплексен импеданс и фазово отместване">
+</canvas>
+
+<div class="formula" style="font-size:23px">
+ <span style="text-decoration:underline">Z</span>
+ = R + j(X<sub>L</sub> − X<sub>C</sub>)
 </div>
 
+<div class="formula" style="font-size:21px">
+ <span style="text-decoration:underline">U</span>
+ =
+ <span style="text-decoration:underline">Z</span>
+ ·
+ <span style="text-decoration:underline">I</span>
 </div>
+
+<div class="formula" style="font-size:21px">
+ I = U / |Z|
+</div>
+
+<div id="f0Info" class="note"
+ style="padding:12px;background:#f6f9fd;
+ border:1px solid #d8e4f0;border-radius:9px">
+</div>
+
+<div class="note" style="margin-top:12px">
+Горната диаграма е в комплексната равнина
+на импеданса: R по реалната ос и X по
+имагинерната ос.
+
+Долната показва фазорите на U и I.
+</div>
+
+</section>
+
+</div>
+
+<div id="error" hidden role="alert"></div>
+
+<footer>
+© 2026 доц. д-р инж. Величко Атанасов.
+Всички права запазени.
+</footer>
+
 </div>
 
 <script>
-const $=id=>document.getElementById(id);
-const R=$('R'),L=$('L'),C=$('C'),f=$('f'),U=$('U');
-const wave=$('wave'),wc=wave.getContext('2d');
-const ph=$('phasor'),pc=ph.getContext('2d');
-let running=false,last=null,animPhase=0;
+(() => {
+"use strict";
 
-function fit(c,ctx){
-  const r=c.getBoundingClientRect(),d=devicePixelRatio||1;
-  c.width=r.width*d;c.height=r.height*d;ctx.setTransform(d,0,0,d,0,0);
-}
-function line(ctx,x1,y1,x2,y2,col='#111',w=1,dash=[]){
-  ctx.save();ctx.strokeStyle=col;ctx.lineWidth=w;ctx.setLineDash(dash);
-  ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();ctx.restore();
-}
-function txt(ctx,t,x,y,s=16,col='#111',al='left'){
-  ctx.save();ctx.font=s+'px Arial';ctx.fillStyle=col;ctx.textAlign=al;ctx.textBaseline='middle';ctx.fillText(t,x,y);ctx.restore();
-}
-function arrow(ctx,x1,y1,x2,y2,col='#006BFF',w=3){
-  line(ctx,x1,y1,x2,y2,col,w);
-  const a=Math.atan2(y2-y1,x2-x1),m=10;
-  ctx.fillStyle=col;ctx.beginPath();ctx.moveTo(x2,y2);
-  ctx.lineTo(x2-m*Math.cos(a-.5),y2-m*Math.sin(a-.5));
-  ctx.lineTo(x2-m*Math.cos(a+.5),y2-m*Math.sin(a+.5));
-  ctx.fill();
-}
-function vals(){
-  const rv=+R.value, lv=+L.value, cv=+C.value*1e-6, fv=+f.value, uv=+U.value;
-  const om=2*Math.PI*fv;
-  const xl = lv === 0 ? 0 : om*lv;
-  const xc = 1/(om*cv);
-  const x=xl-xc;
-  const z=Math.hypot(rv,x), phi=Math.atan2(x,rv), i=uv/z;
-  return {rv,lv,cv,fv,uv,om,xl,xc,x,z,phi,i};
-}
-function update(v){
-  $('Rv').textContent=v.rv.toFixed(0)+' Ω';
-  $('Lv').textContent=v.lv.toFixed(3)+' H';
-  $('Cv').textContent=(v.cv*1e6).toFixed(1)+' µF';
-  $('fv').textContent=v.fv.toFixed(0)+' Hz';
-  $('Uv').textContent=v.uv.toFixed(0)+' V';
-  $('schemeR').textContent=v.rv.toFixed(0)+' Ω';
-  $('schemeL').textContent=v.lv.toFixed(3)+' H';
-  $('schemeC').textContent=(v.cv*1e6).toFixed(1)+' µF';
-  $('schemeU').textContent=v.uv.toFixed(0)+' V';
-  $('xl').textContent=v.xl.toFixed(2)+' Ω';
-  $('xc').textContent=v.xc.toFixed(2)+' Ω';
-  $('x').textContent=v.x.toFixed(2)+' Ω';
-  $('z').textContent=v.z.toFixed(2)+' Ω';
-  $('phi').textContent=(v.phi*180/Math.PI).toFixed(2)+'°';
-  $('i').textContent=v.i.toFixed(3)+' A';
+const $ = id => document.getElementById(id);
+const TAU = 2*Math.PI;
+const ROOT2 = Math.SQRT2;
 
-  const s=$('status');
-  if(Math.abs(v.x)<0.5){
-    s.className='status res'; s.textContent='Резонансен режим: XL ≈ XC, φ ≈ 0°, Z ≈ R';
-  }else if(v.x>0){
-    s.className='status ind'; s.textContent='Индуктивен характер: токът изостава от напрежението';
-  }else{
-    s.className='status cap'; s.textContent='Капацитивен характер: токът изпреварва напрежението';
-  }
-}
-function drawWave(){
-  const v=vals(),w=wave.clientWidth,h=wave.clientHeight;
-  wc.clearRect(0,0,w,h);
-  const left=45,right=25,top=25,bottom=35,gw=w-left-right,gh=h-top-bottom,y0=top+gh/2;
-  line(wc,left,y0,w-right,y0,'#888',1);
+const R = $("R");
+const L = $("L");
+const C = $("C");
+const F = $("f");
+const U = $("U");
 
-  const ampU=Math.min(95,gh*.42), ampI=ampU*.75;
-  const iShift=-v.phi;
+const wave = $("wave");
+const wc = wave.getContext("2d");
 
-  function curve(fn,col,ww,dash=[]){
-    wc.save();wc.beginPath();wc.strokeStyle=col;wc.lineWidth=ww;wc.setLineDash(dash);
-    for(let px=0;px<=gw;px++){
-      const th=(px/gw)*4*Math.PI+animPhase;
-      const x=left+px, y=y0-fn(th);
-      if(px===0)wc.moveTo(x,y);else wc.lineTo(x,y);
-    }
-    wc.stroke();wc.restore();
-  }
+const phasor = $("phasor");
+const pc = phasor.getContext("2d");
 
-  curve(th=>ampU*Math.sin(th),'#006BFF',2.5);
-  curve(th=>ampI*Math.sin(th+iShift),'#c9302c',2.2);
+let running = false;
+let last = null;
+let animationPhase = 0;
+let model = null;
+let failed = false;
 
-  txt(wc,'u(t)',w-70,35,16,'#006BFF');
-  txt(wc,'i(t)',w-70,58,16,'#c9302c');
-  txt(wc,'φ = '+(v.phi*180/Math.PI).toFixed(1)+'°',left+100,top+18,15,'#444');
-}
-function drawPh(){
-  const v=vals(),w=ph.clientWidth,h=ph.clientHeight;
-  pc.clearRect(0,0,w,h);
-
-  const cx=w*.42, cy=h*.42;
-  const sc=Math.min(w*.34,h*.30)/Math.max(v.z,1);
-
-  arrow(pc,30,cy,w-25,cy,'#111',1.4);
-  arrow(pc,cx,h-30,cx,35,'#111',1.4);
-  txt(pc,'R',w-35,cy+22,16);
-  txt(pc,'jX',cx+12,40,16);
-
-  const ex=cx+v.rv*sc, ey=cy-v.x*sc;
-  line(pc,cx,cy,ex,cy,'#c9302c',4);
-  line(pc,ex,cy,ex,ey,'#7b3fb4',4);
-  arrow(pc,cx,cy,ex,ey,'#006BFF',4);
-
-  txt(pc,'R',cx+(ex-cx)/2,cy+18,16,'#c9302c','center');
-  txt(pc,'jX',ex+10,(cy+ey)/2,16,'#7b3fb4');
-  txt(pc,'Z',ex+10,ey-10,20,'#006BFF');
-   pc.save();pc.fillStyle='#006BFF';pc.beginPath();pc.arc(ex+16,ey-24,2.2,0,Math.PI*2);pc.fill();pc.restore();
-  txt(pc,'φ = '+(v.phi*180/Math.PI).toFixed(1)+'°',cx+75,cy-25,16,'#333');
-
-  const y2=h*.82,x2=w*.15,len=120,au=0,ai=-v.phi;
-  arrow(pc,x2,y2,x2+len*Math.cos(au),y2-len*Math.sin(au),'#006BFF',3);
-  txt(pc,'U̇',x2+len+8,y2,17,'#006BFF');
-  arrow(pc,x2,y2,x2+len*Math.cos(ai),y2-len*Math.sin(ai),'#c9302c',3);
-  txt(pc,'İ',x2+len*Math.cos(ai)+8,y2-len*Math.sin(ai),17,'#c9302c');
-}
-function draw(){
-  const v=vals(); update(v); drawWave(); drawPh();
-}
-[R,L,C,f,U].forEach(el=>el.addEventListener('input',draw));
-
-$('play').onclick=()=>{running=true;last=null};
-$('pause').onclick=()=>{running=false;last=null};
-$('reset').onclick=()=>{
-  running=false; last=null; animPhase=0;
-  R.value=40; L.value=.127; C.value=79.6; f.value=50; U.value=230;
-  draw();
+const reference = {
+ R:40,
+ L:.127,
+ C:79.6,
+ f:50,
+ U:230
 };
 
-function loop(t){
-  if(last===null){last=t;requestAnimationFrame(loop);return}
-  const dt=(t-last)/1000; last=t;
-  if(running){animPhase+=dt*2;draw()}
-  requestAnimationFrame(loop);
+function fmt(value,digits=2){
+ const v = Math.abs(value)<.5*10**(-digits)
+  ?0:value;
+
+ return v.toLocaleString("bg-BG",{
+  minimumFractionDigits:digits,
+  maximumFractionDigits:digits
+ }).replace("-","−");
 }
-function resize(){fit(wave,wc);fit(ph,pc);draw()}
-window.addEventListener('resize',resize);
-resize();requestAnimationFrame(loop);
+
+/* Изчислителен модел */
+function calculate(r,l,c,f,u){
+ const omega = TAU*f;
+ const XL = omega*l;
+ const XC = 1/(omega*c*1e-6);
+ const X = XL-XC;
+ const Z = Math.hypot(r,X);
+ const I = u/Z;
+ const phi = Math.atan2(X,r);
+ const f0 = l>0
+  ?1/(TAU*Math.sqrt(l*c*1e-6))
+  :null;
+
+ return {
+  r,l,c,f,u,
+  omega,XL,XC,X,Z,I,phi,f0
+ };
+}
+
+function read(){
+ return calculate(
+  Number(R.value),
+  Number(L.value),
+  Number(C.value),
+  Number(F.value),
+  Number(U.value)
+ );
+}
+
+function line(ctx,x1,y1,x2,y2,color="#111",width=1,dash=[]){
+ ctx.save();
+ ctx.strokeStyle = color;
+ ctx.lineWidth = width;
+ ctx.setLineDash(dash);
+ ctx.lineCap = "round";
+ ctx.beginPath();
+ ctx.moveTo(x1,y1);
+ ctx.lineTo(x2,y2);
+ ctx.stroke();
+ ctx.restore();
+}
+
+function text(ctx,value,x,y,color="#172235",size=13,align="left"){
+ ctx.save();
+ ctx.fillStyle = color;
+ ctx.font = size+"px Arial";
+ ctx.textAlign = align;
+ ctx.textBaseline = "middle";
+ ctx.fillText(value,x,y);
+ ctx.restore();
+}
+
+function arrow(ctx,x1,y1,x2,y2,color,width=2.6){
+ const length = Math.hypot(x2-x1,y2-y1);
+ if(length<.2)return;
+
+ line(ctx,x1,y1,x2,y2,color,width);
+
+ const angle = Math.atan2(y2-y1,x2-x1);
+ const head = Math.min(8,length*.35);
+
+ ctx.save();
+ ctx.fillStyle = color;
+ ctx.beginPath();
+ ctx.moveTo(x2,y2);
+ ctx.lineTo(
+  x2-head*Math.cos(angle-.45),
+  y2-head*Math.sin(angle-.45)
+ );
+ ctx.lineTo(
+  x2-head*Math.cos(angle+.45),
+  y2-head*Math.sin(angle+.45)
+ );
+ ctx.closePath();
+ ctx.fill();
+ ctx.restore();
+}
+
+function resizeCanvas(canvas,ctx){
+ const rect = canvas.getBoundingClientRect();
+ const dpr = Math.min(window.devicePixelRatio||1,2);
+
+ const width = Math.max(1,Math.round(rect.width*dpr));
+ const height = Math.max(1,Math.round(rect.height*dpr));
+
+ if(canvas.width!==width || canvas.height!==height){
+  canvas.width = width;
+  canvas.height = height;
+ }
+
+ ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+
+function drawCurve(ctx,x0,x1,fn,color,width=2.5,dash=[]){
+ ctx.save();
+ ctx.strokeStyle = color;
+ ctx.lineWidth = width;
+ ctx.lineJoin = "round";
+ ctx.setLineDash(dash);
+ ctx.beginPath();
+
+ for(let k=0;k<=360;k++){
+  const angle=2*TAU*k/360;
+  const x=x0+(x1-x0)*k/360;
+  const y=fn(angle);
+
+  if(k===0)ctx.moveTo(x,y);
+  else ctx.lineTo(x,y);
+ }
+
+ ctx.stroke();
+ ctx.restore();
+}
+
+/* Времеви зависимости */
+function drawWave(){
+ if(!model)return;
+
+ const v=model;
+ const w=wave.clientWidth;
+ const h=wave.clientHeight;
+
+ wc.clearRect(0,0,w,h);
+
+ const left=56;
+ const right=w-19;
+ const width=right-left;
+
+ /* Две отделни оси: V горе, A долу */
+ const yVoltage=h*.265;
+ const yCurrent=h*.73;
+
+ const ampVoltage=h*.17;
+ const ampCurrent=h*.15;
+
+ const ref=calculate(
+  reference.R,
+  reference.L,
+  reference.C,
+  reference.f,
+  reference.U
+ );
+
+ /*
+   Една и съща амперна скала за
+   началната и текущата синусоида.
+ */
+ const maxCurrent=Math.max(v.I,ref.I,.001);
+
+ const currentScale=
+  ampCurrent/(ROOT2*maxCurrent*1.08);
+
+ line(wc,left,yVoltage,right,yVoltage,"#aab8c6",1.2);
+ line(wc,left,yCurrent,right,yCurrent,"#aab8c6",1.2);
+
+ for(let k=0;k<=4;k++){
+  const x=left+width*k/4;
+
+  line(wc,x,15,x,h-29,"#e0e7f0",1);
+
+  text(
+   wc,k*180+"°",
+   x,h-13,"#536478",11,"center"
+  );
+ }
+
+ /* Напрежение */
+ drawCurve(
+  wc,left,right,
+  a=>yVoltage-ampVoltage*Math.sin(a),
+  "#006bff",2.8
+ );
+
+ /* Сравнителен начален ток */
+ drawCurve(
+  wc,left,right,
+  a=>yCurrent-
+   ROOT2*ref.I*Math.sin(a-ref.phi)*currentScale,
+  "#98a5b4",1.8,[6,5]
+ );
+
+ /* Текущ реален ток */
+ drawCurve(
+  wc,left,right,
+  a=>yCurrent-
+   ROOT2*v.I*Math.sin(a-v.phi)*currentScale,
+  "#c9302c",2.8
+ );
+
+ text(wc,"Напрежение u(t), V",
+  left,17,"#006bff",13);
+
+ text(wc,"Uₘ = "+fmt(ROOT2*v.u,1)+" V",
+  right-5,17,"#006bff",12,"right");
+
+ text(wc,"Ток i(t), A",
+  left,yCurrent-ampCurrent-12,"#c9302c",13);
+
+ text(wc,"Iₘ = "+fmt(ROOT2*v.I,2)+" A",
+  right-5,yCurrent-ampCurrent-12,
+  "#c9302c",12,"right");
+
+ text(
+  wc,"φ = "+fmt(v.phi*180/Math.PI,2)+"°",
+  left+5,yVoltage+ampVoltage+16,
+  "#536478",12
+ );
+
+ const xCursor=left+width*animationPhase/(2*TAU);
+
+ line(
+  wc,xCursor,28,xCursor,h-29,
+  "#66798d",1.2,[5,5]
+ );
+
+ const uv=Math.sin(animationPhase);
+ const iv=Math.sin(animationPhase-v.phi);
+
+ dot(wc,xCursor,yVoltage-ampVoltage*uv,"#006bff");
+ dot(
+  wc,xCursor,
+  yCurrent-ROOT2*v.I*iv*currentScale,
+  "#c9302c"
+ );
+}
+
+function dot(ctx,x,y,color){
+ ctx.save();
+ ctx.fillStyle=color;
+ ctx.strokeStyle="white";
+ ctx.lineWidth=1.5;
+ ctx.beginPath();
+ ctx.arc(x,y,4.5,0,TAU);
+ ctx.fill();
+ ctx.stroke();
+ ctx.restore();
+}
+
+/*
+  Комплексен импеданс и два фазора.
+
+  Диаграмата е разделена на две зони.
+  Максималният ъгъл ±90° не може
+  да изведе фазора извън Canvas.
+*/
+function drawPhasor(){
+ if(!model)return;
+
+ const v=model;
+ const w=phasor.clientWidth;
+ const h=phasor.clientHeight;
+
+ pc.clearRect(0,0,w,h);
+
+ /* Горна зона — импеданс */
+ const cx=w*.27;
+ const cy=h*.28;
+
+ const scale=Math.min(
+  v.r>0?w*.54/v.r:Infinity,
+  Math.abs(v.X)>0?h*.19/Math.abs(v.X):Infinity
+ );
+
+ const s=Number.isFinite(scale)?scale:1;
+
+ const ex=cx+v.r*s;
+ const ey=cy-v.X*s;
+
+ line(pc,18,cy,w-16,cy,"#a7b6c2",1.2);
+ line(pc,cx,26,cx,h*.50,"#a7b6c2",1.2);
+
+ text(pc,"Комплексен импеданс",
+  w/2,14,"#006bff",15,"center");
+
+ text(pc,"Re",w-19,cy-12,"#526477",12,"right");
+ text(pc,"Im",cx+8,32,"#526477",12);
+
+ arrow(pc,cx,cy,ex,cy,"#c9302c",3);
+ arrow(pc,ex,cy,ex,ey,"#7b3fb4",3);
+ arrow(pc,cx,cy,ex,ey,"#006bff",3.5);
+
+ if(v.r>0){
+  text(pc,"R",(cx+ex)/2,cy+16,
+   "#c9302c",13,"center");
+ }
+
+ if(Math.abs(v.X)>.005){
+  text(
+   pc,"jX",ex+9,(cy+ey)/2,
+   "#7b3fb4",13
+  );
+ }
+
+ text(
+  pc,"Z̲",
+  ex+8,
+  ey+(v.X>=0?-9:16),
+  "#006bff",16
+ );
+
+ /* Долен сектор — фазорите */
+ const px=w*.30;
+ const py=h*.79;
+
+ /*
+   Безопасният радиус отчита и горната,
+   и долната граница на платното.
+ */
+ const radius=Math.min(
+  74,
+  h*.16,
+  w*.20
+ );
+
+ line(pc,18,py,w-16,py,"#d1dce6",1);
+
+ arrow(
+  pc,px,py,
+  px+radius,py,
+  "#006bff",3.1
+ );
+
+ const ai=-v.phi;
+
+ const ix=px+radius*Math.cos(ai);
+ const iy=py-radius*Math.sin(ai);
+
+ arrow(
+  pc,px,py,ix,iy,
+  "#c9302c",3.1
+ );
+
+ text(
+  pc,"U̇",
+  px+radius+7,py-11,
+  "#006bff",14
+ );
+
+ text(
+  pc,"İ",
+  ix+8,
+  iy+(ai>=0?-11:16),
+  "#c9302c",14
+ );
+
+ text(
+  pc,
+  "φ = "+fmt(v.phi*180/Math.PI,2)+"°",
+  w/2,h-12,
+  "#526477",13,"center"
+ );
+}
+
+/* Изчисляване на стойностите */
+function update(){
+ model=read();
+ const v=model;
+
+ $("Rv").textContent=fmt(v.r,0)+" Ω";
+ $("Lv").textContent=fmt(v.l,3)+" H";
+ $("Cv").textContent=fmt(v.c,1)+" µF";
+ $("fv").textContent=fmt(v.f,0)+" Hz";
+ $("Uv").textContent=fmt(v.u,0)+" V";
+
+ $("schemeR").textContent=fmt(v.r,0)+" Ω";
+ $("schemeL").textContent=
+  v.l===0?"L = 0 H":fmt(v.l,3)+" H";
+ $("schemeC").textContent=fmt(v.c,1)+" µF";
+ $("schemeU").textContent=fmt(v.u,0)+" V";
+
+ /* Бобината се замества с проводник при L = 0 */
+ $("coilSymbol").style.display=v.l===0?"none":"";
+ $("coilWire").style.display=v.l===0?"":"none";
+
+ $("xl").textContent=fmt(v.XL,2)+" Ω";
+ $("xc").textContent=fmt(v.XC,2)+" Ω";
+ $("react").textContent=fmt(v.X,3)+" Ω";
+ $("z").textContent=fmt(v.Z,3)+" Ω";
+ $("phi").textContent=
+  fmt(v.phi*180/Math.PI,2)+"°";
+ $("i").textContent=fmt(v.I,3)+" A";
+
+ const ratio=Math.abs(v.X)/
+  Math.max(v.XL,v.XC,1e-9);
+
+ const status=$("status");
+
+ if(v.l>0 && ratio<1e-7){
+  status.className="status res";
+  status.textContent=
+   "Резонанс: Xₗ = X꜀, Z = R, φ = 0°";
+
+ }else if(v.l>0 && ratio<.01){
+  status.className="status near";
+  status.textContent=
+   "Близо до последователен резонанс";
+
+ }else if(v.X>0){
+  status.className="status ind";
+  status.textContent=
+   "Индуктивен характер — токът изостава";
+
+ }else{
+  status.className="status cap";
+  status.textContent=
+   "Капацитивен характер — токът изпреварва";
+ }
+
+ if(v.f0!==null){
+  $("f0Info").innerHTML=
+   "Резонансна честота: "+
+   "<b>f<sub>0</sub> = "+
+   fmt(v.f0,3)+" Hz</b>."+
+   "<p class='note'>Това е изчислена стойност. "+
+   "Няма автоматично настройване на резонанса.</p>";
+ }else{
+  $("f0Info").textContent=
+   "При L = 0 няма LC резонанс.";
+ }
+
+ drawWave();
+ drawPhasor();
+}
+
+/* Анимация */
+function loop(now){
+ if(failed)return;
+
+ try{
+  const dt=last===null
+   ?0
+   :Math.min(.05,Math.max(0,(now-last)/1000));
+
+  last=now;
+
+  if(running&&!document.hidden){
+   const f=Number(F.value);
+
+   /* Учебно забавено движение */
+   animationPhase=
+    (animationPhase+dt*TAU*(f/50)/7)%(2*TAU);
+
+   drawWave();
+  }
+
+  requestAnimationFrame(loop);
+
+ }catch(error){
+  failed=true;
+  console.error(error);
+
+  $("error").hidden=false;
+  $("error").textContent=
+   "Грешка в анимацията: "+error.message;
+ }
+}
+
+/* Управление */
+[R,L,C,F,U].forEach(input=>{
+ input.addEventListener("input",update);
+});
+
+$("play").addEventListener("click",()=>{
+ running=true;
+ last=null;
+});
+
+$("pause").addEventListener("click",()=>{
+ running=false;
+ last=null;
+});
+
+$("reset").addEventListener("click",()=>{
+ running=false;
+ last=null;
+ animationPhase=0;
+
+ R.value=40;
+ L.value=.127;
+ C.value=79.6;
+ F.value=50;
+ U.value=230;
+
+ update();
+});
+
+function resize(){
+ resizeCanvas(wave,wc);
+ resizeCanvas(phasor,pc);
+ update();
+}
+
+window.addEventListener("resize",resize);
+
+document.addEventListener("visibilitychange",()=>{
+ last=null;
+});
+
+/* Авторско право: без бутони за сваляне. */
+document.addEventListener("contextmenu",event=>{
+ event.preventDefault();
+});
+
+/* Математически проверки */
+function selfTest(){
+ const v=calculate(40,.127,79.6,50,230);
+
+ if(Math.abs(v.XL-39.89822670059038)>1e-8){
+  throw new Error("Неправилно X_L");
+ }
+
+ if(Math.abs(v.XC-39.988679168817924)>1e-8){
+  throw new Error("Неправилно X_C");
+ }
+
+ if(Math.abs(v.I-5.749985298655821)>1e-8){
+  throw new Error("Неправилен ток");
+ }
+
+ if(Math.abs(v.f0-50.056644911309036)>1e-8){
+  throw new Error("Неправилна резонансна честота");
+ }
+
+ for(const inductance of [0,.127,.5,1]){
+  const test=calculate(
+   40,inductance,79.6,50,230
+  );
+
+  if(
+   !Number.isFinite(test.I) ||
+   !Number.isFinite(test.phi)
+  ){
+   throw new Error(
+    "Невалидни стойности на I или φ"
+   );
+  }
+ }
+}
+
+/* Начало */
+try{
+ if(!wc || !pc){
+  throw new Error(
+   "Браузърът не поддържа Canvas 2D."
+  );
+ }
+
+ selfTest();
+ resize();
+ requestAnimationFrame(loop);
+
+}catch(error){
+ failed=true;
+ console.error(error);
+
+ $("error").hidden=false;
+ $("error").textContent=
+  "Грешка при стартиране: "+error.message;
+}
+
+})();
 </script>
 
-
-</body></html>
+</body>
+</html>

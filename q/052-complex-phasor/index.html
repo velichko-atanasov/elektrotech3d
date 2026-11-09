@@ -1,112 +1,978 @@
+
 <!DOCTYPE html>
-<!-- saved from url=(0051)file:///C:/Users/Rosi/Downloads/preview%20(11).html -->
-<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="доц. д-р инж. Величко Атанасов">
+<meta name="copyright" content="© 2026 доц. д-р инж. Величко Атанасов">
 <title>Анимация 52 – Комплексно представяне</title>
+
 <style>
-:root{--b:#1455b5;--g:#16823a;--r:#c9362b;--p:#7134a6;--line:#cbd9ec;--ink:#14243a}
-*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f4f8fd;color:var(--ink)}
-.wrap{max-width:1450px;margin:12px auto;background:white;border:2px solid #4d83c7;border-radius:18px;padding:14px}
-h1{text-align:center;color:#153f7c;margin:3px 0 12px;font-size:30px}
-.grid{display:grid;grid-template-columns:310px 1.1fr 1fr;gap:12px}.card{border:1.5px solid var(--line);border-radius:13px;padding:12px;background:#fff}
-h2{font-size:19px;color:#164d99;margin:0 0 10px}.control{margin:15px 0}.control label{font-weight:bold;display:block;margin-bottom:7px}
-input[type=range]{width:100%}.val{font-family:"Times New Roman";font-size:24px;text-align:center;padding:7px;border:1px solid var(--line);border-radius:8px;background:#fbfdff}
-button{padding:10px 15px;border-radius:9px;border:1px solid #a9bfdc;font-size:16px;cursor:pointer;background:#edf4fc}
-button.go{background:#1262c4;color:white;border:0}.row{display:flex;gap:8px;flex-wrap:wrap}
-canvas{width:100%;height:500px;display:block}.forms{display:grid;gap:10px}.form{padding:13px;border-radius:10px;border:1px solid var(--line);font-family:"Times New Roman";font-size:25px;text-align:center}
-.form small{display:block;font-family:Arial;font-size:14px;margin-bottom:6px;color:#555}.alg{border-color:#7ba4df}.pol{border-color:#70bd83}.exp{border-color:#c4a2df}
-.note{font-size:16px;line-height:1.5}.bottom{margin-top:12px;text-align:center;border:1px solid #e1bf63;background:#fffaf0;border-radius:11px;padding:12px;font-family:"Times New Roman";font-size:23px}
-@media(max-width:950px){.grid{grid-template-columns:1fr}canvas{height:430px}}
-</style></head>
-<body><div class="wrap">
-<h1>Анимация 52: Комплексно представяне на синусоидална величина</h1>
+:root{
+ --blue:#1455b5;
+ --green:#16823a;
+ --red:#c9362b;
+ --purple:#7134a6;
+ --line:#cbd9ec;
+ --ink:#14243a;
+ --muted:#586b80;
+}
+*{box-sizing:border-box}
+body{
+ margin:0;
+ background:#f4f8fd;
+ color:var(--ink);
+ font:15px/1.55 Arial,sans-serif;
+}
+.wrap{
+ max-width:1450px;
+ margin:12px auto;
+ background:white;
+ border:2px solid #4d83c7;
+ border-radius:18px;
+ padding:14px;
+}
+h1{
+ text-align:center;
+ color:#153f7c;
+ margin:3px 0 6px;
+ font-size:clamp(24px,3vw,32px);
+}
+.subtitle{
+ text-align:center;
+ color:var(--muted);
+ margin:0 0 15px;
+}
+.grid{
+ display:grid;
+ grid-template-columns:310px minmax(0,1.1fr) minmax(290px,1fr);
+ gap:12px;
+ align-items:start;
+}
+.card{
+ min-width:0;
+ border:1.5px solid var(--line);
+ border-radius:13px;
+ padding:12px;
+ background:white;
+}
+h2{
+ font-size:19px;
+ color:#164d99;
+ margin:0 0 11px;
+}
+.control{margin:14px 0}
+.control label{
+ display:block;
+ font-weight:bold;
+ margin-bottom:8px;
+}
+input[type=range]{
+ width:100%;
+ accent-color:#1455b5;
+}
+.value{
+ font:24px Georgia,serif;
+ color:#153f7c;
+ text-align:center;
+ padding:9px;
+ border:1px solid var(--line);
+ border-radius:8px;
+ background:#fbfdff;
+ margin-top:8px;
+ font-variant-numeric:tabular-nums;
+}
+button{
+ border:1px solid #a9bfdc;
+ border-radius:9px;
+ padding:10px 12px;
+ background:#edf4fc;
+ color:#164d99;
+ font-weight:bold;
+ cursor:pointer;
+}
+button:hover{background:#daeafb}
+button.go{
+ background:#1262c4;
+ border-color:#1262c4;
+ color:white;
+}
+button:focus-visible,input:focus-visible{
+ outline:3px solid #86b8ef;
+ outline-offset:2px;
+}
+.row{
+ display:flex;
+ flex-wrap:wrap;
+ gap:7px;
+}
+.row button{flex:1}
+.presets{
+ display:grid;
+ grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:7px;
+ margin-top:9px;
+}
+.presets button{
+ padding:8px 5px;
+}
+canvas{
+ display:block;
+ width:100%;
+ height:500px;
+ border-radius:9px;
+ background:white;
+}
+.forms{
+ display:grid;
+ gap:10px;
+}
+.form{
+ padding:13px;
+ border-radius:10px;
+ border:1.5px solid var(--line);
+ font:24px/1.6 Georgia,serif;
+ text-align:center;
+ overflow-wrap:anywhere;
+}
+.form small{
+ display:block;
+ font:14px Arial,sans-serif;
+ margin-bottom:8px;
+ color:#56687b;
+}
+.form.alg{
+ border-color:#7ba4df;
+ color:#1455b5;
+}
+.form.pol{
+ border-color:#70bd83;
+ color:#16823a;
+}
+.form.exp{
+ border-color:#c4a2df;
+ color:#7134a6;
+}
+.note{
+ font-size:14px;
+ line-height:1.7;
+ color:#52647a;
+}
+.info{
+ padding:12px;
+ background:#f0f6fe;
+ border-left:4px solid #1455b5;
+ border-radius:8px;
+ line-height:1.7;
+ margin-top:13px;
+}
+.metrics{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:9px;
+ margin-top:12px;
+}
+.metric{
+ padding:10px;
+ background:#f8fbff;
+ border:1px solid var(--line);
+ border-radius:9px;
+ text-align:center;
+}
+.metric span{
+ display:block;
+ font-size:12px;
+ color:var(--muted);
+}
+.metric strong{
+ display:block;
+ margin-top:5px;
+ font-size:17px;
+ color:#1455b5;
+}
+.bottom{
+ margin-top:13px;
+ text-align:center;
+ background:#fffaf0;
+ border:1px solid #e1bf63;
+ border-radius:11px;
+ padding:13px;
+ font:21px/1.65 Georgia,serif;
+}
+footer{
+ margin-top:15px;
+ padding:15px;
+ text-align:center;
+ font-size:13px;
+ color:#65788c;
+ border-top:1px solid var(--line);
+}
+#error{
+ margin-top:12px;
+ padding:12px;
+ color:#9b2b2b;
+ background:#fff2f2;
+ border:1px solid #dda3a3;
+ border-radius:9px;
+}
+[hidden]{display:none!important}
+@media(max-width:1040px){
+ .grid{
+  grid-template-columns:300px minmax(0,1fr);
+ }
+ .resultsCard{
+  grid-column:1/-1;
+ }
+}
+@media(max-width:700px){
+ .grid{grid-template-columns:1fr}
+ .resultsCard{grid-column:auto}
+ canvas{height:420px}
+ .wrap{padding:9px}
+ .form{font-size:21px}
+}
+</style>
+</head>
+
+<body>
+<div class="wrap">
+
+<h1>Анимация 52 – Комплексно представяне на синусоидална величина</h1>
+
+<p class="subtitle">
+Комплексна равнина · Алгебрична, полярна и експоненциална форма
+</p>
+
 <div class="grid">
-<div class="card">
+
+<section class="card">
+
 <h2>Управление</h2>
-<div class="control"><label>Фазов ъгъл φ</label><input id="ang" type="range" min="-180" max="180" value="30" step="0.1"><div id="angv" class="val">30°</div></div>
-<div class="control"><label>Ефективна стойност U</label><input id="mag" type="range" min="50" max="300" value="230" step="1"><div id="magv" class="val">230 V</div></div>
-<div class="row"><button class="go" id="play">▶ Пуск</button><button id="pause">Ⅱ Пауза</button><button id="reset">↻ Нулиране</button></div>
-<div class="control"><label>Скорост на въртене</label><input id="speed" type="range" min="5" max="80" value="25"></div>
-<hr style="border:0;border-top:1px solid #dde6f2">
-<div class="note"><b>Наблюдавай:</b><br>Когато променяш φ, фазорът се завърта, а реалната и имагинерната му част се изменят автоматично.</div>
+
+<div class="control">
+ <label for="ang">Фазов ъгъл φ</label>
+ <input id="ang" type="range"
+        min="-180" max="180"
+        step="0.1" value="30">
+ <div id="angv" class="value">+30,0°</div>
 </div>
 
-<div class="card">
+<div class="control">
+ <label for="mag">Ефективна стойност U</label>
+ <input id="mag" type="range"
+        min="50" max="300"
+        step="1" value="230">
+ <div id="magv" class="value">230 V</div>
+</div>
+
+<div class="row">
+ <button class="go" id="play" type="button">▶ Пуск</button>
+ <button id="pause" type="button">Ⅱ Пауза</button>
+ <button id="reset" type="button">↻ Начало</button>
+</div>
+
+<div class="control">
+ <label for="speed">
+  Скорост на демонстрацията
+  <strong id="speedv">25°/s</strong>
+ </label>
+ <input id="speed" type="range"
+        min="5" max="80"
+        step="1" value="25">
+</div>
+
+<h2 style="margin-top:17px">Готови ъгли</h2>
+
+<div class="presets">
+ <button type="button" data-angle="0">0°</button>
+ <button type="button" data-angle="45">+45°</button>
+ <button type="button" data-angle="90">+90°</button>
+ <button type="button" data-angle="180">180°</button>
+ <button type="button" data-angle="-90">−90°</button>
+ <button type="button" data-angle="-135">−135°</button>
+</div>
+
+<div class="info">
+ <strong id="state">Пауза — избран фазов ъгъл</strong>
+ <div id="quadrantText" style="margin-top:8px">
+  I квадрант
+ </div>
+</div>
+
+<p class="note">
+Демонстрацията изменя фазовия ъгъл φ.
+Това показва различни комплексни стойности.
+При установен синусоидален режим фазорът с
+постоянна начална фаза е неподвижен в комплексната
+равнина — не бива да бъркаме тази демонстрация
+с физическото въртене във времето.
+</p>
+
+</section>
+
+<section class="card">
+
 <h2 style="text-align:center">Комплексна равнина</h2>
-<canvas id="plane" width="485" height="500"></canvas>
+
+<canvas id="plane"
+        role="img"
+        aria-label="Фазор на напрежение и неговите реална и имагинерна проекция">
+</canvas>
+
+<div class="metrics">
+ <div class="metric">
+  <span>Реална съставка U′</span>
+  <strong id="realShort">199,19 V</strong>
+ </div>
+ <div class="metric">
+  <span>Имагинерна съставка U″</span>
+  <strong id="imagShort">115,00 V</strong>
+ </div>
+ <div class="metric">
+  <span>Модул |U̇|</span>
+  <strong id="magnitudeCheck">230,00 V</strong>
+ </div>
+ <div class="metric">
+  <span>Положение</span>
+  <strong id="quadrant">I квадрант</strong>
+ </div>
 </div>
 
-<div class="card">
-<h2>Една величина – различни записи</h2>
+<div class="note" style="margin-top:12px">
+ <b style="color:#c9362b">Червена проекция:</b> реална
+ съставка U′.
+
+ <b style="color:#16823a">Зелена проекция:</b> имагинерна
+ съставка U″.
+
+ <b style="color:#1455b5">Син вектор:</b> комплексно напрежение U̇.
+</div>
+
+</section>
+
+<section class="card resultsCard">
+
+<h2>Трите форми на комплексното напрежение</h2>
+
 <div class="forms">
-<div class="form pol"><small>Полярна форма</small><span id="polar">U̇ = 230.0 ∠ 30.0° V</span></div>
-<div class="form alg"><small>Алгебрична форма</small><span id="algebra">U̇ = 199.2 + j115.0 V</span></div>
-<div class="form exp"><small>Експоненциална форма</small><span id="expo">U̇ = 230.0 e<sup>jφ</sup> V &nbsp; (φ = 30.0°)</span></div>
+
+ <div class="form alg">
+  <small>Алгебрична форма</small>
+  <div>U̇ = U′ + jU″</div>
+  <div id="algebra" style="font-weight:bold;margin-top:6px">
+   U̇ = 199,19 + j115,00 V
+  </div>
+ </div>
+
+ <div class="form pol">
+  <small>Полярна форма</small>
+  <div>U̇ = U∠φ</div>
+  <div id="polar" style="font-weight:bold;margin-top:6px">
+   U̇ = 230∠30° V
+  </div>
+ </div>
+
+ <div class="form exp">
+  <small>Експоненциална форма</small>
+  <div>U̇ = Ue<sup>jφ</sup></div>
+  <div id="exponential" style="font-weight:bold;margin-top:6px">
+   U̇ = 230e<sup>j30°</sup> V
+  </div>
+ </div>
+
 </div>
-<div style="height:14px"></div>
-<h2>Проекции</h2>
-<div class="form" style="font-size:21px;text-align:left">
-<div id="real">U′ = U cos φ = 199.2 V</div><br><div id="imag">U″ = U sin φ = 115.0 V</div>
+
+<h2 style="margin-top:18px">Реална и имагинерна съставка</h2>
+
+<div class="form" style="font-size:20px;text-align:left">
+ <div id="real">
+  U′ = U cosφ = 199,19 V
+ </div>
+ <div id="imag" style="margin-top:9px">
+  U″ = U sinφ = 115,00 V
+ </div>
 </div>
-<div style="height:12px"></div>
-<div class="note">
-<b>Какво виждаме?</b><br>
-При преминаване в различните квадранти знаците на U′ и U″ се изменят автоматично.<br><br>
-Синият фазор има големина U (ефективна стойност) и ъгъл φ. Червената проекция е реалната част U′, а зелената – имагинерната част U″. Всички записи описват <b>един и същ фазор</b>.
+
+<div class="info">
+ <b>Какво показва анимацията?</b>
+ <p>
+  Червената отсечка изобразява проекцията на фазора
+  върху оста Re, а зелената — имагинерната съставка.
+  При преминаване през различните квадранти знаците
+  им се изменят.
+ </p>
+ <p id="interpretation"></p>
 </div>
+
+</section>
+
 </div>
+
+<div class="bottom">
+ U̇ = U′ + jU″
+ &nbsp; = &nbsp;
+ U∠φ
+ &nbsp; = &nbsp;
+ Ue<sup>jφ</sup>
 </div>
-<div class="bottom">Синусоидално напрежение &nbsp; ↔ &nbsp; U̇ = U∠φ &nbsp; ↔ &nbsp; U̇ = U′ + jU″ &nbsp; ↔ &nbsp; точка (U′, U″)</div>
+
+<div id="error" hidden role="alert"></div>
+
+<footer>
+© 2026 доц. д-р инж. Величко Атанасов.
+Всички права запазени.
+</footer>
+
 </div>
+
 <script>
-const c=document.getElementById('plane'),ctx=c.getContext('2d');
-const ang=document.getElementById('ang'),mag=document.getElementById('mag'),speed=document.getElementById('speed');
-let running=false,last=null;
-let currentAngle=parseFloat(ang.value);
-function resize(){let r=c.getBoundingClientRect(),d=devicePixelRatio||1;c.width=r.width*d;c.height=r.height*d;ctx.setTransform(d,0,0,d,0,0);draw()}
-window.addEventListener('resize',resize);
-function line(x1,y1,x2,y2,col='#222',w=1,dash=[]){ctx.save();ctx.strokeStyle=col;ctx.lineWidth=w;ctx.setLineDash(dash);ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();ctx.restore()}
-function txt(t,x,y,s=17,col='#222',align='left'){ctx.save();ctx.font=s+'px Arial';ctx.fillStyle=col;ctx.textAlign=align;ctx.textBaseline='middle';ctx.fillText(t,x,y);ctx.restore()}
-function arrow(x1,y1,x2,y2,col,w=4){line(x1,y1,x2,y2,col,w);let a=Math.atan2(y2-y1,x2-x1),L=12;ctx.fillStyle=col;ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-L*Math.cos(a-.5),y2-L*Math.sin(a-.5));ctx.lineTo(x2-L*Math.cos(a+.5),y2-L*Math.sin(a+.5));ctx.fill()}
-function draw(){
- let w=c.clientWidth,h=c.clientHeight,cx=w*.48,cy=h*.53,R=Math.min(w,h)*.37;
- let U=+mag.value,deg=currentAngle,th=deg*Math.PI/180,a=U*Math.cos(th),b=U*Math.sin(th),scale=R/300;
- let ex=cx+a*scale,ey=cy-b*scale;
- ctx.clearRect(0,0,w,h);
- // grid
- for(let q=-300;q<=300;q+=100){line(cx+q*scale,40,cx+q*scale,h-35,'#e3e9f1',1,[3,5]);line(35,cy-q*scale,w-25,cy-q*scale,'#e3e9f1',1,[3,5])}
- arrow(30,cy,w-25,cy,'#111',1.5);arrow(cx,h-25,cx,35,'#111',1.5);txt('Re',w-30,cy+24,18);txt('Im',cx+14,40,18);
- line(cx,ey,ex,ey,'#16823a',2,[6,5]);line(ex,cy,ex,ey,'#c9362b',2,[6,5]);
- arrow(cx,cy,ex,ey,'#1455b5',5);
- ctx.fillStyle='#1455b5';ctx.beginPath();ctx.arc(ex,ey,7,0,Math.PI*2);ctx.fill();
- txt('U̇',ex+14,ey-12,23,'#1455b5');txt("U′",ex,cy+24,19,'#c9362b','center');txt("U″",cx-14,ey,19,'#16823a','right');
- // angle arc
- ctx.save();ctx.strokeStyle='#7134a6';ctx.lineWidth=3;ctx.beginPath();ctx.arc(cx,cy,55,0,-th,false);ctx.stroke();ctx.restore();
- txt('φ',cx+72*Math.cos(th/2),cy-72*Math.sin(th/2),22,'#7134a6','center');
- document.getElementById('angv').textContent=deg.toFixed(0)+'°';document.getElementById('magv').textContent=U.toFixed(0)+' V';
- document.getElementById('polar').textContent=`U̇ = ${U.toFixed(1)} ∠ ${deg.toFixed(1)}° V`;
- document.getElementById('algebra').textContent=`U̇ = ${a.toFixed(1)} ${b>=0?'+':'−'} j${Math.abs(b).toFixed(1)} V`;
- document.getElementById('expo').innerHTML=`U̇ = ${U.toFixed(1)} e<sup>jφ</sup> V &nbsp; (φ = ${deg.toFixed(1)}°)`;
- document.getElementById('real').textContent=`U′ = U cos φ = ${a.toFixed(1)} V`;
- document.getElementById('imag').textContent=`U″ = U sin φ = ${b.toFixed(1)} V`;
+(() => {
+"use strict";
+
+const $=id=>document.getElementById(id);
+
+const canvas=$("plane");
+const ctx=canvas.getContext("2d");
+
+let running=false;
+let last=null;
+let currentAngle=30;
+let failed=false;
+
+function fmt(number,digits=2){
+ const value=Math.abs(number)<
+  .5*Math.pow(10,-digits) ? 0 : number;
+
+ return value.toLocaleString("bg-BG",{
+  minimumFractionDigits:digits,
+  maximumFractionDigits:digits
+ }).replace("-","−");
 }
-ang.oninput=()=>{currentAngle=parseFloat(ang.value);draw()};
-mag.oninput=draw;
-document.getElementById('play').onclick=()=>{running=true;last=null};
-document.getElementById('pause').onclick=()=>{running=false;last=null};
-document.getElementById('reset').onclick=()=>{running=false;last=null;currentAngle=30;ang.value=30;mag.value=230;draw()};
-function loop(t){
-  if(last===null){last=t;requestAnimationFrame(loop);return}
-  const dt=(t-last)/1000;
-  last=t;
-  if(running){
-    currentAngle += parseFloat(speed.value)*dt;
-    if(currentAngle>180) currentAngle=-180+(currentAngle-180);
-    if(currentAngle<-180) currentAngle=180+(currentAngle+180);
-    ang.value=currentAngle.toFixed(1);
-    draw();
+
+function signed(value,digits=1){
+ return (value>0?"+":"")+fmt(value,digits);
+}
+
+function normalize(angle){
+ let result=angle;
+
+ while(result>180)result-=360;
+ while(result< -180)result+=360;
+
+ return result;
+}
+
+/* Фазор и неговите съставки */
+function calculate(U,degrees){
+ const radians=degrees*Math.PI/180;
+
+ let real=U*Math.cos(radians);
+ let imag=U*Math.sin(radians);
+
+ if(Math.abs(real)<1e-10)real=0;
+ if(Math.abs(imag)<1e-10)imag=0;
+
+ return {
+  U,degrees,radians,
+  real,imag,
+  magnitude:Math.hypot(real,imag)
+ };
+}
+
+function quadrantOf(q){
+ const a=q.real;
+ const b=q.imag;
+
+ const eps=1e-9;
+
+ if(Math.abs(a)<eps && Math.abs(b)<eps){
+  return "Начало на координатната система";
+ }
+
+ if(Math.abs(b)<eps){
+  return a>0
+   ?"Положителна реална ос"
+   :"Отрицателна реална ос";
+ }
+
+ if(Math.abs(a)<eps){
+  return b>0
+   ?"Положителна имагинерна ос"
+   :"Отрицателна имагинерна ос";
+ }
+
+ if(a>0 && b>0)return "I квадрант";
+ if(a<0 && b>0)return "II квадрант";
+ if(a<0 && b<0)return "III квадрант";
+
+ return "IV квадрант";
+}
+
+/* Числови проверки на типични ъгли */
+function selfTest(){
+ for(const angle of [
+  -180,-135,-90,-45,0,30,45,90,135,180
+ ]){
+  const q=calculate(230,angle);
+
+  if(Math.abs(q.magnitude-230)>1e-8){
+   throw new Error(
+    "Неправилен модул при φ = "+angle+"°"
+   );
   }
-  requestAnimationFrame(loop);
+ }
+
+ const q=calculate(230,30);
+
+ if(
+  Math.abs(q.real-199.18584287042088)>1e-8 ||
+  Math.abs(q.imag-115)>1e-8
+ ){
+  throw new Error(
+   "Неправилен начален резултат."
+  );
+ }
+
+ if(
+  quadrantOf(calculate(230,135))!=="II квадрант" ||
+  quadrantOf(calculate(230,-135))!=="III квадрант" ||
+  quadrantOf(calculate(230,-45))!=="IV квадрант"
+ ){
+  throw new Error(
+   "Неправилно определяне на квадрантите."
+  );
+ }
 }
-resize();requestAnimationFrame(loop);
-</script></body></html>
+
+/* Canvas */
+function resize(){
+ if(!ctx)return;
+
+ const box=canvas.getBoundingClientRect();
+
+ const width=Math.max(1,box.width);
+ const height=Math.max(1,box.height);
+ const ratio=Math.min(
+  window.devicePixelRatio||1,2
+ );
+
+ const W=Math.round(width*ratio);
+ const H=Math.round(height*ratio);
+
+ if(canvas.width!==W || canvas.height!==H){
+  canvas.width=W;
+  canvas.height=H;
+ }
+
+ ctx.setTransform(ratio,0,0,ratio,0,0);
+
+ render();
+}
+
+function drawLine(x1,y1,x2,y2,color,width=2,dashed=false){
+ ctx.save();
+
+ ctx.strokeStyle=color;
+ ctx.lineWidth=width;
+
+ if(dashed)ctx.setLineDash([5,5]);
+
+ ctx.beginPath();
+ ctx.moveTo(x1,y1);
+ ctx.lineTo(x2,y2);
+ ctx.stroke();
+
+ ctx.restore();
+}
+
+function text(value,x,y,color="#222",size=14,align="left"){
+ ctx.save();
+ ctx.fillStyle=color;
+ ctx.font=size+"px Arial";
+ ctx.textAlign=align;
+ ctx.textBaseline="middle";
+ ctx.fillText(value,x,y);
+ ctx.restore();
+}
+
+/* Малка стрелка */
+function arrow(x1,y1,x2,y2,color,width=3){
+ const length=Math.hypot(x2-x1,y2-y1);
+
+ if(length<.5)return;
+
+ drawLine(x1,y1,x2,y2,color,width);
+
+ const angle=Math.atan2(y2-y1,x2-x1);
+ const head=Math.min(9,length*.32);
+
+ ctx.save();
+
+ ctx.fillStyle=color;
+ ctx.beginPath();
+ ctx.moveTo(x2,y2);
+ ctx.lineTo(
+  x2-head*Math.cos(angle-.45),
+  y2-head*Math.sin(angle-.45)
+ );
+ ctx.lineTo(
+  x2-head*Math.cos(angle+.45),
+  y2-head*Math.sin(angle+.45)
+ );
+
+ ctx.closePath();
+ ctx.fill();
+ ctx.restore();
+}
+
+/* Дъга от 0° до текущия ъгъл.
+   Положителният ъгъл се чертае нагоре,
+   отрицателният — надолу.
+   Няма почти пълен кръг при +30°.
+*/
+function angleArc(cx,cy,angle,radius){
+ if(Math.abs(angle)<.5)return;
+
+ const segments=Math.max(
+  12,Math.ceil(Math.abs(angle)/3)
+ );
+
+ ctx.save();
+ ctx.strokeStyle="#7134a6";
+ ctx.lineWidth=2.6;
+ ctx.beginPath();
+
+ for(let i=0;i<=segments;i++){
+  const a=angle*i/segments;
+
+  const x=cx+radius*Math.cos(a);
+  const y=cy-radius*Math.sin(a);
+
+  if(i===0)ctx.moveTo(x,y);
+  else ctx.lineTo(x,y);
+ }
+
+ ctx.stroke();
+ ctx.restore();
+}
+
+function render(){
+ if(!ctx || failed)return;
+
+ const U=Number($("mag").value);
+ const q=calculate(U,currentAngle);
+
+ const w=canvas.clientWidth;
+ const h=canvas.clientHeight;
+
+ const cx=w*.50;
+ const cy=h*.52;
+
+ const radius=Math.min(
+  w*.35,
+  (h-88)*.40
+ );
+
+ const scale=radius/300;
+
+ const ex=cx+q.real*scale;
+ const ey=cy-q.imag*scale;
+
+ ctx.clearRect(0,0,w,h);
+ ctx.fillStyle="#fff";
+ ctx.fillRect(0,0,w,h);
+
+ /* Координатна мрежа с деления във V */
+ for(let value=-300;value<=300;value+=100){
+  const xx=cx+value*scale;
+  const yy=cy-value*scale;
+
+  drawLine(
+   xx,35,xx,h-35,
+   "#e3eaf1",1,true
+  );
+
+  drawLine(
+   32,yy,w-25,yy,
+   "#e3eaf1",1,true
+  );
+
+  if(value!==0){
+   text(
+    String(value),
+    xx,cy+16,
+    "#647689",10,"center"
+   );
+
+   text(
+    String(value),
+    cx-15,yy,
+    "#647689",10,"right"
+   );
+  }
+ }
+
+ /* Реална и имагинерна ос */
+ arrow(
+  22,cy,w-22,cy,
+  "#28323d",1.4
+ );
+
+ arrow(
+  cx,h-22,cx,28,
+  "#28323d",1.4
+ );
+
+ text("Re",w-34,cy+24,"#28323d",16);
+ text("Im",cx+13,34,"#28323d",16);
+ text("0",cx-12,cy+17,"#52647b",12);
+
+ /* Допълнителна проекция към Im */
+ if(Math.abs(q.imag)>1e-8){
+  drawLine(
+   cx,ey,ex,ey,
+   "#9bacbb",1.2,true
+  );
+ }
+
+ /* U′: ЧЕРВЕНА хоризонтална проекция */
+ arrow(
+  cx,cy,ex,cy,
+  "#c9362b",3.8
+ );
+
+ /* U″: ЗЕЛЕНА вертикална проекция */
+ arrow(
+  ex,cy,ex,ey,
+  "#16823a",3.8
+ );
+
+ /* Комплексен фазор */
+ arrow(
+  cx,cy,ex,ey,
+  "#1455b5",4.6
+ );
+
+ /* Крайна точка */
+ ctx.fillStyle="#1455b5";
+ ctx.beginPath();
+ ctx.arc(ex,ey,5.5,0,Math.PI*2);
+ ctx.fill();
+
+ /* Фазов ъгъл */
+ const arcRadius=Math.min(53,radius*.36);
+
+ angleArc(
+  cx,cy,q.radians,arcRadius
+ );
+
+ const half=q.radians/2;
+
+ text(
+  "φ",
+  cx+(arcRadius+18)*Math.cos(half),
+  cy-(arcRadius+18)*Math.sin(half),
+  "#7134a6",18,"center"
+ );
+
+ /* Означения */
+ text(
+  "U̇",
+  ex+(q.real>=0?14:-15),
+  ey+(q.imag>=0?-14:20),
+  "#1455b5",21,"center"
+ );
+
+ if(Math.abs(q.real)>1){
+  text(
+   "U′",
+   (cx+ex)/2,
+   cy+(q.imag>=0?23:-22),
+   "#c9362b",17,"center"
+  );
+ }
+
+ if(Math.abs(q.imag)>1){
+  text(
+   "U″",
+   ex+(q.real>=0?17:-17),
+   (cy+ey)/2,
+   "#16823a",17,"center"
+  );
+ }
+
+ updateText(q);
+}
+
+function updateText(q){
+ const position=quadrantOf(q);
+
+ $("angv").textContent=
+  signed(q.degrees,1)+"°";
+
+ $("magv").textContent=
+  fmt(q.U,0)+" V";
+
+ $("speedv").textContent=
+  $("speed").value+"°/s";
+
+ $("quadrant").textContent=position;
+ $("quadrantText").textContent=position;
+
+ $("realShort").textContent=
+  fmt(q.real,2)+" V";
+
+ $("imagShort").textContent=
+  fmt(q.imag,2)+" V";
+
+ $("magnitudeCheck").textContent=
+  fmt(q.magnitude,2)+" V";
+
+ const sign=q.imag<0?" − j":" + j";
+
+ $("algebra").textContent=
+  "U̇ = "+fmt(q.real,2)+sign+
+  fmt(Math.abs(q.imag),2)+" V";
+
+ $("polar").textContent=
+  "U̇ = "+fmt(q.U,0)+"∠"+
+  signed(q.degrees,1)+"° V";
+
+ $("exponential").innerHTML=
+  "U̇ = "+fmt(q.U,0)+
+  "e<sup>j("+signed(q.degrees,1)+"°)</sup> V";
+
+ $("real").textContent=
+  "U′ = U cosφ = "+fmt(q.real,2)+" V";
+
+ $("imag").textContent=
+  "U″ = U sinφ = "+fmt(q.imag,2)+" V";
+
+ $("interpretation").textContent=
+  "Модулът на фазора остава "+
+  fmt(q.U,0)+" V. "+
+  "При промяна на φ се изменят "+
+  "неговите проекции върху осите Re и Im.";
+
+ $("state").textContent=running
+  ?"Демонстрацията е включена."
+  :"Пауза — избран фазов ъгъл.";
+
+ $("ang").value=String(currentAngle);
+}
+
+/* Управление */
+$("ang").addEventListener("input",()=>{
+ running=false;
+ last=null;
+ currentAngle=Number($("ang").value);
+ render();
+});
+
+$("mag").addEventListener("input",render);
+
+$("speed").addEventListener("input",()=>{
+ $("speedv").textContent=
+  $("speed").value+"°/s";
+});
+
+$("play").addEventListener("click",()=>{
+ running=true;
+ last=null;
+ render();
+});
+
+$("pause").addEventListener("click",()=>{
+ running=false;
+ last=null;
+ render();
+});
+
+$("reset").addEventListener("click",()=>{
+ running=false;
+ last=null;
+ currentAngle=30;
+
+ $("ang").value=30;
+ $("mag").value=230;
+ $("speed").value=25;
+
+ render();
+});
+
+document.querySelectorAll("[data-angle]").forEach(button=>{
+ button.addEventListener("click",()=>{
+  running=false;
+  last=null;
+
+  currentAngle=Number(button.dataset.angle);
+  render();
+ });
+});
+
+document.addEventListener("visibilitychange",()=>{
+ last=null;
+});
+
+window.addEventListener("resize",resize);
+
+/* Един анимационен цикъл */
+function animate(now){
+ if(failed)return;
+
+ try{
+  const dt=last===null
+   ?0
+   :Math.min(.05,Math.max(0,(now-last)/1000));
+
+  last=now;
+
+  if(running && !document.hidden){
+   const speed=Number($("speed").value);
+
+   currentAngle=normalize(
+    currentAngle+speed*dt
+   );
+
+   render();
+  }
+
+  requestAnimationFrame(animate);
+
+ }catch(error){
+  failed=true;
+  console.error(error);
+
+  $("error").hidden=false;
+  $("error").textContent=
+   "Грешка в анимацията: "+error.message;
+ }
+}
+
+/* Начало */
+try{
+ if(!ctx){
+  throw new Error(
+   "Браузърът не поддържа Canvas 2D."
+  );
+ }
+
+ selfTest();
+ resize();
+ requestAnimationFrame(animate);
+
+}catch(error){
+ failed=true;
+ console.error(error);
+
+ $("error").hidden=false;
+ $("error").textContent=
+  "Грешка при стартиране: "+error.message;
+}
+
+})();
+</script>
+
+</body>
+</html>

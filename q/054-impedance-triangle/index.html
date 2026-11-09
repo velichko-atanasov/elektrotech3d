@@ -1,93 +1,889 @@
-<!DOCTYPE html>
-<!-- saved from url=(0059)file:///C:/Users/Rosi/Downloads/index(20260818-085444).html -->
-<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="доц. д-р инж. Величко Атанасов">
+<meta name="copyright" content="© 2026 Величко Атанасов">
 <title>Анимация 54 – Импедансен триъгълник</title>
+
 <style>
-*{box-sizing:border-box} body{margin:0;background:#f4f8fd;font-family:Arial,sans-serif;color:#172235}
-.wrap{max-width:1400px;margin:12px auto;background:#fff;border:2px solid #4d83c7;border-radius:16px;padding:14px}
-h1{text-align:center;color:#174d96;margin:3px 0 5px} .sub{text-align:center;font-weight:700;margin-bottom:14px}
-.grid{display:grid;grid-template-columns:300px 1fr 330px;gap:12px}
-.card{border:1px solid #cbd9ea;border-radius:12px;padding:13px;background:white}
-h2{color:#174d96;font-size:20px;margin:0 0 12px}.ctl{margin:18px 0}.ctl label{display:flex;justify-content:space-between;font-weight:700;margin-bottom:7px}
-input[type=range]{width:100%}.red{color:#c51e16}.green{color:#16812d}.blue{color:#155cc4}.purple{color:#7030a0}
-canvas{width:100%;height:570px;display:block}.box{border:1px solid #b9d0ed;border-radius:10px;padding:10px;margin-top:10px;background:#fbfdff}
-.formula{font-family:"Times New Roman";font-size:25px;text-align:center;margin:17px 0}.status{text-align:center;padding:10px;border-radius:8px;font-weight:bold;margin-top:15px}
-.ind{background:#edf5ff;color:#174d96}.cap{background:#fff0f0;color:#a32b25}.res{background:#edf9ef;color:#187239}
-button{width:100%;padding:11px;border:1px solid #b8cbe2;border-radius:8px;background:#eef4fb;font-size:16px;cursor:pointer}
-.small{font-size:14px;line-height:1.45}
-@media(max-width:950px){.grid{grid-template-columns:1fr}canvas{height:480px}}
+:root{
+ --red:#c51e16;
+ --green:#16812d;
+ --blue:#155cc4;
+ --purple:#7030a0;
+ --ink:#172235;
+ --line:#cad8eb;
+ --bg:#f4f8fd;
+}
+*{box-sizing:border-box}
+body{
+ margin:0;
+ background:var(--bg);
+ color:var(--ink);
+ font:15px/1.55 Arial,Helvetica,sans-serif;
+}
+.wrap{
+ max-width:1400px;
+ margin:12px auto;
+ background:#fff;
+ border:2px solid #4d83c7;
+ border-radius:16px;
+ padding:14px;
+}
+h1{
+ text-align:center;
+ color:#174d96;
+ margin:3px 0 5px;
+ font-size:clamp(24px,3vw,32px);
+}
+.sub{
+ text-align:center;
+ font-weight:700;
+ color:#52647a;
+ margin-bottom:14px;
+}
+.grid{
+ display:grid;
+ grid-template-columns:300px minmax(0,1fr) 330px;
+ gap:12px;
+ align-items:start;
+}
+.card{
+ border:1px solid var(--line);
+ border-radius:12px;
+ padding:13px;
+ background:white;
+ min-width:0;
+}
+h2{
+ color:#174d96;
+ font-size:20px;
+ margin:0 0 12px;
+}
+.control{margin:18px 0}
+.control label{
+ display:flex;
+ justify-content:space-between;
+ gap:8px;
+ font-weight:700;
+ margin-bottom:7px;
+}
+input[type=range]{
+ width:100%;
+ accent-color:#155cc4;
+}
+.red{color:var(--red)}
+.green{color:var(--green)}
+.blue{color:var(--blue)}
+.purple{color:var(--purple)}
+canvas{
+ width:100%;
+ height:560px;
+ display:block;
+ background:#fff;
+ border-radius:10px;
+}
+.box{
+ border:1px solid #b9d0ed;
+ border-radius:10px;
+ padding:11px;
+ margin-top:10px;
+ background:#fbfdff;
+}
+.formula{
+ font:23px/1.75 Cambria,Georgia,serif;
+ text-align:center;
+ margin:16px 0;
+}
+.status{
+ text-align:center;
+ padding:11px;
+ border-radius:9px;
+ font-weight:bold;
+ margin-top:15px;
+ line-height:1.6;
+}
+.ind{
+ background:#edf5ff;
+ color:#174d96;
+}
+.cap{
+ background:#fff0f0;
+ color:#a32b25;
+}
+.res{
+ background:#edf9ef;
+ color:#187239;
+}
+button{
+ width:100%;
+ padding:11px;
+ border:1px solid #b8cbe2;
+ border-radius:8px;
+ background:#eef4fb;
+ color:#174d96;
+ font-weight:750;
+ cursor:pointer;
+}
+button:hover{background:#dceafa}
+button:focus-visible,input:focus-visible{
+ outline:3px solid #86bae9;
+ outline-offset:3px;
+}
+.small{
+ font-size:13px;
+ line-height:1.7;
+ color:#52647a;
+}
+.values{
+ line-height:1.9;
+ font-size:15px;
+}
+.values strong{
+ font-variant-numeric:tabular-nums;
+}
+.legend{
+ display:flex;
+ flex-wrap:wrap;
+ justify-content:center;
+ gap:13px;
+ margin-top:8px;
+ font-size:12px;
+ color:#53677c;
+}
+.key{
+ display:inline-block;
+ width:20px;
+ height:3px;
+ margin-right:5px;
+ vertical-align:middle;
+}
+footer{
+ text-align:center;
+ padding:15px;
+ margin-top:17px;
+ border-top:1px solid var(--line);
+ color:#60748b;
+ font-size:13px;
+}
+#error{
+ margin-top:12px;
+ padding:12px;
+ border:1px solid #d9a0a0;
+ background:#fff1f1;
+ color:#952525;
+ border-radius:9px;
+}
+[hidden]{display:none!important}
+@media(max-width:1000px){
+ .grid{grid-template-columns:1fr}
+ canvas{height:470px}
+}
 </style>
 </head>
+
 <body>
 <div class="wrap">
+
 <h1>Анимация 54: Импедансен триъгълник</h1>
 <div class="sub">Последователна RLC верига</div>
+
 <div class="grid">
-<div class="card">
+
+<!-- ЛЯВ ПАНЕЛ -->
+<section class="card">
+
 <h2>Параметри</h2>
-<div class="ctl"><label class="red">R <span id="Rv">140 Ω</span></label><input id="R" type="range" min="1" max="200" value="40"></div>
-<div class="ctl"><label class="green">X<sub>L</sub> <span id="XLv">91 Ω</span></label><input id="XL" type="range" min="0" max="200" value="80"></div>
-<div class="ctl"><label class="blue">X<sub>C</sub> <span id="XCv">0 Ω</span></label><input id="XC" type="range" min="0" max="200" value="20"></div>
-<button id="reset">↻ Възстанови началните стойности</button>
-<div id="status" class="status ind">Индуктивен характер (X &gt; 0)</div>
-<div class="box small"><b>Наблюдавай:</b><br>Променяй R, X<sub>L</sub> и X<sub>C</sub>. Триъгълникът автоматично показва общото реактивно съпротивление X, импеданса Z и фазовия ъгъл φ.</div>
+
+<div class="control">
+ <label for="R" class="red">
+  Съпротивление R
+  <span id="Rv">40 Ω</span>
+ </label>
+
+ <input id="R"
+  type="range"
+  min="1" max="200"
+  step="1" value="40">
 </div>
 
-<div class="card">
-<h2 style="text-align:center">Импедансен триъгълник</h2>
-<canvas id="cv" width="629" height="570"></canvas>
-<div class="box">
-<b>Текущи стойности</b><br><br>
-<span class="red">R = <span id="r2">140</span> Ω</span><br>
-<span class="green">X<sub>L</sub> = <span id="xl2">91</span> Ω</span><br>
-<span class="blue">X<sub>C</sub> = <span id="xc2">0</span> Ω</span><br>
-<span class="purple">X = X<sub>L</sub> − X<sub>C</sub> = <span id="x2">91</span> Ω</span><br>
-<span class="purple">Z = <span id="z2">166.98</span> Ω</span><br>
-φ = <span id="p2">33.02</span>°
-</div>
+<div class="control">
+ <label for="XL" class="green">
+  Индуктивно съпротивление X<sub>L</sub>
+  <span id="XLv">80 Ω</span>
+ </label>
+
+ <input id="XL"
+  type="range"
+  min="0" max="200"
+  step="1" value="80">
 </div>
 
-<div class="card">
-<h2>Основни зависимости</h2>
-<div class="formula">X = X<sub>L</sub> − X<sub>C</sub></div>
-<div class="formula">Z = √(R² + X²)</div>
-<div class="formula">φ = arctan(X/R)</div>
-<hr>
-<div class="formula">cos φ = R/Z</div>
-<div class="formula">sin φ = X/Z</div>
-<div class="formula">tan φ = X/R</div>
+<div class="control">
+ <label for="XC" class="blue">
+  Капацитивно съпротивление X<sub>C</sub>
+  <span id="XCv">20 Ω</span>
+ </label>
+
+ <input id="XC"
+  type="range"
+  min="0" max="200"
+  step="1" value="20">
+</div>
+
+<button id="reset" type="button">
+ ↻ Възстанови началните стойности
+</button>
+
+<div id="status" class="status ind">
+ Индуктивен характер
+</div>
+
 <div class="box small">
-<b>Характер на веригата</b><br><br>
-<b class="green">X &gt; 0:</b> индуктивен характер — токът изостава от напрежението.<br><br>
-<b class="blue">X &lt; 0:</b> капацитивен характер — токът изпреварва напрежението.<br><br>
-<b class="purple">X = 0:</b> Z = R и φ = 0° — резонансен режим.
+ <b>Наблюдавай:</b>
+
+ <p>
+  Променяй R, X<sub>L</sub> и X<sub>C</sub>.
+  Импедансният триъгълник показва
+  резултантното реактивно съпротивление X,
+  модула на импеданса |Z| и ъгъла φ.
+ </p>
+
+ <p>
+  При индуктивен характер триъгълникът
+  е над реалната ос, а при капацитивен —
+  под нея.
+ </p>
 </div>
+
+</section>
+
+<!-- СРЕДЕН ПАНЕЛ -->
+<section class="card">
+
+<h2 style="text-align:center">
+ Импедансен триъгълник
+</h2>
+
+<canvas id="cv"
+ role="img"
+ aria-label="Импедансен триъгълник с активна, реактивна и комплексна съставка">
+</canvas>
+
+<div class="legend">
+ <span>
+  <i class="key" style="background:var(--red)"></i>
+  R — активно съпротивление
+ </span>
+
+ <span>
+  <i class="key" style="background:var(--green)"></i>
+  X — реактивно съпротивление
+ </span>
+
+ <span>
+  <i class="key" style="background:var(--blue)"></i>
+  |Z| — модул на импеданса
+ </span>
 </div>
+
+<div class="box values">
+ <b>Текущи стойности</b>
+
+ <div class="red">
+  R = <strong id="r2">40</strong> Ω
+ </div>
+
+ <div class="green">
+  X<sub>L</sub> =
+  <strong id="xl2">80</strong> Ω
+ </div>
+
+ <div class="blue">
+  X<sub>C</sub> =
+  <strong id="xc2">20</strong> Ω
+ </div>
+
+ <div class="green">
+  X = X<sub>L</sub> − X<sub>C</sub> =
+  <strong id="x2">60</strong> Ω
+ </div>
+
+ <div class="blue">
+  |Z| =
+  <strong id="z2">72,11</strong> Ω
+ </div>
+
+ <div class="purple">
+  φ =
+  <strong id="p2">+56,31</strong>°
+ </div>
+
+ <div>
+  cos φ =
+  <strong id="pf2">0,555</strong>
+ </div>
 </div>
+
+</section>
+
+<!-- ДЕСЕН ПАНЕЛ -->
+<section class="card">
+
+<h2>Основни зависимости</h2>
+
+<div class="formula">
+ X = X<sub>L</sub> − X<sub>C</sub>
 </div>
+
+<div class="formula blue">
+ <span style="text-decoration:underline">Z</span>
+ = R + jX
+</div>
+
+<div class="formula blue">
+ |Z| = √(R² + X²)
+</div>
+
+<div class="formula purple">
+ φ = atan2(X, R)
+</div>
+
+<hr style="border:0;border-top:1px solid #d3deea">
+
+<div class="formula">
+ cos φ = R/|Z|
+</div>
+
+<div class="formula">
+ sin φ = X/|Z|
+</div>
+
+<div class="formula">
+ tan φ = X/R
+</div>
+
+<div class="box small">
+ <b>Характер на веригата</b>
+
+ <p>
+  <b class="green">X &gt; 0:</b>
+  индуктивен характер — токът изостава
+  от напрежението.
+ </p>
+
+ <p>
+  <b class="blue">X &lt; 0:</b>
+  капацитивен характер — токът
+  изпреварва напрежението.
+ </p>
+
+ <p>
+  <b class="purple">X = 0:</b>
+  общият импеданс е активен,
+  |Z| = R и φ = 0°.
+ </p>
+
+ <p>
+  Ако X<sub>L</sub> = X<sub>C</sub> &gt; 0,
+  реактивните съставки се компенсират.
+  Ако и двете са нула, имаме
+  чисто активно съпротивление.
+ </p>
+</div>
+
+<div id="complexResult"
+ class="box formula"
+ style="font-size:18px">
+</div>
+
+</section>
+</div>
+
+<div id="error" hidden role="alert"></div>
+
+<footer>
+© 2026 доц. д-р инж. Величко Атанасов.
+Всички права запазени.
+</footer>
+
+</div>
+
 <script>
-const $=x=>document.getElementById(x), R=$('R'),XL=$('XL'),XC=$('XC'),cv=$('cv'),ctx=cv.getContext('2d');
-function fit(){let r=cv.getBoundingClientRect(),d=devicePixelRatio||1;cv.width=r.width*d;cv.height=r.height*d;ctx.setTransform(d,0,0,d,0,0);draw()}
-function line(x1,y1,x2,y2,c,w=2,d=[]){ctx.save();ctx.strokeStyle=c;ctx.lineWidth=w;ctx.setLineDash(d);ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();ctx.restore()}
-function arrow(x1,y1,x2,y2,c,w=3){line(x1,y1,x2,y2,c,w);let a=Math.atan2(y2-y1,x2-x1),m=10;ctx.fillStyle=c;ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-m*Math.cos(a-.5),y2-m*Math.sin(a-.5));ctx.lineTo(x2-m*Math.cos(a+.5),y2-m*Math.sin(a+.5));ctx.fill()}
-function text(t,x,y,s=17,c='#111',a='left'){ctx.save();ctx.font=s+'px Arial';ctx.fillStyle=c;ctx.textAlign=a;ctx.textBaseline='middle';ctx.fillText(t,x,y);ctx.restore()}
-function draw(){
- let r=+R.value,xl=+XL.value,xc=+XC.value,x=xl-xc,z=Math.hypot(r,x),phi=Math.atan2(x,r)*180/Math.PI;
- $('Rv').textContent=r+' Ω';$('XLv').textContent=xl+' Ω';$('XCv').textContent=xc+' Ω';
- $('r2').textContent=r.toFixed(0);$('xl2').textContent=xl.toFixed(0);$('xc2').textContent=xc.toFixed(0);$('x2').textContent=x.toFixed(0);$('z2').textContent=z.toFixed(2);$('p2').textContent=phi.toFixed(2);
- let st=$('status'); if(Math.abs(x)<.01){st.className='status res';st.textContent='Резонанс: X = 0, Z = R, φ = 0°'} else if(x>0){st.className='status ind';st.textContent='Индуктивен характер (X > 0)'} else {st.className='status cap';st.textContent='Капацитивен характер (X < 0)'}
- let w=cv.clientWidth,h=cv.clientHeight;ctx.clearRect(0,0,w,h);let ox=75,oy=h*.53,maxX=200,maxY=200,sx=(w-145)/maxX,sy=(h*.38)/maxY,sc=Math.min(sx,sy);
- arrow(35,oy,w-35,oy,'#111',1.5);arrow(ox,h-35,ox,35,'#111',1.5);text('R (Ω)',w-42,oy+25,17);text('+jX',ox+15,42,17);text('−jX',ox+15,h-42,17);
- let ex=ox+r*sc,ey=oy-x*sc;
- line(ox,oy,ex,oy,'#d3221b',4); line(ex,oy,ex,ey,'#7030a0',4); arrow(ox,oy,ex,ey,'#7030a0',4);
- line(ex,ey,ox,ey,'#999',1,[7,6]);
- text('R = '+r+' Ω',(ox+ex)/2,oy+22,17,'#d3221b','center');
- text('X = '+x.toFixed(0)+' Ω',ex+12,(oy+ey)/2,17,'#7030a0');
- text('Z = '+z.toFixed(2)+' Ω',(ox+ex)/2-10,(oy+ey)/2-18,18,'#7030a0','center');
- text('φ = '+phi.toFixed(1)+'°',ox+85,oy+(x>=0?-28:28),17);
+(() => {
+"use strict";
+
+const $ = id => document.getElementById(id);
+
+const R = $("R");
+const XL = $("XL");
+const XC = $("XC");
+
+const canvas = $("cv");
+const ctx = canvas.getContext("2d");
+
+const colors = {
+ red:"#c51e16",
+ green:"#16812d",
+ blue:"#155cc4",
+ purple:"#7030a0",
+ axis:"#53697c",
+ grid:"#e0e8f1",
+ muted:"#53667b"
+};
+
+let failed = false;
+
+function fmt(value,digits=2){
+ const clean = Math.abs(value) <
+  .5*Math.pow(10,-digits)
+  ?0:value;
+
+ return clean.toLocaleString("bg-BG",{
+  minimumFractionDigits:digits,
+  maximumFractionDigits:digits
+ }).replace("-","−");
 }
-[R,XL,XC].forEach(e=>e.oninput=draw);$('reset').onclick=()=>{R.value=40;XL.value=80;XC.value=20;draw()};window.onresize=fit;fit();
+
+function signed(value,digits=2){
+ return (value>0?"+":"")+fmt(value,digits);
+}
+
+function clamp(value,min,max){
+ return Math.min(max,Math.max(min,value));
+}
+
+function calculate(r,xl,xc){
+ const x=xl-xc;
+ const z=Math.hypot(r,x);
+ const phi=Math.atan2(x,r);
+
+ return {
+  r,xl,xc,x,z,phi,
+  degrees:phi*180/Math.PI,
+  pf:r/z,
+  sin:x/z,
+  tan:x/r
+ };
+}
+
+/* Проверка на математически крайни случаи */
+function selfTest(){
+ const examples=[
+  {r:40,xl:80,xc:20,x:60},
+  {r:40,xl:20,xc:80,x:-60},
+  {r:40,xl:80,xc:80,x:0},
+  {r:40,xl:0,xc:0,x:0},
+  {r:1,xl:200,xc:0,x:200},
+  {r:200,xl:0,xc:200,x:-200}
+ ];
+
+ for(const e of examples){
+  const m=calculate(e.r,e.xl,e.xc);
+
+  if(Math.abs(m.x-e.x)>1e-9){
+   throw new Error(
+    "Неправилно реактивно съпротивление."
+   );
+  }
+
+  if(Math.abs(m.z-Math.hypot(e.r,e.x))>1e-9){
+   throw new Error(
+    "Неправилен модул на импеданса."
+   );
+  }
+
+  if(
+   Math.abs(m.pf*m.pf+m.sin*m.sin-1)>1e-9
+  ){
+   throw new Error(
+    "Неправилни тригонометрични зависимости."
+   );
+  }
+ }
+}
+
+/* Canvas се преоразмерява само при промяна. */
+function fit(){
+ if(!ctx)return;
+
+ const rect=canvas.getBoundingClientRect();
+ const dpr=Math.min(window.devicePixelRatio||1,2);
+
+ const w=Math.max(1,Math.round(rect.width*dpr));
+ const h=Math.max(1,Math.round(rect.height*dpr));
+
+ if(canvas.width!==w || canvas.height!==h){
+  canvas.width=w;
+  canvas.height=h;
+ }
+
+ ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+
+function line(x1,y1,x2,y2,color,width=2,dash=[]){
+ ctx.save();
+ ctx.strokeStyle=color;
+ ctx.lineWidth=width;
+ ctx.setLineDash(dash);
+ ctx.lineCap="round";
+ ctx.beginPath();
+ ctx.moveTo(x1,y1);
+ ctx.lineTo(x2,y2);
+ ctx.stroke();
+ ctx.restore();
+}
+
+function text(value,x,y,color="#172235",size=15,align="left"){
+ ctx.save();
+ ctx.fillStyle=color;
+ ctx.font=size+"px Arial";
+ ctx.textAlign=align;
+ ctx.textBaseline="middle";
+
+ const safeX=clamp(x,12,canvas.clientWidth-12);
+ const safeY=clamp(y,12,canvas.clientHeight-12);
+
+ ctx.fillText(value,safeX,safeY);
+ ctx.restore();
+}
+
+/* Малка стрелка с глава */
+function arrow(x1,y1,x2,y2,color,width=3){
+ const length=Math.hypot(x2-x1,y2-y1);
+
+ if(length<.1)return;
+
+ line(x1,y1,x2,y2,color,width);
+
+ const angle=Math.atan2(y2-y1,x2-x1);
+ const head=Math.min(8,length*.35);
+
+ ctx.save();
+ ctx.fillStyle=color;
+ ctx.beginPath();
+ ctx.moveTo(x2,y2);
+ ctx.lineTo(
+  x2-head*Math.cos(angle-.48),
+  y2-head*Math.sin(angle-.48)
+ );
+ ctx.lineTo(
+  x2-head*Math.cos(angle+.48),
+  y2-head*Math.sin(angle+.48)
+ );
+ ctx.closePath();
+ ctx.fill();
+ ctx.restore();
+}
+
+/*
+  Дъгата винаги следва изчисления ъгъл:
+  x = O + r cos(a)
+  y = O - r sin(a)
+
+  Положителен X → дъга нагоре.
+  Отрицателен X → дъга надолу.
+*/
+function angleArc(ox,oy,phi,radius){
+ if(Math.abs(phi)<1e-10)return;
+
+ const steps=36;
+
+ ctx.save();
+ ctx.strokeStyle=colors.purple;
+ ctx.lineWidth=2.1;
+ ctx.beginPath();
+
+ for(let i=0;i<=steps;i++){
+  const a=phi*i/steps;
+  const x=ox+radius*Math.cos(a);
+  const y=oy-radius*Math.sin(a);
+
+  if(i===0)ctx.moveTo(x,y);
+  else ctx.lineTo(x,y);
+ }
+
+ ctx.stroke();
+ ctx.restore();
+}
+
+function draw(){
+ if(failed)return;
+
+ const m=calculate(
+  Number(R.value),
+  Number(XL.value),
+  Number(XC.value)
+ );
+
+ $("Rv").textContent=fmt(m.r,0)+" Ω";
+ $("XLv").textContent=fmt(m.xl,0)+" Ω";
+ $("XCv").textContent=fmt(m.xc,0)+" Ω";
+
+ $("r2").textContent=fmt(m.r,0);
+ $("xl2").textContent=fmt(m.xl,0);
+ $("xc2").textContent=fmt(m.xc,0);
+ $("x2").textContent=fmt(m.x,0);
+ $("z2").textContent=fmt(m.z,2);
+ $("p2").textContent=signed(m.degrees,2);
+ $("pf2").textContent=fmt(m.pf,3);
+
+ $("complexResult").innerHTML=
+  "<span class='blue'>Z̲ = "+
+  fmt(m.r,0)+
+  (m.x<0?" − j":" + j")+
+  fmt(Math.abs(m.x),0)+
+  " Ω</span>";
+
+ const status=$("status");
+
+ if(m.x===0){
+  status.className="status res";
+
+  if(m.xl===0 && m.xc===0){
+   status.textContent=
+    "Чисто активен характер: XL = XC = 0";
+  }else{
+   status.textContent=
+    "Активен характер: реактивните съставки се компенсират";
+  }
+
+ }else if(m.x>0){
+  status.className="status ind";
+  status.textContent=
+   "Индуктивен характер: X > 0, φ > 0°";
+
+ }else{
+  status.className="status cap";
+  status.textContent=
+   "Капацитивен характер: X < 0, φ < 0°";
+ }
+
+ const w=canvas.clientWidth;
+ const h=canvas.clientHeight;
+
+ ctx.clearRect(0,0,w,h);
+ ctx.fillStyle="#fff";
+ ctx.fillRect(0,0,w,h);
+
+ const ox=66;
+ const oy=h/2;
+
+ /*
+   Еднакъв мащаб по двете оси.
+   Максималните стойности са до 200 Ω
+   за R и до ±200 Ω за X.
+ */
+ const scale=Math.min(
+  (w-120)/215,
+  (h/2-53)/215
+ );
+
+ const ex=ox+m.r*scale;
+ const ey=oy-m.x*scale;
+
+ /* Мрежа и оси */
+ for(let n=-200;n<=200;n+=50){
+  const y=oy-n*scale;
+
+  if(y>=24 && y<=h-24){
+   line(ox,y,w-25,y,colors.grid,1,[4,5]);
+
+   if(n!==0){
+    text(
+     String(n),
+     ox-10,y,
+     colors.muted,10,"right"
+    );
+   }
+  }
+ }
+
+ for(let n=50;n<=200;n+=50){
+  const x=ox+n*scale;
+
+  line(x,28,x,h-28,colors.grid,1,[4,5]);
+
+  text(
+   String(n),
+   x,oy+16,
+   colors.muted,10,"center"
+  );
+ }
+
+ arrow(
+  30,oy,w-26,oy,
+  colors.axis,1.4
+ );
+
+ arrow(
+  ox,h-28,ox,28,
+  colors.axis,1.4
+ );
+
+ text("R, Ω",w-20,oy-18,colors.axis,13,"right");
+ text("+jX",ox+14,36,colors.axis,13);
+ text("−jX",ox+14,h-37,colors.axis,13);
+ text("O",ox-11,oy+16,colors.axis,12);
+
+ /* Показваме правилен триъгълник */
+ if(m.x!==0){
+  ctx.save();
+  ctx.fillStyle=m.x>0
+   ?"rgba(21,92,196,.045)"
+   :"rgba(22,129,45,.045)";
+
+  ctx.beginPath();
+  ctx.moveTo(ox,oy);
+  ctx.lineTo(ex,oy);
+  ctx.lineTo(ex,ey);
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+ }
+
+ /* Активно съпротивление R — червено */
+ line(
+  ox,oy,ex,oy,
+  colors.red,3.6
+ );
+
+ if(m.x!==0){
+  /* Реактивно X — зелено */
+  arrow(
+   ex,oy,ex,ey,
+   colors.green,3.6
+  );
+
+  /* Модул |Z| — синя хипотенуза */
+  arrow(
+   ox,oy,ex,ey,
+   colors.blue,4.1
+  );
+
+  text(
+   "R = "+fmt(m.r,0)+" Ω",
+   (ox+ex)/2,
+   oy+(m.x>0?25:-24),
+   colors.red,14,"center"
+  );
+
+  text(
+   "X = "+fmt(m.x,0)+" Ω",
+   ex+12,
+   (oy+ey)/2,
+   colors.green,14
+  );
+
+  text(
+   "|Z| = "+fmt(m.z,2)+" Ω",
+   ox+(ex-ox)*.53,
+   oy+(ey-oy)*.53+(m.x>0?-22:21),
+   colors.blue,14,"center"
+  );
+
+  const arcRadius=Math.min(
+   42,Math.max(15,m.z*scale*.27)
+  );
+
+  angleArc(
+   ox,oy,m.phi,arcRadius
+  );
+
+  text(
+   "φ",
+   ox+(arcRadius+19)*Math.cos(m.phi/2),
+   oy-(arcRadius+19)*Math.sin(m.phi/2),
+   colors.purple,17,"center"
+  );
+
+ }else{
+  /* При X=0, |Z| съвпада с R */
+  arrow(
+   ox,oy,ex,oy,
+   colors.blue,3.6
+  );
+
+  text(
+   "|Z| = R = "+fmt(m.z,2)+" Ω",
+   (ox+ex)/2,
+   oy-22,
+   colors.blue,14,"center"
+  );
+ }
+
+ text(
+  "φ = "+signed(m.degrees,2)+"°",
+  w/2,h-19,
+  colors.purple,15,"center"
+ );
+}
+
+function safeDraw(){
+ try{
+  draw();
+ }catch(error){
+  failed=true;
+  console.error(error);
+
+  $("error").hidden=false;
+  $("error").textContent=
+   "Грешка: "+error.message;
+ }
+}
+
+[R,XL,XC].forEach(input=>{
+ input.addEventListener("input",safeDraw);
+});
+
+$("reset").addEventListener("click",()=>{
+ R.value=40;
+ XL.value=80;
+ XC.value=20;
+
+ safeDraw();
+});
+
+window.addEventListener("resize",()=>{
+ fit();
+ safeDraw();
+});
+
+try{
+ if(!ctx){
+  throw new Error(
+   "Браузърът не поддържа Canvas 2D."
+  );
+ }
+
+ selfTest();
+ fit();
+ safeDraw();
+
+ if(window.ResizeObserver){
+  const observer=new ResizeObserver(()=>{
+   fit();
+   safeDraw();
+  });
+
+  observer.observe(canvas);
+ }
+
+}catch(error){
+ failed=true;
+ console.error(error);
+
+ $("error").hidden=false;
+ $("error").textContent=
+  "Грешка при стартиране: "+error.message;
+}
+
+/* Без бутони за изтегляне в анимацията. */
+})();
 </script>
-</body></html>
+
+</body>
+</html>

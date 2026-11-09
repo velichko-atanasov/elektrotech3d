@@ -1,413 +1,260 @@
+
 <!DOCTYPE html>
 <html lang="bg">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="author" content="доц. д-р инж. Величко Атанасов">
-<meta name="copyright"
-      content="© 2026 доц. д-р инж. Величко Атанасов">
-
 <title>QR-032 – Трифазна система</title>
-
 <style>
 :root{
-  --bg:#06111d;
-  --panel:#0c2134;
-  --line:#355b78;
-  --text:#f5f9fc;
-  --muted:#b8cbd9;
-  --a:#ff4545;
-  --b:#159cff;
-  --c:#6ee39b;
-  --gold:#ffd36b;
+  --red:#e42f39;
+  --blue:#176cdd;
+  --green:#159b56;
+  --ink:#193750;
+  --muted:#61798d;
+  --line:#c9d9e6;
 }
 *{box-sizing:border-box}
-
 body{
   margin:0;
-  color:var(--text);
-  background:
-    radial-gradient(ellipse at top,#174766,#06111d 58%,#02070d);
+  background:#edf3f8;
+  color:var(--ink);
   font:15px/1.55 "Segoe UI",Arial,sans-serif;
 }
-
-.wrap{
-  max-width:1450px;
-  margin:auto;
-  padding:16px;
-}
-
-header{text-align:center;margin-bottom:15px}
-
-.eyebrow{
-  color:#8ec9ed;
-  font-size:11px;
-  font-weight:800;
-  letter-spacing:1.6px;
-}
-
+.wrap{max-width:1430px;margin:auto;padding:13px}
 h1{
-  font-size:clamp(26px,3.8vw,42px);
-  margin:5px 0;
+  margin:4px 0;
+  text-align:center;
+  color:#174b80;
+  font-size:clamp(24px,3.5vw,36px);
 }
-
 .subtitle{
+  margin:5px 0 13px;
+  text-align:center;
   color:var(--muted);
-  margin:5px 0;
 }
-
-.topbar{
+.toolbar{
   display:flex;
   flex-wrap:wrap;
   align-items:center;
-  gap:9px;
-  margin:15px 0;
-}
-
-.phaseButtons{
-  display:flex;
-  flex-wrap:wrap;
   gap:7px;
-  flex:1;
+  margin-bottom:12px;
 }
-
 button{
-  padding:10px 13px;
-  border:1px solid #47708f;
-  border-radius:10px;
-  background:#123651;
-  color:#f5f9fc;
+  padding:10px 12px;
+  border:1px solid #abc4d8;
+  border-radius:9px;
+  background:#fff;
+  color:#174b80;
   font-weight:800;
   cursor:pointer;
 }
-
-button:hover{background:#1b4a6c}
-
+button:hover{background:#e5f1fc}
 button.active{
-  background:#205b80;
-  border-color:#a6ddff;
-  box-shadow:inset 0 0 0 1px #a6ddff33;
+  color:white;
+  background:#174b80;
+  border-color:#174b80;
 }
-
-button:focus-visible,
-input:focus-visible,
-[role=button]:focus-visible{
-  outline:3px solid var(--gold);
-  outline-offset:4px;
+button:focus-visible,input:focus-visible{
+  outline:3px solid #82bbec;
+  outline-offset:2px;
 }
-
 .status{
-  font-size:12px;
-  color:#a3e7ba;
-  padding:7px 10px;
-  border:1px solid #3d7558;
+  margin-left:auto;
+  padding:7px 11px;
   border-radius:20px;
-  background:#173d2c66;
+  background:#e8f7ee;
+  color:#197447;
+  border:1px solid #bde0cc;
+  font-size:12px;
+  font-weight:800;
 }
-
-.grid{
+.layout{
   display:grid;
-  grid-template-columns:minmax(0,1.6fr) minmax(300px,.72fr);
-  gap:14px;
+  grid-template-columns:minmax(0,1.48fr) minmax(300px,.65fr);
+  gap:13px;
   align-items:start;
 }
-
 .panel{
   min-width:0;
-  background:linear-gradient(145deg,#0d263b,#081a29);
   border:1px solid var(--line);
-  border-radius:17px;
+  border-radius:15px;
+  background:white;
   overflow:hidden;
-  box-shadow:0 10px 28px #00000024;
 }
-
-.panelHeader{
+.panelHead{
   display:flex;
   justify-content:space-between;
   flex-wrap:wrap;
-  gap:9px;
-  padding:12px 15px;
-  border-bottom:1px solid var(--line);
+  gap:8px;
+  padding:12px 14px;
+  border-bottom:1px solid #dae5ee;
 }
-
-.panelHeader strong{color:var(--gold)}
-.panelHeader small{color:var(--muted);font-size:12px}
-
-.panelBody{padding:14px}
-
+.panelHead strong{color:#174b80}
+.panelHead small{color:var(--muted)}
+.panelBody{padding:13px}
+.side{display:grid;gap:12px}
 .machine{
-  background:
-    radial-gradient(circle at 50% 45%,#13364b,#081725 68%);
-}
-
-svg{
   display:block;
   width:100%;
   height:auto;
+  background:#fbfdff;
 }
-
-.side{
+.metrics{
   display:grid;
-  gap:12px;
-  min-width:0;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+  padding:11px;
 }
-
-.control{
-  margin-bottom:14px;
+.metric{
+  background:#f5f9fd;
+  border:1px solid #d4e1eb;
+  border-radius:9px;
+  padding:10px;
+  text-align:center;
 }
-
+.metric span{font-size:12px}
+.metric strong{
+  display:block;
+  margin:5px 0;
+  font-size:clamp(19px,2vw,25px);
+  font-variant-numeric:tabular-nums;
+}
+.metric small{
+  display:block;
+  font-size:11px;
+  color:var(--muted);
+}
+.control{margin:13px 0}
 .control label{
   display:flex;
   justify-content:space-between;
   gap:8px;
-  font-size:13px;
-  font-weight:800;
+  font-weight:750;
 }
-
-.control output{
-  color:#8bcfff;
-  font-variant-numeric:tabular-nums;
-}
-
 input[type=range]{
   width:100%;
-  accent-color:#59bfff;
-  margin-top:8px;
+  margin-top:9px;
+  accent-color:#176cdd;
 }
-
-.buttonRow{
+.lessonButtons{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
+  margin:14px 0;
+}
+.lessonButtons button{
+  background:#edf6ff;
+}
+.valueGrid{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:8px;
 }
-
-.buttonRow .wide{grid-column:1/-1}
-
-.checkRow{
-  display:flex;
-  align-items:center;
-  gap:9px;
-  margin-top:12px;
-  color:var(--muted);
-  font-size:13px;
-}
-
-.phaseMetrics{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:9px;
-  padding:12px;
-  border-top:1px solid var(--line);
-}
-
-.phaseMetric{
-  background:#061725;
-  border-radius:12px;
+.value{
   padding:10px;
-  text-align:left;
-}
-
-.phaseMetric .phaseName{
-  display:block;
-  font-size:12px;
-  font-weight:900;
-}
-
-.phaseMetric strong{
-  display:block;
-  margin:4px 0 1px;
-  font-size:clamp(20px,2.2vw,29px);
-  font-variant-numeric:tabular-nums;
-}
-
-.phaseMetric small{
-  font-size:11px;
-  color:#aac2d3;
-}
-
-.phaseMetric[data-phase="0"]{border-color:#ff45456b}
-.phaseMetric[data-phase="1"]{border-color:#159cff6b}
-.phaseMetric[data-phase="2"]{border-color:#6ee39b6b}
-
-.phaseMetric.active{
-  background:#16374a;
-  box-shadow:inset 0 0 0 1px currentColor;
-}
-
-.formula{
-  font:19px/1.8 Cambria,Georgia,serif;
+  border:1px solid #d5e2ea;
+  border-radius:9px;
+  background:#f6fafc;
   text-align:center;
 }
-
-.formula sub{font-size:.72em}
-
-.note{
-  color:var(--muted);
+.value span{
+  display:block;
   font-size:12px;
-  line-height:1.75;
+  color:var(--muted);
 }
-
-.explain{
-  border-left:3px solid var(--gold);
-  background:#ffd36b09;
-  border-radius:6px;
-  padding:11px 12px;
+.value strong{
+  display:block;
+  margin-top:5px;
+  font-size:18px;
+}
+.formula{
+  margin:8px 0;
+  text-align:center;
+  font:19px/1.8 Cambria,Georgia,serif;
+}
+.info{
+  padding:12px;
+  background:#f1f7fd;
+  border-left:4px solid #327eae;
+  border-radius:7px;
   font-size:13px;
   line-height:1.7;
 }
-
-.verify{
-  margin-top:12px;
-  padding:11px;
-  border:1px solid #4f9569;
-  border-radius:10px;
-  background:#133b2880;
-  color:#b4f0c9;
+.note{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.7;
 }
-
-.verify strong{
-  display:block;
-  font-size:18px;
-  font-family:Cambria,Georgia,serif;
-}
-
-.miniValues{
+.liveValues{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:9px;
-  margin-top:12px;
+  margin:13px 0;
 }
-
-.miniValues div{
-  background:#071724;
-  border:1px solid #355b78;
+.live{
+  padding:11px 6px;
+  background:#f8fbfd;
+  border:1px solid #d2e0ea;
   border-radius:9px;
-  padding:10px;
   text-align:center;
-  font-size:12px;
-  color:var(--muted);
 }
-
-.miniValues b{
+.live span{
   display:block;
-  margin-top:4px;
-  color:#fff;
-  font-size:16px;
-  font-variant-numeric:tabular-nums;
-}
-
-.chartPanel{margin-top:14px}
-
-.chartLegend{
-  display:flex;
-  gap:16px;
-  flex-wrap:wrap;
-  padding:0 16px 12px;
   color:var(--muted);
   font-size:12px;
 }
-
+.live strong{
+  display:block;
+  margin-top:5px;
+  font-size:19px;
+}
+.chartPanel{margin-top:13px}
+svg{display:block;width:100%;height:auto}
+.legend{
+  display:flex;
+  flex-wrap:wrap;
+  gap:15px;
+  padding:0 15px 13px;
+  color:var(--muted);
+  font-size:12px;
+}
 .lineKey{
   display:inline-block;
   width:24px;
   height:3px;
+  margin-right:5px;
   vertical-align:middle;
-  margin-right:6px;
 }
-
-.fluxReadouts{
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  gap:18px;
-  padding:8px 12px;
-  font-weight:800;
-  font-variant-numeric:tabular-nums;
+#coilLayer .coilGroup,
+#coilLabels .phaseLabel{cursor:pointer}
+#error{
+  margin-top:12px;
+  padding:12px;
+  border:1px solid #dda1a1;
+  border-radius:9px;
+  color:#a42b2b;
+  background:#fff0f0;
 }
-
-.detailsGrid{
-  display:grid;
-  grid-template-columns:1.25fr .75fr;
-  gap:14px;
-  padding:0 14px 14px;
-  align-items:center;
-}
-
-.phaseCoil{cursor:pointer}
-.phaseLabel{cursor:pointer}
-
-.coilFocus{
-  fill:transparent;
-  stroke-width:1.5;
-}
-
-.svgMuted{
-  fill:#a6bfce;
-  font-size:13px;
-}
-
-.error{
-  margin-top:14px;
-  padding:14px;
-  color:#ffcbcb;
-  background:#4b1824;
-  border:1px solid #b76874;
-  border-radius:10px;
-}
-
-details{
-  margin-top:14px;
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.8;
-}
-
-details summary{
-  cursor:pointer;
-  color:#d3e7f4;
-  font-weight:800;
-}
-
-details a{color:#8dd0ff}
-
 footer{
-  margin-top:18px;
-  padding:16px;
-  border-top:1px solid #355b78;
-  color:#b8cbd9;
+  margin-top:16px;
+  padding:15px;
   text-align:center;
+  border-top:1px solid var(--line);
+  color:var(--muted);
   font-size:13px;
 }
-
-#rightsNotice{
-  position:fixed;
-  bottom:15px;
-  right:15px;
-  z-index:1000;
-  padding:12px 15px;
-  max-width:340px;
-  border:1px solid #658aa4;
-  border-radius:10px;
-  background:#0d293e;
-  color:white;
-  font-size:13px;
-}
-
 [hidden]{display:none!important}
-
-@media(max-width:1030px){
-  .grid{grid-template-columns:1fr}
-  .side{grid-template-columns:1fr 1fr}
+@media(max-width:970px){
+  .layout{grid-template-columns:1fr}
 }
-
-@media(max-width:670px){
-  .wrap{padding:9px}
-  .side,.detailsGrid{grid-template-columns:1fr}
-  .phaseMetrics{gap:6px;padding:8px}
-  .phaseMetric{padding:9px 6px}
-  .phaseMetric strong{font-size:20px}
-  .panelHeader{padding:11px}
-  .topbar{gap:7px}
+@media(max-width:540px){
+  .wrap{padding:8px}
+  .lessonButtons{grid-template-columns:1fr}
+  .metrics{gap:5px}
+  .metric{padding:8px 5px}
+  .metric strong{font-size:18px}
 }
 </style>
 </head>
@@ -415,494 +262,517 @@ footer{
 <body>
 <div class="wrap">
 
-<header>
-  <div class="eyebrow">ИНТЕРАКТИВНА ЕЛЕКТРОТЕХНИКА · QR-032</div>
-  <h1>Трифазна система</h1>
-  <p class="subtitle">
-    Въртящ се магнит · неподвижни медни намотки · фазово отместване 120°
-  </p>
-</header>
+<h1>QR-032 – Трифазна система</h1>
 
-<div class="topbar">
-  <div class="phaseButtons" aria-label="Избор на фаза">
-    <button type="button" data-phase="-1" class="active"
-            aria-pressed="true">Всички фази</button>
-    <button type="button" data-phase="0"
-            aria-pressed="false" style="color:var(--a)">Фаза A</button>
-    <button type="button" data-phase="1"
-            aria-pressed="false" style="color:var(--b)">Фаза B</button>
-    <button type="button" data-phase="2"
-            aria-pressed="false" style="color:var(--c)">Фаза C</button>
-  </div>
-  <span id="status" class="status">● Движение</span>
+<p class="subtitle">
+Три неподвижни намотки · Метален ламелиран статор ·
+Въртящ се магнит N–S
+</p>
+
+<div class="toolbar">
+<button type="button" data-phase="-1" class="active">
+Всички фази
+</button>
+<button type="button" data-phase="0">Фаза A</button>
+<button type="button" data-phase="1">Фаза B</button>
+<button type="button" data-phase="2">Фаза C</button>
+<button type="button" id="pause">Ⅱ Пауза</button>
+<button type="button" id="reset">↺ Начало</button>
+<button type="button" id="fluxToggle" class="active">
+Поток и напрежение
+</button>
+<span class="status" id="status">● Движение</span>
 </div>
 
-<div class="grid">
+<div class="layout">
 
 <section class="panel">
-  <div class="panelHeader">
-    <strong>Получаване на трифазно напрежение</strong>
-    <small>Идеализиран двуполюсен генератор · p = 1</small>
-  </div>
 
-  <div class="machine">
-    <svg id="machineSvg" viewBox="0 0 900 690"
-         role="img"
-         aria-label="Въртящ се магнит и три неподвижни медни намотки">
+<div class="panelHead">
+<strong>Магнитопровод, намотки и въртящ се магнит</strong>
+<small>Идеализиран двуполюсен генератор · p = 1</small>
+</div>
 
-      <defs>
-        <radialGradient id="statorMetal">
-          <stop offset="0" stop-color="#0b1e2d"/>
-          <stop offset=".66" stop-color="#132e40"/>
-          <stop offset=".84" stop-color="#54758b"/>
-          <stop offset=".91" stop-color="#2a495f"/>
-          <stop offset="1" stop-color="#0b1d2b"/>
-        </radialGradient>
+<svg id="machine" class="machine"
+viewBox="0 0 960 625"
+role="img"
+aria-label="Метален статор с три намотки и въртящ се магнит">
 
-        <linearGradient id="ironCore" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" stop-color="#455866"/>
-          <stop offset=".25" stop-color="#a8bbc8"/>
-          <stop offset=".5" stop-color="#d6e1e7"/>
-          <stop offset=".75" stop-color="#839aa9"/>
-          <stop offset="1" stop-color="#334d60"/>
-        </linearGradient>
+<defs>
 
-        <linearGradient id="copperFront" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" stop-color="#874019"/>
-          <stop offset=".22" stop-color="#d77b34"/>
-          <stop offset=".5" stop-color="#ffe0a4"/>
-          <stop offset=".75" stop-color="#e69a50"/>
-          <stop offset="1" stop-color="#91491f"/>
-        </linearGradient>
+<linearGradient id="steel" x1="0" y1="0" x2="1" y2="1">
+ <stop offset="0" stop-color="#e8eef2"/>
+ <stop offset=".22" stop-color="#8797a3"/>
+ <stop offset=".47" stop-color="#dce4e9"/>
+ <stop offset=".72" stop-color="#8497a4"/>
+ <stop offset="1" stop-color="#c4cfd7"/>
+</linearGradient>
 
-        <linearGradient id="copperBack" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" stop-color="#633019"/>
-          <stop offset=".5" stop-color="#bf7135"/>
-          <stop offset="1" stop-color="#71391d"/>
-        </linearGradient>
+<linearGradient id="coreSteel" x1="0" y1="0" x2="1" y2="0">
+ <stop offset="0" stop-color="#607583"/>
+ <stop offset=".27" stop-color="#c6d1d8"/>
+ <stop offset=".53" stop-color="#edf2f5"/>
+ <stop offset=".8" stop-color="#a1b1bb"/>
+ <stop offset="1" stop-color="#546b79"/>
+</linearGradient>
 
-        <linearGradient id="northPaint" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#ff7c70"/>
-          <stop offset=".45" stop-color="#ee423e"/>
-          <stop offset="1" stop-color="#9f202c"/>
-        </linearGradient>
+<linearGradient id="north" x1="0" y1="0" x2="0" y2="1">
+ <stop offset="0" stop-color="#ffb0b0"/>
+ <stop offset=".3" stop-color="#ee353c"/>
+ <stop offset="1" stop-color="#aa1725"/>
+</linearGradient>
 
-        <linearGradient id="southPaint" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#70bfff"/>
-          <stop offset=".45" stop-color="#2777d4"/>
-          <stop offset="1" stop-color="#173a82"/>
-        </linearGradient>
+<linearGradient id="south" x1="0" y1="0" x2="0" y2="1">
+ <stop offset="0" stop-color="#b2e0ff"/>
+ <stop offset=".3" stop-color="#348ee3"/>
+ <stop offset="1" stop-color="#17478c"/>
+</linearGradient>
 
-        <radialGradient id="boreLight">
-          <stop offset="0" stop-color="#174d66"/>
-          <stop offset="1" stop-color="#071724"/>
-        </radialGradient>
+<radialGradient id="hub">
+ <stop offset="0" stop-color="#f5f8fa"/>
+ <stop offset=".5" stop-color="#96a5ae"/>
+ <stop offset="1" stop-color="#3e5260"/>
+</radialGradient>
 
-        <filter id="softShadow" x="-30%" y="-40%" width="160%" height="180%">
-          <feDropShadow dx="0" dy="5" stdDeviation="4"
-                        flood-color="#000" flood-opacity=".55"/>
-        </filter>
+<filter id="shadow">
+ <feDropShadow dx="1.5" dy="3"
+ stdDeviation="2.5" flood-opacity=".27"/>
+</filter>
 
-        <marker id="goldHead" viewBox="0 0 10 10"
-                refX="9" refY="5"
-                markerWidth="6" markerHeight="6"
-                orient="auto">
-          <path d="M0 0L10 5L0 10Z" fill="#ffd36b"/>
-        </marker>
+</defs>
 
-        <clipPath id="gapClip">
-          <circle cx="450" cy="344" r="158"/>
-        </clipPath>
-      </defs>
+<!-- ЛАМЕЛИРАН СТАТОР -->
+<circle cx="480" cy="316" r="245"
+ fill="url(#steel)"
+ stroke="#526a79"
+ stroke-width="3"/>
 
-      <!-- Статор -->
-      <circle cx="450" cy="344" r="264"
-              fill="url(#statorMetal)"
-              stroke="#718ea2" stroke-width="3"/>
+<circle cx="480" cy="316" r="180"
+ fill="#fbfdff"
+ stroke="#657c8a"
+ stroke-width="2.5"/>
 
-      <circle cx="450" cy="344" r="246"
-              fill="none" stroke="#9db7c8"
-              stroke-width="1" opacity=".35"/>
+<g id="laminations"></g>
 
-      <g id="ironMarks"></g>
+<!-- Само три опори: A, B и C -->
+<g id="coreSupports"></g>
 
-      <circle cx="450" cy="344" r="162"
-              fill="url(#boreLight)"
-              stroke="#6a879a" stroke-width="3"/>
+<!-- Намотки -->
+<g id="coilLayer"></g>
 
-      <circle cx="450" cy="344" r="151"
-              fill="none" stroke="#2c526a"
-              stroke-width="1.2" stroke-dasharray="3 7"/>
+<!-- Къси оси -->
+<g id="axes"></g>
 
-      <!-- Магнитните оси и реалистичните намотки -->
-      <g id="axisLayer"></g>
-      <g id="coilLayer"></g>
-      <g id="coilLabels"></g>
+<!-- Фазови надписи -->
+<g id="coilLabels"></g>
 
-      <!-- Линии на полето: въртят се заедно с магнита -->
-      <g clip-path="url(#gapClip)" opacity=".38">
-        <g id="fieldLines">
-          <path d="M574 322C593 192 307 192 326 322"
-                fill="none" stroke="#ffd36b" stroke-width="1.8"
-                marker-end="url(#goldHead)"/>
-          <path d="M574 366C593 496 307 496 326 366"
-                fill="none" stroke="#ffd36b" stroke-width="1.8"
-                marker-end="url(#goldHead)"/>
-          <path d="M567 310C560 247 340 247 333 310"
-                fill="none" stroke="#ffd36b" stroke-width="1.3"
-                marker-end="url(#goldHead)"/>
-          <path d="M567 378C560 441 340 441 333 378"
-                fill="none" stroke="#ffd36b" stroke-width="1.3"
-                marker-end="url(#goldHead)"/>
-        </g>
-      </g>
+<!-- ВЪРТЯЩ СЕ МАГНИТ -->
+<g id="rotor" filter="url(#shadow)">
 
-      <!-- Магнит: при θ=0 северният полюс сочи надясно. -->
-      <g id="rotor" filter="url(#softShadow)">
-        <rect x="326" y="307" width="248" height="74"
-              rx="17" fill="#122334"
-              stroke="#91a8b9" stroke-width="2"/>
+<rect x="370" y="281"
+ width="220" height="70"
+ rx="16"
+ fill="#435967"
+ stroke="#344958"
+ stroke-width="2"/>
 
-        <path d="M343 308H450V380H343Q327 380 327 364V324Q327 308 343 308Z"
-              fill="url(#southPaint)"/>
+<path
+ d="M387 283H480V349H387
+ Q372 349 372 334V298
+ Q372 283 387 283Z"
+ fill="url(#south)"/>
 
-        <path d="M450 308H557Q573 308 573 324V364Q573 380 557 380H450Z"
-              fill="url(#northPaint)"/>
+<path
+ d="M480 283H573
+ Q588 283 588 298V334
+ Q588 349 573 349H480Z"
+ fill="url(#north)"/>
 
-        <path d="M342 316H558" stroke="#ffffff55"
-              stroke-width="3" stroke-linecap="round"/>
+<path d="M390 293H567"
+ fill="none"
+ stroke="#ffffff88"
+ stroke-width="3"
+ stroke-linecap="round"/>
 
-        <text x="386" y="357" text-anchor="middle"
-              fill="white" font-size="35" font-weight="900">S</text>
-        <text x="514" y="357" text-anchor="middle"
-              fill="white" font-size="35" font-weight="900">N</text>
+<text x="423" y="329"
+ text-anchor="middle"
+ fill="white" font-size="33"
+ font-weight="900">S</text>
 
-        <line x1="450" y1="344" x2="590" y2="344"
-              stroke="#ffd36b" stroke-width="3"
-              marker-end="url(#goldHead)"/>
-      </g>
+<text x="537" y="329"
+ text-anchor="middle"
+ fill="white" font-size="33"
+ font-weight="900">N</text>
 
-      <!-- Проекция на полето по избраната магнитна ос -->
-      <g id="projection" style="display:none">
-        <line id="projectionGuide"
-              x1="450" y1="344" x2="450" y2="344"
-              stroke="#ffe3a0" stroke-width="1.7"
-              stroke-dasharray="5 5"/>
-        <line id="projectionVector"
-              x1="450" y1="344" x2="450" y2="344"
-              stroke="#ffd36b" stroke-width="4"
-              marker-end="url(#goldHead)"/>
-      </g>
+</g>
 
-      <circle cx="450" cy="344" r="17"
-              fill="#b08c3d" stroke="#ffe19b" stroke-width="2"/>
-      <circle cx="450" cy="344" r="7" fill="#fff0bc"/>
+<!-- Централен вал -->
+<circle cx="480" cy="316" r="19"
+ fill="url(#hub)"
+ stroke="#405566"
+ stroke-width="2.5"/>
 
-      <text id="machineAngle" x="450" y="640"
-            text-anchor="middle" fill="#f4dfaa"
-            font-size="18" font-weight="800">
-        Електрически ъгъл θ = 0°
-      </text>
+<circle cx="480" cy="316" r="7"
+ fill="#edf3f7"
+ stroke="#627887"/>
 
-      <text x="450" y="665" text-anchor="middle"
-            class="svgMuted">
-        Натисни върху намотка или фазов бутон, за да проследиш една фаза.
-      </text>
-    </svg>
-  </div>
+<text id="angleText"
+ x="480" y="593"
+ text-anchor="middle"
+ fill="#174b80"
+ font-size="18"
+ font-weight="800">
+θ = 90°
+</text>
 
-  <div class="phaseMetrics">
-    <button type="button" data-phase="0"
-            class="phaseMetric" style="color:var(--a)"
-            aria-pressed="false">
-      <span class="phaseName">ФАЗА A · u<sub>A</sub></span>
-      <strong id="valueA">+1,000</strong>
-      <small>моментно напрежение · p.u.</small>
-    </button>
+<text x="480" y="615"
+ text-anchor="middle"
+ fill="#647b8d"
+ font-size="12">
+Начално положение: N е срещу намотка A.
+</text>
 
-    <button type="button" data-phase="1"
-            class="phaseMetric" style="color:var(--b)"
-            aria-pressed="false">
-      <span class="phaseName">ФАЗА B · u<sub>B</sub></span>
-      <strong id="valueB">−0,500</strong>
-      <small>моментно напрежение · p.u.</small>
-    </button>
+</svg>
 
-    <button type="button" data-phase="2"
-            class="phaseMetric" style="color:var(--c)"
-            aria-pressed="false">
-      <span class="phaseName">ФАЗА C · u<sub>C</sub></span>
-      <strong id="valueC">−0,500</strong>
-      <small>моментно напрежение · p.u.</small>
-    </button>
-  </div>
+<!-- ЧИСЛОВИ ПОКАЗАНИЯ НА ТРИТЕ ФАЗИ -->
+<div class="metrics">
+
+<div class="metric">
+ <span style="color:var(--red)">Фаза A</span>
+ <strong id="valueA" style="color:var(--red)">0,000</strong>
+ <small>uA / Uбаз</small>
+</div>
+
+<div class="metric">
+ <span style="color:var(--blue)">Фаза B</span>
+ <strong id="valueB" style="color:var(--blue)">+0,866</strong>
+ <small>uB / Uбаз</small>
+</div>
+
+<div class="metric">
+ <span style="color:var(--green)">Фаза C</span>
+ <strong id="valueC" style="color:var(--green)">−0,866</strong>
+ <small>uC / Uбаз</small>
+</div>
+
+</div>
+
 </section>
 
 <aside class="side">
 
-  <section class="panel">
-    <div class="panelHeader"><strong>Управление</strong></div>
-    <div class="panelBody">
+<!-- УПРАВЛЕНИЕ -->
+<section class="panel">
+<div class="panelHead">
+<strong>Управление</strong>
+</div>
 
-      <div class="control">
-        <label for="freq">
-          Честота f <output id="frequencyOut">50 Hz</output>
-        </label>
-        <input id="freq" type="range"
-               min="10" max="100" step="1" value="50">
-      </div>
+<div class="panelBody">
 
-      <div class="control">
-        <label for="amp">
-          Амплитуда U<sub>m</sub>
-          <output id="amplitudeOut">1,00 p.u.</output>
-        </label>
-        <input id="amp" type="range"
-               min="50" max="120" step="5" value="100">
-      </div>
+<div class="control">
+<label for="frequency">
+Честота f
+<b id="freqOut">50 Hz</b>
+</label>
+<input id="frequency"
+type="range"
+min="10" max="100"
+step="1" value="50">
+</div>
 
-      <div class="control">
-        <label for="speed">
-          Учебна скорост
-          <output id="speedOut">1,00×</output>
-        </label>
-        <input id="speed" type="range"
-               min="25" max="150" step="5" value="100">
-      </div>
+<div class="control">
+<label for="amplitude">
+Амплитуда Uₘ/Uбаз
+<b id="ampOut">1,00 отн. ед.</b>
+</label>
+<input id="amplitude"
+type="range"
+min="50" max="120"
+step="5" value="100">
+</div>
 
-      <div class="buttonRow">
-        <button id="pause" type="button">Ⅱ Пауза</button>
-        <button id="reset" type="button">↺ Начало</button>
-        <button id="step10" type="button">+10°</button>
-        <button id="fluxToggle" type="button"
-                aria-pressed="false">Поток и напрежение</button>
-      </div>
+<div class="control">
+<label for="speed">
+Учебна скорост
+<b id="speedOut">1,00×</b>
+</label>
+<input id="speed"
+type="range"
+min="25" max="200"
+step="25" value="100">
+</div>
 
-      <label class="checkRow" for="axisToggle">
-        <input id="axisToggle" type="checkbox" checked>
-        Покажи магнитните оси
-      </label>
+<div class="control">
+<label for="angleSlider">
+Ъгъл θ
+<b id="angleOut">90°</b>
+</label>
+<input id="angleSlider"
+type="range"
+min="0" max="360"
+step="1" value="90">
+</div>
 
-      <div class="control" style="margin-top:15px;margin-bottom:0">
-        <label for="angleSlider">
-          Избери момент
-          <output id="angleOut">0,0°</output>
-        </label>
-        <input id="angleSlider" type="range"
-               min="0" max="360" step="1" value="0">
-      </div>
+<div class="lessonButtons">
+<button id="maxFlux" type="button">
+Максимален поток
+</button>
+<button id="maxVoltage" type="button">
+Максимално напрежение
+</button>
+</div>
 
-      <p class="note">
-        Преместването на ъгъла и бутонът „+10°“
-        спират движението и обновяват всички показания.
-      </p>
-    </div>
-  </section>
+<p class="note">
+Бутоните спират ротора в характерно положение.
+При избор „Всички фази“ показанията за потока
+са за фаза A.
+</p>
 
-  <section class="panel">
-    <div class="panelHeader"><strong>Трифазни напрежения</strong></div>
-    <div class="panelBody">
+<div class="valueGrid">
+<div class="value">
+ <span>Период T</span>
+ <strong id="period">20,00 ms</strong>
+</div>
 
-      <div class="formula" style="color:var(--a)">
-        u<sub>A</sub> = U<sub>m</sub> cos θ
-      </div>
-      <div class="formula" style="color:var(--b)">
-        u<sub>B</sub> = U<sub>m</sub> cos(θ − 120°)
-      </div>
-      <div class="formula" style="color:var(--c)">
-        u<sub>C</sub> = U<sub>m</sub> cos(θ − 240°)
-      </div>
+<div class="value">
+ <span>Синхронна скорост</span>
+ <strong id="rpm">3000 min⁻¹</strong>
+</div>
+</div>
 
-      <div class="verify">
-        <span>Проверка на симетричната система</span>
-        <strong>
-          u<sub>A</sub> + u<sub>B</sub> + u<sub>C</sub>
-          = <span id="sumValue">0,000000</span>
-        </strong>
-        <div class="note">
-          Сумата се изчислява преди закръгляването на показанията.
-        </div>
-      </div>
+</div>
+</section>
 
-      <div class="miniValues">
-        <div>Период T<b id="periodValue">20,00 ms</b></div>
-        <div>Скорост при p = 1<b id="rpmValue">3000 min⁻¹</b></div>
-      </div>
-    </div>
-  </section>
+<!-- ЕДНОВРЕМЕННИ ПОКАЗАНИЯ -->
+<section class="panel">
+<div class="panelHead">
+<strong>Магнитен поток и моментно напрежение</strong>
+</div>
 
-  <section class="panel">
-    <div class="panelBody">
-      <div id="phaseDescription" class="explain"></div>
+<div class="panelBody">
 
-      <p class="note">
-        Медните навивки са учебен векторен модел.
-        Показани са три еквивалентни фазови намотки,
-        а не конкретна производствена намотъчна схема.
-      </p>
+<div id="activePhaseLabel"
+class="note" style="font-weight:800">
+Наблюдавана фаза: A
+</div>
 
-      <p class="note">
-        Изводите са отворени. Показва се индуцирано
-        напрежение, без да се симулира ток към товар.
-      </p>
-    </div>
-  </section>
+<div class="liveValues">
+
+<div class="live">
+<span>Магнитен поток Φ/Φₘ</span>
+<strong id="fluxLive" style="color:#b28124">
+−1,000
+</strong>
+</div>
+
+<div class="live">
+<span>Моментно напрежение u/Uₘ</span>
+<strong id="voltageLive" style="color:#e42f39">
+0,000
+</strong>
+</div>
+
+</div>
+
+<div id="physicalStatus" class="info">
+N е срещу намотка A.
+Магнитният поток е максимален по модул,
+а моментното индуцирано напрежение е нула.
+</div>
+
+<div class="formula">
+u<sub>k</sub>(t) = −N
+<span style="
+display:inline-block;
+vertical-align:middle;
+text-align:center;
+line-height:1.1">
+ <span style="display:block;border-bottom:1px solid">
+ dΦ<sub>k</sub>
+ </span>
+ <span style="display:block">
+ dt
+ </span>
+</span>
+</div>
+
+<p class="note">
+Това са нормализирани моментни стойности.
+Амплитудата е максималната възможна стойност
+на съответната синусоида, а не нейната текуща стойност.
+</p>
+
+</div>
+</section>
+
+<!-- ТРИФАЗНИ ФОРМУЛИ -->
+<section class="panel">
+<div class="panelHead">
+<strong>Трифазни напрежения</strong>
+</div>
+
+<div class="panelBody">
+
+<div class="formula" style="color:var(--red)">
+u<sub>A</sub> = U<sub>m</sub> cos θ
+</div>
+
+<div class="formula" style="color:var(--blue)">
+u<sub>B</sub> = U<sub>m</sub> cos(θ − 120°)
+</div>
+
+<div class="formula" style="color:var(--green)">
+u<sub>C</sub> = U<sub>m</sub> cos(θ − 240°)
+</div>
+
+<div class="info">
+<b>Проверка</b>
+<div id="sum"
+style="text-align:center;font-size:18px">
+uA + uB + uC = 0
+</div>
+</div>
+
+</div>
+</section>
 
 </aside>
 </div>
 
-<!-- ГОЛЯМА ОБЩА ГРАФИКА -->
+<!-- ГРАФИКА НА ТРИТЕ НАПРЕЖЕНИЯ -->
 <section class="panel chartPanel">
-  <div class="panelHeader">
-    <strong>Фазови напрежения — общ момент на наблюдение</strong>
-    <small>Натисни върху графиката, за да избереш ъгъл.</small>
-  </div>
 
-  <svg id="waveSvg" viewBox="0 0 1000 275"
-       role="img" aria-label="Три фазови напрежения">
+<div class="panelHead">
+<strong>Моментни напрежения на фазите A, B и C</strong>
+<small>Един курсор, синхронизиран с ротора</small>
+</div>
 
-    <rect x="60" y="31" width="890" height="190"
-          rx="12" fill="#061725" stroke="#2d506a"/>
+<svg id="waveSvg"
+viewBox="0 0 1000 270"
+role="img"
+aria-label="Три фазови напрежения с отместване 120 градуса">
 
-    <g id="waveGrid"></g>
+<rect x="47" y="24"
+width="923" height="211"
+rx="10" fill="#f8fbfd"
+stroke="#ccdae6"/>
 
-    <path id="waveA" fill="none" stroke="#ff4545" stroke-width="3"/>
-    <path id="waveB" fill="none" stroke="#159cff" stroke-width="3"/>
-    <path id="waveC" fill="none" stroke="#6ee39b" stroke-width="3"/>
+<g id="waveGrid"></g>
 
-    <line id="waveCursor"
-          x1="80" y1="38" x2="80" y2="215"
-          stroke="#edf5fc" stroke-width="1.5" stroke-dasharray="5 5"/>
+<path id="waveA"
+fill="none" stroke="#e42f39" stroke-width="3"/>
 
-    <circle id="wavePointA" r="5" fill="#ff4545"
-            stroke="#071522" stroke-width="1.5"/>
-    <circle id="wavePointB" r="5" fill="#159cff"
-            stroke="#071522" stroke-width="1.5"/>
-    <circle id="wavePointC" r="5" fill="#6ee39b"
-            stroke="#071522" stroke-width="1.5"/>
+<path id="waveB"
+fill="none" stroke="#176cdd" stroke-width="3"/>
 
-    <text x="17" y="26" fill="#c6d8e5" font-size="13">u [p.u.]</text>
-    <text x="952" y="248" fill="#c6d8e5" font-size="13">θ = ωt</text>
-  </svg>
+<path id="waveC"
+fill="none" stroke="#159b56" stroke-width="3"/>
 
-  <div class="chartLegend">
-    <span><i class="lineKey" style="background:var(--a)"></i>u<sub>A</sub></span>
-    <span><i class="lineKey" style="background:var(--b)"></i>u<sub>B</sub></span>
-    <span><i class="lineKey" style="background:var(--c)"></i>u<sub>C</sub></span>
-    <span>Всички цифрови стойности и маркери се обновяват от един ъгъл.</span>
-  </div>
+<line id="waveCursor"
+x1="65" y1="29"
+x2="65" y2="230"
+stroke="#637d92"
+stroke-width="1.5"
+stroke-dasharray="5 5"/>
+
+<circle id="dotA" r="5.2" fill="#e42f39"/>
+<circle id="dotB" r="5.2" fill="#176cdd"/>
+<circle id="dotC" r="5.2" fill="#159b56"/>
+
+</svg>
+
+<div class="legend">
+<span>
+<i class="lineKey" style="background:var(--red)"></i>
+Фаза A
+</span>
+<span>
+<i class="lineKey" style="background:var(--blue)"></i>
+Фаза B
+</span>
+<span>
+<i class="lineKey" style="background:var(--green)"></i>
+Фаза C
+</span>
+</div>
+
 </section>
 
-<!-- ПОТОК И НАПРЕЖЕНИЕ -->
-<section id="fluxCard" class="panel chartPanel" hidden>
-  <div class="panelHeader">
-    <strong id="fluxTitle">Фаза A — поток и напрежение</strong>
-    <small>Относителни величини с отделни базови стойности</small>
-  </div>
+<!-- ГРАФИКА ПОТОК / НАПРЕЖЕНИЕ -->
+<section id="fluxCard" class="panel chartPanel">
 
-  <div class="detailsGrid">
-    <div>
-      <svg id="fluxSvg" viewBox="0 0 620 260"
-           role="img"
-           aria-label="Поток и напрежение на избраната фаза">
+<div class="panelHead">
+<strong id="fluxTitle">
+Фаза A — магнитен поток и напрежение
+</strong>
+<small>Нормализирани към собствените им амплитуди</small>
+</div>
 
-        <rect x="50" y="27" width="530" height="180"
-              rx="10" fill="#061725" stroke="#2d506a"/>
+<svg id="fluxSvg"
+viewBox="0 0 1000 270"
+role="img"
+aria-label="Фазово отместване между магнитен поток и напрежение">
 
-        <g id="fluxGrid"></g>
+<rect x="47" y="24"
+width="923" height="211"
+rx="10" fill="#f8fbfd"
+stroke="#ccdae6"/>
 
-        <path id="fluxWave" fill="none"
-              stroke="#ffd36b" stroke-width="3"
-              stroke-dasharray="8 5"/>
+<g id="fluxGrid"></g>
 
-        <path id="fluxVoltage" fill="none"
-              stroke="#ff4545" stroke-width="3"/>
+<path id="fluxWave"
+fill="none"
+stroke="#bd8b22"
+stroke-width="3"
+stroke-dasharray="8 5"/>
 
-        <line id="fluxCursor"
-              x1="66" y1="34" x2="66" y2="201"
-              stroke="#eaf3fb" stroke-width="1.4"
-              stroke-dasharray="4 4"/>
+<path id="voltageWave"
+fill="none"
+stroke="#e42f39"
+stroke-width="3"/>
 
-        <circle id="fluxPoint" r="5" fill="#ffd36b"/>
-        <circle id="voltagePoint" r="5" fill="#ff4545"/>
+<line id="fluxCursor"
+x1="65" y1="29"
+x2="65" y2="230"
+stroke="#637d92"
+stroke-width="1.5"
+stroke-dasharray="5 5"/>
 
-        <text x="582" y="231" fill="#c6d8e5" font-size="12">θ</text>
-      </svg>
+<circle id="fluxDot" r="5.2" fill="#bd8b22"/>
+<circle id="voltageDot" r="5.2" fill="#e42f39"/>
 
-      <div class="chartLegend">
-        <span>
-          <i class="lineKey" style="background:var(--gold)"></i>
-          Φ/Φ<sub>m</sub> — поток
-        </span>
-        <span id="fluxVoltageLegend"></span>
-      </div>
+</svg>
 
-      <div class="fluxReadouts">
-        <span id="fluxReadout" style="color:var(--gold)"></span>
-        <span id="voltageReadout"></span>
-      </div>
-    </div>
+<div class="legend">
+<span>
+<i class="lineKey" style="background:#bd8b22"></i>
+Φ/Φₘ — магнитен поток
+</span>
+<span>
+<i class="lineKey" style="background:var(--red)"></i>
+u/Uₘ — моментно напрежение
+</span>
+</div>
 
-    <div>
-      <div class="formula">
-        u<sub>k</sub> = −N<sub>в</sub> dΦ<sub>k</sub>/dt
-      </div>
-      <div id="fluxEquations" class="formula"></div>
-      <div id="fluxExplanation" class="explain"></div>
+<div class="panelBody">
+<p class="note">
+Когато магнитният поток е максимален по модул,
+моментното напрежение е нула.
+Когато потокът преминава през нула и се изменя
+най-бързо, моментното напрежение е максимално по модул.
+</p>
+</div>
 
-      <p class="note">
-        N<sub>в</sub> е броят на навивките.
-        Знакът съответства на избраните положителна
-        магнитна ос и означения на изводите.
-      </p>
-    </div>
-  </div>
 </section>
 
-<details>
-  <summary>Допускания на модела и източници</summary>
-
-  <p>
-    Моделът представя идеализирано синусоидално поле,
-    три еднакви еквивалентни намотки с оси на 120°
-    и една двойка полюси. Визуализацията е забавена;
-    показаните период и синхронна скорост се изчисляват
-    от зададената честота.
-  </p>
-
-  <p>
-    Честотата и амплитудата на напрежението се задават
-    независимо за учебни цели. При действително постоянен
-    магнитен поток амплитудата на индуцираното напрежение
-    се изменя пропорционално на честотата.
-  </p>
-
-  <p>
-    За избраната нормировка:
-    Φ<sub>k</sub>/Φ<sub>m</sub> = −sin(θ − δ<sub>k</sub>),
-    u<sub>k</sub>/U<sub>m</sub> = cos(θ − δ<sub>k</sub>),
-    U<sub>m</sub> = 2πfN<sub>в</sub>Φ<sub>m</sub>.
-  </p>
-
-  <p>
-    <a href="https://openstax.org/books/university-physics-volume-2/pages/13-6-electric-generators-and-back-emf"
-       target="_blank" rel="noopener noreferrer">OpenStax — Electric Generators</a>
-    ·
-    <a href="https://andymikeknight.github.io/machines/fundamentals/f_ac_gen.html"
-       target="_blank" rel="noopener noreferrer">Andy Knight — Generating AC Voltages</a>
-  </p>
-</details>
-
-<div id="errorBox" class="error" hidden role="alert"></div>
+<div id="error" hidden role="alert"></div>
 
 <footer>
-  © 2026 доц. д-р инж. Величко Атанасов.
-  Всички права запазени.
+© 2026 доц. д-р инж. Величко Атанасов.
+Всички права запазени.
 </footer>
 
 </div>
-
-<div id="rightsNotice" hidden role="status"></div>
 
 <script>
 (() => {
@@ -911,1040 +781,894 @@ footer{
 const $ = id => document.getElementById(id);
 const NS = "http://www.w3.org/2000/svg";
 const TAU = 2 * Math.PI;
-const CX = 450;
-const CY = 344;
+
+const CX = 480;
+const CY = 316;
 
 const PHASES = [
-  { name:"A", delta:0,            color:"#ff4545" },
-  { name:"B", delta:TAU / 3,      color:"#159cff" },
-  { name:"C", delta:2 * TAU / 3,  color:"#6ee39b" }
+ {
+  name:"A",
+  rotation:0,
+  delta:0,
+  color:"#e42f39"
+ },
+ {
+  name:"B",
+  rotation:240,
+  delta:TAU/3,
+  color:"#176cdd"
+ },
+ {
+  name:"C",
+  rotation:120,
+  delta:2*TAU/3,
+  color:"#159b56"
+ }
 ];
 
-const plot = {
-  left:80,
-  right:930,
-  center:126,
-  scale:64
-};
-
-const fluxPlot = {
-  left:66,
-  right:564,
-  center:117,
-  scale:67
-};
-
-const state = {
-  theta:0,
-  running:true,
-  selected:-1,
-  fluxVisible:false,
-  last:null,
-  frame:null,
-  failed:false
-};
+/*
+ НАЧАЛНО ПОЛОЖЕНИЕ:
+ θ = 90° — северният полюс е
+ точно срещу намотка A.
+*/
+let theta = Math.PI/2;
+let running = true;
+let selected = -1;
+let fluxVisible = true;
+let last = null;
+let stopped = false;
 
 const coils = [];
-const labels = [];
-const axes = [];
-const polarityLabels = [];
+const coilLabels = [];
 
-function svg(tag, attributes = {}) {
-  const element = document.createElementNS(NS, tag);
+function svg(tag,attributes={}){
+ const node=document.createElementNS(NS,tag);
 
-  for (const [name,value] of Object.entries(attributes)) {
-    element.setAttribute(name, String(value));
-  }
+ for(const [key,value] of Object.entries(attributes)){
+  node.setAttribute(key,String(value));
+ }
 
-  return element;
+ return node;
 }
 
-function wrap(a) {
-  return ((a % TAU) + TAU) % TAU;
+function fmt(value,digits=3){
+ const clean =
+  Math.abs(value)<.5*10**(-digits)
+  ?0:value;
+
+ return clean.toLocaleString("bg-BG",{
+  minimumFractionDigits:digits,
+  maximumFractionDigits:digits
+ }).replace("-","−");
 }
 
-function number(value, digits = 3, signed = false) {
-  const threshold = 0.5 * 10 ** (-digits);
-  const clean = Math.abs(value) < threshold ? 0 : value;
-
-  const formatted = clean.toLocaleString("bg-BG", {
-    minimumFractionDigits:digits,
-    maximumFractionDigits:digits
-  }).replace("-", "−");
-
-  return signed && clean > 0 ? "+" + formatted : formatted;
+function signed(value,digits=3){
+ return (value>0?"+":"")+fmt(value,digits);
 }
 
-function setLine(id, x1, y1, x2, y2) {
-  const element = $(id);
-  if (!element) throw new Error("Липсва елемент: " + id);
-
-  element.setAttribute("x1", x1);
-  element.setAttribute("y1", y1);
-  element.setAttribute("x2", x2);
-  element.setAttribute("y2", y2);
+function wrap(value){
+ return ((value%TAU)+TAU)%TAU;
 }
 
-function visible(element, show) {
-  element.style.display = show ? "" : "none";
-}
-
-function settings() {
-  return {
-    f:Number($("freq").value),
-    amplitude:Number($("amp").value) / 100,
-    speed:Number($("speed").value) / 100
-  };
+function params(){
+ return {
+  f:Number($("frequency").value),
+  amplitude:Number($("amplitude").value)/100,
+  speed:Number($("speed").value)/100
+ };
 }
 
 /*
-  Един общ модел.
+ ЕДИНЕН ФИЗИЧЕН МОДЕЛ
 
-  Пространствена магнитна ос на фаза k:
-    αk = δk − 90°.
+ За фаза k:
 
-  Северният полюс на ротора сочи под ъгъл θ.
-  Положителното въртене на екрана е по часовника.
+ Φk / Φm = -sin(θ-δk)
+ uk / Um =  cos(θ-δk)
 
-  Нормализиран поток:
-    Φk/Φm = cos(θ − αk)
-           = −sin(θ − δk).
+ Връзка:
 
-  Нормализирано напрежение:
-    uk/Um = −d(Φk/Φm)/dθ
-           = cos(θ − δk).
+ uk = -N dΦk/dt
+
+ δA=0°, δB=120°, δC=240°.
+
+ Магнитът се върти обратно на часовниковата
+ стрелка, започвайки от посока надясно при θ=0°.
 */
-function model(theta, amplitude) {
-  const phases = PHASES.map(phase => {
-    const q = theta - phase.delta;
+function calculate(angle){
+ const amplitude=params().amplitude;
 
-    return {
-      voltage:amplitude * Math.cos(q),
-      normalizedVoltage:Math.cos(q),
-      flux:-Math.sin(q),
-      axis:phase.delta - Math.PI / 2
-    };
-  });
+ const phases=PHASES.map(p=>{
+  const a=angle-p.delta;
 
   return {
-    phases,
-    sum:phases.reduce((total,p) => total + p.voltage, 0)
+   flux:-Math.sin(a),
+   uNormalized:Math.cos(a),
+   uRelative:amplitude*Math.cos(a)
   };
+ });
+
+ const sum=phases.reduce(
+  (total,p)=>total+p.uRelative,0
+ );
+
+ return {phases,sum};
 }
 
-/* Самопроверки, изпълнявани при отваряне. */
-function selfTest() {
-  const h = 1e-6;
+/* Числови и геометрични проверки */
+function selfTest(){
+ const tolerance=1e-8;
 
-  for (const amplitude of [.5,1,1.2]) {
-    for (let k = 0; k <= 72; k++) {
-      const t = TAU * k / 72;
-      const m = model(t, amplitude);
+ for(let k=0;k<=72;k++){
+  const angle=TAU*k/72;
 
-      if (Math.abs(m.sum) > 1e-10) {
-        throw new Error("Нарушена сума на трифазните напрежения.");
-      }
-
-      m.phases.forEach((p,index) => {
-        const delta = PHASES[index].delta;
-
-        const nextFlux = -Math.sin(t + h - delta);
-        const previousFlux = -Math.sin(t - h - delta);
-
-        const derivativeVoltage =
-          -(nextFlux - previousFlux) / (2 * h);
-
-        if (
-          Math.abs(
-            derivativeVoltage - p.normalizedVoltage
-          ) > 1e-6
-        ) {
-          throw new Error("Несъгласувани поток и напрежение.");
-        }
-
-        const geometricFlux = Math.cos(t - p.axis);
-
-        if (Math.abs(geometricFlux - p.flux) > 1e-10) {
-          throw new Error("Несъгласувана магнитна ос.");
-        }
-      });
-    }
-  }
-}
-
-function makeText(parent, content, x, y, color, size = 15) {
-  const text = svg("text", {
-    x, y,
-    "text-anchor":"middle",
-    "font-family":"Segoe UI,Arial,sans-serif",
-    "font-size":size,
-    "font-weight":"800",
-    fill:color
-  });
-
-  text.textContent = content;
-  parent.appendChild(text);
-  return text;
-}
-
-/* Преобразуване от локалните координати на намотка. */
-function coilPoint(x, y, delta) {
-  return {
-    x:CX + x * Math.cos(delta) - y * Math.sin(delta),
-    y:CY + x * Math.sin(delta) + y * Math.cos(delta)
-  };
-}
-
-function attachPhaseInteraction(element, index) {
-  element.setAttribute("role", "button");
-  element.setAttribute("tabindex", "0");
-  element.setAttribute(
-    "aria-label",
-    "Избери фаза " + PHASES[index].name
+  const sum=PHASES.reduce(
+   (s,p)=>s+Math.cos(angle-p.delta),0
   );
 
-  element.addEventListener("click", () => selectPhase(index));
-
-  element.addEventListener("keydown", event => {
-    if (event.key === "Enter" || event.key === " ") {
-      event.preventDefault();
-      selectPhase(index);
-    }
-  });
-}
-
-/* Статорни ламели — декоративен учебен вид. */
-function buildStator() {
-  const layer = $("ironMarks");
-
-  for (let i = 0; i < 72; i++) {
-    const a = TAU * i / 72;
-
-    layer.appendChild(svg("line", {
-      x1:CX + 248 * Math.cos(a),
-      y1:CY + 248 * Math.sin(a),
-      x2:CX + 260 * Math.cos(a),
-      y2:CY + 260 * Math.sin(a),
-      stroke:i % 3 === 0 ? "#a1b6c3" : "#637f91",
-      "stroke-width":i % 3 === 0 ? 2 : 1,
-      opacity:.5
-    }));
+  if(Math.abs(sum)>tolerance){
+   throw new Error(
+    "Неправилна сума на трифазните напрежения."
+   );
   }
+
+  const h=1e-5;
+
+  for(const p of PHASES){
+   const before=-Math.sin(angle-h-p.delta);
+   const after=-Math.sin(angle+h-p.delta);
+   const voltage=-(after-before)/(2*h);
+
+   if(
+    Math.abs(
+     voltage-Math.cos(angle-p.delta)
+    )>tolerance
+   ){
+    throw new Error(
+     "Несъгласувани поток и напрежение."
+    );
+   }
+  }
+ }
+
+ /*
+  Проверка: N срещу фазите A, B, C.
+  Положенията са 90°, 210°, 330°.
+ */
+ for(let i=0;i<PHASES.length;i++){
+  const p=PHASES[i];
+  const northAngle=p.delta+Math.PI/2;
+
+  const flux=-Math.sin(northAngle-p.delta);
+  const voltage=Math.cos(northAngle-p.delta);
+
+  if(
+   Math.abs(flux+1)>tolerance ||
+   Math.abs(voltage)>tolerance
+  ){
+   throw new Error(
+    "Неправилно положение N срещу фаза "+p.name
+   );
+  }
+ }
+
+ /*
+  Проверка на геометрията:
+  B е долу вляво, C — долу вдясно.
+ */
+ const xb=Math.sin(240*Math.PI/180);
+ const xc=Math.sin(120*Math.PI/180);
+
+ if(!(xb<0 && xc>0)){
+  throw new Error(
+   "Разменени са местоположенията на B и C."
+  );
+ }
 }
 
-/*
-  Медна намотка около радиален магнитопровод.
-  Предните и задните участъци са нарисувани
-  на отделни слоеве за обемен вид.
-*/
-function buildCoil(index) {
-  const phase = PHASES[index];
-  const deltaDeg = phase.delta * 180 / Math.PI;
+/* =====================================================
+   СТАТОР САМО С ТРИ ОПОРИ
+   ===================================================== */
 
-  const axis = phase.delta - Math.PI / 2;
-  const ux = Math.cos(axis);
-  const uy = Math.sin(axis);
+function buildStator(){
+ const layer=$("laminations");
 
-  const axisLine = svg("line", {
-    x1:CX - 155 * ux,
-    y1:CY - 155 * uy,
-    x2:CX + 155 * ux,
-    y2:CY + 155 * uy,
-    stroke:phase.color,
-    "stroke-width":1.6,
-    "stroke-dasharray":"7 7",
-    opacity:.48
+ /*
+  Метален ламелиран пръстен.
+  Няма допълнителни празни зъби.
+ */
+ for(let r=183;r<=242;r+=3.3){
+  layer.appendChild(svg("circle",{
+   cx:CX,cy:CY,r,
+   fill:"none",
+   stroke:r%2<1?"#e1e8ed":"#687d8b",
+   "stroke-width":.75,
+   opacity:.46
+  }));
+ }
+
+ const supports=$("coreSupports");
+
+ PHASES.forEach(p=>{
+  const g=svg("g",{
+   transform:
+    `translate(${CX} ${CY}) rotate(${p.rotation})`
   });
 
-  $("axisLayer").appendChild(axisLine);
-  axes.push(axisLine);
-
-  const group = svg("g", {
-    transform:"translate(" + CX + " " + CY + ") rotate(" + deltaDeg + ")",
-    class:"phaseCoil"
-  });
-
-  attachPhaseInteraction(group,index);
-
-  const highlight = svg("rect", {
-    x:-68, y:-264,
-    width:136, height:119,
-    rx:20,
-    fill:phase.color,
-    "fill-opacity":.07,
-    stroke:phase.color,
-    "stroke-opacity":.45,
-    "stroke-width":1.6
-  });
-  group.appendChild(highlight);
-
-  group.appendChild(svg("rect", {
-    x:-59, y:-255,
-    width:118, height:95,
-    rx:15,
-    fill:"#422b20",
-    stroke:"#8e6849",
-    "stroke-width":2
+  g.appendChild(svg("path",{
+   d:
+    "M-34 -239H34V-154"+
+    "Q34 -143 21 -142H-21"+
+    "Q-34 -143 -34 -154Z",
+   fill:"url(#coreSteel)",
+   stroke:"#526b79",
+   "stroke-width":2
   }));
 
-  const turnCount = 10;
-  const firstY = -243;
-  const pitch = 7.6;
-
-  /* Задните връзки свързват последователните навивки. */
-  for (let turn = 0; turn < turnCount - 1; turn++) {
-    const y = firstY + pitch * turn;
-    const next = firstY + pitch * (turn + 1);
-
-    group.appendChild(svg("path", {
-      d:
-        "M52 " + y +
-        " C52 " + (y - 12) +
-        " -52 " + (next - 12) +
-        " -52 " + next,
-      fill:"none",
-      stroke:"url(#copperBack)",
-      "stroke-width":6.3,
-      "stroke-linecap":"round"
-    }));
+  /* Ламели само върху трите опори */
+  for(let x=-24;x<=24;x+=6){
+   g.appendChild(svg("line",{
+    x1:x,y1:-235,
+    x2:x,y2:-151,
+    stroke:"#506673",
+    "stroke-width":.7,
+    opacity:.32
+   }));
   }
 
-  /* Железен зъб — зад предните медни участъци. */
-  group.appendChild(svg("rect", {
-    x:-25, y:-270,
-    width:50, height:126,
-    rx:6,
-    fill:"url(#ironCore)",
-    stroke:"#688194",
-    "stroke-width":1.5
+  g.appendChild(svg("path",{
+   d:"M-41 -158Q0 -149 41 -158",
+   fill:"none",
+   stroke:"#657c8a",
+   "stroke-width":4.5
   }));
 
-  for (let x = -18; x <= 18; x += 6) {
-    group.appendChild(svg("line", {
-      x1:x,y1:-267,x2:x,y2:-148,
-      stroke:"#223c50",
-      "stroke-width":.7,
-      opacity:.38
-    }));
-  }
+  supports.appendChild(g);
+ });
+}
 
-  /* Предни медни навивки и отблясъци. */
-  for (let turn = 0; turn < turnCount; turn++) {
-    const y = firstY + pitch * turn;
+/* =====================================================
+   ТРИ ФАЗОВИ НАМОТКИ
+   ===================================================== */
 
-    const d =
-      "M-52 " + y +
-      " C-52 " + (y + 14) +
-      " 52 " + (y + 14) +
-      " 52 " + y;
+function buildCoil(index){
+ const p=PHASES[index];
 
-    group.appendChild(svg("path", {
-      d,
-      fill:"none",
-      stroke:"#4f2815",
-      "stroke-width":8,
-      "stroke-linecap":"round"
-    }));
+ const g=svg("g",{
+  transform:
+   `translate(${CX} ${CY}) rotate(${p.rotation})`,
+  class:"coilGroup"
+ });
 
-    group.appendChild(svg("path", {
-      d,
-      fill:"none",
-      stroke:"url(#copperFront)",
-      "stroke-width":6,
-      "stroke-linecap":"round"
-    }));
+ /* Изолационна основа */
+ g.appendChild(svg("rect",{
+  x:-62,y:-228,
+  width:124,height:76,
+  rx:13,
+  fill:"#172e3e",
+  "fill-opacity":.13,
+  stroke:"#748895",
+  "stroke-width":1.1
+ }));
 
-    group.appendChild(svg("path", {
-      d:
-        "M-40 " + (y + 7) +
-        " Q0 " + (y + 15) +
-        " 39 " + (y + 7),
-      fill:"none",
-      stroke:"#ffe6b9",
-      "stroke-width":1.2,
-      opacity:.65
-    }));
-  }
+ /* Задни части на навивките */
+ for(let k=0;k<10;k++){
+  const y=-220+k*5.8;
+  const d=`M-51 ${y} Q0 ${y-16} 51 ${y}`;
 
-  const lastY = firstY + pitch * (turnCount - 1);
-
-  /* Изводите са оцветени по фази, медта остава медна. */
-  group.appendChild(svg("path", {
-    d:
-      "M-52 " + firstY +
-      " C-73 " + firstY +
-      " -77 " + (firstY - 9) +
-      " -94 " + (firstY - 9),
-    fill:"none",
-    stroke:phase.color,
-    "stroke-width":4,
-    "stroke-linecap":"round"
+  g.appendChild(svg("path",{
+   d,
+   fill:"none",
+   stroke:"#263a47",
+   "stroke-width":8,
+   "stroke-linecap":"round"
   }));
 
-  group.appendChild(svg("path", {
-    d:
-      "M52 " + lastY +
-      " C73 " + lastY +
-      " 77 " + (lastY + 12) +
-      " 94 " + (lastY + 12),
-    fill:"none",
-    stroke:phase.color,
-    "stroke-width":4,
-    "stroke-linecap":"round"
+  g.appendChild(svg("path",{
+   d,
+   fill:"none",
+   stroke:p.color,
+   "stroke-width":5.5,
+   "stroke-linecap":"round",
+   opacity:.7
+  }));
+ }
+
+ /* Предни навивки */
+ for(let k=0;k<10;k++){
+  const y=-218+k*5.8;
+  const d=`M-51 ${y} Q0 ${y+17} 51 ${y}`;
+
+  g.appendChild(svg("path",{
+   d,fill:"none",
+   stroke:"#263b49",
+   "stroke-width":8,
+   "stroke-linecap":"round"
   }));
 
-  const terminals = [
-    {x:-94,y:firstY - 9,label:phase.name},
-    {x:94,y:lastY + 12,label:phase.name + "′"}
-  ];
-
-  terminals.forEach(terminal => {
-    group.appendChild(svg("circle", {
-      cx:terminal.x, cy:terminal.y,
-      r:4.5,
-      fill:"#071522",
-      stroke:phase.color,
-      "stroke-width":2.3
-    }));
-  });
-
-  $("coilLayer").appendChild(group);
-
-  /* Надписите не се завъртат — остават четими. */
-  const labelGroup = svg("g", {class:"phaseLabel"});
-  attachPhaseInteraction(labelGroup,index);
-
-  const labelRadius = 303;
-  const lx = CX + labelRadius * ux;
-  const ly = CY + labelRadius * uy;
-
-  labelGroup.appendChild(svg("rect", {
-    x:lx - 53,
-    y:ly - 15,
-    width:106,
-    height:30,
-    rx:10,
-    fill:"#091b2b",
-    stroke:phase.color,
-    "stroke-width":1.5
+  g.appendChild(svg("path",{
+   d,fill:"none",
+   stroke:p.color,
+   "stroke-width":5.8,
+   "stroke-linecap":"round"
   }));
 
-  makeText(
-    labelGroup,
-    "ФАЗА " + phase.name,
-    lx,ly + 5,
-    phase.color,16
-  );
+  g.appendChild(svg("path",{
+   d:`M-39 ${y+5} Q0 ${y+15} 39 ${y+5}`,
+   fill:"none",
+   stroke:"#fff",
+   "stroke-width":.9,
+   opacity:.43
+  }));
+ }
 
-  const polarity = [];
+ /* Изводи */
+ for(const d of [
+  "M-51 -218Q-72 -227 -88 -227",
+  "M51 -166Q73 -154 88 -154"
+ ]){
+  g.appendChild(svg("path",{
+   d,
+   fill:"none",
+   stroke:p.color,
+   "stroke-width":4,
+   "stroke-linecap":"round"
+  }));
+ }
 
-  terminals.forEach((terminal,terminalIndex) => {
-    const point = coilPoint(
-      terminal.x,terminal.y,phase.delta
-    );
+ for(const [x,y] of [[-88,-227],[88,-154]]){
+  g.appendChild(svg("circle",{
+   cx:x,cy:y,r:4.5,
+   fill:p.color
+  }));
+ }
 
-    makeText(
-      labelGroup,
-      terminal.label,
-      point.x,
-      point.y - 13,
-      phase.color,
-      14
-    );
+ g.addEventListener("click",()=>{
+  selectPhase(index);
+ });
 
-    const sign = makeText(
-      labelGroup,
-      "0",
-      point.x,
-      point.y + 19,
-      "#e8f3fa",
-      13
-    );
+ $("coilLayer").appendChild(g);
+ coils.push(g);
 
-    polarity.push(sign);
+ const rotation=p.rotation*Math.PI/180;
+
+ const ux=Math.sin(rotation);
+ const uy=-Math.cos(rotation);
+
+ /* Къса магнитна ос към намотката */
+ $("axes").appendChild(svg("line",{
+  x1:CX+117*ux,
+  y1:CY+117*uy,
+  x2:CX+143*ux,
+  y2:CY+143*uy,
+  stroke:p.color,
+  "stroke-width":1.5,
+  "stroke-dasharray":"5 4",
+  opacity:.65
+ }));
+
+ /* Надписът следва същата координатна система */
+ const radius=282;
+ const lx=CX+radius*ux;
+ const ly=CY+radius*uy;
+
+ const label=svg("g",{
+  class:"phaseLabel"
+ });
+
+ label.appendChild(svg("rect",{
+  x:lx-68,y:ly-17,
+  width:136,height:34,
+  rx:9,
+  fill:"#fff",
+  stroke:p.color,
+  "stroke-width":1.8
+ }));
+
+ const title=svg("text",{
+  x:lx,y:ly+6,
+  "text-anchor":"middle",
+  fill:p.color,
+  "font-family":"Arial",
+  "font-size":18,
+  "font-weight":"900"
+ });
+
+ title.textContent=
+  `L${index+1} (${p.name})`;
+
+ label.appendChild(title);
+
+ const degreeText=svg("text",{
+  x:lx,y:ly+35,
+  "text-anchor":"middle",
+  fill:"#60798c",
+  "font-size":13
+ });
+
+ degreeText.textContent=
+  index*120+"°";
+
+ label.appendChild(degreeText);
+
+ label.addEventListener("click",()=>{
+  selectPhase(index);
+ });
+
+ $("coilLabels").appendChild(label);
+ coilLabels.push(label);
+}
+
+/* =====================================================
+   ГРАФИКИ
+   ===================================================== */
+
+const X0=65;
+const X1=950;
+const Y0=129;
+const GRAPH_AMP=79;
+
+function buildGrid(id){
+ const group=$(id);
+
+ for(let k=0;k<=4;k++){
+  const x=X0+(X1-X0)*k/4;
+
+  group.appendChild(svg("line",{
+   x1:x,y1:29,
+   x2:x,y2:230,
+   stroke:"#d6e2ec",
+   "stroke-width":1
+  }));
+
+  const text=svg("text",{
+   x,y:251,
+   "text-anchor":"middle",
+   fill:"#647b8e",
+   "font-size":12
   });
 
-  $("coilLabels").appendChild(labelGroup);
+  text.textContent=k*90+"°";
+  group.appendChild(text);
+ }
 
-  coils.push({group,highlight});
-  labels.push(labelGroup);
-  polarityLabels.push(polarity);
+ group.appendChild(svg("line",{
+  x1:X0,y1:Y0,
+  x2:X1,y2:Y0,
+  stroke:"#91a6b5",
+  "stroke-width":1.5
+ }));
 }
 
-/* Графична мрежа. */
-function buildGrid(parent, left, right, center, scale, top, bottom, labelY) {
-  for (let i = 0; i <= 4; i++) {
-    const x = left + (right - left) * i / 4;
+function curve(fn){
+ let d="";
 
-    parent.appendChild(svg("line", {
-      x1:x,y1:top,x2:x,y2:bottom,
-      stroke:"#29495e",
-      "stroke-width":1
-    }));
+ for(let k=0;k<=360;k++){
+  const a=TAU*k/360;
+  const x=X0+(X1-X0)*k/360;
+  const y=Y0-GRAPH_AMP*fn(a);
 
-    makeText(
-      parent,
-      ["0°","90°","180°","270°","360°"][i],
-      x,labelY,
-      "#aac2d3",12
-    );
-  }
+  d+=(k===0?"M":"L")+
+   x.toFixed(2)+" "+y.toFixed(2)+" ";
+ }
 
-  for (const level of [-1,0,1]) {
-    const y = center - scale * level;
-
-    parent.appendChild(svg("line", {
-      x1:left,y1:y,x2:right,y2:y,
-      stroke:level === 0 ? "#648196" : "#29495e",
-      "stroke-width":level === 0 ? 1.4 : 1
-    }));
-
-    makeText(
-      parent,
-      level > 0 ? "+1" : String(level),
-      left - 22,
-      y + 4,
-      "#aac2d3",12
-    );
-  }
+ return d;
 }
 
-function curvePath(plotConfig, fn) {
-  let d = "";
+function updateCurves(){
+ const amplitude=params().amplitude;
 
-  for (let i = 0; i <= 360; i++) {
-    const a = TAU * i / 360;
-    const x = plotConfig.left +
-      (plotConfig.right - plotConfig.left) * i / 360;
+ PHASES.forEach(p=>{
+  $("wave"+p.name).setAttribute(
+   "d",
+   curve(a=>
+    amplitude*Math.cos(a-p.delta)
+   )
+  );
+ });
 
-    const y = plotConfig.center - plotConfig.scale * fn(a);
+ const p=PHASES[activePhase()];
 
-    d += (i === 0 ? "M" : "L") +
-      x.toFixed(3) + " " + y.toFixed(3) + " ";
-  }
+ $("fluxTitle").textContent=
+  "Фаза "+p.name+
+  " — магнитен поток и моментно напрежение";
 
-  return d;
+ $("fluxWave").setAttribute(
+  "d",
+  curve(a=>-Math.sin(a-p.delta))
+ );
+
+ $("voltageWave").setAttribute(
+  "d",
+  curve(a=>Math.cos(a-p.delta))
+ );
+
+ $("voltageWave").setAttribute(
+  "stroke",p.color
+ );
+
+ $("voltageDot").setAttribute(
+  "fill",p.color
+ );
 }
 
-function detailPhase() {
-  return state.selected < 0 ? 0 : state.selected;
+/* =====================================================
+   УПРАВЛЕНИЕ
+   ===================================================== */
+
+function activePhase(){
+ return selected<0?0:selected;
 }
 
-function updateCurves() {
-  const p = settings();
+function selectPhase(index){
+ selected=index;
 
-  PHASES.forEach((phase,index) => {
-    $("wave" + phase.name).setAttribute(
-      "d",
-      curvePath(
-        plot,
-        angle => p.amplitude * Math.cos(angle - phase.delta)
-      )
-    );
-  });
+ document.querySelectorAll("[data-phase]").forEach(b=>{
+  b.classList.toggle(
+   "active",
+   Number(b.dataset.phase)===index
+  );
+ });
 
-  const index = detailPhase();
-  const selected = PHASES[index];
+ coils.forEach((group,i)=>{
+  group.setAttribute(
+   "opacity",
+   index<0||index===i?"1":".32"
+  );
+ });
 
-  $("fluxWave").setAttribute(
-    "d",
-    curvePath(
-      fluxPlot,
-      angle => -Math.sin(angle - selected.delta)
-    )
+ coilLabels.forEach((group,i)=>{
+  group.setAttribute(
+   "opacity",
+   index<0||index===i?"1":".5"
+  );
+ });
+
+ PHASES.forEach((p,i)=>{
+  $("wave"+p.name).setAttribute(
+   "opacity",
+   index<0||index===i?"1":".25"
+  );
+ });
+
+ updateCurves();
+ update();
+}
+
+function stopAt(angle){
+ theta=Math.max(0,Math.min(TAU,angle));
+ running=false;
+ last=null;
+
+ $("pause").textContent="▶ Продължи";
+ $("status").textContent="● Пауза";
+
+ update();
+}
+
+/* =====================================================
+   ОБНОВЯВАНЕ НА ВСИЧКИ ПОКАЗАНИЯ
+   ===================================================== */
+
+function update(){
+ const cfg=params();
+ const result=calculate(theta);
+
+ const degrees=theta*180/Math.PI;
+
+ /*
+  SVG има положително въртене по часовника.
+  Затова използваме минус, за да получим
+  физично въртене обратно на часовниковата стрелка.
+ */
+ $("rotor").setAttribute(
+  "transform",
+  `rotate(${-degrees} ${CX} ${CY})`
+ );
+
+ $("angleText").textContent=
+  "Електрически ъгъл θ = "+
+  fmt(degrees,1)+"°";
+
+ $("angleOut").textContent=
+  fmt(degrees,1)+"°";
+
+ $("angleSlider").value=String(degrees);
+
+ $("freqOut").textContent=
+  fmt(cfg.f,0)+" Hz";
+
+ $("ampOut").textContent=
+  fmt(cfg.amplitude,2)+" отн. ед.";
+
+ $("speedOut").textContent=
+  fmt(cfg.speed,2)+"×";
+
+ $("period").textContent=
+  fmt(1000/cfg.f,2)+" ms";
+
+ $("rpm").textContent=
+  fmt(60*cfg.f,0)+" min⁻¹";
+
+ PHASES.forEach((p,index)=>{
+  $("value"+p.name).textContent=
+   signed(result.phases[index].uRelative,3);
+ });
+
+ $("sum").textContent=
+  "uA + uB + uC = "+
+  fmt(result.sum,6)+" отн. ед.";
+
+ const x=X0+(X1-X0)*theta/TAU;
+
+ $("waveCursor").setAttribute("x1",x);
+ $("waveCursor").setAttribute("x2",x);
+
+ PHASES.forEach((p,i)=>{
+  $("dot"+p.name).setAttribute("cx",x);
+
+  $("dot"+p.name).setAttribute(
+   "cy",
+   Y0-GRAPH_AMP*result.phases[i].uRelative
+  );
+ });
+
+ const index=activePhase();
+ const phase=PHASES[index];
+ const value=result.phases[index];
+
+ $("activePhaseLabel").textContent=
+  "Наблюдавана фаза: "+phase.name;
+
+ $("fluxLive").textContent=
+  signed(value.flux,3);
+
+ $("voltageLive").textContent=
+  signed(value.uNormalized,3);
+
+ $("fluxCursor").setAttribute("x1",x);
+ $("fluxCursor").setAttribute("x2",x);
+
+ $("fluxDot").setAttribute("cx",x);
+ $("fluxDot").setAttribute(
+  "cy",
+  Y0-GRAPH_AMP*value.flux
+ );
+
+ $("voltageDot").setAttribute("cx",x);
+ $("voltageDot").setAttribute(
+  "cy",
+  Y0-GRAPH_AMP*value.uNormalized
+ );
+
+ const fluxAbs=Math.abs(value.flux);
+ const voltageAbs=Math.abs(value.uNormalized);
+
+ let message="";
+
+ if(fluxAbs>.985){
+  const pole=value.flux<0?"N":"S";
+
+  message=
+   "<b>Полюс "+pole+
+   " е срещу магнитната ос на намотка "+
+   phase.name+".</b><br>"+
+   "Магнитният поток е максимален по модул.<br>"+
+   "<b>Моментното напрежение е близо до нула.</b>";
+
+ }else if(voltageAbs>.985){
+  message=
+   "<b>Напрежението във фаза "+
+   phase.name+
+   " е близо до максимума си по модул.</b><br>"+
+   "Магнитният поток преминава през нула и "+
+   "се изменя най-бързо.";
+
+ }else{
+  message=
+   "<b>Фаза "+phase.name+"</b><br>"+
+   "Φ/Φₘ = "+signed(value.flux,3)+"<br>"+
+   "u/Uₘ = "+signed(value.uNormalized,3)+"<br>"+
+   "Моментното напрежение зависи от скоростта "+
+   "на изменение на потока.";
+ }
+
+ $("physicalStatus").innerHTML=message;
+}
+
+/* =====================================================
+   БУТОНИ
+   ===================================================== */
+
+document.querySelectorAll("[data-phase]").forEach(b=>{
+ b.addEventListener("click",()=>{
+  selectPhase(Number(b.dataset.phase));
+ });
+});
+
+/* Максимум на магнитния поток при N срещу намотката */
+$("maxFlux").addEventListener("click",()=>{
+ const index=activePhase();
+ stopAt(PHASES[index].delta+Math.PI/2);
+});
+
+/* Положителен максимум на напрежението */
+$("maxVoltage").addEventListener("click",()=>{
+ const index=activePhase();
+ stopAt(PHASES[index].delta);
+});
+
+$("pause").addEventListener("click",()=>{
+ running=!running;
+ last=null;
+
+ $("pause").textContent=running
+  ?"Ⅱ Пауза":"▶ Продължи";
+
+ $("status").textContent=running
+  ?"● Движение":"● Пауза";
+});
+
+$("fluxToggle").addEventListener("click",()=>{
+ fluxVisible=!fluxVisible;
+
+ $("fluxCard").hidden=!fluxVisible;
+
+ $("fluxToggle").classList.toggle(
+  "active",fluxVisible
+ );
+
+ updateCurves();
+ update();
+});
+
+$("angleSlider").addEventListener("input",()=>{
+ stopAt(
+  Number($("angleSlider").value)*
+  Math.PI/180
+ );
+});
+
+$("frequency").addEventListener("input",update);
+$("speed").addEventListener("input",update);
+
+$("amplitude").addEventListener("input",()=>{
+ updateCurves();
+ update();
+});
+
+/* Начало: θ = 90°, N е срещу A */
+$("reset").addEventListener("click",()=>{
+ $("frequency").value=50;
+ $("amplitude").value=100;
+ $("speed").value=100;
+
+ theta=Math.PI/2;
+ running=true;
+ last=null;
+ fluxVisible=true;
+
+ $("fluxCard").hidden=false;
+ $("fluxToggle").classList.add("active");
+
+ $("pause").textContent="Ⅱ Пауза";
+ $("status").textContent="● Движение";
+
+ selectPhase(-1);
+ update();
+});
+
+/* Избор на момент от графиката */
+function connectGraph(id){
+ const graph=$(id);
+
+ graph.addEventListener("pointerdown",event=>{
+  const matrix=graph.getScreenCTM();
+  if(!matrix)return;
+
+  const pt=graph.createSVGPoint();
+  pt.x=event.clientX;
+  pt.y=event.clientY;
+
+  const local=pt.matrixTransform(
+   matrix.inverse()
   );
 
-  $("fluxVoltage").setAttribute(
-    "d",
-    curvePath(
-      fluxPlot,
-      angle => Math.cos(angle - selected.delta)
-    )
+  const fraction=Math.max(
+   0,
+   Math.min(
+    1,
+    (local.x-X0)/(X1-X0)
+   )
   );
 
-  $("fluxVoltage").setAttribute("stroke",selected.color);
-  $("voltagePoint").setAttribute("fill",selected.color);
-  $("voltageReadout").style.color = selected.color;
-
-  $("fluxTitle").textContent =
-    "Фаза " + selected.name + " — поток и напрежение";
-
-  $("fluxVoltageLegend").innerHTML =
-    '<i class="lineKey" style="background:' +
-    selected.color +
-    '"></i>u/U<sub>m</sub> — напрежение';
-
-  const delta = index * 120;
-  const argument = delta === 0
-    ? "θ"
-    : "(θ − " + delta + "°)";
-
-  $("fluxEquations").innerHTML =
-    "Φ<sub>" + selected.name +
-    "</sub>/Φ<sub>m</sub> = −sin " + argument +
-    "<br>u<sub>" + selected.name +
-    "</sub>/U<sub>m</sub> = cos " + argument;
+  stopAt(fraction*TAU);
+ });
 }
 
-function updateSelection() {
-  document.querySelectorAll("[data-phase]").forEach(button => {
-    const active = Number(button.dataset.phase) === state.selected;
-    button.classList.toggle("active",active);
-    button.setAttribute("aria-pressed",String(active));
-  });
+connectGraph("waveSvg");
+connectGraph("fluxSvg");
 
-  coils.forEach((coil,index) => {
-    const active = state.selected < 0 || state.selected === index;
+document.addEventListener("visibilitychange",()=>{
+ last=null;
+});
 
-    coil.group.setAttribute("opacity",active ? "1" : ".30");
-    labels[index].setAttribute("opacity",active ? "1" : ".40");
+/* =====================================================
+   ЕДИН АНИМАЦИОНЕН ЦИКЪЛ
+   ===================================================== */
 
-    coil.highlight.setAttribute(
-      "fill-opacity",
-      state.selected === index ? ".18" : ".06"
-    );
+function animate(now){
+ if(stopped)return;
 
-    coil.highlight.setAttribute(
-      "stroke-opacity",
-      state.selected === index ? ".95" : ".40"
-    );
+ try{
+  const dt=last===null
+   ?0
+   :Math.min(
+    .05,
+    Math.max(0,(now-last)/1000)
+   );
 
-    axes[index].setAttribute(
-      "opacity",
-      state.selected === index ? ".85" :
-      state.selected < 0 ? ".42" : ".16"
-    );
+  last=now;
 
-    $("wave" + PHASES[index].name).setAttribute(
-      "opacity",active ? "1" : ".20"
-    );
+  if(running&&!document.hidden){
+   const p=params();
 
-    $("wavePoint" + PHASES[index].name).setAttribute(
-      "opacity",active ? "1" : ".28"
-    );
-  });
+   theta=wrap(
+    theta+
+    dt*TAU/8*
+    (p.f/50)*p.speed
+   );
 
-  if (state.selected < 0) {
-    $("phaseDescription").innerHTML =
-      "<b>Трите фази са показани заедно.</b> " +
-      "Натисни върху намотка или цифровото ѝ показание, " +
-      "за да проследиш само нея. В режима за потока " +
-      "при общ изглед се разглежда фаза A.";
-  } else {
-    const phase = PHASES[state.selected];
-
-    $("phaseDescription").innerHTML =
-      "<b style='color:" + phase.color + "'>Избрана фаза " +
-      phase.name + ".</b> " +
-      "Подчертани са нейната намотка, изводи и синусоида. " +
-      "Останалите фази продължават да се изчисляват.";
+   update();
   }
 
-  updateCurves();
-}
+  requestAnimationFrame(animate);
 
-function selectPhase(index) {
-  state.selected = index;
-  updateSelection();
-  render();
-}
-
-function updateRunningUI() {
-  $("pause").textContent = state.running ? "Ⅱ Пауза" : "▶ Продължи";
-  $("status").textContent = state.running ? "● Движение" : "● Пауза";
-}
-
-function stopAt(angle) {
-  state.theta = angle;
-  state.running = false;
-  state.last = null;
-
-  updateRunningUI();
-  render();
-}
-
-/* Един момент управлява всичко на екрана. */
-function render() {
-  const cfg = settings();
-  const m = model(state.theta,cfg.amplitude);
-  const degrees = state.theta * 180 / Math.PI;
-
-  $("rotor").setAttribute(
-    "transform",
-    "rotate(" + degrees + " " + CX + " " + CY + ")"
-  );
-
-  $("fieldLines").setAttribute(
-    "transform",
-    "rotate(" + degrees + " " + CX + " " + CY + ")"
-  );
-
-  $("machineAngle").textContent =
-    "Електрически ъгъл θ = " + number(degrees,1) + "°";
-
-  $("angleOut").textContent = number(degrees,1) + "°";
-  $("angleSlider").value = String(degrees);
-
-  $("frequencyOut").textContent = number(cfg.f,0) + " Hz";
-  $("amplitudeOut").textContent =
-    number(cfg.amplitude,2) + " p.u.";
-  $("speedOut").textContent = number(cfg.speed,2) + "×";
-
-  $("periodValue").textContent =
-    number(1000 / cfg.f,2) + " ms";
-  $("rpmValue").textContent =
-    number(60 * cfg.f,0) + " min⁻¹";
-
-  $("sumValue").textContent = number(m.sum,6);
-
-  const fraction = Math.min(1,Math.max(0,state.theta / TAU));
-  const waveX = plot.left + (plot.right - plot.left) * fraction;
-
-  setLine("waveCursor",waveX,38,waveX,215);
-
-  m.phases.forEach((p,index) => {
-    const name = PHASES[index].name;
-
-    $("value" + name).textContent =
-      number(p.voltage,3,true);
-
-    $("wavePoint" + name).setAttribute("cx",waveX);
-    $("wavePoint" + name).setAttribute(
-      "cy",plot.center - plot.scale * p.voltage
-    );
-
-    const sign = Math.abs(p.voltage) < 1e-9
-      ? 0 : Math.sign(p.voltage);
-
-    polarityLabels[index][0].textContent =
-      sign === 0 ? "0" : sign > 0 ? "+" : "−";
-
-    polarityLabels[index][1].textContent =
-      sign === 0 ? "0" : sign > 0 ? "−" : "+";
-  });
-
-  visible($("axisLayer"),$("axisToggle").checked);
-
-  const selectedIndex = detailPhase();
-  const selected = m.phases[selectedIndex];
-
-  /*
-    Показва се проекцията на посоката на полето
-    върху положителната магнитна ос на фазата.
-  */
-  visible($("projection"),state.fluxVisible);
-
-  if (state.fluxVisible) {
-    const length = 136;
-
-    const bx = CX + length * Math.cos(state.theta);
-    const by = CY + length * Math.sin(state.theta);
-
-    const px = CX + length * selected.flux * Math.cos(selected.axis);
-    const py = CY + length * selected.flux * Math.sin(selected.axis);
-
-    setLine("projectionGuide",bx,by,px,py);
-    setLine("projectionVector",CX,CY,px,py);
-
-    $("projectionVector").setAttribute(
-      "opacity",Math.abs(selected.flux) < .015 ? "0" : "1"
-    );
-  }
-
-  const fluxX = fluxPlot.left +
-    (fluxPlot.right - fluxPlot.left) * fraction;
-
-  setLine("fluxCursor",fluxX,34,fluxX,201);
-
-  $("fluxPoint").setAttribute("cx",fluxX);
-  $("fluxPoint").setAttribute(
-    "cy",fluxPlot.center - fluxPlot.scale * selected.flux
-  );
-
-  $("voltagePoint").setAttribute("cx",fluxX);
-  $("voltagePoint").setAttribute(
-    "cy",
-    fluxPlot.center - fluxPlot.scale * selected.normalizedVoltage
-  );
-
-  $("fluxReadout").innerHTML =
-    "Φ/Φ<sub>m</sub> = " + number(selected.flux,3,true);
-
-  $("voltageReadout").innerHTML =
-    "u/U<sub>m</sub> = " +
-    number(selected.normalizedVoltage,3,true);
-
-  const fluxAbs = Math.abs(selected.flux);
-  const voltageAbs = Math.abs(selected.normalizedVoltage);
-
-  if (fluxAbs > .995) {
-    $("fluxExplanation").innerHTML =
-      "<b>Потокът е близо до максимума си.</b> " +
-      "В този момент изменението му е малко и " +
-      "индуцираното напрежение е близо до нула.";
-
-  } else if (voltageAbs > .995) {
-    $("fluxExplanation").innerHTML =
-      "<b>Напрежението е близо до максимума си.</b> " +
-      "Потокът преминава през нула и се изменя " +
-      "най-бързо по големина.";
-
-  } else {
-    $("fluxExplanation").innerHTML =
-      "Жълтата крива показва потока, а цветната — " +
-      "напрежението на избраната фаза. " +
-      "<b>Напрежението зависи от скоростта на изменение " +
-      "на потока, а не само от неговата големина.</b>";
-  }
-}
-
-/* Избор на ъгъл чрез натискане върху SVG графика. */
-function attachPlotInteraction(id, left, right) {
-  const element = $(id);
-
-  element.addEventListener("pointerdown",event => {
-    const matrix = element.getScreenCTM();
-    if (!matrix) return;
-
-    const point = element.createSVGPoint();
-    point.x = event.clientX;
-    point.y = event.clientY;
-
-    const local = point.matrixTransform(matrix.inverse());
-    const fraction = Math.min(
-      1,
-      Math.max(0,(local.x - left) / (right - left))
-    );
-
-    stopAt(fraction * TAU);
-  });
-}
-
-function reportError(error) {
-  state.failed = true;
-  state.running = false;
-
-  if (state.frame !== null) {
-    cancelAnimationFrame(state.frame);
-    state.frame = null;
-  }
-
-  $("errorBox").hidden = false;
-  $("errorBox").textContent =
-    "Анимацията е спряна: " +
-    (error && error.message ? error.message : String(error));
-
-  $("status").textContent = "● Грешка";
-  $("pause").textContent = "Спряна";
-
+ }catch(error){
+  stopped=true;
   console.error(error);
+
+  $("error").hidden=false;
+  $("error").textContent=
+   "Грешка в анимацията: "+
+   error.message;
+ }
 }
 
-function safe(fn) {
-  return (...args) => {
-    if (state.failed) return;
+/* =====================================================
+   СТАРТИРАНЕ
+   ===================================================== */
 
-    try {
-      return fn(...args);
-    } catch (error) {
-      reportError(error);
-    }
-  };
-}
+try{
+ selfTest();
 
-/* Управление */
-document.querySelectorAll("[data-phase]").forEach(button => {
-  button.addEventListener("click",safe(() => {
-    selectPhase(Number(button.dataset.phase));
-  }));
-});
+ buildStator();
 
-$("pause").addEventListener("click",safe(() => {
-  state.running = !state.running;
-  state.last = null;
-  updateRunningUI();
-  render();
-}));
+ PHASES.forEach((p,index)=>{
+  buildCoil(index);
+ });
 
-$("step10").addEventListener("click",safe(() => {
-  stopAt(wrap(state.theta + Math.PI / 18));
-}));
+ buildGrid("waveGrid");
+ buildGrid("fluxGrid");
 
-$("angleSlider").addEventListener("input",safe(() => {
-  stopAt(Number($("angleSlider").value) * Math.PI / 180);
-}));
+ selectPhase(-1);
+ updateCurves();
+ update();
 
-$("reset").addEventListener("click",safe(() => {
-  $("freq").value = 50;
-  $("amp").value = 100;
-  $("speed").value = 100;
-  $("axisToggle").checked = true;
+ requestAnimationFrame(animate);
 
-  state.theta = 0;
-  state.running = true;
-  state.selected = -1;
-  state.fluxVisible = false;
-  state.last = null;
+}catch(error){
+ stopped=true;
+ console.error(error);
 
-  $("fluxCard").hidden = true;
-  $("fluxToggle").classList.remove("active");
-  $("fluxToggle").setAttribute("aria-pressed","false");
-
-  updateRunningUI();
-  updateSelection();
-  render();
-}));
-
-$("fluxToggle").addEventListener("click",safe(() => {
-  state.fluxVisible = !state.fluxVisible;
-
-  $("fluxCard").hidden = !state.fluxVisible;
-  $("fluxToggle").classList.toggle("active",state.fluxVisible);
-  $("fluxToggle").setAttribute(
-    "aria-pressed",String(state.fluxVisible)
-  );
-
-  render();
-}));
-
-$("axisToggle").addEventListener("change",safe(render));
-
-["freq","speed"].forEach(id => {
-  $(id).addEventListener("input",safe(render));
-});
-
-$("amp").addEventListener("input",safe(() => {
-  updateCurves();
-  render();
-}));
-
-document.addEventListener("visibilitychange",() => {
-  state.last = null;
-});
-
-/* Леки ограничения срещу обичайно копиране. */
-let rightsTimer = null;
-
-function rightsMessage() {
-  $("rightsNotice").textContent =
-    "© доц. д-р инж. Величко Атанасов. " +
-    "Командата е ограничена в учебната страница.";
-
-  $("rightsNotice").hidden = false;
-  clearTimeout(rightsTimer);
-
-  rightsTimer = setTimeout(() => {
-    $("rightsNotice").hidden = true;
-  },2200);
-}
-
-function editable(target) {
-  return target instanceof Element &&
-    !!target.closest("input,textarea,[contenteditable='true']");
-}
-
-document.addEventListener("contextmenu",event => {
-  if (editable(event.target)) return;
-  event.preventDefault();
-  rightsMessage();
-});
-
-document.addEventListener("copy",event => {
-  if (editable(event.target)) return;
-  event.preventDefault();
-  rightsMessage();
-});
-
-document.addEventListener("dragstart",event => {
-  if (event.target instanceof Element &&
-      event.target.closest("svg")) {
-    event.preventDefault();
-  }
-});
-
-window.addEventListener("keydown",event => {
-  const modifier = event.ctrlKey || event.metaKey;
-
-  if (
-    modifier &&
-    ["KeyS","KeyU"].includes(event.code) &&
-    !editable(event.target)
-  ) {
-    event.preventDefault();
-    rightsMessage();
-  }
-},true);
-
-/* Единствен анимационен цикъл. */
-function frame(now) {
-  if (state.failed) return;
-
-  try {
-    const dt = state.last === null
-      ? 0
-      : Math.min(.05,Math.max(0,(now - state.last) / 1000));
-
-    state.last = now;
-
-    if (state.running && !document.hidden) {
-      const cfg = settings();
-
-      /*
-        Един учебен електрически период за 8 секунди
-        при f = 50 Hz и учебна скорост 1×.
-      */
-      state.theta = wrap(
-        state.theta +
-        dt * TAU / 8 * (cfg.f / 50) * cfg.speed
-      );
-
-      render();
-    }
-
-    state.frame = requestAnimationFrame(frame);
-
-  } catch (error) {
-    reportError(error);
-  }
-}
-
-/* Начална подготовка. */
-try {
-  selfTest();
-
-  buildStator();
-  PHASES.forEach((_,index) => buildCoil(index));
-
-  buildGrid(
-    $("waveGrid"),
-    plot.left,plot.right,
-    plot.center,plot.scale,
-    39,214,244
-  );
-
-  buildGrid(
-    $("fluxGrid"),
-    fluxPlot.left,fluxPlot.right,
-    fluxPlot.center,fluxPlot.scale,
-    35,200,230
-  );
-
-  attachPlotInteraction("waveSvg",plot.left,plot.right);
-  attachPlotInteraction(
-    "fluxSvg",fluxPlot.left,fluxPlot.right
-  );
-
-  updateSelection();
-  updateRunningUI();
-  render();
-
-  state.frame = requestAnimationFrame(frame);
-
-} catch (error) {
-  reportError(error);
+ $("error").hidden=false;
+ $("error").textContent=
+  "Грешка при стартиране: "+
+  error.message;
 }
 
 })();
 </script>
+
 </body>
 </html>

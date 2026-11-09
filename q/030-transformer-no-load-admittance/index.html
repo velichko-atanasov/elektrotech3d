@@ -1,124 +1,1119 @@
+
 <!DOCTYPE html>
-<!-- saved from url=(0064)file:///C:/Users/velichko.atanasov/Downloads/preview%20(24).html -->
-<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="доц. д-р инж. Величко Атанасов">
 <title>QR-030 – Трансформатор на празен ход</title>
 <style>
-*{box-sizing:border-box} :root{--ink:#17324a;--blue:#1769aa;--orange:#d97b16;--green:#168451;--violet:#6b48ad;--red:#c74336;--line:#b9cad6}
-body{margin:0;background:#eef4f8;color:var(--ink);font-family:Segoe UI,Arial,sans-serif}
-.wrap{max-width:1250px;margin:auto;padding:14px} h1{text-align:center;color:#174f88;margin:4px 0;font-size:clamp(24px,4vw,38px)}
-.sub{text-align:center;color:#60798c;margin:6px 0 14px}.main{display:grid;grid-template-columns:1.45fr .55fr;gap:14px}
-.stage{min-height:730px;background:#fff;border:1px solid var(--line);border-radius:18px;position:relative;overflow:hidden}
-svg{position:absolute;inset:0;width:100%;height:100%}.side,.card{background:#fff;border:1px solid var(--line);border-radius:16px}
-.side{padding:11px}.card{padding:10px;margin-bottom:10px}.title{font-weight:900;color:#174f88;margin-bottom:7px}
-label{display:flex;justify-content:space-between;font-weight:750;margin:7px 0}input[type=range]{width:100%;accent-color:#1769aa}
-button{width:100%;padding:9px;border:1px solid #8aaac1;border-radius:9px;background:#edf6fc;color:#174f88;font-weight:850}
-.result{font-size:14px;line-height:1.62}.note{font-size:13px;color:#5a7182;line-height:1.45}
-.wire{stroke:#273c49;stroke-width:4;fill:none;stroke-linecap:round}.lab{fill:#17324a;font-size:16px;font-weight:850}.small{fill:#5b7180;font-size:13px;font-weight:700}
-.box{fill:#f8fbfd;stroke:#bdccd7;stroke-width:2}.axis{stroke:#6c7f8c;stroke-width:2}.pvec{stroke:#1769aa;stroke-width:4}.qvec{stroke:#d97b16;stroke-width:4}.svec{stroke:#6b48ad;stroke-width:4}
-@media(max-width:900px){.main{grid-template-columns:1fr}.stage{min-height:720px}}
+:root{
+ --ink:#17324a;
+ --blue:#1769aa;
+ --orange:#d97b16;
+ --green:#168451;
+ --violet:#6b48ad;
+ --red:#c74336;
+ --line:#b9cad6;
+ --muted:#60798c;
+}
+*{box-sizing:border-box}
+body{
+ margin:0;
+ background:#eef4f8;
+ color:var(--ink);
+ font:15px/1.55 "Segoe UI",Arial,sans-serif;
+}
+.wrap{max-width:1250px;margin:auto;padding:14px}
+h1{
+ text-align:center;
+ color:#174f88;
+ margin:4px 0;
+ font-size:clamp(24px,3.4vw,36px);
+}
+.sub{
+ text-align:center;
+ color:var(--muted);
+ margin:6px 0 14px;
+}
+.main{
+ display:grid;
+ grid-template-columns:minmax(0,1.45fr) minmax(280px,.55fr);
+ gap:14px;
+ align-items:start;
+}
+.stage,.side{
+ background:#fff;
+ border:1px solid var(--line);
+ border-radius:17px;
+ min-width:0;
+ overflow:hidden;
+}
+.stage svg{display:block;width:100%;height:auto}
+.side{padding:11px}
+.card{
+ padding:11px;
+ margin-bottom:10px;
+ border:1px solid var(--line);
+ border-radius:12px;
+ background:#fbfdff;
+}
+.title{
+ font-weight:900;
+ color:#174f88;
+ margin-bottom:8px;
+}
+label{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:10px;
+ font-weight:750;
+ margin:8px 0;
+}
+input[type=range]{
+ width:100%;
+ accent-color:#1769aa;
+}
+input[type=checkbox]{accent-color:#1769aa}
+button{
+ width:100%;
+ padding:10px;
+ margin-top:7px;
+ border:1px solid #8aaac1;
+ border-radius:9px;
+ background:#edf6fc;
+ color:#174f88;
+ font-weight:850;
+ cursor:pointer;
+}
+button:hover{background:#deecf8}
+button:focus-visible,input:focus-visible{
+ outline:3px solid #80b5e0;
+ outline-offset:2px;
+}
+.result{
+ font-size:14px;
+ line-height:1.8;
+}
+.note{
+ font-size:13px;
+ color:#536d80;
+ line-height:1.65;
+}
+.eq{
+ text-align:center;
+ font:20px/1.7 Cambria,Georgia,serif;
+}
+.info{
+ padding:11px;
+ border-left:4px solid #1769aa;
+ border-radius:7px;
+ background:#edf6fd;
+ font-size:13px;
+ line-height:1.7;
+}
+.wire{
+ fill:none;
+ stroke:#273c49;
+ stroke-width:3.6;
+ stroke-linejoin:round;
+ stroke-linecap:round;
+}
+.node{fill:#273c49}
+.resistor{
+ fill:#e7d7b8;
+ stroke:#705b3d;
+ stroke-width:3;
+}
+.coil{
+ fill:none;
+ stroke:#d97b16;
+ stroke-width:5.3;
+ stroke-linecap:round;
+}
+.cap{
+ stroke:#168451;
+ stroke-width:5.3;
+ stroke-linecap:round;
+}
+.lab{
+ fill:#17324a;
+ font-size:16px;
+ font-weight:850;
+}
+.small{
+ fill:#5b7180;
+ font-size:13px;
+ font-weight:700;
+}
+.box{
+ fill:#f8fbfd;
+ stroke:#bdccd7;
+ stroke-width:1.8;
+}
+.axis{
+ stroke:#8195a3;
+ stroke-width:1.5;
+}
+footer{
+ margin-top:15px;
+ padding:15px;
+ border-top:1px solid var(--line);
+ text-align:center;
+ color:var(--muted);
+ font-size:13px;
+}
+#error{
+ margin-top:12px;
+ padding:12px;
+ background:#fff0f0;
+ border:1px solid #dda3a3;
+ border-radius:9px;
+ color:#a02c2c;
+}
+[hidden]{display:none!important}
+@media(max-width:900px){
+ .main{grid-template-columns:1fr}
+}
 </style>
 </head>
-<body><div class="wrap">
+
+<body>
+<div class="wrap">
+
 <h1>QR-030 – Трансформатор на празен ход</h1>
-<div class="sub">Адмитанс, ток на празен ход и мощности на намагнитващия клон</div>
-<div class="main"><section class="stage"><svg viewBox="0 0 900 730">
+<p class="sub">
+Еквивалентен намагнитващ клон ·
+Ток на празен ход · Загуби в магнитопровода
+</p>
+
+<div class="main">
+
+<section class="stage">
+
+<svg viewBox="0 0 960 760"
+ role="img"
+ aria-label="Еквивалентна схема на трансформатор на празен ход">
+
 <defs>
-<marker id="ab" markerWidth="4.5" markerHeight="4.5" refX="3.9" refY="1.7" orient="auto"><path d="M0 0L0 3.4L4.2 1.7z" fill="#1769aa"></path></marker>
-<marker id="ao" markerWidth="4.5" markerHeight="4.5" refX="3.9" refY="1.7" orient="auto"><path d="M0 0L0 3.4L4.2 1.7z" fill="#d97b16"></path></marker>
-<marker id="av" markerWidth="4.5" markerHeight="4.5" refX="3.9" refY="1.7" orient="auto"><path d="M0 0L0 3.4L4.2 1.7z" fill="#6b48ad"></path></marker>
+ <marker id="arrowP"
+  viewBox="0 0 10 10"
+  markerWidth="5" markerHeight="5"
+  refX="8" refY="5"
+  orient="auto">
+  <path d="M0 0L10 5L0 10Z" fill="#1769aa"/>
+ </marker>
+ <marker id="arrowQ"
+  viewBox="0 0 10 10"
+  markerWidth="5" markerHeight="5"
+  refX="8" refY="5"
+  orient="auto">
+  <path d="M0 0L10 5L0 10Z" fill="#d97b16"/>
+ </marker>
+ <marker id="arrowS"
+  viewBox="0 0 10 10"
+  markerWidth="5" markerHeight="5"
+  refX="8" refY="5"
+  orient="auto">
+  <path d="M0 0L10 5L0 10Z" fill="#6b48ad"/>
+ </marker>
 </defs>
 
-<text x="255" y="40" class="lab" text-anchor="middle">Еквивалентен намагнитващ клон – една фаза</text>
-<circle cx="82" cy="195" r="38" fill="#fff" stroke="#536f80" stroke-width="3"></circle>
-<path d="M61 195 C69 181 77 209 85 195 C93 181 101 209 109 195" fill="none" stroke="#1769aa" stroke-width="4"></path>
-<text x="82" y="247" class="lab" text-anchor="middle">Uφ</text>
-<path class="wire" d="M82 157 V90 H495"></path><path class="wire" d="M82 233 V355 H495"></path><path class="wire" d="M495 90 V355"></path>
+<!-- ЗАГЛАВИЕ НА СХЕМАТА -->
+<text x="345" y="45"
+ class="lab" text-anchor="middle">
+Еквивалентна схема за една фаза
+</text>
 
-<!-- G branch -->
-<path class="wire" d="M190 90 V145"></path><rect x="166" y="145" width="48" height="80" rx="5" fill="#e7d7b8" stroke="#705b3d" stroke-width="2.5"></rect><path class="wire" d="M190 225 V355"></path>
-<text x="190" y="128" class="lab" text-anchor="middle">G</text><text x="190" y="250" class="small" text-anchor="middle">загуби в магнитопровода</text>
+<text x="345" y="66"
+ class="small" text-anchor="middle">
+Вторичната намотка е разомкната: I₂ = 0
+</text>
 
-<!-- BL branch -->
-<path class="wire" d="M320 90 V145"></path><path d="M320 145 c-24 10-24 20 0 30 c-24 10-24 20 0 30 c-24 10-24 20 0 30 c-24 10-24 20 0 30" fill="none" stroke="#d97b16" stroke-width="7" stroke-linecap="round"></path><path class="wire" d="M320 265 V355"></path>
-<text x="320" y="128" class="lab" text-anchor="middle">Bₗ</text><text x="320" y="285" class="small" text-anchor="middle">намагнитване</text>
+<!-- ИЗТОЧНИК -->
+<circle cx="107" cy="236" r="35"
+ fill="white"
+ stroke="#536f80"
+ stroke-width="3"/>
 
-<!-- BC branch -->
-<path class="wire" d="M435 90 V175"></path><line x1="410" y1="175" x2="460" y2="175" stroke="#168451" stroke-width="7"></line><line x1="410" y1="205" x2="460" y2="205" stroke="#168451" stroke-width="7"></line><path class="wire" d="M435 205 V355"></path>
-<text x="435" y="128" class="lab" text-anchor="middle">Bc</text><text x="435" y="235" class="small" text-anchor="middle">капацитивен ефект</text>
+<!-- Синусоидален знак ~ -->
+<path d="M83 236
+ C91 218 99 218 107 236
+ C115 254 123 254 131 236"
+ fill="none"
+ stroke="#1769aa"
+ stroke-width="3.8"
+ stroke-linecap="round"/>
 
-<rect x="55" y="400" width="450" height="270" rx="15" class="box"></rect>
-<text x="280" y="430" class="lab" text-anchor="middle">Изчислителна последователност</text>
-<text x="78" y="468" class="lab">Y̲₀ = G + j(Bc − Bₗ)</text>
-<text id="yEq" x="78" y="500" fill="#6b48ad" font-size="18" font-weight="900">Y̲₀ = 0.00625 − j0.02430 S</text>
-<text x="78" y="540" class="lab">I₀ = Uφ · Y₀</text>
-<text id="iEq" x="78" y="572" fill="#1769aa" font-size="18" font-weight="900">I₀ = 5.77 ∠ -75.6° A</text>
-<text x="78" y="612" class="lab">Pφ = Uφ²G</text>
-<text x="265" y="612" class="lab">Qφ = Uφ²(Bₗ − Bc)</text>
-<text id="powerEq" x="78" y="648" fill="#17324a" font-size="16" font-weight="850">Pφ = 331 W     Qφ = 1285 var     Sφ = 1327 VA</text>
+<text x="107" y="290"
+ class="lab" text-anchor="middle">
+U<tspan baseline-shift="sub" font-size="11">φ</tspan>
+</text>
 
-<!-- Power triangle -->
-<text x="700" y="40" class="lab" text-anchor="middle">Триъгълник на мощностите</text>
-<line x1="580" y1="235" x2="840" y2="235" class="axis"></line><line x1="580" y1="90" x2="580" y2="365" class="axis"></line>
-<line id="pVec" x1="580" y1="235" x2="623.7242798353909" y2="235" class="pvec" marker-end="url(#ab)"></line>
-<line id="qVec" x1="623.7242798353909" y1="235" x2="623.7242798353909" y2="65" class="qvec" marker-end="url(#ao)"></line>
-<line id="sVec" x1="580" y1="235" x2="623.7242798353909" y2="65" class="svec" marker-end="url(#av)"></line>
-<text id="pLab" x="601.8621399176955" y="258" fill="#1769aa" font-size="16" font-weight="900">P</text>
-<text id="qLab" x="637.7242798353909" y="150" fill="#d97b16" font-size="16" font-weight="900">Q</text>
-<text id="sLab" x="604.048353909465" y="131.5" fill="#6b48ad" font-size="16" font-weight="900">S</text>
+<!-- ДВЕ ОТДЕЛНИ ШИНИ, БЕЗ ДЕСЕН МОСТ -->
+<path id="topBus"
+ class="wire"
+ d="M107 201V112H580"/>
 
-<rect x="545" y="400" width="315" height="270" rx="15" class="box"></rect>
-<text x="702" y="432" class="lab" text-anchor="middle">Резултат – трифазен трансформатор</text>
-<text id="threeP" x="575" y="480" class="lab">P₃φ = 0.992 kW</text>
-<text id="threeQ" x="575" y="520" class="lab">Q₃φ = 3.856 kvar</text>
-<text id="threeS" x="575" y="560" class="lab">S₃φ = 3.982 kVA</text>
-<text id="pf" x="575" y="600" fill="#6b48ad" font-size="18" font-weight="900">cos φ = 0.249</text>
-<text id="mode" x="702" y="642" fill="#d97b16" font-size="17" font-weight="900" text-anchor="middle">ИНДУКТИВЕН ХАРАКТЕР</text>
-</svg></section>
+<path id="bottomBus"
+ class="wire"
+ d="M107 271V375H580"/>
+
+<!-- КЛОН ЗА ЗАГУБИТЕ В МАГНИТОПРОВОДА -->
+<g id="ironBranch">
+
+ <path class="wire" d="M270 112V177"/>
+
+ <rect x="247" y="177"
+  width="46" height="76"
+  rx="3" class="resistor"/>
+
+ <path class="wire" d="M270 253V375"/>
+
+ <circle class="node" cx="270" cy="112" r="4"/>
+ <circle class="node" cx="270" cy="375" r="4"/>
+
+ <text x="305" y="215"
+  fill="#705b3d"
+  font-size="17"
+  font-weight="850">
+ R<tspan baseline-shift="sub" font-size="11">Fe</tspan>
+ </text>
+
+ <text x="305" y="242"
+  class="small">
+ Загуби в стоманата
+ </text>
+
+</g>
+
+<!-- НАМАГНИТВАЩ КЛОН -->
+<g id="magBranch">
+
+ <path class="wire" d="M430 112V174"/>
+
+ <!-- Четири дъги без права линия по средата -->
+ <path class="coil"
+  d="M430 174
+     Q405 186 430 198
+     Q405 210 430 222
+     Q405 234 430 246
+     Q405 258 430 270"/>
+
+ <path class="wire" d="M430 270V375"/>
+
+ <circle class="node" cx="430" cy="112" r="4"/>
+ <circle class="node" cx="430" cy="375" r="4"/>
+
+ <text x="467" y="223"
+  fill="#d97b16"
+  font-size="18"
+  font-weight="850">
+ L<tspan baseline-shift="sub" font-size="12">m</tspan>
+ </text>
+
+ <text x="467" y="253"
+  class="small">
+ Намагнитване
+ </text>
+
+</g>
+
+<!-- ДОПЪЛНИТЕЛЕН КАПАЦИТИВЕН КЛОН -->
+<g id="capBranch">
+
+ <path class="wire" d="M580 112V194"/>
+
+ <line x1="551" y1="194"
+  x2="609" y2="194" class="cap"/>
+
+ <line x1="551" y1="230"
+  x2="609" y2="230" class="cap"/>
+
+ <path class="wire" d="M580 230V375"/>
+
+ <circle class="node" cx="580" cy="112" r="4"/>
+ <circle class="node" cx="580" cy="375" r="4"/>
+
+ <text x="618" y="213"
+  fill="#168451"
+  font-size="17"
+  font-weight="850">
+ C<tspan baseline-shift="sub" font-size="11">пар</tspan>
+ </text>
+
+</g>
+
+<!-- АНИМИРАНИ СТРЕЛКИ -->
+<g id="motionLayer">
+
+ <g id="totalArrow">
+  <path d="M-8 0H8 M3 -4L8 0L3 4"
+   fill="none" stroke="#6b48ad"
+   stroke-width="2.5"
+   stroke-linecap="round"
+   stroke-linejoin="round"/>
+ </g>
+
+ <g id="ironArrow">
+  <path d="M0 -7V7 M-4 2L0 7L4 2"
+   fill="none" stroke="#1769aa"
+   stroke-width="2.5"
+   stroke-linecap="round"
+   stroke-linejoin="round"/>
+ </g>
+
+ <g id="magArrow">
+  <path d="M0 -7V7 M-4 2L0 7L4 2"
+   fill="none" stroke="#d97b16"
+   stroke-width="2.5"
+   stroke-linecap="round"
+   stroke-linejoin="round"/>
+ </g>
+
+ <g id="capArrow">
+  <path d="M0 -7V7 M-4 2L0 7L4 2"
+   fill="none" stroke="#168451"
+   stroke-width="2.5"
+   stroke-linecap="round"
+   stroke-linejoin="round"/>
+ </g>
+
+</g>
+
+<text x="170" y="93"
+ fill="#6b48ad"
+ font-size="15"
+ font-weight="850">
+i₀(t)
+</text>
+
+<text x="345" y="408"
+ class="small" text-anchor="middle">
+Двата стандартни клона са RFe и Lm.
+Капацитивният ефект е допълнителен.
+</text>
+
+<!-- ТРИЪГЪЛНИК НА МОЩНОСТИТЕ -->
+<text x="803" y="45"
+ class="lab" text-anchor="middle">
+Триъгълник на мощностите
+</text>
+
+<line x1="666" y1="240"
+ x2="928" y2="240" class="axis"/>
+
+<line x1="686" y1="102"
+ x2="686" y2="365" class="axis"/>
+
+<text x="919" y="230"
+ class="small" text-anchor="end">
+P
+</text>
+
+<text x="696" y="109" class="small">+Q</text>
+<text x="696" y="361" class="small">−Q</text>
+
+<line id="pVec"
+ x1="686" y1="240"
+ x2="686" y2="240"
+ stroke="#1769aa"
+ stroke-width="3.3"
+ marker-end="url(#arrowP)"/>
+
+<line id="qVec"
+ x1="686" y1="240"
+ x2="686" y2="240"
+ stroke="#d97b16"
+ stroke-width="3.3"
+ marker-end="url(#arrowQ)"/>
+
+<line id="sVec"
+ x1="686" y1="240"
+ x2="686" y2="240"
+ stroke="#6b48ad"
+ stroke-width="4"
+ marker-end="url(#arrowS)"/>
+
+<text id="pLabel"
+ fill="#1769aa" font-size="15" font-weight="900">P</text>
+
+<text id="qLabel"
+ fill="#d97b16" font-size="15" font-weight="900">Q</text>
+
+<text id="sLabel"
+ fill="#6b48ad" font-size="15" font-weight="900">S</text>
+
+<text id="anglePower"
+ x="802" y="390"
+ class="small" text-anchor="middle">
+∠S = 0°
+</text>
+
+<!-- ДОЛЕН ЛЯВ ПАНЕЛ -->
+<rect x="40" y="434"
+ width="520" height="295"
+ rx="15" class="box"/>
+
+<text x="300" y="468"
+ class="lab" text-anchor="middle">
+Изчисления за една фаза
+</text>
+
+<text x="70" y="509"
+ class="lab">
+G<tspan baseline-shift="sub" font-size="11">Fe</tspan>
+ = 1/R<tspan baseline-shift="sub" font-size="11">Fe</tspan>
+</text>
+
+<text id="gDisplay"
+ x="310" y="509"
+ fill="#1769aa" font-size="17" font-weight="850">
+0,00625 S
+</text>
+
+<text x="70" y="548"
+ class="lab">
+B<tspan baseline-shift="sub" font-size="11">m</tspan>
+ = 1/(ωL<tspan baseline-shift="sub" font-size="11">m</tspan>)
+</text>
+
+<text id="bDisplay"
+ x="310" y="548"
+ fill="#d97b16" font-size="17" font-weight="850">
+0,02532 S
+</text>
+
+<text x="70" y="587"
+ class="lab">
+Y̲<tspan baseline-shift="sub" font-size="11">0</tspan>
+ = G<tspan baseline-shift="sub" font-size="11">Fe</tspan>
+ + j(B<tspan baseline-shift="sub" font-size="11">C</tspan>
+ − B<tspan baseline-shift="sub" font-size="11">m</tspan>)
+</text>
+
+<text id="yDisplay"
+ x="70" y="618"
+ fill="#6b48ad" font-size="18" font-weight="850">
+Y₀ = 0,00625 − j0,02432 S
+</text>
+
+<text id="iDisplay"
+ x="70" y="660"
+ fill="#1769aa" font-size="18" font-weight="850">
+I₀ = 5,775 A; φ₀ = −75,59°
+</text>
+
+<text id="powerDisplay"
+ x="70" y="704"
+ class="small">
+Pφ = 331 W; Qφ = 1287 var; Sφ = 1328 VA
+</text>
+
+<!-- ДОЛЕН ДЕСЕН ПАНЕЛ -->
+<rect x="589" y="434"
+ width="333" height="295"
+ rx="15" class="box"/>
+
+<text x="756" y="469"
+ class="lab" text-anchor="middle">
+Резултат за три фази
+</text>
+
+<text id="P3"
+ x="616" y="515"
+ class="lab">P₃φ = 0,992 kW</text>
+
+<text id="Q3"
+ x="616" y="559"
+ class="lab">Q₃φ = 3,860 kvar</text>
+
+<text id="S3"
+ x="616" y="603"
+ class="lab">S₃φ = 3,985 kVA</text>
+
+<text id="pfDisplay"
+ x="616" y="647"
+ fill="#6b48ad" font-size="19" font-weight="900">
+cos φ = 0,249
+</text>
+
+<text id="character"
+ x="756" y="690"
+ fill="#d97b16" font-size="17"
+ font-weight="900" text-anchor="middle">
+ИНДУКТИВЕН ХАРАКТЕР
+</text>
+
+<text x="950" y="752"
+ text-anchor="end"
+ fill="#8fa6b4" font-size="10">
+© 2026 Величко Атанасов
+</text>
+
+</svg>
+
+</section>
 
 <aside class="side">
-<div class="card"><div class="title">Фазово напрежение</div>
-<label>Uφ <b id="uOut">230 V</b></label><input id="U" type="range" min="100" max="400" value="230">
+
+<div class="card">
+ <div class="title">Фазово напрежение</div>
+
+ <label for="U">
+  U<sub>φ</sub>
+  <b id="uOut">230 V</b>
+ </label>
+
+ <input id="U"
+  type="range" min="100" max="400"
+  step="1" value="230"/>
 </div>
-<div class="card"><div class="title">Проводимости на една фаза</div>
-<label>G <b id="gOut">0.00625 S</b></label><input id="G" type="range" min="0.001" max="0.020" step="0.00005" value="0.00625">
-<label>Bₗ <b id="blOut">0.02530 S</b></label><input id="BL" type="range" min="0.001" max="0.050" step="0.00005" value="0.02532">
-<label>Bc <b id="bcOut">0.00100 S</b></label><input id="BC" type="range" min="0" max="0.040" step="0.00005" value="0.001">
+
+<div class="card">
+ <div class="title">Параметри на една фаза</div>
+
+ <label for="G">
+  Активна проводимост G<sub>Fe</sub>
+  <b id="gOut">0,00625 S</b>
+ </label>
+
+ <input id="G"
+  type="range"
+  min=".001" max=".020"
+  step=".00005" value=".00625"/>
+
+ <label for="BM">
+  Намагнитваща проводимост B<sub>m</sub>
+  <b id="bmOut">0,02532 S</b>
+ </label>
+
+ <input id="BM"
+  type="range"
+  min=".001" max=".050"
+  step=".00005" value=".02532"/>
+
+ <label for="BC" style="margin-top:16px">
+  Капацитивна проводимост B<sub>C</sub>
+  <b id="bcOut">0,00100 S</b>
+ </label>
+
+ <input id="BC"
+  type="range"
+  min="0" max=".040"
+  step=".00005" value=".001"/>
+
+ <label for="useC"
+  style="justify-content:flex-start;margin-top:13px">
+  <input id="useC" type="checkbox" checked>
+  <span>Отчитане на паразитен капацитет</span>
+ </label>
+
+ <p class="note">
+  Изключи отметката, за да разгледаш
+  стандартния модел само с R<sub>Fe</sub>
+  и L<sub>m</sub>.
+ </p>
 </div>
-<div class="card result" id="results">Y₀ = <b>0.02509 S</b><br>φ = <b>-75.6°</b><br>I₀ = <b>5.77 A</b><br><br>Pφ = <b>331 W</b><br>Qφ = <b>1285 var</b><br>Sφ = <b>1327 VA</b><br>cos φ = <b>0.249</b></div>
-<div class="card note">Плъзгачите позволяват да се проследи как капацитивната проводимост частично компенсира индуктивната. За индуктивен режим \(B_L&gt;B_C\), а токът на празен ход изостава спрямо напрежението.</div>
-<div class="card"><button id="reset">Начални стойности на задачата</button></div>
-</aside></div></div>
+
+<div class="card eq">
+ <div>
+  Y̲<sub>0</sub> =
+  G<sub>Fe</sub> +
+  j(B<sub>C</sub> − B<sub>m</sub>)
+ </div>
+
+ <div>
+  I<sub>0</sub> =
+  U<sub>φ</sub>|Y̲<sub>0</sub>|
+ </div>
+
+ <div>
+  P<sub>φ</sub> =
+  U<sub>φ</sub>²G<sub>Fe</sub>
+ </div>
+
+ <div>
+  Q<sub>φ</sub> =
+  U<sub>φ</sub>²(B<sub>m</sub> − B<sub>C</sub>)
+ </div>
+</div>
+
+<div class="card result" id="results"></div>
+
+<div class="card">
+ <div class="title">Моментни токове</div>
+
+ <div id="currentValues" class="result"></div>
+
+ <p class="note">
+  Малките стрелки показват моментните
+  посоки на токовете. Движението е
+  учебно забавено.
+ </p>
+</div>
+
+<div class="card">
+ <div class="title">Електротехническо пояснение</div>
+
+ <div class="info">
+  <b>R<sub>Fe</sub></b> представя активните
+  загуби в магнитопровода.
+
+  <b>L<sub>m</sub></b> е намагнитващата
+  индуктивност.
+
+  <b>C<sub>пар</sub></b> е допълнителен
+  капацитивен ефект и не е задължителен
+  клон в стандартната еквивалентна схема.
+ </div>
+
+ <p class="note">
+  Параметрите са за учебен еднофазен модел
+  при фиксирана честота 50 Hz. Трифазните
+  резултати предполагат симетрични фази.
+  Напрежението 230 V е примерна фазова стойност,
+  а не твърдение за номиналното напрежение
+  на конкретен трансформатор.
+ </p>
+</div>
+
+<div class="card">
+ <button id="pause" type="button">Ⅱ Пауза</button>
+ <button id="reset" type="button">Начални стойности</button>
+</div>
+
+</aside>
+</div>
+
+<div id="error" hidden role="alert"></div>
+
+<footer>
+© 2026 доц. д-р инж. Величко Атанасов.
+Всички права запазени.
+</footer>
+</div>
 
 <script>
-const $=id=>document.getElementById(id);
-function calc(){
- const U=+$("U").value,G=+$("G").value,BL=+$("BL").value,BC=+$("BC").value;
- const B=BC-BL, Y=Math.hypot(G,B), phi=Math.atan2(B,G), deg=phi*180/Math.PI;
- const I=U*Y, P=U*U*G, Q=U*U*(BL-BC), S=Math.hypot(P,Q), pf=S?P/S:0;
- const P3=3*P,Q3=3*Q,S3=3*S;
+(() => {
+"use strict";
 
- $("uOut").textContent=U.toFixed(0)+" V";$("gOut").textContent=G.toFixed(5)+" S";
- $("blOut").textContent=BL.toFixed(5)+" S";$("bcOut").textContent=BC.toFixed(5)+" S";
- $("yEq").textContent=`Y̲₀ = ${G.toFixed(5)} ${B<0?"−":"+"} j${Math.abs(B).toFixed(5)} S`;
- $("iEq").textContent=`I₀ = ${I.toFixed(2)} ∠ ${deg.toFixed(1)}° A`;
- $("powerEq").textContent=`Pφ = ${P.toFixed(0)} W     Qφ = ${Q.toFixed(0)} var     Sφ = ${S.toFixed(0)} VA`;
- $("threeP").textContent=`P₃φ = ${(P3/1000).toFixed(3)} kW`;
- $("threeQ").textContent=`Q₃φ = ${(Q3/1000).toFixed(3)} kvar`;
- $("threeS").textContent=`S₃φ = ${(S3/1000).toFixed(3)} kVA`;
- $("pf").textContent=`cos φ = ${pf.toFixed(3)}`;
- $("mode").textContent=B<-.00002?"ИНДУКТИВЕН ХАРАКТЕР":B>.00002?"КАПАЦИТИВЕН ХАРАКТЕР":"КОМПЕНСИРАН РЕЖИМ";
- $("results").innerHTML=`Y₀ = <b>${Y.toFixed(5)} S</b><br>φ = <b>${deg.toFixed(1)}°</b><br>I₀ = <b>${I.toFixed(2)} A</b><br><br>Pφ = <b>${P.toFixed(0)} W</b><br>Qφ = <b>${Q.toFixed(0)} var</b><br>Sφ = <b>${S.toFixed(0)} VA</b><br>cos φ = <b>${pf.toFixed(3)}</b>`;
- draw(P,Q);
+const $=id=>document.getElementById(id);
+const TAU=2*Math.PI;
+const SQRT2=Math.SQRT2;
+
+let theta=0;
+let running=true;
+let last=null;
+let failed=false;
+let data=null;
+
+function fmt(value,digits=3){
+ const v=Math.abs(value)<.5*10**(-digits)
+  ?0:value;
+
+ return v.toLocaleString("bg-BG",{
+  minimumFractionDigits:digits,
+  maximumFractionDigits:digits
+ }).replace("-","−");
 }
-function draw(P,Q){
- const ox=580,oy=235,m=Math.max(P,Math.abs(Q),1),s=170/m,dx=P*s,dy=Q*s,ex=ox+dx,ey=oy-dy;
- $("pVec").setAttribute("x2",ex);$("qVec").setAttribute("x1",ex);$("qVec").setAttribute("y1",oy);$("qVec").setAttribute("x2",ex);$("qVec").setAttribute("y2",ey);
- $("sVec").setAttribute("x2",ex);$("sVec").setAttribute("y2",ey);
- $("pLab").setAttribute("x",ox+dx/2);$("qLab").setAttribute("x",ex+14);$("qLab").setAttribute("y",(oy+ey)/2);
- $("sLab").setAttribute("x",ox+dx*.55);$("sLab").setAttribute("y",oy-dy*.55-10);
+
+function calculate(U,G,Bm,Bc,on){
+ const BC=on?Bc:0;
+ const B=BC-Bm;
+ const Y=Math.hypot(G,B);
+ const I=U*Y;
+
+ const phi=Math.atan2(B,G);
+
+ const P=U*U*G;
+ const Q=U*U*(Bm-BC);
+ const S=Math.hypot(P,Q);
+
+ return {
+  U,G,Bm,BC,B,Y,I,phi,P,Q,S,
+  P3:3*P,
+  Q3:3*Q,
+  S3:3*S,
+  pf:P/S,
+  IFe:U*G,
+  Im:U*Bm,
+  IC:U*BC,
+  on
+ };
 }
-["U","G","BL","BC"].forEach(id=>$(id).addEventListener("input",calc));
-$("reset").onclick=()=>{$("U").value=230;$("G").value=.00625;$("BL").value=.02532;$("BC").value=.001;calc()};
-calc();
-</script></body></html>
+
+function read(){
+ return calculate(
+  Number($("U").value),
+  Number($("G").value),
+  Number($("BM").value),
+  Number($("BC").value),
+  $("useC").checked
+ );
+}
+
+/* Проверка на изчислителния модел */
+function selfTest(){
+ const m=calculate(230,.00625,.02532,.001,true);
+
+ if(Math.abs(m.I-5.775358621765404)>1e-8){
+  throw new Error("Неправилен ток на празен ход.");
+ }
+
+ if(Math.abs(m.P3-991.875)>1e-8){
+  throw new Error("Неправилна активна мощност.");
+ }
+
+ if(Math.abs(m.Q3-3859.584)>1e-7){
+  throw new Error("Неправилна реактивна мощност.");
+ }
+
+ const classic=calculate(230,.00625,.02532,.001,false);
+
+ if(
+  classic.BC!==0 ||
+  !(classic.I>m.I)
+ ){
+  throw new Error(
+   "Неправилно изключване на капацитивния клон."
+  );
+ }
+
+ const compensated=calculate(
+  230,.00625,.02532,.02532,true
+ );
+
+ if(
+  Math.abs(compensated.Q)>1e-8 ||
+  Math.abs(compensated.phi)>1e-8
+ ){
+  throw new Error(
+   "Неправилно компенсиране на реактивния ток."
+  );
+ }
+}
+
+function line(id,x1,y1,x2,y2){
+ const e=$(id);
+ e.setAttribute("x1",x1);
+ e.setAttribute("y1",y1);
+ e.setAttribute("x2",x2);
+ e.setAttribute("y2",y2);
+}
+
+function show(id,yes){
+ $(id).style.display=yes?"":"none";
+}
+
+/* Триъгълник: един мащаб по P и Q */
+function triangle(m){
+ const ox=686;
+ const oy=240;
+
+ const sx=m.P>0?194/m.P:Infinity;
+ const sy=Math.abs(m.Q)>0?112/Math.abs(m.Q):Infinity;
+
+ const scale=Math.min(sx,sy);
+
+ const s=Number.isFinite(scale)?scale:1;
+
+ const ex=ox+m.P*s;
+ const ey=oy-m.Q*s;
+
+ line("pVec",ox,oy,ex,oy);
+ line("qVec",ex,oy,ex,ey);
+ line("sVec",ox,oy,ex,ey);
+
+ show("qVec",Math.abs(m.Q)>1e-8);
+ show("qLabel",Math.abs(m.Q)>1e-8);
+
+ $("pLabel").setAttribute("x",(ox+ex)/2);
+ $("pLabel").setAttribute("y",oy+23);
+
+ $("qLabel").setAttribute("x",ex+12);
+ $("qLabel").setAttribute("y",(oy+ey)/2);
+
+ $("sLabel").setAttribute(
+  "x",ox+(ex-ox)*.55
+ );
+
+ $("sLabel").setAttribute(
+  "y",oy+(ey-oy)*.55+
+  (m.Q>=0?-12:18)
+ );
+
+ $("anglePower").textContent=
+  "∠S = "+fmt(-m.phi*180/Math.PI,2)+"°";
+}
+
+/*
+ Моментен ток:
+ i0(t) = √2 U[G sinθ + B cosθ].
+
+ Положителната посока на трите
+ клонови тока е надолу.
+*/
+function updateArrow(id,x,shift,magnitude){
+ if(magnitude<1e-10){
+  show(id,false);
+  return;
+ }
+
+ const moment=Math.sin(theta+shift);
+ const strength=Math.abs(moment);
+
+ if(strength<.025){
+  show(id,false);
+  return;
+ }
+
+ show(id,true);
+
+ const direction=moment>=0?1:-1;
+ const y=145-4*Math.cos(theta+shift);
+
+ $(id).setAttribute(
+  "transform",
+  "translate("+x+" "+y.toFixed(2)+") "+
+  "scale(1 "+direction+")"
+ );
+
+ $(id).setAttribute(
+  "opacity",.25+.75*strength
+ );
+}
+
+function animateMotion(){
+ if(!data)return;
+
+ const m=data;
+
+ updateArrow("ironArrow",270,0,m.IFe);
+ updateArrow("magArrow",430,-Math.PI/2,m.Im);
+
+ if(m.on){
+  updateArrow("capArrow",580,Math.PI/2,m.IC);
+ }else{
+  show("capArrow",false);
+ }
+
+ const moment=Math.sin(theta+m.phi);
+
+ if(Math.abs(moment)<.025){
+  show("totalArrow",false);
+ }else{
+  show("totalArrow",true);
+
+  const x=171-7*Math.cos(theta+m.phi);
+  const direction=moment>=0?1:-1;
+
+  $("totalArrow").setAttribute(
+   "transform",
+   "translate("+x.toFixed(2)+" 112) "+
+   "scale("+direction+" 1)"
+  );
+
+  $("totalArrow").setAttribute(
+   "opacity",.3+.7*Math.abs(moment)
+  );
+ }
+
+ const iFe=SQRT2*m.IFe*Math.sin(theta);
+ const im=SQRT2*m.Im*Math.sin(theta-Math.PI/2);
+ const ic=SQRT2*m.IC*Math.sin(theta+Math.PI/2);
+
+ $("currentValues").innerHTML=
+  "i<sub>Fe</sub>(t) = <b>"+
+  fmt(iFe,3)+" A</b><br>"+
+  "i<sub>m</sub>(t) = <b>"+
+  fmt(im,3)+" A</b><br>"+
+  "i<sub>C</sub>(t) = <b>"+
+  fmt(ic,3)+" A</b><br>"+
+  "i<sub>0</sub>(t) = <b>"+
+  fmt(iFe+im+ic,3)+" A</b>";
+}
+
+function update(){
+ data=read();
+ const m=data;
+
+ $("uOut").textContent=fmt(m.U,0)+" V";
+ $("gOut").textContent=fmt(m.G,5)+" S";
+ $("bmOut").textContent=fmt(m.Bm,5)+" S";
+
+ $("bcOut").textContent=
+  m.on?fmt(m.BC,5)+" S":"изключен";
+
+ $("BC").disabled=!m.on;
+
+ /*
+ При изключване на C премахваме
+ целия клон и скъсяваме шините
+ до намагнитващия клон.
+ */
+ show("capBranch",m.on);
+
+ $("topBus").setAttribute(
+  "d",m.on?"M107 201V112H580":"M107 201V112H450"
+ );
+
+ $("bottomBus").setAttribute(
+  "d",m.on?"M107 271V375H580":"M107 271V375H450"
+ );
+
+ $("gDisplay").textContent=fmt(m.G,5)+" S";
+ $("bDisplay").textContent=fmt(m.Bm,5)+" S";
+
+ const sign=m.B<0?" − j":" + j";
+
+ $("yDisplay").textContent=
+  "Y̲₀ = "+fmt(m.G,5)+sign+
+  fmt(Math.abs(m.B),5)+" S";
+
+ $("iDisplay").textContent=
+  "I₀ = "+fmt(m.I,3)+" A; "+
+  "φ₀ = "+fmt(m.phi*180/Math.PI,2)+"°";
+
+ $("powerDisplay").textContent=
+  "Pφ = "+fmt(m.P,0)+" W; "+
+  "Qφ = "+fmt(m.Q,0)+" var; "+
+  "Sφ = "+fmt(m.S,0)+" VA";
+
+ $("P3").textContent=
+  "P₃φ = "+fmt(m.P3/1000,3)+" kW";
+
+ $("Q3").textContent=
+  "Q₃φ = "+fmt(m.Q3/1000,3)+" kvar";
+
+ $("S3").textContent=
+  "S₃φ = "+fmt(m.S3/1000,3)+" kVA";
+
+ $("pfDisplay").textContent=
+  "cos φ = "+fmt(m.pf,3);
+
+ if(m.Q>1e-9){
+  $("character").textContent=
+   "ИНДУКТИВЕН ХАРАКТЕР";
+  $("character").setAttribute("fill","#d97b16");
+
+ }else if(m.Q< -1e-9){
+  $("character").textContent=
+   "КАПАЦИТИВЕН ХАРАКТЕР";
+  $("character").setAttribute("fill","#168451");
+
+ }else{
+  $("character").textContent=
+   "КОМПЕНСИРАН РЕЖИМ";
+  $("character").setAttribute("fill","#1769aa");
+ }
+
+ $("results").innerHTML=
+  "Адмитанс |Y̲<sub>0</sub>|: <b>"+
+  fmt(m.Y,5)+" S</b><br>"+
+
+  "Фазов ъгъл на тока φ<sub>0</sub>: <b>"+
+  fmt(m.phi*180/Math.PI,2)+"°</b><br>"+
+
+  "Ток I<sub>0</sub>: <b>"+
+  fmt(m.I,3)+" A</b><br><br>"+
+
+  "P<sub>φ</sub> = <b>"+
+  fmt(m.P,2)+" W</b><br>"+
+
+  "Q<sub>φ</sub> = <b>"+
+  fmt(m.Q,2)+" var</b><br>"+
+
+  "S<sub>φ</sub> = <b>"+
+  fmt(m.S,2)+" VA</b><br>"+
+
+  "cosφ = <b>"+fmt(m.pf,3)+"</b>";
+
+ triangle(m);
+ animateMotion();
+}
+
+function reset(){
+ $("U").value=230;
+ $("G").value=.00625;
+ $("BM").value=.02532;
+ $("BC").value=.001;
+ $("useC").checked=true;
+
+ theta=0;
+ running=true;
+ last=null;
+
+ $("pause").textContent="Ⅱ Пауза";
+ update();
+}
+
+document.querySelectorAll(
+ "input[type=range]"
+).forEach(input=>{
+ input.addEventListener("input",update);
+});
+
+$("useC").addEventListener("change",update);
+
+$("pause").addEventListener("click",()=>{
+ running=!running;
+ last=null;
+
+ $("pause").textContent=running
+  ?"Ⅱ Пауза":"▶ Продължи";
+});
+
+$("reset").addEventListener("click",reset);
+
+document.addEventListener("visibilitychange",()=>{
+ last=null;
+});
+
+function animate(now){
+ if(failed)return;
+
+ try{
+  const dt=last===null?0:
+   Math.min(.05,Math.max(0,(now-last)/1000));
+
+  last=now;
+
+  if(running&&!document.hidden){
+   theta=(theta+dt*TAU/8)%TAU;
+  }
+
+  if(!document.hidden){
+   animateMotion();
+  }
+
+  requestAnimationFrame(animate);
+
+ }catch(error){
+  failed=true;
+  console.error(error);
+
+  $("error").hidden=false;
+  $("error").textContent=
+   "Грешка в анимацията: "+error.message;
+ }
+}
+
+try{
+ selfTest();
+ update();
+ requestAnimationFrame(animate);
+}catch(error){
+ failed=true;
+ console.error(error);
+
+ $("error").hidden=false;
+ $("error").textContent=
+  "Грешка при стартиране: "+error.message;
+}
+
+})();
+</script>
+</body>
+</html>

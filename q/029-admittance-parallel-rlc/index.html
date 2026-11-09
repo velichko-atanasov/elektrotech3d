@@ -1,330 +1,1484 @@
+
 <!DOCTYPE html>
-<!-- saved from url=(0085)file:///C:/Users/velichko.atanasov/Downloads/preview%20-%202026-08-29T142236.545.html -->
-<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="доц. д-р инж. Величко Атанасов">
+<meta name="copyright" content="© 2026 доц. д-р инж. Величко Атанасов">
 <title>QR-029 – Адмитанс на паралелна RLC верига</title>
+
 <style>
+:root{
+ --bg:#f5f8fb;
+ --ink:#17324a;
+ --muted:#60798c;
+ --line:#b8c9d8;
+ --blue:#006bff;
+ --red:#d63d32;
+ --orange:#d97b16;
+ --green:#13834e;
+ --violet:#6b48ad;
+}
 *{box-sizing:border-box}
-:root{--bg:#f5f8fb;--panel:#fff;--line:#b8c9d8;--ink:#17324a;--blue:#006BFF;--red:#d63d32;--orange:#d97b16;--green:#13834e;--violet:#6b48ad;--muted:#60798c}
-body{margin:0;background:linear-gradient(#f7fbff,#edf3f7);color:var(--ink);font-family:Segoe UI,Arial,sans-serif}
-.wrap{max-width:1250px;margin:auto;padding:14px}
-h1{text-align:center;color:#174f88;margin:3px 0;font-size:clamp(24px,4vw,38px)}
-.sub{text-align:center;color:var(--muted);margin:6px 0 14px}
-.main{display:grid;grid-template-columns:1.45fr .55fr;gap:14px}
-.stage{min-height:720px;background:#fff;border:1px solid var(--line);border-radius:18px;position:relative;overflow:hidden;box-shadow:0 5px 20px #496b8418}
-svg{position:absolute;inset:0;width:100%;height:100%}
-.side{background:#fff;border:1px solid var(--line);border-radius:18px;padding:11px}
-.card{border:1px solid #c7d5e0;border-radius:13px;padding:10px;margin-bottom:10px;background:#fbfdff}
-.title{font-weight:900;color:#174f88;margin-bottom:8px}
-label{display:flex;justify-content:space-between;gap:8px;font-weight:750;margin:7px 0}
-input[type=range]{width:100%;accent-color:#006BFF}
-input[type=checkbox]{transform:scale(1.15)}
-.eq{text-align:center;font:700 18px Cambria Math,Georgia,serif;line-height:1.6}
-.result{line-height:1.6;font-size:14px}
-.note{font-size:13px;color:#536d80;line-height:1.45}
-button{width:100%;padding:9px;border:1px solid #8aaac1;border-radius:9px;background:#edf6fc;color:#174f88;font-weight:850;cursor:pointer}
-.wire{stroke:#243846;stroke-width:4;fill:none;stroke-linecap:round}
-.node{fill:#fff;stroke:#243846;stroke-width:3}
-.lab{fill:#17324a;font-size:17px;font-weight:800}
-.small{fill:#536d80;font-size:13px;font-weight:700}
-.r{fill:none;stroke:#00A8FF;stroke-width:4}
-.coil{fill:none;stroke:#00A8FF;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
-.cap{stroke:#00A8FF;stroke-width:5}
-.axis{stroke:#5d7180;stroke-width:2}
-.gvec{stroke:#1769aa;stroke-width:4}
-.bvec{stroke:#d97b16;stroke-width:4}
-.yvec{stroke:#6b48ad;stroke-width:4}
-.arc{fill:none;stroke:#6b48ad;stroke-width:2.5}
-.box{fill:#f8fbfd;stroke:#b8c9d8;stroke-width:2}
-.currentR{stroke:#00A8FF;stroke-width:3}
-.currentL{stroke:#00A8FF;stroke-width:3}
-.currentC{stroke:#00A8FF;stroke-width:3}
-@media(max-width:900px){.main{grid-template-columns:1fr}.stage{min-height:700px}}
-
-.eqFrac{font-family:"Cambria Math",Georgia,serif;font-size:25px;font-weight:800;fill:#006BFF}
-.fracSvg .num,.fracSvg .den{font-family:"Cambria Math",Georgia,serif;font-size:21px;font-weight:800;fill:#006BFF;text-anchor:middle}
-.fracSvg .bar{stroke:#006BFF;stroke-width:2}
-
+body{
+ margin:0;
+ background:linear-gradient(#f7fbff,#edf3f7);
+ color:var(--ink);
+ font:15px/1.55 "Segoe UI",Arial,sans-serif;
+}
+.wrap{
+ max-width:1250px;
+ margin:auto;
+ padding:14px;
+}
+h1{
+ text-align:center;
+ color:#174f88;
+ margin:3px 0;
+ font-size:clamp(24px,3.6vw,37px);
+}
+.sub{
+ text-align:center;
+ color:var(--muted);
+ margin:6px 0 14px;
+}
+.main{
+ display:grid;
+ grid-template-columns:minmax(0,1.45fr) minmax(280px,.55fr);
+ gap:14px;
+ align-items:start;
+}
+.stage,.side{
+ min-width:0;
+ background:white;
+ border:1px solid var(--line);
+ border-radius:18px;
+ overflow:hidden;
+}
+.stage{
+ box-shadow:0 5px 20px #496b8418;
+}
+.stage svg{
+ display:block;
+ width:100%;
+ height:auto;
+}
+.side{padding:11px}
+.card{
+ border:1px solid #c7d5e0;
+ border-radius:13px;
+ padding:11px;
+ margin-bottom:10px;
+ background:#fbfdff;
+}
+.title{
+ font-weight:900;
+ color:#174f88;
+ margin-bottom:8px;
+}
+label{
+ display:flex;
+ justify-content:space-between;
+ gap:8px;
+ font-weight:750;
+ margin:8px 0;
+}
+input[type=range]{
+ width:100%;
+ accent-color:#006bff;
+}
+input[type=checkbox]{
+ accent-color:#006bff;
+ transform:scale(1.12);
+}
+input:disabled{opacity:.35}
+button{
+ width:100%;
+ padding:10px;
+ margin-top:7px;
+ border:1px solid #8aaac1;
+ border-radius:9px;
+ background:#edf6fc;
+ color:#174f88;
+ font-weight:850;
+ cursor:pointer;
+}
+button:hover{background:#dcecf8}
+button:focus-visible,input:focus-visible{
+ outline:3px solid #7bb8e6;
+ outline-offset:3px;
+}
+.eq{
+ text-align:center;
+ font:21px/1.75 Cambria,Georgia,serif;
+}
+.result{
+ font-size:14px;
+ line-height:1.8;
+}
+.note{
+ font-size:13px;
+ color:#536d80;
+ line-height:1.65;
+}
+.info{
+ padding:10px;
+ background:#f1f7fc;
+ border-left:4px solid #2678b4;
+ border-radius:7px;
+ font-size:13px;
+ line-height:1.65;
+}
+.status{
+ padding:10px;
+ border-radius:9px;
+ background:#edf5fb;
+ color:#174f88;
+ font-weight:800;
+ text-align:center;
+}
+.wire{
+ fill:none;
+ stroke:#243846;
+ stroke-width:3.4;
+ stroke-linecap:round;
+ stroke-linejoin:round;
+}
+.node{fill:#243846}
+.r{
+ fill:white;
+ stroke:#006bff;
+ stroke-width:3.5;
+}
+.coil{
+ fill:none;
+ stroke:#006bff;
+ stroke-width:4.8;
+ stroke-linecap:round;
+ stroke-linejoin:round;
+}
+.cap{
+ stroke:#006bff;
+ stroke-width:4.8;
+ stroke-linecap:round;
+}
+.lab{
+ fill:#17324a;
+ font-size:17px;
+ font-weight:850;
+}
+.small{
+ fill:#536d80;
+ font-size:13px;
+ font-weight:700;
+}
+.box{
+ fill:#f8fbfd;
+ stroke:#b8c9d8;
+ stroke-width:1.8;
+}
+.gvec{
+ stroke:#1769aa;
+ stroke-width:3.4;
+}
+.bvec{
+ stroke:#d97b16;
+ stroke-width:3.4;
+}
+.yvec{
+ stroke:#6b48ad;
+ stroke-width:4;
+}
+.axis{
+ stroke:#758b9c;
+ stroke-width:1.5;
+}
+.arc{
+ fill:none;
+ stroke:#6b48ad;
+ stroke-width:2.3;
+}
+footer{
+ margin-top:16px;
+ padding:16px;
+ border-top:1px solid var(--line);
+ text-align:center;
+ color:#60798c;
+ font-size:13px;
+}
+#error{
+ margin-top:12px;
+ padding:13px;
+ border:1px solid #e0a0a0;
+ border-radius:9px;
+ background:#fff0f0;
+ color:#9a2424;
+}
+[hidden]{display:none!important}
+@media(max-width:900px){
+ .main{grid-template-columns:1fr}
+}
 </style>
 </head>
+
 <body>
 <div class="wrap">
+
 <h1>QR-029 – Адмитанс на паралелна RLC верига</h1>
-<div class="sub">Проводимости, токове в клоновете и векторна диаграма на адмитанса</div>
+
+<p class="sub">
+Паралелни клонове · Проводимости ·
+Токове · Комплексен адмитанс
+</p>
 
 <div class="main">
+
 <section class="stage">
-<svg viewBox="0 0 900 720">
+
+<svg id="scene"
+ viewBox="0 0 900 720"
+ role="img"
+ aria-label="Правилна паралелна RLC схема с три отделни клона">
+
 <defs>
-<marker id="aR" markerWidth="4.5" markerHeight="4.5" refX="3.9" refY="1.7" orient="auto"><path d="M0 0L0 3.4L4.2 1.7z" fill="#00A8FF"></path></marker>
-<marker id="aL" markerWidth="4.5" markerHeight="4.5" refX="3.9" refY="1.7" orient="auto"><path d="M0 0L0 3.4L4.2 1.7z" fill="#00A8FF"></path></marker>
-<marker id="aC" markerWidth="4.5" markerHeight="4.5" refX="3.9" refY="1.7" orient="auto"><path d="M0 0L0 3.4L4.2 1.7z" fill="#00A8FF"></path></marker>
-<marker id="aG" markerWidth="4.5" markerHeight="4.5" refX="3.9" refY="1.7" orient="auto"><path d="M0 0L0 3.4L4.2 1.7z" fill="#1769aa"></path></marker>
-<marker id="aB" markerWidth="4.5" markerHeight="4.5" refX="3.9" refY="1.7" orient="auto"><path d="M0 0L0 3.4L4.2 1.7z" fill="#d97b16"></path></marker>
-<marker id="aY" markerWidth="4.5" markerHeight="4.5" refX="3.9" refY="1.7" orient="auto"><path d="M0 0L0 3.4L4.2 1.7z" fill="#6b48ad"></path></marker>
+ <marker id="gHead"
+  viewBox="0 0 10 10"
+  refX="8" refY="5"
+  markerWidth="5" markerHeight="5"
+  orient="auto">
+  <path d="M0 0L10 5L0 10Z"
+   fill="#1769aa"/>
+ </marker>
+
+ <marker id="bHead"
+  viewBox="0 0 10 10"
+  refX="8" refY="5"
+  markerWidth="5" markerHeight="5"
+  orient="auto">
+  <path d="M0 0L10 5L0 10Z"
+   fill="#d97b16"/>
+ </marker>
+
+ <marker id="yHead"
+  viewBox="0 0 10 10"
+  refX="8" refY="5"
+  markerWidth="5" markerHeight="5"
+  orient="auto">
+  <path d="M0 0L10 5L0 10Z"
+   fill="#6b48ad"/>
+ </marker>
 </defs>
 
-<!-- Parallel circuit -->
-<text x="250" y="40" class="lab" text-anchor="middle">Паралелна RLC верига</text>
-<circle cx="85" cy="190" r="38" fill="none" stroke="#00A8FF" stroke-width="4"></circle>
-<path d="M63 190 C69 170 76 170 82 190 C88 210 95 210 101 190" fill="none" stroke="#00A8FF" stroke-width="4" stroke-linecap="round"></path>
-<text x="85" y="244" fill="#006BFF" font-size="17" font-weight="800" text-anchor="middle">U</text>
+<!-- ПАРАЛЕЛНА ЕЛЕКТРИЧЕСКА СХЕМА -->
+<text x="310" y="43"
+ class="lab" text-anchor="middle">
+Паралелна RLC верига
+</text>
 
-<path class="wire" d="M85 152 V90 H490"></path>
-<path class="wire" d="M85 228 V365 H490"></path>
-<line class="wire" x1="490" y1="90" x2="490" y2="365"></line>
+<!-- Източник на синусоидално напрежение -->
+<circle cx="100" cy="240" r="35"
+ fill="white"
+ stroke="#006bff"
+ stroke-width="3"/>
 
-<!-- R branch -->
-<line class="wire" x1="190" y1="90" x2="190" y2="150"></line>
-<rect id="rElem" x="170" y="150" width="40" height="72" rx="2" class="r" style="opacity: 1;"></rect>
-<line class="wire" x1="190" y1="222" x2="190" y2="365"></line>
-<text x="225" y="190" fill="#006BFF" font-size="20" font-weight="900" text-anchor="start">R</text>
-<path id="irArrow" d="M160 110 V140" class="currentR" fill="none" marker-end="url(#aR)"></path>
-<text id="irText" x="145" y="145" fill="#006BFF" font-size="15" font-weight="900">I<tspan baseline-shift="sub" font-size="11">R</tspan></text>
+<path
+ d="M76 240
+    C84 223 92 223 100 240
+    C108 257 116 257 124 240"
+ fill="none"
+ stroke="#006bff"
+ stroke-width="3.5"
+ stroke-linecap="round"/>
 
-<!-- L branch -->
-<line class="wire" x1="320" y1="90" x2="320" y2="142"></line>
-<path id="lElem" class="coil" d="M320 142 C296 142 296 160 320 160 C296 160 296 178 320 178 C296 178 296 196 320 196 C296 196 296 214 320 214" style="opacity: 1;"></path>
-<line class="wire" x1="320" y1="214" x2="320" y2="365"></line>
-<text x="350" y="185" fill="#006BFF" font-size="20" font-weight="900" text-anchor="start">L</text>
-<path id="ilArrow" d="M290 110 V140" class="currentL" fill="none" marker-end="url(#aL)"></path>
-<text id="ilText" x="273" y="145" fill="#006BFF" font-size="15" font-weight="900">I<tspan baseline-shift="sub" font-size="11">L</tspan></text>
+<text x="100" y="297"
+ fill="#006bff"
+ font-size="16"
+ font-weight="850"
+ text-anchor="middle">
+U~
+</text>
 
-<!-- C branch -->
-<line class="wire" x1="435" y1="90" x2="435" y2="175"></line>
-<line id="c1" x1="410" y1="175" x2="460" y2="175" class="cap" style="opacity: 1;"></line>
-<line id="c2" x1="410" y1="207" x2="460" y2="207" class="cap" style="opacity: 1;"></line>
-<line class="wire" x1="435" y1="207" x2="435" y2="365"></line>
-<text x="470" y="198" fill="#006BFF" font-size="20" font-weight="900" text-anchor="start">C</text>
-<path id="icArrow" d="M405 110 V140" class="currentC" fill="none" marker-end="url(#aC)"></path>
-<text id="icText" x="388" y="145" fill="#006BFF" font-size="15" font-weight="900">I<tspan baseline-shift="sub" font-size="11">C</tspan></text>
+<!-- ГОРНА ЗАХРАНВАЩА ШИНА -->
+<path class="wire"
+ d="M100 205V130H530"/>
 
-<text x="285" y="395" class="small" text-anchor="middle">Едно и също напрежение U е приложено към трите клона.</text>
+<!-- ДОЛНА ОБЩА ШИНА -->
+<path class="wire"
+ d="M100 275V382H530"/>
 
-<!-- Equations -->
-<rect x="55" y="425" width="450" height="235" rx="15" class="box"></rect>
-<text x="280" y="455" fill="#006BFF" font-size="21" font-weight="900" text-anchor="middle">Комплексна проводимост (адмитанс)</text>
+<!--
+ ВАЖНО:
+ Няма никакъв вертикален проводник
+ от дясната страна, който да съединява
+ горната и долната шина.
+-->
 
-<!-- G = 1/R -->
-<text x="82" y="497" class="eqFrac">G =</text>
-<g class="fracSvg">
-  <text x="150" y="483" class="num">1</text>
-  <line x1="132" y1="490" x2="168" y2="490" class="bar"></line>
-  <text x="150" y="514" class="den">R</text>
+<!-- КЛОН R -->
+<g id="branchR">
+
+ <path class="wire" d="M245 130V196"/>
+
+ <rect x="225" y="196"
+  width="40" height="80"
+  rx="2" class="r"/>
+
+ <path class="wire" d="M245 276V382"/>
+
+ <text x="283" y="244"
+  fill="#006bff"
+  font-size="19"
+  font-weight="900">
+ R
+ </text>
+
+ <circle cx="245" cy="130" r="4"
+  class="node"/>
+
+ <circle cx="245" cy="382" r="4"
+  class="node"/>
+
+ <text x="292" y="307"
+  fill="#d63d32"
+  font-size="15"
+  font-weight="900">
+ I<tspan baseline-shift="sub"
+ font-size="11">R</tspan>
+ </text>
+
 </g>
 
-<!-- BL = 1/XL = 1/(omega L) -->
-<text x="205" y="497" class="eqFrac">B<tspan baseline-shift="sub" font-size="16">L</tspan> =</text>
-<g class="fracSvg">
-  <text x="285" y="483" class="num">1</text>
-  <line x1="266" y1="490" x2="304" y2="490" class="bar"></line>
-  <text x="285" y="514" class="den">X<tspan baseline-shift="sub" font-size="14">L</tspan></text>
+<!-- КЛОН L -->
+<g id="branchL">
+
+ <path class="wire" d="M395 130V182"/>
+
+ <!-- Бобина: четири дъги без права линия през тях -->
+ <path class="coil"
+  d="M395 182
+     Q368 193 395 204
+     Q368 215 395 226
+     Q368 237 395 248
+     Q368 259 395 270"/>
+
+ <path class="wire" d="M395 270V382"/>
+
+ <text x="432" y="237"
+  fill="#006bff"
+  font-size="19"
+  font-weight="900">
+ L
+ </text>
+
+ <circle cx="395" cy="130" r="4"
+  class="node"/>
+
+ <circle cx="395" cy="382" r="4"
+  class="node"/>
+
+ <text x="443" y="307"
+  fill="#d97b16"
+  font-size="15"
+  font-weight="900">
+ I<tspan baseline-shift="sub"
+ font-size="11">L</tspan>
+ </text>
+
 </g>
-<text x="315" y="497" class="eqFrac">=</text>
-<g class="fracSvg">
-  <text x="380" y="483" class="num">1</text>
-  <line x1="345" y1="490" x2="415" y2="490" class="bar"></line>
-  <text x="380" y="514" class="den">ωL</text>
+
+<!-- КЛОН C -->
+<g id="branchC">
+
+ <path class="wire" d="M530 130V216"/>
+
+ <!-- Горна плоча -->
+ <line x1="505" y1="216"
+  x2="555" y2="216"
+  class="cap"/>
+
+ <!-- Долна плоча -->
+ <line x1="505" y1="246"
+  x2="555" y2="246"
+  class="cap"/>
+
+ <!-- Отделен долен проводник -->
+ <path class="wire" d="M530 246V382"/>
+
+ <text x="571" y="238"
+  fill="#006bff"
+  font-size="19"
+  font-weight="900">
+ C
+ </text>
+
+ <circle cx="530" cy="130" r="4"
+  class="node"/>
+
+ <circle cx="530" cy="382" r="4"
+  class="node"/>
+
+ <text x="579" y="307"
+  fill="#13834e"
+  font-size="15"
+  font-weight="900">
+ I<tspan baseline-shift="sub"
+ font-size="11">C</tspan>
+ </text>
+
 </g>
 
-<!-- BC = 1/XC = omega C -->
-<text x="82" y="555" class="eqFrac">B<tspan baseline-shift="sub" font-size="16">C</tspan> =</text>
-<g class="fracSvg">
-  <text x="165" y="541" class="num">1</text>
-  <line x1="145" y1="548" x2="185" y2="548" class="bar"></line>
-  <text x="165" y="572" class="den">X<tspan baseline-shift="sub" font-size="14">C</tspan></text>
-</g>
-<text x="195" y="555" class="eqFrac">= ωC</text>
+<!-- АНИМИРАНИ ТОКОВИ СТРЕЛКИ -->
+<g id="motionLayer"></g>
 
-<!-- Y complex -->
-<text x="82" y="606" fill="#006BFF" font-size="24" font-weight="900">Ẏ = G + j(B<tspan baseline-shift="sub" font-size="16">C</tspan> − B<tspan baseline-shift="sub" font-size="16">L</tspan>)</text>
+<text x="170" y="109"
+ fill="#6b48ad"
+ font-size="14"
+ font-weight="900"
+ text-anchor="middle">
+i(t)
+</text>
 
-<!-- magnitude and current -->
-<text x="82" y="642" fill="#006BFF" font-size="22" font-weight="900">Y = √[G² + (B<tspan baseline-shift="sub" font-size="15">C</tspan> − B<tspan baseline-shift="sub" font-size="15">L</tspan>)²]</text>
-<text x="355" y="642" fill="#006BFF" font-size="23" font-weight="900">I = UY</text>
+<text x="322" y="411"
+ class="small"
+ text-anchor="middle">
+Всички включени клонове са под едно и също напрежение U.
+</text>
 
-<!-- Admittance diagram -->
-<text x="705" y="40" class="lab" text-anchor="middle">Векторна диаграма</text>
-<line x1="590" y1="235" x2="840" y2="235" class="axis"></line>
-<line x1="590" y1="90" x2="590" y2="375" class="axis"></line>
-<text x="828" y="258" class="small">G</text>
-<text x="570" y="104" class="small">+B</text>
-<text x="566" y="365" class="small">−B</text>
+<!-- ВЕКТОРНА ДИАГРАМА НА АДМИТАНСА -->
+<text x="750" y="43"
+ class="lab"
+ text-anchor="middle">
+Диаграма на адмитанса
+</text>
 
-<line id="gVec" x1="590" y1="235" x2="765" y2="235" class="gvec" marker-end="url(#aG)"></line>
-<line id="bVec" x1="765" y1="235" x2="765" y2="235.34090367729831" class="bvec" marker-end="url(#aB)" style="display: none;"></line>
-<line id="yVec" x1="590" y1="235" x2="765" y2="235.34090367729831" class="yvec" marker-end="url(#aY)"></line>
-<path id="phiArc" class="arc" d=""></path>
-<text id="phiLab" x="645" y="215" fill="#6b48ad" font-size="17" font-weight="900" style="display: none;">φ</text>
-<text id="gLab" x="677.5" y="258" fill="#1769aa" font-size="16" font-weight="900">G</text>
-<text id="bLab" x="778" y="235.17045183864917" fill="#d97b16" font-size="16" font-weight="900" style="display: none;">B</text>
-<text id="yLab" x="686.25" y="223.1874970225141" fill="#6b48ad" font-size="17" font-weight="900">Y = G</text>
+<line x1="603" y1="255"
+ x2="867" y2="255"
+ class="axis"/>
 
-<rect x="545" y="425" width="315" height="235" rx="15" class="box"></rect>
-<text x="702" y="458" class="lab" text-anchor="middle">Характер на веригата</text>
-<text id="charText" x="702" y="505" fill="#1769aa" font-size="21" font-weight="900" text-anchor="middle">АКТИВЕН ХАРАКТЕР</text>
-<text id="charRule" x="702" y="542" class="small" text-anchor="middle">Bc = Bₗ</text>
-<text id="charCurrent" x="702" y="580" class="small" text-anchor="middle">I и U са във фаза</text>
-<text id="phiText" x="702" y="620" fill="#6b48ad" font-size="19" font-weight="900" text-anchor="middle">φ = 0°</text>
+<line x1="630" y1="103"
+ x2="630" y2="386"
+ class="axis"/>
+
+<text x="868" y="276"
+ class="small"
+ text-anchor="end">
+G, S
+</text>
+
+<text x="638" y="113" class="small">
++B
+</text>
+
+<text x="638" y="375" class="small">
+−B
+</text>
+
+<line id="gVec"
+ x1="630" y1="255"
+ x2="630" y2="255"
+ class="gvec"
+ marker-end="url(#gHead)"/>
+
+<line id="bVec"
+ x1="630" y1="255"
+ x2="630" y2="255"
+ class="bvec"
+ marker-end="url(#bHead)"/>
+
+<line id="yVec"
+ x1="630" y1="255"
+ x2="630" y2="255"
+ class="yvec"
+ marker-end="url(#yHead)"/>
+
+<path id="phiArc" class="arc"/>
+
+<text id="gLabel"
+ fill="#1769aa"
+ font-size="15"
+ font-weight="900">
+G
+</text>
+
+<text id="bLabel"
+ fill="#d97b16"
+ font-size="15"
+ font-weight="900">
+B
+</text>
+
+<text id="yLabel"
+ fill="#6b48ad"
+ font-size="16"
+ font-weight="900">
+Y
+</text>
+
+<text id="phiLabel"
+ fill="#6b48ad"
+ font-size="15"
+ font-weight="900">
+φ
+</text>
+
+<!-- ОСНОВНИ ФОРМУЛИ -->
+<rect x="40" y="442"
+ width="510" height="240"
+ rx="14" class="box"/>
+
+<text x="295" y="471"
+ fill="#006bff"
+ font-size="21"
+ font-weight="900"
+ text-anchor="middle">
+Комплексна проводимост
+</text>
+
+<text x="64" y="511"
+ fill="#006bff"
+ font-size="21"
+ font-weight="850">
+G = 1/R
+</text>
+
+<text x="273" y="511"
+ fill="#006bff"
+ font-size="21"
+ font-weight="850">
+B<tspan baseline-shift="sub"
+ font-size="14">L</tspan> = 1/(ωL)
+</text>
+
+<text x="64" y="558"
+ fill="#006bff"
+ font-size="21"
+ font-weight="850">
+B<tspan baseline-shift="sub"
+ font-size="14">C</tspan> = ωC
+</text>
+
+<text x="272" y="558"
+ fill="#006bff"
+ font-size="20"
+ font-weight="850">
+B = B<tspan baseline-shift="sub"
+ font-size="13">C</tspan>
+− B<tspan baseline-shift="sub"
+ font-size="13">L</tspan>
+</text>
+
+<text x="64" y="602"
+ fill="#006bff"
+ font-size="21"
+ font-weight="850">
+Y̲ = G + jB
+</text>
+
+<text x="64" y="641"
+ fill="#006bff"
+ font-size="20"
+ font-weight="850">
+|Y| = √(G² + B²)
+</text>
+
+<text x="345" y="641"
+ fill="#006bff"
+ font-size="20"
+ font-weight="850">
+I = U|Y|
+</text>
+
+<!-- ХАРАКТЕР НА ВЕРИГАТА -->
+<rect x="565" y="442"
+ width="300" height="240"
+ rx="14" class="box"/>
+
+<text x="715" y="473"
+ class="lab"
+ text-anchor="middle">
+Характер на веригата
+</text>
+
+<text id="character"
+ x="715" y="514"
+ fill="#1769aa"
+ font-size="19"
+ font-weight="900"
+ text-anchor="middle">
+АКТИВЕН ХАРАКТЕР
+</text>
+
+<text id="characterRule"
+ x="715" y="553"
+ class="small"
+ text-anchor="middle">
+B = 0
+</text>
+
+<text id="currentRule"
+ x="715" y="590"
+ class="small"
+ text-anchor="middle">
+I и U са във фаза
+</text>
+
+<text id="phiText"
+ x="715" y="633"
+ fill="#6b48ad"
+ font-size="18"
+ font-weight="900"
+ text-anchor="middle">
+φ = 0°
+</text>
+
+<text x="882" y="710"
+ text-anchor="end"
+ fill="#8ea5b6"
+ font-size="10">
+© 2026 Величко Атанасов
+</text>
+
 </svg>
+
 </section>
 
+<!-- УПРАВЛЕНИЕ -->
 <aside class="side">
+
 <div class="card">
-<div class="title">Захранване</div>
-<label>U <b id="uOut">230 V</b></label>
-<input id="U" type="range" min="100" max="250" step="1" value="230">
-<label>f <b id="fOut">50 Hz</b></label>
-<input id="f" type="range" min="10" max="100" step="1" value="50">
+ <div class="title">Захранване</div>
+
+ <label for="U">
+  Ефективно напрежение U
+  <b id="uOut">230 V</b>
+ </label>
+ <input id="U" type="range"
+  min="100" max="250"
+  step="1" value="230">
+
+ <label for="f">
+  Честота f
+  <b id="fOut">50 Hz</b>
+ </label>
+ <input id="f" type="range"
+  min="10" max="100"
+  step="1" value="50">
 </div>
 
 <div class="card">
-<div class="title">Паралелни клонове</div>
-<div><input id="useR" type="checkbox" checked=""> <b>R включен</b></div>
-<label>R <b id="rOut">100 Ω</b></label>
-<input id="R" type="range" min="20" max="500" step="5" value="100">
+ <div class="title">Паралелни клонове</div>
 
-<div style="margin-top:10px"><input id="useL" type="checkbox" checked=""> <b>L включена</b></div>
-<label>L <b id="lOut">0.318 H</b></label>
-<input id="L" type="range" min="0.01" max="1" step="0.002" value="0.318">
+ <label for="useR">
+  <span>
+   <input id="useR" type="checkbox" checked>
+   Резистор R
+  </span>
+ </label>
 
-<div style="margin-top:10px"><input id="useC" type="checkbox" checked=""> <b>C включен</b></div>
-<label>C <b id="cOut">31.8 µF</b></label>
-<input id="C" type="range" min="1" max="200" step="0.2" value="31.8">
+ <label for="R">
+  R <b id="rOut">100 Ω</b>
+ </label>
+ <input id="R" type="range"
+  min="20" max="500"
+  step="5" value="100">
+
+ <label for="useL" style="margin-top:14px">
+  <span>
+   <input id="useL" type="checkbox" checked>
+   Индуктивност L
+  </span>
+ </label>
+
+ <label for="L">
+  L <b id="lOut">0,318 H</b>
+ </label>
+ <input id="L" type="range"
+  min=".01" max="1"
+  step=".002" value=".318">
+
+ <label for="useC" style="margin-top:14px">
+  <span>
+   <input id="useC" type="checkbox" checked>
+   Капацитет C
+  </span>
+ </label>
+
+ <label for="C">
+  C <b id="cOut">31,8 µF</b>
+ </label>
+ <input id="C" type="range"
+  min="1" max="200"
+  step=".2" value="31.8">
+
+ <p class="note">
+  При премахване на отметката съответният
+  паралелен клон се прекъсва и изчезва
+  от схемата. Останалите клонове продължават
+  да бъдат захранени.
+ </p>
 </div>
 
-<div class="card result" id="results">G = <b>0.01000 S</b><br>B<sub>L</sub> = <b>0.01001 S</b><br>B<sub>C</sub> = <b>0.00999 S</b><br>B = B<sub>C</sub> − B<sub>L</sub> = <b>-0.00002 S</b><br>Y = <b>0.01000 S</b><br>Z<sub>eq</sub> = <b>100.00 Ω</b><br><br>I<sub>R</sub> = <b>2.300 A</b><br>I<sub>L</sub> = <b>2.302 A</b><br>I<sub>C</sub> = <b>2.298 A</b><br>I = <b>2.300 A</b><br>φ = <b>-0.1°</b></div>
+<div class="card result" id="results"></div>
+
+<div class="card">
+ <div class="title">Моментни токове</div>
+
+ <div id="currentValues" class="result"></div>
+
+ <p class="note">
+  Малките стрелки показват моментната посока
+  на тока във всеки клон.
+  При синусоидален ток посоката се обръща
+  през всеки полупериод.
+ </p>
+</div>
+
+<div class="card">
+ <div class="title">Учебно обяснение</div>
+ <div id="explanation" class="info"></div>
+</div>
+
+<div class="card">
+ <button id="pause" type="button">
+  Ⅱ Пауза
+ </button>
+
+ <button id="reset" type="button">
+  Начални стойности
+ </button>
+</div>
 
 <div class="card note">
-При паралелна RLC верига напрежението е еднакво за всички клонове. Токовете се определят от проводимостите на отделните клонове. Изключването на елемент означава физическо премахване на съответния паралелен клон.
+ <b>Важно:</b>
+ в тази анимация изключването на елемент
+ означава премахване на неговия клон.
+
+ Това е различно от последователната RLC
+ верига, при която елемент може учебно
+ да се замени с идеален проводник.
+
+ Клоновете тук не са шунтирани.
 </div>
 
-<div class="card"><button id="reset">Начални стойности</button></div>
 </aside>
 </div>
+
+<div id="error" hidden role="alert"></div>
+
+<footer>
+© 2026 доц. д-р инж. Величко Атанасов.
+Всички права запазени.
+</footer>
+
 </div>
 
 <script>
-const $=id=>document.getElementById(id);
+(() => {
+"use strict";
 
-function calc(){
- const U=+$("U").value, f=+$("f").value;
- const Rv=+$("R").value, Lv=+$("L").value, Cv=+$("C").value*1e-6;
- const useR=$("useR").checked, useL=$("useL").checked, useC=$("useC").checked;
+const $ = id => document.getElementById(id);
+const NS = "http://www.w3.org/2000/svg";
+const TAU = 2*Math.PI;
+const SQRT2 = Math.SQRT2;
 
- const G=useR?1/Rv:0;
- const XL=2*Math.PI*f*Lv;
- const XC=1/(2*Math.PI*f*Cv);
- const BL=useL?1/XL:0;
- const BC=useC?1/XC:0; // = omega C
- const B=BC-BL;
- const Y=Math.sqrt(G*G+B*B);
+let theta = 0;
+let last = null;
+let running = true;
+let stopped = false;
+let data = null;
+
+const branchArrows = {};
+
+const colors = {
+ R:"#d63d32",
+ L:"#d97b16",
+ C:"#13834e",
+ total:"#6b48ad"
+};
+
+function fmt(value,digits=3){
+ const v = Math.abs(value)<
+  .5*10**(-digits)?0:value;
+
+ return v.toLocaleString("bg-BG",{
+  minimumFractionDigits:digits,
+  maximumFractionDigits:digits
+ }).replace("-","−");
+}
+
+function svg(tag,attributes={}){
+ const node = document.createElementNS(NS,tag);
+
+ for(const [key,value] of Object.entries(attributes)){
+  node.setAttribute(key,String(value));
+ }
+
+ return node;
+}
+
+function setLine(id,x1,y1,x2,y2){
+ const e=$(id);
+ e.setAttribute("x1",x1);
+ e.setAttribute("y1",y1);
+ e.setAttribute("x2",x2);
+ e.setAttribute("y2",y2);
+}
+
+function display(id,visible){
+ $(id).style.display=visible?"":"none";
+}
+
+/* Комплексен адмитанс */
+function calculate(){
+ const U=Number($("U").value);
+ const f=Number($("f").value);
+
+ const useR=$("useR").checked;
+ const useL=$("useL").checked;
+ const useC=$("useC").checked;
+
+ const R=Number($("R").value);
+ const L=Number($("L").value);
+ const C=Number($("C").value)*1e-6;
+
+ const omega=TAU*f;
+
+ const G=useR?1/R:0;
+ const BL=useL?1/(omega*L):0;
+ const BC=useC?omega*C:0;
+
+ let B=BC-BL;
+ if(Math.abs(B)<1e-13)B=0;
+
+ const Y=Math.hypot(G,B);
  const Zeq=Y>0?1/Y:Infinity;
 
  const IR=U*G;
  const IL=U*BL;
  const IC=U*BC;
  const I=U*Y;
- const phi=(Y>0)?Math.atan2(B,G):0;
- const deg=phi*180/Math.PI;
 
- $("uOut").textContent=U.toFixed(0)+" V";
- $("fOut").textContent=f.toFixed(0)+" Hz";
- $("rOut").textContent=useR?Rv.toFixed(0)+" Ω":"изключен";
- $("lOut").textContent=useL?Lv.toFixed(3)+" H":"изключена";
- $("cOut").textContent=useC?(Cv*1e6).toFixed(1)+" µF":"изключен";
- $("R").disabled=!useR;$("L").disabled=!useL;$("C").disabled=!useC;
+ const phi=Y>0?Math.atan2(B,G):null;
+
+ const f0=useL&&useC
+  ?1/(TAU*Math.sqrt(L*C))
+  :null;
+
+ return {
+  U,f,G,BL,BC,B,Y,Zeq,
+  IR,IL,IC,I,phi,f0,
+  useR,useL,useC,
+  R,L,C
+ };
+}
+
+/* Числова проверка на основните режими */
+function selfTest(){
+ function check(ok,message){
+  if(!ok)throw new Error(
+   "Самопроверка: "+message
+  );
+ }
+
+ const U=230,f=50,R=100,L=.318,C=31.8e-6;
+ const omega=TAU*f;
+
+ const G=1/R;
+ const BL=1/(omega*L);
+ const BC=omega*C;
+
+ const B=BC-BL;
+ const Y=Math.hypot(G,B);
+
+ check(
+  Math.abs(G-.01)<1e-12,
+  "Неправилна активна проводимост."
+ );
+
+ check(
+  Math.abs(BL-.010009744848546876)<1e-10,
+  "Неправилна индуктивна проводимост."
+ );
+
+ check(
+  Math.abs(BC-.009990264638415543)<1e-10,
+  "Неправилна капацитивна проводимост."
+ );
+
+ check(
+  Math.abs(U*Y-2.3000043639996077)<1e-8,
+  "Неправилен общ ток."
+ );
+
+ const onlyR=Math.hypot(G,0);
+ const onlyL=Math.hypot(0,-BL);
+ const onlyC=Math.hypot(0,BC);
+
+ check(
+  Math.abs(U*onlyR-2.3)<1e-10,
+  "Неправилен ток при само R."
+ );
+
+ check(
+  Math.abs(U*onlyL-U*BL)<1e-10,
+  "Неправилен ток при само L."
+ );
+
+ check(
+  Math.abs(U*onlyC-U*BC)<1e-10,
+  "Неправилен ток при само C."
+ );
+
+ check(
+  Math.hypot(0,0)===0,
+  "При всички изключени клонове общият ток трябва да е нула."
+ );
+}
+
+/* =====================================================
+   АНИМИРАНИ СТРЕЛКИ
+   ===================================================== */
+
+function makeArrow(color){
+ const g=svg("g");
+
+ /* Светъл контур, за да се вижда върху проводника */
+ g.appendChild(svg("path",{
+  d:"M0 -7V7 M-4 2L0 7L4 2",
+  fill:"none",
+  stroke:"white",
+  "stroke-width":5,
+  "stroke-linecap":"round",
+  "stroke-linejoin":"round"
+ }));
+
+ g.appendChild(svg("path",{
+  d:"M0 -7V7 M-4 2L0 7L4 2",
+  fill:"none",
+  stroke:color,
+  "stroke-width":2.5,
+  "stroke-linecap":"round",
+  "stroke-linejoin":"round"
+ }));
+
+ return g;
+}
+
+function createArrows(){
+ const layer=$("motionLayer");
+
+ for(const key of ["R","L","C"]){
+  const group=svg("g");
+  branchArrows[key]=[];
+
+  for(let i=0;i<3;i++){
+   const arrow=makeArrow(colors[key]);
+   group.appendChild(arrow);
+   branchArrows[key].push(arrow);
+  }
+
+  layer.appendChild(group);
+  branchArrows[key].group=group;
+ }
+
+ /* Стрелка за общия ток по горната шина */
+ const total=svg("g");
+
+ total.appendChild(svg("path",{
+  d:"M-9 0H9 M3 -4L9 0L3 4",
+  fill:"none",
+  stroke:"white",
+  "stroke-width":5,
+  "stroke-linecap":"round",
+  "stroke-linejoin":"round"
+ }));
+
+ total.appendChild(svg("path",{
+  d:"M-9 0H9 M3 -4L9 0L3 4",
+  fill:"none",
+  stroke:colors.total,
+  "stroke-width":2.6,
+  "stroke-linecap":"round",
+  "stroke-linejoin":"round"
+ }));
+
+ total.id="totalArrow";
+ layer.appendChild(total);
+}
+
+/*
+  iR = √2 IR sin(ωt)
+  iL = √2 IL sin(ωt - 90°)
+  iC = √2 IC sin(ωt + 90°)
+
+  Положителната посока по клоновете е надолу.
+*/
+function branchMotion(key,x,magnitude,phase){
+ const arrows=branchArrows[key];
+
+ if(magnitude<1e-12){
+  arrows.group.style.display="none";
+  return;
+ }
+
+ const a=theta+phase;
+ const moment=Math.sin(a);
+ const strength=Math.abs(moment);
+
+ if(strength<.015){
+  arrows.group.style.display="none";
+  return;
+ }
+
+ arrows.group.style.display="";
+
+ const sign=moment>=0?1:-1;
+ const shift=-6*Math.cos(a);
+
+ arrows.forEach((arrow,i)=>{
+  const y=[305,328,352][i]+shift;
+
+  arrow.setAttribute(
+   "transform",
+   "translate("+x+" "+y.toFixed(2)+") "+
+   "scale(1 "+sign+")"
+  );
+
+  arrow.setAttribute(
+   "opacity",
+   String(.25+.75*strength)
+  );
+ });
+}
+
+function renderMotion(){
+ if(!data)return;
+
+ const v=data;
+
+ branchMotion(
+  "R",245,v.IR,0
+ );
+
+ branchMotion(
+  "L",395,v.IL,-Math.PI/2
+ );
+
+ branchMotion(
+  "C",530,v.IC,Math.PI/2
+ );
+
+ const total=$("totalArrow");
+
+ if(v.I<1e-12){
+  total.style.display="none";
+ }else{
+  const a=theta+v.phi;
+  const moment=Math.sin(a);
+
+  if(Math.abs(moment)<.015){
+   total.style.display="none";
+  }else{
+   total.style.display="";
+
+   const x=170-9*Math.cos(a);
+   const sign=moment>=0?1:-1;
+
+   total.setAttribute(
+    "transform",
+    "translate("+x.toFixed(2)+" 130) "+
+    "scale("+sign+" 1)"
+   );
+
+   total.setAttribute(
+    "opacity",
+    String(.3+.7*Math.abs(moment))
+   );
+  }
+ }
+
+ const iR=SQRT2*v.IR*Math.sin(theta);
+ const iL=SQRT2*v.IL*Math.sin(theta-Math.PI/2);
+ const iC=SQRT2*v.IC*Math.sin(theta+Math.PI/2);
+
+ $("currentValues").innerHTML=
+  "i<sub>R</sub>(t) = <b>"+
+  fmt(iR,3)+" A</b><br>"+
+  "i<sub>L</sub>(t) = <b>"+
+  fmt(iL,3)+" A</b><br>"+
+  "i<sub>C</sub>(t) = <b>"+
+  fmt(iC,3)+" A</b><br>"+
+  "i(t) = <b>"+
+  fmt(iR+iL+iC,3)+" A</b>";
+}
+
+/* =====================================================
+   ФАЗОРНА ДИАГРАМА
+   ===================================================== */
+
+function updatePhasor(v){
+ const ox=630;
+ const oy=255;
+
+ if(v.Y<1e-12){
+  [
+   "gVec","bVec","yVec",
+   "gLabel","bLabel","yLabel",
+   "phiLabel"
+  ].forEach(id=>display(id,false));
+
+  $("phiArc").setAttribute("d","");
+  return;
+ }
+
+ const sx=v.G>0
+  ?205/v.G:Infinity;
+
+ const sy=Math.abs(v.B)>0
+  ?118/Math.abs(v.B):Infinity;
+
+ const s=Math.min(sx,sy);
+
+ const ex=ox+v.G*s;
+ const ey=oy-v.B*s;
+
+ const hasG=v.G>1e-12;
+ const hasB=Math.abs(v.B)>1e-12;
+
+ display("gVec",hasG);
+ display("gLabel",hasG);
+
+ display("bVec",hasB);
+ display("bLabel",hasB);
+
+ display("yVec",true);
+ display("yLabel",true);
+
+ setLine("gVec",ox,oy,ex,oy);
+ setLine("bVec",ex,oy,ex,ey);
+ setLine("yVec",ox,oy,ex,ey);
+
+ $("gLabel").setAttribute(
+  "x",(ox+ex)/2
+ );
+ $("gLabel").setAttribute("y",oy+23);
+
+ $("bLabel").setAttribute("x",ex+13);
+ $("bLabel").setAttribute("y",(oy+ey)/2);
+
+ $("yLabel").setAttribute(
+  "x",ox+(ex-ox)*.55+3
+ );
+
+ $("yLabel").setAttribute(
+  "y",oy+(ey-oy)*.55+
+  (v.B>=0?-13:20)
+ );
+
+ $("yLabel").textContent=
+  hasB?"Y":"Y = G";
+
+ const phi=v.phi;
+
+ if(!hasB){
+  $("phiArc").setAttribute("d","");
+  display("phiLabel",false);
+ }else{
+  display("phiLabel",true);
+
+  let path="";
+  const radius=36;
+
+  for(let k=0;k<=30;k++){
+   const angle=phi*k/30;
+
+   const x=ox+radius*Math.cos(angle);
+   const y=oy-radius*Math.sin(angle);
+
+   path+=(k===0?"M":"L")+
+    x+" "+y+" ";
+  }
+
+  $("phiArc").setAttribute("d",path);
+
+  $("phiLabel").setAttribute(
+   "x",ox+52*Math.cos(phi/2)
+  );
+
+  $("phiLabel").setAttribute(
+   "y",oy-52*Math.sin(phi/2)
+  );
+ }
+}
+
+/* =====================================================
+   ЧИСЛОВИ ПОКАЗАНИЯ
+   ===================================================== */
+
+function update(){
+ data=calculate();
+ const v=data;
+
+ $("uOut").textContent=fmt(v.U,0)+" V";
+ $("fOut").textContent=fmt(v.f,0)+" Hz";
+
+ $("rOut").textContent=v.useR
+  ?fmt(v.R,0)+" Ω":"изключен";
+
+ $("lOut").textContent=v.useL
+  ?fmt(v.L,3)+" H":"изключена";
+
+ $("cOut").textContent=v.useC
+  ?fmt(v.C*1e6,1)+" µF":"изключен";
+
+ $("R").disabled=!v.useR;
+ $("L").disabled=!v.useL;
+ $("C").disabled=!v.useC;
+
+ /*
+  Важно:
+  Изключването премахва целия клон,
+  включително двата му проводника.
+ */
+ display("branchR",v.useR);
+ display("branchL",v.useL);
+ display("branchC",v.useC);
 
  $("results").innerHTML=
-  `G = <b>${G.toFixed(5)} S</b><br>`+
-  `B<sub>L</sub> = <b>${BL.toFixed(5)} S</b><br>`+
-  `B<sub>C</sub> = <b>${BC.toFixed(5)} S</b><br>`+
-  `B = B<sub>C</sub> − B<sub>L</sub> = <b>${B.toFixed(5)} S</b><br>`+
-  `Y = <b>${Y.toFixed(5)} S</b><br>`+
-  `Z<sub>eq</sub> = <b>${isFinite(Zeq)?Zeq.toFixed(2)+" Ω":"∞"}</b><br><br>`+
-  `I<sub>R</sub> = <b>${IR.toFixed(3)} A</b><br>`+
-  `I<sub>L</sub> = <b>${IL.toFixed(3)} A</b><br>`+
-  `I<sub>C</sub> = <b>${IC.toFixed(3)} A</b><br>`+
-  `I = <b>${I.toFixed(3)} A</b><br>`+
-  `φ = <b>${deg.toFixed(1)}°</b>`;
+  "Активна проводимост G = <b>"+
+  fmt(v.G,5)+" S</b><br>"+
 
- setBranch("rElem","irArrow","irText",useR);
- setBranch("lElem","ilArrow","ilText",useL);
- setCap(useC);
- draw(G,B,phi,Y);
- characterize(G,B,Y);
+  "Индуктивна B<sub>L</sub> = <b>"+
+  fmt(v.BL,5)+" S</b><br>"+
+
+  "Капацитивна B<sub>C</sub> = <b>"+
+  fmt(v.BC,5)+" S</b><br>"+
+
+  "Обща реактивна B = <b>"+
+  fmt(v.B,6)+" S</b><br>"+
+
+  "Адмитанс |Y| = <b>"+
+  fmt(v.Y,6)+" S</b><br>"+
+
+  "Z<sub>eq</sub> = <b>"+
+  (Number.isFinite(v.Zeq)
+   ?fmt(v.Zeq,2)+" Ω":"∞")+
+  "</b><br><br>"+
+
+  "I<sub>R</sub> = <b>"+
+  fmt(v.IR,3)+" A</b><br>"+
+
+  "I<sub>L</sub> = <b>"+
+  fmt(v.IL,3)+" A</b><br>"+
+
+  "I<sub>C</sub> = <b>"+
+  fmt(v.IC,3)+" A</b><br>"+
+
+  "I = <b>"+
+  fmt(v.I,3)+" A</b><br>"+
+
+  "φ = <b>"+
+  (v.phi===null
+   ?"неопределен"
+   :fmt(v.phi*180/Math.PI,2)+"°")+
+  "</b>";
+
+ updatePhasor(v);
+ updateCharacter(v);
+ renderMotion();
 }
 
-function setBranch(elem,arrow,label,on){
- $(elem).style.opacity=on?"1":"0.18";
- $(arrow).style.display=on?"":"none";
- $(label).style.display=on?"":"none";
-}
-function setCap(on){
- $("c1").style.opacity=on?"1":"0.18";$("c2").style.opacity=on?"1":"0.18";
- $("icArrow").style.display=on?"":"none";$("icText").style.display=on?"":"none";
-}
+function updateCharacter(v){
+ const char=$("character");
+ const rule=$("characterRule");
+ const current=$("currentRule");
+ const angle=$("phiText");
 
-function draw(G,B,phi,Y){
- const ox=590,oy=235;
- if(Y===0){
-   ["gVec","bVec","yVec","gLab","bLab","yLab","phiLab"].forEach(id=>$(id).style.display="none");
-   $("phiArc").setAttribute("d",""); return;
+ if(!v.useR&&!v.useL&&!v.useC){
+  char.textContent="ВСИЧКИ КЛОНОВЕ СА ИЗКЛЮЧЕНИ";
+  char.setAttribute("font-size","15");
+  char.setAttribute("fill","#60798c");
+
+  rule.textContent="Отворена захранваща верига";
+  current.textContent="I = 0 A";
+  angle.textContent="φ не е определен";
+
+  $("explanation").innerHTML=
+   "Всички паралелни клонове са премахнати. "+
+   "Горната и долната шина не са свързани "+
+   "помежду си чрез товар. "+
+   "Общият ток от източника е нула.";
+
+  return;
  }
- const m=Math.max(G,Math.abs(B),0.00001), s=175/m;
- const dx=G*s, dy=B*s, ex=ox+dx, ey=oy-dy;
- const pure=Math.abs(B)<0.00002;
 
- $("gVec").style.display=G>0?"":"none";$("gLab").style.display=G>0?"":"none";
- $("yVec").style.display="";$("yLab").style.display="";
- $("gVec").setAttribute("x2",ex);
- $("bVec").setAttribute("x1",ex);$("bVec").setAttribute("y1",oy);$("bVec").setAttribute("x2",ex);$("bVec").setAttribute("y2",ey);
- $("yVec").setAttribute("x2",ex);$("yVec").setAttribute("y2",ey);
- $("gLab").setAttribute("x",ox+dx/2);$("gLab").setAttribute("y",oy+23);
- $("bLab").setAttribute("x",ex+13);$("bLab").setAttribute("y",(oy+ey)/2);
- $("yLab").setAttribute("x",ox+dx*.55);$("yLab").setAttribute("y",oy-dy*.55-12);
+ char.setAttribute("font-size","19");
 
- if(pure){
-   $("bVec").style.display="none";$("bLab").style.display="none";
-   $("phiArc").setAttribute("d","");$("phiLab").style.display="none";
-   $("yLab").textContent="Y = G";
+ if(v.Y<1e-12){
+  char.textContent="НУЛЕВ ТОК ОТ ИЗТОЧНИКА";
+  char.setAttribute("font-size","16");
+  char.setAttribute("fill","#1769aa");
+
+  rule.textContent="B = 0; G = 0";
+  current.textContent="Компенсиращи се реактивни токове";
+  angle.textContent="φ не е определен";
+
+  $("explanation").innerHTML=
+   "В идеалния модел индуктивният и "+
+   "капацитивният ток могат да се компенсират "+
+   "при източника. Токовете в L и C "+
+   "клоновете обаче не е задължително да са нула.";
+
+ }else if(Math.abs(v.B)<1e-12){
+  char.textContent="АКТИВЕН ХАРАКТЕР";
+  char.setAttribute("fill","#1769aa");
+
+  rule.textContent="B = 0";
+  current.textContent="Общият ток е във фаза с U";
+  angle.textContent="φ = 0°";
+
+  $("explanation").innerHTML=
+   "Активната проводимост определя "+
+   "общия ток. Реактивните съставки "+
+   "се компенсират, ако и L, и C "+
+   "са включени.";
+
+ }else if(v.B>0){
+  char.textContent="КАПАЦИТИВЕН ХАРАКТЕР";
+  char.setAttribute("fill","#13834e");
+
+  rule.textContent="BC > BL";
+  current.textContent="Общият ток изпреварва U";
+  angle.textContent="φ > 0°";
+
+  $("explanation").innerHTML=
+   "Капацитивната проводимост е "+
+   "по-голяма от индуктивната по модул. "+
+   "Резултантният ток изпреварва напрежението.";
+
  }else{
-   $("bVec").style.display="";$("bLab").style.display="";$("phiLab").style.display="";
-   $("yLab").textContent="Y";
-   const rad=43,steps=25; let d="";
-   for(let k=0;k<=steps;k++){const t=phi*k/steps;const x=ox+rad*Math.cos(t),y=oy-rad*Math.sin(t);d+=(k?"L":"M")+x+" "+y+" ";}
-   $("phiArc").setAttribute("d",d);
-   const mid=phi/2;
-   $("phiLab").setAttribute("x",ox+60*Math.cos(mid));$("phiLab").setAttribute("y",oy-60*Math.sin(mid));
+  char.textContent="ИНДУКТИВЕН ХАРАКТЕР";
+  char.setAttribute("fill","#d97b16");
+
+  rule.textContent="BL > BC";
+  current.textContent="Общият ток изостава от U";
+  angle.textContent="φ < 0°";
+
+  $("explanation").innerHTML=
+   "Индуктивната проводимост е "+
+   "по-голяма от капацитивната по модул. "+
+   "Резултантният ток изостава от напрежението.";
+ }
+
+ if(v.f0!==null){
+  const ratio=Math.abs(v.B)/
+   Math.max(v.BL,v.BC,1e-12);
+
+  if(ratio<.01){
+   $("explanation").innerHTML+=
+    "<br><br><b>Реактивните проводимости "+
+    "са близки по модул.</b>";
+  }
  }
 }
 
-function characterize(G,B,Y){
- if(Y===0){
-   $("charText").textContent="НЯМА ВКЛЮЧЕН КЛОН";$("charText").setAttribute("fill","#60798c");
-   $("charRule").textContent="Y = 0";$("charCurrent").textContent="I = 0";$("phiText").textContent=""; return;
- }
- const eps=0.00002;
- if(Math.abs(B)<eps && G>0){
-   $("charText").textContent="АКТИВЕН ХАРАКТЕР";$("charText").setAttribute("fill","#1769aa");
-   $("charRule").textContent="Bc = Bₗ";$("charCurrent").textContent="I и U са във фаза";$("phiText").textContent="φ = 0°";
- }else if(B>0){
-   $("charText").textContent="КАПАЦИТИВЕН ХАРАКТЕР";$("charText").setAttribute("fill","#13834e");
-   $("charRule").textContent="Bc > Bₗ";$("charCurrent").textContent="Общият ток изпреварва U";$("phiText").textContent="φ > 0°";
- }else{
-   $("charText").textContent="ИНДУКТИВЕН ХАРАКТЕР";$("charText").setAttribute("fill","#d97b16");
-   $("charRule").textContent="Bₗ > Bc";$("charCurrent").textContent="Общият ток изостава от U";$("phiText").textContent="φ < 0°";
- }
-}
+/* =====================================================
+   УПРАВЛЕНИЕ И АНИМАЦИЯ
+   ===================================================== */
 
-["U","f","R","L","C","useR","useL","useC"].forEach(id=>$(id).addEventListener("input",calc));
-$("reset").addEventListener("click",()=>{
- $("U").value=230;$("f").value=50;$("R").value=100;$("L").value=.318;$("C").value=31.8;
- $("useR").checked=$("useL").checked=$("useC").checked=true;calc();
+document.querySelectorAll(
+ "input[type=range]"
+).forEach(input=>{
+ input.addEventListener("input",update);
 });
-calc();
+
+["useR","useL","useC"].forEach(id=>{
+ $(id).addEventListener("change",update);
+});
+
+$("pause").addEventListener("click",()=>{
+ running=!running;
+ last=null;
+
+ $("pause").textContent=running
+  ?"Ⅱ Пауза":"▶ Продължи";
+});
+
+$("reset").addEventListener("click",()=>{
+ $("U").value=230;
+ $("f").value=50;
+ $("R").value=100;
+ $("L").value=.318;
+ $("C").value=31.8;
+
+ $("useR").checked=true;
+ $("useL").checked=true;
+ $("useC").checked=true;
+
+ theta=0;
+ running=true;
+ last=null;
+
+ $("pause").textContent="Ⅱ Пауза";
+
+ update();
+});
+
+document.addEventListener("visibilitychange",()=>{
+ last=null;
+});
+
+function animate(now){
+ if(stopped)return;
+
+ try{
+  const dt=last===null
+   ?0
+   :Math.min(.05,Math.max(0,(now-last)/1000));
+
+  last=now;
+
+  if(running&&!document.hidden){
+   const f=Number($("f").value);
+
+   /* Учебно забавена скорост */
+   theta=(theta+dt*TAU*(f/50)/8)%TAU;
+  }
+
+  if(!document.hidden){
+   renderMotion();
+  }
+
+  requestAnimationFrame(animate);
+
+ }catch(error){
+  stopped=true;
+  console.error(error);
+
+  $("error").hidden=false;
+  $("error").textContent=
+   "Грешка в анимацията: "+error.message;
+ }
+}
+
+/* Начало */
+try{
+ selfTest();
+ createArrows();
+ update();
+ requestAnimationFrame(animate);
+
+}catch(error){
+ stopped=true;
+ console.error(error);
+
+ $("error").hidden=false;
+ $("error").textContent=
+  "Грешка при стартиране: "+error.message;
+}
+
+})();
 </script>
 
-
-</body></html>
+</body>
+</html>

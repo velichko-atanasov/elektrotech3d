@@ -1,11 +1,1232 @@
+
 <!DOCTYPE html>
-<!-- saved from url=(0065)file:///C:/Users/velichko.atanasov/Downloads/preview%20(100).html -->
-<html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Времево представяне</title><style>body{font-family:Arial;margin:20px;color:#172033}h1{color:#102a72}.grid{display:grid;grid-template-columns:1fr 320px;gap:18px}.card{border:1px solid #bbc5d5;border-radius:10px;padding:14px;margin-bottom:12px}canvas{width:100%;height:470px;border:1px solid #ddd}.eq{text-align:center;font-size:25px;color:#123b9b;border:1px solid #c99d4e;border-radius:8px;padding:12px;margin:12px 0}button{padding:9px 14px;margin:3px;border:0;border-radius:6px;font-weight:bold}.start{background:#16834a;color:white}.pause{background:#2768c5;color:white}.row{margin:15px 0}.row label{display:flex;justify-content:space-between}.row input{width:100%}.vals{display:grid;grid-template-columns:1fr auto;gap:8px}@media(max-width:800px){.grid{grid-template-columns:1fr}}</style></head><body><h1>Времево (графично) представяне на синусоидални величини</h1><p>Анимацията показва времевото представяне на две синусоидални величини – напрежение u(t) и ток i(t). Хоризонталната ос показва времето, а вертикалната – моментната стойност на величината. Синият график представя напрежението u(t), а червеният – тока i(t). Чрез плъзгачите могат да се променят амплитудите, честотата и фазовата разлика и непосредствено да се наблюдава влиянието им върху синусоидите.</p><div class="eq">x(t) = X<sub>m</sub> sin(ωt + φ)</div>
-<div class="card" style="line-height:1.55">
-<b>Какво показва анимацията?</b><br>
-Във всеки момент от времето синусоидата определя моментната стойност на напрежението или тока.
-<b>X<sub>m</sub></b> определя амплитудата, <b>f</b> – броя периоди за една секунда,
-<b>T = 1/f</b> – продължителността на един период, <b>ω = 2πf</b> – ъгловата честота,
-а <b>φ</b> определя фазовото отместване. Разстоянието по време между двете синусоиди показва тяхната фазова разлика.
-</div><div class="grid"><div><canvas id="c" width="1420" height="589"></canvas><div class="card"><b>T = 1/f</b> &nbsp;&nbsp;&nbsp; <b>ω = 2πf</b> &nbsp;&nbsp;&nbsp; <b>Δφ = φ<sub>u</sub> − φ<sub>i</sub></b></div></div><div><div class="card"><h3>Управление</h3><button class="start" id="go">▶ Старт</button><button class="pause" id="stop">Ⅱ Пауза</button><button id="reset">↻ Нулирай</button><div class="row"><label>Амплитуда U<sub>m</sub><b id="uv">1.00</b></label><input id="U" type="range" min=".2" max="1.5" step=".05" value="1"></div><div class="row"><label>Амплитуда I<sub>m</sub><b id="iv">0.70</b></label><input id="I" type="range" min=".2" max="1.5" step=".05" value=".7"></div><div class="row"><label>Честота f [Hz]<b id="fv">50</b></label><input id="f" type="range" min="10" max="100" value="50"></div><div class="row"><label>Фазова разлика Δφ [°]<b id="pv">30°</b></label><input id="ph" type="range" min="-180" max="180" step="5" value="30"></div></div><div class="card"><h3>Текущи стойности</h3><div class="vals"><span>Период T</span><b id="T">0.0200 s</b><span>Ъглова честота ω</span><b id="om">314.16 rad/s</b><span>u(t)</span><b id="ut">0.000</b><span>i(t)</span><b id="it">-0.350</b></div></div></div></div><script>const c=document.getElementById('c'),x=c.getContext('2d'),$=i=>document.getElementById(i);let run=false,t=0,last=performance.now();function P(){return{U:+$('U').value,I:+$('I').value,f:+$('f').value,p:+$('ph').value*Math.PI/180}}function size(){let d=devicePixelRatio||1,r=c.getBoundingClientRect();c.width=r.width*d;c.height=r.height*d;x.setTransform(d,0,0,d,0,0)}function draw(){size();let p=P(),w=c.clientWidth,h=c.clientHeight,L=55,R=15,top=25,bot=45,W=w-L-R,H=h-top-bot,cy=top+H/2,T=1/p.f,o=2*Math.PI*p.f;x.clearRect(0,0,w,h);x.strokeStyle='#222';x.beginPath();x.moveTo(L,top);x.lineTo(L,h-bot);x.moveTo(L,cy);x.lineTo(w-R,cy);x.stroke();for(let k=0;k<=8;k++){let xx=L+W*k/8;x.strokeStyle='#ddd';x.setLineDash([5,5]);x.beginPath();x.moveTo(xx,top);x.lineTo(xx,h-bot);x.stroke();x.setLineDash([]);x.fillStyle='#333';x.fillText(['0','T/4','T/2','3T/4','T','5T/4','3T/2','7T/4','2T'][k],xx-7,cy+20)}function wave(A,ph,col){x.strokeStyle=col;x.lineWidth=2.5;x.beginPath();for(let q=0;q<=W;q++){let tt=2*T*q/W,yy=cy-A*(H*.4/1.5)*Math.sin(o*(tt+t)+ph);q?x.lineTo(L+q,yy):x.moveTo(L+q,yy)}x.stroke()}wave(p.U,0,'#123b9b');wave(p.I,-p.p,'#d7191c');$('uv').textContent=p.U.toFixed(2);$('iv').textContent=p.I.toFixed(2);$('fv').textContent=p.f;$('pv').textContent=Math.round(p.p*180/Math.PI)+'°';$('T').textContent=T.toFixed(4)+' s';$('om').textContent=o.toFixed(2)+' rad/s';$('ut').textContent=(p.U*Math.sin(o*t)).toFixed(3);$('it').textContent=(p.I*Math.sin(o*t-p.p)).toFixed(3)}function loop(n){let dt=(n-last)/1000;last=n;if(run)t+=dt*.06;draw();requestAnimationFrame(loop)}$('go').onclick=()=>run=true;$('stop').onclick=()=>run=false;$('reset').onclick=()=>{run=false;t=0;$('U').value=1;$('I').value=.7;$('f').value=50;$('ph').value=30};requestAnimationFrame(loop)</script>
-</body></html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="доц. д-р инж. Величко Атанасов">
+<meta name="copyright" content="© 2026 Величко Атанасов">
+<title>QR-050 – Времево представяне на синусоидални величини</title>
+
+<style>
+:root{
+ --blue:#123b9b;
+ --red:#d7191c;
+ --ink:#172033;
+ --muted:#52647b;
+ --line:#bbc9db;
+ --bg:#f3f6fa;
+}
+*{box-sizing:border-box}
+body{
+ margin:0;
+ background:var(--bg);
+ font:15px/1.6 Arial,Helvetica,sans-serif;
+ color:var(--ink);
+}
+.wrap{
+ max-width:1250px;
+ margin:auto;
+ padding:15px;
+}
+h1{
+ color:#102a72;
+ font-size:clamp(24px,3vw,34px);
+ text-align:center;
+ margin:4px 0;
+}
+.subtitle{
+ text-align:center;
+ color:var(--muted);
+ margin:4px 0 15px;
+}
+.grid{
+ display:grid;
+ grid-template-columns:minmax(0,1fr) 320px;
+ gap:15px;
+ align-items:start;
+}
+.card{
+ border:1px solid var(--line);
+ border-radius:12px;
+ padding:14px;
+ background:white;
+ margin-bottom:12px;
+ box-shadow:0 3px 12px #123b9b08;
+ min-width:0;
+}
+.card h3{
+ color:#102a72;
+ margin:0 0 10px;
+ font-size:18px;
+}
+canvas{
+ display:block;
+ width:100%;
+ height:470px;
+ border:1px solid #d9e2ec;
+ border-radius:10px;
+ background:#fff;
+ cursor:crosshair;
+ touch-action:pan-y;
+}
+.eq{
+ text-align:center;
+ font:23px/1.7 Cambria,Georgia,serif;
+ color:#123b9b;
+ border:1px solid #c99d4e;
+ border-radius:10px;
+ padding:11px;
+ margin:12px 0;
+ background:white;
+}
+button{
+ padding:9px 12px;
+ margin:3px;
+ border:1px solid #abc0d4;
+ border-radius:7px;
+ background:#eef3f9;
+ font-weight:bold;
+ color:#17375f;
+ cursor:pointer;
+}
+button:hover{background:#dceafa}
+button.active{
+ background:#123b9b;
+ border-color:#123b9b;
+ color:white;
+}
+button.start{
+ background:#16834a;
+ border-color:#16834a;
+ color:white;
+}
+button.pause{
+ background:#2768c5;
+ border-color:#2768c5;
+ color:white;
+}
+button:focus-visible,input:focus-visible{
+ outline:3px solid #8dbbea;
+ outline-offset:2px;
+}
+.row{margin:13px 0}
+.row label{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:8px;
+ font-weight:bold;
+}
+.row input[type=range]{
+ width:100%;
+ margin-top:9px;
+ accent-color:#123b9b;
+}
+.buttons{
+ display:flex;
+ flex-wrap:wrap;
+ gap:4px;
+}
+.presets{
+ display:grid;
+ grid-template-columns:1fr;
+ gap:6px;
+ margin-top:10px;
+}
+.presets button{
+ margin:0;
+ text-align:left;
+}
+.vals{
+ display:grid;
+ grid-template-columns:1fr auto;
+ column-gap:12px;
+ row-gap:9px;
+ font-size:14px;
+}
+.vals strong{
+ text-align:right;
+ font-variant-numeric:tabular-nums;
+}
+.metricStrip{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:8px;
+ margin-bottom:10px;
+}
+.metric{
+ border:1px solid #cdd9e8;
+ border-radius:10px;
+ background:#f8fbff;
+ padding:9px;
+ text-align:center;
+}
+.metric span{
+ display:block;
+ color:var(--muted);
+ font-size:12px;
+}
+.metric strong{
+ display:block;
+ color:#123b9b;
+ font-size:18px;
+ margin-top:5px;
+ font-variant-numeric:tabular-nums;
+}
+.legend{
+ display:flex;
+ flex-wrap:wrap;
+ gap:18px;
+ font-size:13px;
+ color:var(--muted);
+ margin:10px 0;
+}
+.swatch{
+ display:inline-block;
+ width:24px;
+ height:3px;
+ vertical-align:middle;
+ margin-right:6px;
+}
+.info{
+ background:#f1f6fe;
+ border-left:4px solid #2768c5;
+ border-radius:6px;
+ padding:11px;
+ margin-top:10px;
+ line-height:1.7;
+}
+.note{
+ font-size:13px;
+ color:var(--muted);
+ line-height:1.7;
+}
+.status{
+ margin-top:10px;
+ font-size:13px;
+ color:#296048;
+ font-weight:bold;
+}
+#err{
+ padding:12px;
+ border:1px solid #d99;
+ border-radius:9px;
+ background:#fff0f0;
+ color:#a22;
+}
+footer{
+ margin-top:16px;
+ padding:16px;
+ border-top:1px solid var(--line);
+ color:#64768a;
+ font-size:13px;
+ text-align:center;
+}
+@media(max-width:850px){
+ .grid{grid-template-columns:1fr}
+ .metricStrip{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:480px){
+ .wrap{padding:8px}
+ canvas{height:420px}
+ .metric strong{font-size:16px}
+}
+</style>
+</head>
+
+<body>
+<div class="wrap">
+
+<h1>Времево (графично) представяне на синусоидални величини</h1>
+
+<p class="subtitle">
+QR-050 · Напрежение, ток, период, честота и фазова разлика
+</p>
+
+<div class="eq">
+x(t) = X<sub>m</sub> sin(ωt + φ)
+</div>
+
+<div class="card">
+<b>Какво показва анимацията?</b>
+
+<p>
+Синята крива представя напрежението u(t), а червената —
+тока i(t). Всяка точка от кривата е моментна стойност.
+При промяна на амплитудата, честотата или фазовата разлика
+графиките и двата маркера се преизчисляват едновременно.
+</p>
+
+<p class="note">
+Амплитудите са в относителни единици (p.u.), всяка
+спрямо собствена базова стойност. Хоризонталната ос
+показва два периода. Реалното време за един период
+се определя от зададената честота.
+</p>
+</div>
+
+<div class="grid">
+
+<section>
+
+<div class="card">
+
+<div class="metricStrip">
+
+<div class="metric">
+<span>Период T</span>
+<strong id="periodTop">20,00 ms</strong>
+</div>
+
+<div class="metric">
+<span>Честота f</span>
+<strong id="freqTop">50 Hz</strong>
+</div>
+
+<div class="metric">
+<span>Фазова разлика Δφ</span>
+<strong id="phaseTop">+30°</strong>
+</div>
+
+<div class="metric">
+<span>Времево отместване Δt</span>
+<strong id="delayTop">+1,67 ms</strong>
+</div>
+
+</div>
+
+<canvas id="graph"
+ aria-label="Две синусоиди с движещи се маркери и фазово отместване">
+</canvas>
+
+<div class="legend">
+<span>
+<i class="swatch" style="background:#123b9b"></i>
+u(t) — напрежение
+</span>
+
+<span>
+<i class="swatch" style="background:#d7191c"></i>
+i(t) — ток
+</span>
+
+<span>
+Пунктираната вертикална линия е избраният момент.
+</span>
+</div>
+
+<div class="info" id="phaseDescription">
+Токът изостава от напрежението с 30°.
+</div>
+
+<p class="note">
+Натисни върху графиката, за да избереш момент.
+Това спира движението и позволява внимателно
+сравнение на моментните стойности.
+</p>
+
+</div>
+
+<div class="card">
+
+<b>Основни зависимости</b>
+
+<div class="eq" style="font-size:19px">
+u(t) = U<sub>m</sub> sin(ωt)
+</div>
+
+<div class="eq" style="font-size:19px">
+i(t) = I<sub>m</sub> sin(ωt − Δφ)
+</div>
+
+<div class="eq" style="font-size:19px">
+T = 1/f
+&nbsp; · &nbsp;
+ω = 2πf
+</div>
+
+<div class="eq" style="font-size:19px">
+Δt = Δφ/(360°f)
+</div>
+
+<p class="note">
+Положителна Δφ означава, че токът изостава;
+отрицателна Δφ означава, че изпреварва.
+Показаната Δt е със същия знак като Δφ.
+</p>
+
+</div>
+
+</section>
+
+<aside>
+
+<div class="card">
+
+<h3>Управление</h3>
+
+<div class="buttons">
+<button id="go" class="start" type="button">
+▶ Старт
+</button>
+
+<button id="stop" class="pause" type="button">
+Ⅱ Пауза
+</button>
+
+<button id="reset" type="button">
+↻ Нулирай
+</button>
+</div>
+
+<div id="runStatus" class="status">
+Движението е включено
+</div>
+
+<div class="row">
+<label for="U">
+Амплитуда U<sub>m</sub>
+<strong id="uv">1,00 p.u.</strong>
+</label>
+<input id="U" type="range"
+ min=".2" max="1.5" step=".05" value="1">
+</div>
+
+<div class="row">
+<label for="I">
+Амплитуда I<sub>m</sub>
+<strong id="iv">0,70 p.u.</strong>
+</label>
+<input id="I" type="range"
+ min=".2" max="1.5" step=".05" value=".7">
+</div>
+
+<div class="row">
+<label for="f">
+Честота f
+<strong id="fv">50 Hz</strong>
+</label>
+<input id="f" type="range"
+ min="10" max="100" step="1" value="50">
+</div>
+
+<div class="row">
+<label for="ph">
+Фазова разлика Δφ
+<strong id="pv">+30°</strong>
+</label>
+<input id="ph" type="range"
+ min="-180" max="180" step="5" value="30">
+</div>
+
+<h3 style="margin-top:17px">Готови фазови режими</h3>
+
+<div class="presets">
+<button type="button" data-phase="0">
+Във фаза · Δφ = 0°
+</button>
+
+<button type="button" data-phase="90">
+Токът изостава · Δφ = +90°
+</button>
+
+<button type="button" data-phase="-90">
+Токът изпреварва · Δφ = −90°
+</button>
+</div>
+
+</div>
+
+<div class="card">
+
+<h3>Текущи стойности</h3>
+
+<div class="vals">
+<span>Момент на наблюдение</span>
+<strong id="timeNow">0,00 ms</strong>
+
+<span>Моментно напрежение u(t)</span>
+<strong id="ut" style="color:#123b9b">0,000 p.u.</strong>
+
+<span>Моментен ток i(t)</span>
+<strong id="it" style="color:#d7191c">0,000 p.u.</strong>
+
+<span>Период T</span>
+<strong id="T">20,00 ms</strong>
+
+<span>Ъглова честота ω</span>
+<strong id="om">314,16 rad/s</strong>
+
+<span>Времево отместване Δt</span>
+<strong id="dt">+1,67 ms</strong>
+</div>
+
+</div>
+
+<div class="card">
+<h3>Физичен смисъл</h3>
+
+<p id="interpretation" class="note"></p>
+
+<p class="note">
+Движението на маркерите е учебно забавено.
+При промяна на честотата времевата ос се
+преизчислява, а фазата на текущия момент
+остава непрекъсната.
+</p>
+
+</div>
+
+</aside>
+</div>
+
+<div id="err" hidden role="alert"></div>
+
+<footer>
+© 2026 доц. д-р инж. Величко Атанасов.
+Всички права запазени.
+</footer>
+
+</div>
+
+<script>
+(() => {
+"use strict";
+
+const $ = id => document.getElementById(id);
+const TAU = 2 * Math.PI;
+
+const canvas = $("graph");
+const ctx = canvas.getContext("2d");
+
+let running = true;
+let phase = 0;
+let lastFrame = null;
+let canvasWidth = 0;
+let canvasHeight = 0;
+let failed = false;
+
+const colors = {
+  U:"#123b9b",
+  I:"#d7191c",
+  grid:"#dde6ef",
+  axis:"#64768a",
+  text:"#33465a",
+  phase:"#b17b22"
+};
+
+function fmt(x,digits=2) {
+  const value =
+    Math.abs(x)<.5*Math.pow(10,-digits) ? 0 : x;
+
+  return value.toLocaleString("bg-BG",{
+    minimumFractionDigits:digits,
+    maximumFractionDigits:digits
+  }).replace("-","−");
+}
+
+function signed(x,digits=2) {
+  return (x>0?"+":"")+fmt(x,digits);
+}
+
+function clamp(x,a,b) {
+  return Math.max(a,Math.min(b,x));
+}
+
+function wrap(x) {
+  const period = 2*TAU;
+  return ((x%period)+period)%period;
+}
+
+function parameters() {
+  return {
+    U:Number($("U").value),
+    I:Number($("I").value),
+    f:Number($("f").value),
+    degrees:Number($("ph").value),
+    delta:Number($("ph").value)*Math.PI/180
+  };
+}
+
+function result(p,a) {
+  return {
+    u:p.U*Math.sin(a),
+    i:p.I*Math.sin(a-p.delta)
+  };
+}
+
+/* Проверка на избрания знак за фазовата разлика */
+function selfTest() {
+  const p={
+    U:1,
+    I:.7,
+    f:50,
+    degrees:90,
+    delta:Math.PI/2
+  };
+
+  const r=result(p,Math.PI/2);
+
+  if(
+    Math.abs(r.u-1)>1e-10 ||
+    Math.abs(r.i)>1e-10
+  ) {
+    throw new Error(
+      "Неправилно фазово отместване при +90°."
+    );
+  }
+
+  const deltaTime=
+    p.degrees/360/p.f;
+
+  if(
+    Math.abs(deltaTime-.005)>1e-10
+  ) {
+    throw new Error(
+      "Неправилно преобразуване от градуси в секунди."
+    );
+  }
+
+  for(const deg of [-180,-90,-30,0,30,90,180]){
+    const delta=deg*Math.PI/180;
+
+    for(let k=0;k<=20;k++){
+      const a=TAU*k/20;
+
+      const i1=Math.sin(a-delta);
+      const shiftedTime=deg/360/p.f;
+
+      const i2=Math.sin(
+        TAU*p.f*(a/(TAU*p.f)-shiftedTime)
+      );
+
+      if(Math.abs(i1-i2)>1e-10){
+        throw new Error(
+          "Фазовата и времевата разлика не съвпадат."
+        );
+      }
+    }
+  }
+}
+
+/*
+  Canvas се преоразмерява само при
+  действителна промяна на размерите.
+*/
+function resizeCanvas() {
+  if(!ctx)return;
+
+  const rect=canvas.getBoundingClientRect();
+
+  const width=Math.max(1,rect.width);
+  const height=Math.max(1,rect.height);
+
+  const dpr=Math.min(
+    window.devicePixelRatio||1,2
+  );
+
+  const targetWidth=Math.round(width*dpr);
+  const targetHeight=Math.round(height*dpr);
+
+  if(
+    canvas.width!==targetWidth ||
+    canvas.height!==targetHeight
+  ){
+    canvas.width=targetWidth;
+    canvas.height=targetHeight;
+  }
+
+  canvasWidth=width;
+  canvasHeight=height;
+
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+
+function line(x1,y1,x2,y2,color,width=1,dash=[]) {
+  ctx.save();
+
+  ctx.strokeStyle=color;
+  ctx.lineWidth=width;
+  ctx.setLineDash(dash);
+  ctx.beginPath();
+  ctx.moveTo(x1,y1);
+  ctx.lineTo(x2,y2);
+  ctx.stroke();
+
+  ctx.restore();
+}
+
+function text(value,x,y,color="#33465a",
+ size=12,align="left") {
+
+  ctx.save();
+
+  ctx.fillStyle=color;
+  ctx.font=size+"px Arial";
+  ctx.textAlign=align;
+  ctx.textBaseline="middle";
+
+  ctx.fillText(value,x,y);
+
+  ctx.restore();
+}
+
+function dot(x,y,color,r=5) {
+  ctx.save();
+
+  ctx.beginPath();
+  ctx.arc(x,y,r,0,TAU);
+  ctx.fillStyle=color;
+  ctx.fill();
+
+  ctx.strokeStyle="#fff";
+  ctx.lineWidth=1.8;
+  ctx.stroke();
+
+  ctx.restore();
+}
+
+/*
+  Времева скала за два периода.
+  Графиките остават неподвижни.
+*/
+function axes(p) {
+  const w=canvasWidth;
+  const h=canvasHeight;
+
+  const left=w<450?57:70;
+  const right=w-23;
+
+  const top=105;
+  const bottom=h-65;
+
+  const mid=(top+bottom)/2;
+  const amplitudeScale=
+    (bottom-top)/(2*1.65);
+
+  return {
+    left,right,top,bottom,mid,amplitudeScale,
+    xAngle:a=>
+      left+(right-left)*a/(2*TAU),
+    yValue:v=>
+      mid-amplitudeScale*v
+  };
+}
+
+function drawAxis(p,a) {
+  const T=1/p.f;
+  const labels=[
+    "0","T/4","T/2","3T/4","T",
+    "5T/4","3T/2","7T/4","2T"
+  ];
+
+  for(let k=0;k<=8;k++){
+    const angle=k*TAU/4;
+    const x=a.xAngle(angle);
+
+    line(
+      x,a.top,x,a.bottom,
+      colors.grid,1,[4,5]
+    );
+
+    if(canvasWidth<620 && k%2!==0){
+      continue;
+    }
+
+    text(
+      labels[k],
+      x,a.bottom+18,
+      colors.text,
+      canvasWidth<620?10:11,
+      "center"
+    );
+
+    const ms=k*T*1000/4;
+
+    text(
+      fmt(ms,canvasWidth<620?1:2)+" ms",
+      x,a.bottom+34,
+      "#76879a",
+      canvasWidth<620?9:10,
+      "center"
+    );
+  }
+
+  for(const level of [-1.5,-1,0,1,1.5]){
+    const y=a.yValue(level);
+
+    line(
+      a.left,y,a.right,y,
+      level===0?colors.axis:colors.grid,
+      level===0?1.5:1
+    );
+
+    text(
+      fmt(level,1),
+      a.left-10,y,
+      colors.text,11,"right"
+    );
+  }
+
+  line(
+    a.left,a.top,
+    a.left,a.bottom,
+    colors.axis,1.4
+  );
+
+  text(
+    "Относителна моментна стойност [p.u.]",
+    a.left,89,
+    colors.text,12
+  );
+}
+
+function drawCurve(p,a,amplitude,delta,color) {
+  ctx.save();
+
+  ctx.beginPath();
+  ctx.rect(
+    a.left,a.top,
+    a.right-a.left,a.bottom-a.top
+  );
+  ctx.clip();
+
+  ctx.beginPath();
+  ctx.strokeStyle=color;
+  ctx.lineWidth=2.8;
+  ctx.lineJoin="round";
+
+  const count=450;
+
+  for(let k=0;k<=count;k++){
+    const angle=2*TAU*k/count;
+
+    const x=a.xAngle(angle);
+    const value=amplitude*Math.sin(angle-delta);
+    const y=a.yValue(value);
+
+    if(k===0)ctx.moveTo(x,y);
+    else ctx.lineTo(x,y);
+  }
+
+  ctx.stroke();
+  ctx.restore();
+}
+
+/*
+  Двете пресичания с нарастващ наклон
+  са разделени с време Δt.
+
+  Избираме напрежението при t=T:
+  θ=2π.
+
+  Токът има същото пресичане при:
+  θ=2π+Δφ.
+*/
+function drawTimeShift(p,a) {
+  const xVoltage=a.xAngle(TAU);
+  const xCurrent=a.xAngle(TAU+p.delta);
+
+  const deltaMs=
+    p.degrees/(360*p.f)*1000;
+
+  const y=51;
+
+  const label=
+    "Δt = "+signed(deltaMs,2)+" ms";
+
+  const left=Math.min(xVoltage,xCurrent);
+  const right=Math.max(xVoltage,xCurrent);
+
+  ctx.save();
+
+  ctx.strokeStyle="#c5ab77";
+  ctx.lineWidth=1.2;
+  ctx.setLineDash([4,5]);
+
+  for(const x of [xVoltage,xCurrent]){
+    ctx.beginPath();
+    ctx.moveTo(x,65);
+    ctx.lineTo(x,a.yValue(0));
+    ctx.stroke();
+  }
+
+  ctx.restore();
+
+  if(Math.abs(xCurrent-xVoltage)<2){
+    dot(xVoltage,y,colors.phase,3.5);
+
+    text(
+      "Δt = 0 ms",
+      xVoltage,24,
+      colors.phase,13,"center"
+    );
+
+    return;
+  }
+
+  line(
+    left,y,right,y,
+    colors.phase,2
+  );
+
+  /* Две малки стрелки при краищата */
+  const head=6;
+
+  line(
+    left,y,
+    left+head,y-head/2,
+    colors.phase,2
+  );
+
+  line(
+    left,y,
+    left+head,y+head/2,
+    colors.phase,2
+  );
+
+  line(
+    right,y,
+    right-head,y-head/2,
+    colors.phase,2
+  );
+
+  line(
+    right,y,
+    right-head,y+head/2,
+    colors.phase,2
+  );
+
+  text(
+    label,
+    (left+right)/2,27,
+    colors.phase,13,"center"
+  );
+
+  text(
+    "u",
+    xVoltage,72,
+    colors.U,11,"center"
+  );
+
+  text(
+    "i",
+    xCurrent,72,
+    colors.I,11,"center"
+  );
+}
+
+function draw() {
+  if(!ctx || failed)return;
+
+  const p=parameters();
+  const a=axes(p);
+
+  ctx.clearRect(
+    0,0,canvasWidth,canvasHeight
+  );
+
+  ctx.fillStyle="#ffffff";
+  ctx.fillRect(
+    0,0,canvasWidth,canvasHeight
+  );
+
+  drawAxis(p,a);
+
+  drawCurve(
+    p,a,p.U,0,colors.U
+  );
+
+  drawCurve(
+    p,a,p.I,p.delta,colors.I
+  );
+
+  drawTimeShift(p,a);
+
+  /* Текущ момент — вертикален маркер */
+  const x=a.xAngle(phase);
+
+  const values=result(p,phase);
+
+  line(
+    x,a.top,x,a.bottom,
+    "#53647e",1.5,[6,4]
+  );
+
+  dot(
+    x,a.yValue(values.u),
+    colors.U,5.5
+  );
+
+  dot(
+    x,a.yValue(values.i),
+    colors.I,5.5
+  );
+
+  updateValues(p,values);
+}
+
+function updateValues(p,v) {
+  const T=1/p.f;
+  const omega=TAU*p.f;
+
+  const deltaTime=
+    p.degrees/360*T;
+
+  const currentTime=
+    phase/TAU*T;
+
+  $("uv").textContent=fmt(p.U,2)+" p.u.";
+  $("iv").textContent=fmt(p.I,2)+" p.u.";
+  $("fv").textContent=fmt(p.f,0)+" Hz";
+
+  $("pv").textContent=
+    signed(p.degrees,0)+"°";
+
+  $("periodTop").textContent=
+    fmt(T*1000,2)+" ms";
+
+  $("freqTop").textContent=
+    fmt(p.f,0)+" Hz";
+
+  $("phaseTop").textContent=
+    signed(p.degrees,0)+"°";
+
+  $("delayTop").textContent=
+    signed(deltaTime*1000,2)+" ms";
+
+  $("T").textContent=
+    fmt(T*1000,2)+" ms";
+
+  $("om").textContent=
+    fmt(omega,2)+" rad/s";
+
+  $("dt").textContent=
+    signed(deltaTime*1000,2)+" ms";
+
+  $("timeNow").textContent=
+    fmt(currentTime*1000,2)+" ms";
+
+  $("ut").textContent=
+    signed(v.u,3)+" p.u.";
+
+  $("it").textContent=
+    signed(v.i,3)+" p.u.";
+
+  let message;
+
+  if(p.degrees>0){
+    message=
+      "Токът изостава от напрежението с "+
+      fmt(p.degrees,0)+"°. "+
+      "Съответното времево отместване е "+
+      fmt(deltaTime*1000,2)+" ms.";
+
+  }else if(p.degrees<0){
+    message=
+      "Токът изпреварва напрежението с "+
+      fmt(Math.abs(p.degrees),0)+"°. "+
+      "Неговото времево изпреварване е "+
+      fmt(Math.abs(deltaTime*1000),2)+" ms.";
+
+  }else{
+    message=
+      "Напрежението и токът са във фаза. "+
+      "Едновременно преминават през нула и "+
+      "достигат максималните си стойности.";
+  }
+
+  $("phaseDescription").textContent=message;
+
+  $("interpretation").textContent=
+    "При f = "+fmt(p.f,0)+" Hz "+
+    "периодът е "+fmt(T*1000,2)+" ms. "+
+    "Промяната на фазовото отместване "+
+    "измества червената крива по времевата ос, "+
+    "но не променя нейната амплитуда.";
+
+  document.querySelectorAll(
+    "[data-phase]"
+  ).forEach(button=>{
+    button.classList.toggle(
+      "active",
+      Number(button.dataset.phase)===p.degrees
+    );
+  });
+
+  $("runStatus").textContent=
+    running
+      ?"Движението е включено"
+      :"Пауза — избран момент";
+}
+
+/* =====================================================
+   УПРАВЛЕНИЕ
+   ===================================================== */
+
+function stopAt(nextPhase) {
+  phase=clamp(nextPhase,0,2*TAU);
+  running=false;
+  lastFrame=null;
+  draw();
+}
+
+$("go").addEventListener("click",()=>{
+  running=true;
+  lastFrame=null;
+  draw();
+});
+
+$("stop").addEventListener("click",()=>{
+  running=false;
+  lastFrame=null;
+  draw();
+});
+
+$("reset").addEventListener("click",()=>{
+  $("U").value=1;
+  $("I").value=.7;
+  $("f").value=50;
+  $("ph").value=30;
+
+  phase=0;
+  running=false;
+  lastFrame=null;
+  draw();
+});
+
+["U","I","f","ph"].forEach(id=>{
+  $(id).addEventListener(
+    "input",draw
+  );
+});
+
+document.querySelectorAll("[data-phase]").forEach(button=>{
+  button.addEventListener("click",()=>{
+    $("ph").value=button.dataset.phase;
+    draw();
+  });
+});
+
+/*
+  Натискане върху графиката:
+  избира момент и спира движението.
+*/
+canvas.addEventListener("pointerdown",event=>{
+  const rect=canvas.getBoundingClientRect();
+
+  if(!rect.width)return;
+
+  const p=parameters();
+  const a=axes(p);
+
+  const x=
+    (event.clientX-rect.left)*
+    canvasWidth/rect.width;
+
+  const fraction=clamp(
+    (x-a.left)/(a.right-a.left),
+    0,1
+  );
+
+  stopAt(fraction*2*TAU);
+});
+
+document.addEventListener(
+  "visibilitychange",
+  ()=>{lastFrame=null;}
+);
+
+/*
+  Измерване на размера — само при преоразмеряване,
+  а не при всяко рисуване.
+*/
+function resized() {
+  resizeCanvas();
+  draw();
+}
+
+window.addEventListener("resize",resized);
+
+if(window.ResizeObserver){
+  const observer=new ResizeObserver(resized);
+  observer.observe(canvas);
+}
+
+/* =====================================================
+   ЕДИН АНИМАЦИОНЕН ЦИКЪЛ
+   ===================================================== */
+
+function animate(now) {
+  if(failed)return;
+
+  try{
+    const dt=lastFrame===null
+      ?0
+      :Math.min(
+        .05,
+        Math.max(0,(now-lastFrame)/1000)
+      );
+
+    lastFrame=now;
+
+    if(running&&!document.hidden){
+      const f=Number($("f").value);
+
+      /*
+        Учебно забавяне:
+        при 50 Hz един период се показва
+        за приблизително 8 секунди.
+      */
+      phase=wrap(
+        phase+dt*TAU*(f/50)/8
+      );
+
+      draw();
+    }
+
+    requestAnimationFrame(animate);
+
+  }catch(error){
+    failed=true;
+    console.error(error);
+
+    $("err").hidden=false;
+    $("err").textContent=
+      "Грешка в анимацията: "+
+      error.message;
+  }
+}
+
+/* =====================================================
+   НАЧАЛО
+   ===================================================== */
+
+try{
+  if(!ctx){
+    throw new Error(
+      "Браузърът не поддържа Canvas 2D."
+    );
+  }
+
+  selfTest();
+  resized();
+
+  requestAnimationFrame(animate);
+
+}catch(error){
+  failed=true;
+  console.error(error);
+
+  $("err").hidden=false;
+  $("err").textContent=
+    "Грешка при стартиране: "+
+    error.message;
+}
+
+})();
+</script>
+
+</body>
+</html>

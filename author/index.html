@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0059)file:///C:/Users/Rosi/Downloads/index(20260819-173922).html -->
+<!-- saved from url=(0057)https://velichko-atanasov.github.io/elektrotech3d/author/ -->
 <html lang="bg"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>За автора | Величко Атанасов</title>
 <style>
@@ -99,4 +99,81 @@ footer{text-align:center;color:#9fb5d2;border-top:1px solid var(--line);margin-t
   }
 })();
 </script>
+
 </body></html>
+
+<script>
+(function () {
+  // Академични и професионални длъжности
+  const role = document.querySelector(".role");
+
+  if (role) {
+    role.innerHTML = `
+      Технически университет – София<br>
+      Технически колеж – София<br>
+      Доцент в катедра „Електроника и електроенергетика“<br>
+      Заместник-ръководител на катедрата<br>
+      ЕРМ Запад АД – главен инженер
+      „Методическо ръководство и обучение“
+    `;
+  }
+
+  // Научни публикации
+  document.querySelectorAll(".card b").forEach(b => {
+    if (b.textContent.includes("22 публикации")) {
+      b.textContent =
+        "Автор и съавтор на 24 научни публикации.";
+    }
+  });
+
+  // Професионален опит
+  const careerButton = document.getElementById("careerBtn");
+
+  if (careerButton) {
+    const list = careerButton.previousElementSibling;
+
+    if (list && list.tagName === "UL") {
+      const item = document.createElement("li");
+      item.innerHTML = `
+        <b style="color:#fff">
+          Главен инженер „Методическо ръководство
+          и обучение“ – ЕРМ Запад АД
+        </b>
+      `;
+      list.appendChild(item);
+    }
+  }
+
+  // Подробна професионална кариера
+  const details = document.querySelector(
+    "#careerDetails .card.wide"
+  );
+
+  if (details) {
+    const section = document.createElement("div");
+
+    section.style.cssText =
+      "margin-top:22px;padding-top:18px;" +
+      "border-top:1px solid #ffffff1f";
+
+    section.innerHTML = `
+      <h3 style="color:#fff">
+        От 2026 г. – Главен инженер
+        „Методическо ръководство и обучение“
+      </h3>
+      <div style="color:var(--cyan);font-weight:bold">
+        ЕРМ Запад АД
+      </div>
+      <p class="mut">
+        Методическо ръководство, разработване
+        и усъвършенстване на технически методики,
+        организиране и провеждане на специализирани
+        обучения в областта на електроразпределителните
+        мрежи.
+      </p>
+    `;
+
+    details.appendChild(section);
+  }
+})();
+</script>

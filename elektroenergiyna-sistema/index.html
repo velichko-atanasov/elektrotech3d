@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!-- saved from url=(0132)file:///C:/Users/velichko.atanasov/AppData/Local/Temp/260ceb20-9ecf-4829-be6a-0f5c87e8b497_v76_1_erm_inside%20(1).zip.497/index.html -->
 <html lang="bg"><head>
-<meta name="ees-build" content="mobile-fix-7">
+<meta name="ees-build" content="companies-1800-v9">
 <meta name="robots" content="noindex,nofollow,noarchive">
 <meta name="description" content="Интерактивен учебен модел — версия за GitHub, ограничения срещу индексиране; HTML и JavaScript са публично достъпни.">
 <meta name="author" content="доц. д-р инж. Величко Атанасов"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#081421"><link rel="manifest" href="https://velichko-atanasov.github.io/elektrotech3d/elektroenergiyna-sistema/manifest.webmanifest">
@@ -1206,6 +1206,85 @@ body:has(.stage.erm-map-active) #ermAdminNav{display:inline-flex!important}
 
 
 
+<style id="firmDirectoryStyles">
+/* Independent company directory; no changes to the map animation or metrics. */
+#firmsLayerBtn,#firmsCatalogBtn{margin-left:0;min-height:44px;touch-action:manipulation}
+#firmsLayerBtn[aria-pressed="true"]{background:#0c625d;border-color:#62ddc4;color:#fff}
+#firmsCatalogBtn[hidden],#firmInfoDialog [hidden],#firmDirectoryLayer[hidden]{display:none!important}
+#firmDirectoryLayer{pointer-events:none}
+#firmDirectoryLayer .fd-map-pin{pointer-events:all;cursor:pointer;touch-action:manipulation}
+#firmDirectoryLayer .fd-map-disc{fill:#123d4a;stroke:#9cf3dc;stroke-width:2}
+#firmDirectoryLayer .fd-map-pin:focus{outline:none}
+#firmDirectoryLayer .fd-map-pin:focus-visible .fd-map-disc{stroke:#ffcc72;stroke-width:4}
+#firmDirectoryLayer .fd-map-symbol{fill:none;stroke:white;stroke-width:1.7;stroke-linejoin:round;stroke-linecap:round;pointer-events:none}
+#firmDirectoryLayer .fd-map-label-bg{fill:#102e3c;stroke:#b4eada;stroke-width:1;pointer-events:all}
+#firmDirectoryLayer text{font-family:Arial,Helvetica,sans-serif;fill:#fff;letter-spacing:0;font-weight:700;pointer-events:none}
+#firmDirectoryLayer .fd-map-label{font-size:12px;text-anchor:middle}
+#firmDirectoryLayer .fd-map-count{fill:#e9bc67;stroke:#102e3c;stroke-width:1.5;pointer-events:all}
+#firmDirectoryLayer .fd-map-count-text{fill:#122c37;font-size:12px;text-anchor:middle}
+#firmInfoDialog{box-sizing:border-box;width:min(760px,calc(100vw - 24px));max-width:760px;max-height:88vh;max-height:88svh;margin:auto;padding:0;border:1px solid #45687b;border-radius:16px;background:#102738;color:#edf6fc;box-shadow:0 22px 70px #0008;font-family:inherit;overflow:hidden}
+#firmInfoDialog[open]{display:flex;flex-direction:column}
+#firmInfoDialog::backdrop{background:#03131dc4;backdrop-filter:none;-webkit-backdrop-filter:none}
+#firmInfoDialog *{box-sizing:border-box}
+#firmInfoDialog .fd-header{display:flex;gap:16px;align-items:flex-start;justify-content:space-between;padding:20px 22px 16px;border-bottom:1px solid #365263;background:#132f42;flex-shrink:0}
+#firmInfoDialog .fd-header>div{min-width:0}
+#firmInfoDialog .fd-eyebrow{margin:0 0 6px;color:#90dfcc;font-size:10px;letter-spacing:1.4px;font-weight:700}
+#firmInfoDialog h2{margin:0;color:#fff;font-size:24px;line-height:1.2;overflow-wrap:anywhere}
+#firmInfoDialog #firmInfoSubtitle{margin:7px 0 0;color:#b2cbd9;font-size:13px;line-height:1.5}
+#firmInfoDialog button,#firmInfoDialog input,#firmInfoDialog select{font:inherit}
+#firmInfoDialog button,#firmInfoDialog a,#firmInfoDialog select{touch-action:manipulation}
+#firmInfoDialog button{cursor:pointer}
+#firmInfoDialog .fd-close{width:44px;min-width:44px;height:44px;border:1px solid #527286;border-radius:10px;background:#19394d;color:#fff;font-size:20px}
+#firmInfoDialog .fd-scroll{min-height:0;overflow:auto;overscroll-behavior:contain;padding:18px 22px 22px;-webkit-overflow-scrolling:touch}
+#firmInfoDialog label{display:block;color:#bcd3df;font-size:12px;line-height:1.5}
+#firmInfoDialog input,#firmInfoDialog select{display:block;width:100%;min-height:44px;margin-top:5px;border:1px solid #4c6b7b;border-radius:8px;background:#092030;color:#f2f8fc;padding:10px 12px;font-size:16px}
+#firmInfoDialog input::placeholder{color:#8fa8b8}
+#firmInfoDialog .fd-filters{display:grid;grid-template-columns:1fr 1.35fr;gap:12px;margin-top:12px}
+#firmInfoDialog .fd-result-count{min-height:1.4em;margin:15px 0 10px;color:#9fc0d1;font-size:12px}
+#firmInfoDialog .fd-company-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#firmInfoDialog .fd-company{display:flex;align-items:flex-start;gap:11px;width:100%;padding:14px;border:1px solid #365c70;border-radius:11px;background:#17384b;color:#e9f5fd;text-align:left;min-height:115px}
+#firmInfoDialog .fd-company:hover{background:#1c4358;border-color:#79cab9}
+#firmInfoDialog .fd-avatar{display:grid;place-items:center;flex:0 0 42px;width:42px;height:42px;border:1px solid #6bbbaa;border-radius:10px;background:#184c4e;color:#c5f7e8;font-size:11px;font-weight:800;letter-spacing:.3px}
+#firmInfoDialog .fd-avatar[data-kind="industry"]{background:#48432b;border-color:#c7b474;color:#ffedb9}
+#firmInfoDialog .fd-avatar[data-kind="renewables"]{background:#264b34;border-color:#83bf87;color:#d5f9d3}
+#firmInfoDialog .fd-company-copy{display:block;min-width:0;flex:1}
+#firmInfoDialog .fd-company strong{display:block;font-size:15px;line-height:1.3;color:#fff}
+#firmInfoDialog .fd-company small{display:block;margin-top:6px;color:#b9d0dd;font-size:12px;line-height:1.4}
+#firmInfoDialog .fd-company .fd-card-city{color:#86deca}
+#firmInfoDialog .fd-arrow{color:#8ddbc7;margin-left:auto;font-size:20px}
+#firmInfoDialog .fd-empty{grid-column:1/-1;margin:0;padding:20px;border:1px dashed #476879;border-radius:10px;color:#b8cfdb;font-size:14px;line-height:1.6}
+#firmInfoDialog .fd-profile-top{display:flex;gap:14px;align-items:center;margin-bottom:16px}
+#firmInfoDialog .fd-profile-top .fd-avatar{flex-basis:58px;width:58px;height:58px;font-size:13px}
+#firmInfoDialog .fd-badge{display:inline-block;border:1px solid #4e817f;border-radius:20px;padding:5px 10px;color:#a7e3d4;background:#153d44;font-size:12px}
+#firmInfoDialog .fd-profile-summary{margin:0 0 18px;font-size:15px;line-height:1.7;color:#dfedf4}
+#firmInfoDialog h3{margin:20px 0 9px;color:#f0f8fc;font-size:15px;line-height:1.4}
+#firmInfoDialog .fd-activities{padding-left:20px;margin:0;color:#c7dce7;font-size:14px;line-height:1.6}
+#firmInfoDialog .fd-activities li{font-size:inherit;line-height:inherit;color:inherit}
+#firmInfoDialog .fd-activities li+li{margin-top:7px}
+#firmInfoDialog .fd-role{padding:14px 16px;border-left:3px solid #75d0b7;border-radius:0 9px 9px 0;background:#163a47;font-size:14px;line-height:1.7;color:#d8efe9}
+#firmInfoDialog .fd-address{margin:0;padding:14px 16px;background:#0b2131;border:1px solid #315366;border-radius:9px;color:#d0e2ec;font-size:14px;line-height:1.7}
+#firmInfoDialog .fd-address b{display:block;margin-bottom:4px;font-size:11px;font-weight:600;color:#9eb9ca;letter-spacing:.3px}
+#firmInfoDialog .fd-links{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 10px}
+#firmInfoDialog .fd-links a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 14px;border:1px solid #5f9c98;border-radius:9px;color:#b6f5df;background:#103b42;text-decoration:none;font-size:13px;font-weight:600;line-height:1.4}
+#firmInfoDialog .fd-links a:first-child{background:#12695d;color:white;border-color:#75d5bd}
+#firmInfoDialog .fd-checked{color:#92aebb;font-size:11px;line-height:1.6;margin:14px 0 0}
+#firmInfoDialog .fd-footer{display:flex;align-items:center;gap:15px;padding:13px 22px;border-top:1px solid #365263;background:#102b3b;flex-shrink:0}
+#firmInfoDialog .fd-footer p{margin:0;font-size:11px;line-height:1.6;color:#9ebac9}
+#firmInfoDialog #fdBack{flex-shrink:0;min-height:44px;padding:10px 14px;border:1px solid #557586;border-radius:8px;background:#1d3e51;color:#f0f8fc;font-size:13px}
+#firmInfoDialog :is(button,a,input,select):focus-visible{outline:3px solid #edc56d;outline-offset:2px}
+@media(max-width:560px){
+ #firmInfoDialog{width:calc(100vw - 16px);max-height:90vh;max-height:90svh;border-radius:13px}
+ #firmInfoDialog .fd-header{padding:16px 15px 13px;gap:10px}
+ #firmInfoDialog h2{font-size:21px}
+ #firmInfoDialog .fd-scroll{padding:15px}
+ #firmInfoDialog .fd-company-list{grid-template-columns:1fr}
+ #firmInfoDialog .fd-company{min-height:94px}
+ #firmInfoDialog .fd-filters{grid-template-columns:1fr;gap:10px}
+ #firmInfoDialog .fd-footer{padding:10px 15px;align-items:flex-start}
+ #firmInfoDialog .fd-footer p{font-size:10px}
+}
+
+</style>
 </head>
 <body><div id="eesStartup" role="dialog" aria-modal="true" aria-labelledby="eesStartupTitle"><div class="ees-start-card">
 <div class="ees-start-symbol" aria-hidden="true">⚡</div>
@@ -1246,6 +1325,8 @@ body:has(.stage.erm-map-active) #ermAdminNav{display:inline-flex!important}
   <label><input type="checkbox" id="assetAllNames">Надписи на новия слой</label>
   <label><input type="checkbox" id="assetShowProjects">Проекти / строеж</label>
   <span class="asset-legend" aria-label="Легенда"><span class="asset-key"><i style="background:#b87500"></i>ФЕЦ</span><span class="asset-key"><i style="background:#a667d3"></i>BESS</span><span class="asset-key"><i style="background:#2294d1"></i>ВЕЦ</span><span class="asset-key"><i style="background:#28a58c"></i>Вятър</span></span>
+  <button type="button" id="firmsLayerBtn" aria-pressed="false" aria-controls="firmDirectoryLayer" title="Покажи фирмите и информация за тях върху картата">▦ Фирми</button>
+  <button type="button" id="firmsCatalogBtn" aria-haspopup="dialog" aria-controls="firmInfoDialog" hidden>Списък на фирмите ↗</button>
   <button type="button" id="assetCatalogBtn" aria-haspopup="dialog">Каталог и източници ↗</button>
   <small id="assetAuditSummary">24 записа за ФЕЦ · 45 BESS с различим статус · оригинална учебна карта. Проверените мощности и статуси са в маркерите и каталога.</small>
 </div>
@@ -1571,7 +1652,7 @@ body:has(.stage.erm-map-active) #ermAdminNav{display:inline-flex!important}
 (()=>{'use strict';
 const $=id=>document.getElementById(id), NS='http://www.w3.org/2000/svg';
 const CFG=JSON.parse($('networkConfig').textContent), SAVED=JSON.parse($('savedSnapshot').textContent);
-$('appVersion').textContent='HTML '+CFG.version+' · Мобилна поправка 7';
+$('appVersion').textContent='HTML '+CFG.version+' · Мобилна поправка 7 · Устойчивост 1800 GW·s · Фирми V9';
 const SOURCES={generation:'https://www.eso.bg/api/rabota_na_EEC_json.php?tovar',flows:'https://www.eso.bg/api/scada_live_json_pure.php',mirror:'https://raw.githubusercontent.com/yyoncho/eso-dashboard/data/data/latest.json'};
 const CC=['RO','RS','MK','GR','TR'], NAMES={RO:'Румъния',RS:'Сърбия',MK:'С. Македония',GR:'Гърция',TR:'Турция'};
 const GENERATORS=['АЕЦ','Кондензационни ТЕЦ','Топлофикационни ТЕЦ','Заводски ТЕЦ','ВЕЦ','Малки ВЕЦ','ВяЕЦ','ФЕЦ','Био ЕЦ'];
@@ -3872,13 +3953,13 @@ if ('serviceWorker' in navigator) {
           <div class="stab-control"><label for="stabDeltaP">Отпаднала мощност ΔP</label><strong><span id="stabDeltaPValue">300</span> MW</strong><input id="stabDeltaP" type="range" min="100" max="2000" step="25" value="300"></div>
           <div class="stab-control"><span>BESS / Fast Frequency Response</span><label class="stab-switch"><input id="stabBess" type="checkbox" checked><b id="stabBessLabel">Включено</b></label><small style="display:block;margin-top:6px;color:#8faabd;font-size:9px">Модел: реакция след ~0,15 s; не променя физическата синхронна инерция.</small></div>
           <div class="stab-control"><label for="stabN1">N‑1 събитие</label><select id="stabN1"><option value="none">Без N‑1 · използвай ΔP</option><option value="npp1000">АЕЦ Козлодуй · един блок ≈1000 MW (N‑1)</option><option value="npp2000">АЕЦ Козлодуй · два блока ≈2000 MW (N‑2, учебно)</option><option value="me2_300">ТЕЦ Марица изток 2 · блок 300 MW</option><option value="line400_600">400 kV Пловдив–Марица изток · 600 MW</option><option value="line220_250">220 kV Пловдив–Маришки район · 250 MW</option><option value="tie500">Междусистемна връзка · загуба на внос 500 MW</option></select></div>
-          <div class="stab-control"><span>Еквивалентна инерция в сценария</span><strong><span id="stabInertiaValue">18,3</span> GW·s</strong><small id="stabInertiaNote" style="display:block;margin-top:6px;color:#8faabd;font-size:9px">Изходна стойност от основния модел.</small></div>
+          <div class="stab-control"><span>Инерция · синхронна Континентална Европа</span><strong><span id="stabInertiaValue">1800,0</span> GW·s</strong><small id="stabInertiaNote" style="display:block;margin-top:6px;color:#8faabd;font-size:9px">Фиксирана моделна стойност за всички сценарии; не е текущо измерване.</small></div>
         </div>
         <div class="stab-kpis">
-          <div class="stab-kpi stab-click" id="stabRocofCard" data-stab-info="rocof"><span>Начален RoCoF</span><strong id="stabRocof">0,410</strong><small>Hz/s · t = 0+</small><span class="tap-note">натисни за коментар</span></div>
-          <div class="stab-kpi stab-click" id="stabNadirCard" data-stab-info="nadir"><span>Честотен nadir</span><strong id="stabNadir">49,66</strong><small id="stabNadirTime">около 2 s</small><span class="tap-note">натисни за коментар</span></div>
+          <div class="stab-kpi stab-click" id="stabRocofCard" data-stab-info="rocof"><span>Начален RoCoF</span><strong id="stabRocof">0,004</strong><small>Hz/s · t = 0+</small><span class="tap-note">натисни за коментар</span></div>
+          <div class="stab-kpi stab-click" id="stabNadirCard" data-stab-info="nadir"><span>Честотен nadir</span><strong id="stabNadir">—</strong><small id="stabNadirTime">изчислява се</small><span class="tap-note">натисни за коментар</span></div>
           <div class="stab-kpi stab-click" id="stabEcritCard" data-stab-info="ecrit"><span>Ecrit за 0,50 Hz/s</span><strong id="stabEcrit">15,0</strong><small>GW·s</small><span class="tap-note">натисни за коментар</span></div>
-          <div class="stab-kpi stab-click" id="stabMarginCard" data-stab-info="margin"><span>Запас по инерция</span><strong id="stabMargin">+22%</strong><small id="stabMarginText">над Ecrit</small><span class="tap-note">натисни за коментар</span></div>
+          <div class="stab-kpi stab-click" id="stabMarginCard" data-stab-info="margin"><span>Запас по инерция</span><strong id="stabMargin">+11 900%</strong><small id="stabMarginText">над Ecrit</small><span class="tap-note">натисни за коментар</span></div>
         </div>
         <figure class="stab-chart-wrap"><figcaption>Моделна честота f(t) след смущение · логаритмично разтегната времева ос</figcaption><svg id="stabFrequencyChart" viewBox="0 0 900 270" role="img" aria-label="Моделна честотна крива след смущение"></svg><p class="stab-chart-note">Началният наклон следва уравнението на движение чрез ΔP и E<sub>kin</sub>. Реакциите на BESS/FFR, FCR, aFRR и mFRR могат да се припокриват; времевите им профили тук са илюстративни.</p></figure>
         <h4>Времева линия на управлението</h4><p class="stab-help-hint">Натисни етап за обяснение какво прави и кога се включва.</p>
@@ -3947,11 +4028,13 @@ if ('serviceWorker' in navigator) {
   const dp=$('stabDeltaP'),dpVal=$('stabDeltaPValue'),bess=$('stabBess'),bessLabel=$('stabBessLabel'),n1=$('stabN1');
   const infoTitle=$('stabInfoTitle'),infoBody=$('stabInfoBody'),infoAction=$('stabInfoAction');
   const fmt=(n,d=1)=>Number(n).toLocaleString('bg-BG',{minimumFractionDigits:d,maximumFractionDigits:d});
+  // Fixed model assumption for synchronous Continental Europe, in GW·s.
+  const STABILITY_INERTIA_GWS=1800;
   const presets={
-    current:{dp:300,inertia:1,load:1,co2:310,voltage:0,loss:2.3,bess:true,label:'Текущ модел'},
-    solar:{dp:500,inertia:.72,load:.84,co2:155,voltage:.018,loss:2.0,bess:true,label:'Обеден ВЕИ максимум'},
-    evening:{dp:300,inertia:1.10,load:1.12,co2:365,voltage:-.010,loss:2.6,bess:true,label:'Вечерен максимум'},
-    winter:{dp:500,inertia:1.25,load:1.27,co2:475,voltage:-.018,loss:3.0,bess:false,label:'Зимен максимум'}
+    current:{dp:300,load:1,co2:310,voltage:0,loss:2.3,bess:true,label:'Текущ модел'},
+    solar:{dp:500,load:.84,co2:155,voltage:.018,loss:2.0,bess:true,label:'Обеден ВЕИ максимум'},
+    evening:{dp:300,load:1.12,co2:365,voltage:-.010,loss:2.6,bess:true,label:'Вечерен максимум'},
+    winter:{dp:500,load:1.27,co2:475,voltage:-.018,loss:3.0,bess:false,label:'Зимен максимум'}
   };
   const n1Events={
     none:{kind:'none',flow:0,label:'Без N‑1',map:[]},
@@ -3997,9 +4080,8 @@ if ('serviceWorker' in navigator) {
     ]
   };
   let preset='current',pqu='P',mapPick=false,pquMapOn=false;
-  function baseInertia(){const el=$('inertiaValue');const x=Number(String(el?.textContent||'18.3').replace(',','.'));return Number.isFinite(x)&&x>0?x:18.3;}
   function baseLoad(){const el=$('loadValue');const x=Number(String(el?.textContent||'4844').replace(/\s/g,'').replace(',','.'));return Number.isFinite(x)&&x>0?x:4844;}
-  function scenario(){const p=presets[preset],ev=n1Events[n1.value]||n1Events.none;let dpmw=Number(dp.value)||300;if(ev.kind==='gen'||ev.kind==='tie')dpmw=ev.dp; if(ev.kind==='line')dpmw=0;return {p,ev,dpmw,E:(ev.kind==='line'||ev.kind==='gen'||ev.kind==='tie')?1800:baseInertia()*p.inertia,loadMW:baseLoad()*p.load,bess:bess.checked};}
+  function scenario(){const p=presets[preset],ev=n1Events[n1.value]||n1Events.none;let dpmw=Number(dp.value)||300;if(ev.kind==='gen'||ev.kind==='tie')dpmw=ev.dp; if(ev.kind==='line')dpmw=0;return {p,ev,dpmw,E:STABILITY_INERTIA_GWS,loadMW:baseLoad()*p.load,bess:bess.checked};}
   function simulate(dpmw,E,bessOn,loadMW){
     const f0=50,dpGW=dpmw/1000,dt=.1,T=900,D=(loadMW/1000)*.025;let df=0,pfcr=0,pafrr=0,pmfrr=0;const out=[];
     const ffrCap=bessOn?Math.min(.35*dpGW,.2):0,fcrCap=.75*dpGW,Kfcr=fcrCap/.2;
@@ -4056,7 +4138,7 @@ if ('serviceWorker' in navigator) {
     document.querySelectorAll('[data-n1-asset]').forEach(b=>b.classList.toggle('active',b.dataset.n1Asset===n1.value));
     updateMapN1Status(s,flows);
   }
-  function update(){const s=scenario();if(s.ev.kind==='gen'||s.ev.kind==='tie'){dp.value=s.dpmw;dp.disabled=true;}else dp.disabled=false;dpVal.textContent=fmt(s.dpmw,0);const kg=$('kozGuideDynamic');if(kg){if(n1.value==='npp1000'||n1.value==='npp2000'){const r=-50*(s.dpmw/1000)/(2*s.E);kg.textContent='Избран сценарий: '+fmt(s.dpmw,0)+' MW; E = '+fmt(s.E,0)+' GW·s; начален RoCoF ≈ '+fmt(r,3)+' Hz/s (без управлявана реакция при t = 0+). Реалните FCR/aFRR резерви и честотният минимум зависят от режима.';}else kg.textContent='За този пример избери един или два блока от АЕЦ „Козлодуй“ в списъка с аварии. Тогава ще видиш началния RoCoF за съответната загуба на мощност.';}bessLabel.textContent=s.bess?'Включено':'Изключено';$('stabInertiaValue').textContent=fmt(s.E,1);$('stabInertiaNote').textContent=s.ev.kind==='line'?'Синхронна Европа: ориентир 1800 GW·s; без загуба на P → RoCoF ≈ 0.':(s.ev.kind==='gen'||s.ev.kind==='tie')?'Синхронна Европа · E = 1800 GW·s (учебна оценка за среден RoCoF).':'База '+fmt(baseInertia(),1)+' GW·s × сценарен коефициент '+fmt(s.p.inertia,2)+'.';const rocof=50*(s.dpmw/1000)/(2*s.E),ecrit=50*(s.dpmw/1000)/(2*.5),margin=ecrit>0?s.E/ecrit:Infinity,data=simulate(s.dpmw,s.E,s.bess,s.loadMW),nd=data.reduce((a,b)=>b.f<a.f?b:a,data[0]);$('stabRocof').textContent=fmt(rocof,3);$('stabNadir').textContent=fmt(nd.f,3);$('stabNadirTime').textContent='около '+fmt(nd.t,0)+' s';$('stabEcrit').textContent=fmt(ecrit,1);$('stabMargin').textContent=s.ev.kind==='line'?'Няма ΔP':(margin>=1?'+':'')+fmt((margin-1)*100,0)+'%';$('stabMarginText').textContent=s.ev.kind==='line'?'Не се изисква честотен резерв при ΔP=0':margin>=1?'над Ecrit':'под Ecrit';kpiState($('stabRocofCard'),rocof,.25,.5);kpiState($('stabNadirCard'),50-nd.f,.2,.5);$('stabMarginCard').dataset.state=margin>=1.5?'good':margin>=1?'warn':'bad';$('stabEcritCard').dataset.state=margin>=1?'good':'bad';const ffr=s.bess?Math.min(.35*s.dpmw,200):0,fcr=.75*s.dpmw,afrr=s.dpmw,mfrr=.5*s.dpmw;$('stabFfr').textContent=fmt(ffr,0)+' MW';$('stabFcr').textContent=fmt(fcr,0)+' MW';$('stabAfrr').textContent=fmt(afrr,0)+' MW';$('stabMfrr').textContent=fmt(mfrr,0)+' MW';const n1Extra=(s.ev.flow||0)/1000*.45,lossPct=Math.max(1.5,s.p.loss+n1Extra),lossMw=s.loadMW*lossPct/100,volt=1+s.p.voltage-(s.ev.kind==='line'?Math.min(.025,(s.ev.flow||0)/30000):0);$('stabLossMw').textContent=fmt(lossMw,0)+' MW';$('stabLossPct').textContent=fmt(lossPct,1)+'% от товара';$('stabCo2').textContent=fmt(s.p.co2,0);$('stabVoltage').textContent=fmt(volt,3)+' p.u.';$('stabVoltageText').textContent=volt<.97?'понижен профил':volt>1.03?'повишен профил':'нормален профил';const zq=getZoneMetrics(s),qTotal=zq.reduce((a,z)=>a+z.Q,0);$('stabQBalance').textContent=(qTotal>0?'+':'')+fmt(qTotal,0)+' Mvar';$('stabQBalanceText').textContent=qTotal>0?'нетно индуктивно потребление':'нетна капацитивна поддръжка';updateN1(s);updatePqu(s);drawChart(data);applyMapOutage();}
+  function update(){const s=scenario();if(s.ev.kind==='gen'||s.ev.kind==='tie'){dp.value=s.dpmw;dp.disabled=true;}else dp.disabled=false;dpVal.textContent=fmt(s.dpmw,0);const kg=$('kozGuideDynamic');if(kg){if(n1.value==='npp1000'||n1.value==='npp2000'){const r=-50*(s.dpmw/1000)/(2*s.E);kg.textContent='Избран сценарий: '+fmt(s.dpmw,0)+' MW; E = '+fmt(s.E,0)+' GW·s; начален RoCoF ≈ '+fmt(r,3)+' Hz/s (без управлявана реакция при t = 0+). Реалните FCR/aFRR резерви и честотният минимум зависят от режима.';}else kg.textContent='За този пример избери един или два блока от АЕЦ „Козлодуй“ в списъка с аварии. Тогава ще видиш началния RoCoF за съответната загуба на мощност.';}bessLabel.textContent=s.bess?'Включено':'Изключено';$('stabInertiaValue').textContent=fmt(s.E,1);$('stabInertiaNote').textContent='Фиксирана моделна стойност за всички сценарии; не е текущо измерване.';const rocof=50*(s.dpmw/1000)/(2*s.E),ecrit=50*(s.dpmw/1000)/(2*.5),margin=ecrit>0?s.E/ecrit:Infinity,data=simulate(s.dpmw,s.E,s.bess,s.loadMW),nd=data.reduce((a,b)=>b.f<a.f?b:a,data[0]);$('stabRocof').textContent=fmt(rocof,3);$('stabNadir').textContent=fmt(nd.f,3);$('stabNadirTime').textContent='около '+fmt(nd.t,0)+' s';$('stabEcrit').textContent=fmt(ecrit,1);$('stabMargin').textContent=s.ev.kind==='line'?'Няма ΔP':(margin>=1?'+':'')+fmt((margin-1)*100,0)+'%';$('stabMarginText').textContent=s.ev.kind==='line'?'Не се изисква честотен резерв при ΔP=0':margin>=1?'над Ecrit':'под Ecrit';kpiState($('stabRocofCard'),rocof,.25,.5);kpiState($('stabNadirCard'),50-nd.f,.2,.5);$('stabMarginCard').dataset.state=margin>=1.5?'good':margin>=1?'warn':'bad';$('stabEcritCard').dataset.state=margin>=1?'good':'bad';const ffr=s.bess?Math.min(.35*s.dpmw,200):0,fcr=.75*s.dpmw,afrr=s.dpmw,mfrr=.5*s.dpmw;$('stabFfr').textContent=fmt(ffr,0)+' MW';$('stabFcr').textContent=fmt(fcr,0)+' MW';$('stabAfrr').textContent=fmt(afrr,0)+' MW';$('stabMfrr').textContent=fmt(mfrr,0)+' MW';const n1Extra=(s.ev.flow||0)/1000*.45,lossPct=Math.max(1.5,s.p.loss+n1Extra),lossMw=s.loadMW*lossPct/100,volt=1+s.p.voltage-(s.ev.kind==='line'?Math.min(.025,(s.ev.flow||0)/30000):0);$('stabLossMw').textContent=fmt(lossMw,0)+' MW';$('stabLossPct').textContent=fmt(lossPct,1)+'% от товара';$('stabCo2').textContent=fmt(s.p.co2,0);$('stabVoltage').textContent=fmt(volt,3)+' p.u.';$('stabVoltageText').textContent=volt<.97?'понижен профил':volt>1.03?'повишен профил':'нормален профил';const zq=getZoneMetrics(s),qTotal=zq.reduce((a,z)=>a+z.Q,0);$('stabQBalance').textContent=(qTotal>0?'+':'')+fmt(qTotal,0)+' Mvar';$('stabQBalanceText').textContent=qTotal>0?'нетно индуктивно потребление':'нетна капацитивна поддръжка';updateN1(s);updatePqu(s);drawChart(data);applyMapOutage();}
   function infoFor(key,ctx={}){
     const s=scenario();
     const V=id=>$(id)?.textContent||'';
@@ -4073,7 +4155,7 @@ if ('serviceWorker' in navigator) {
     }
     if(key==='rocof') return {
       title:'Начален RoCoF',
-      html:'<span class="info-value">'+V('stabRocof')+' Hz/s</span><p>RoCoF показва колко бързо започва да се изменя честотата непосредствено след небаланса. В модела той се определя главно от <b>ΔP</b> и наличната кинетична енергия <b>E<sub>kin</sub></b>.</p><p>По-голямо отпадане или по-малка инерция означават по-голям |RoCoF|.</p><div class="info-note">При N‑1 генератор или загуба на внос: E = 1800 GW·s (ориентир за Континентална Европа); RoCoF = 50 × ΔP[GW] / (2 × 1800). Например 1000 MW → 0,0139 Hz/s, 300 MW → 0,0042 Hz/s. Това е средна зонална оценка, не измерен локален RoCoF от PMU. При отпадане само на линия без загуба на P: среден RoCoF ≈ 0.</div>'
+      html:'<span class="info-value">'+V('stabRocof')+' Hz/s</span><p>RoCoF показва колко бързо започва да се изменя честотата непосредствено след небаланса. В модела той се определя главно от <b>ΔP</b> и наличната кинетична енергия <b>E<sub>kin</sub></b>.</p><p>При фиксираните 1800 GW·s по-голямото отпадане на мощност означава по-голям |RoCoF|.</p><div class="info-note">Във всички сценарии на този модул, включително ръчно зададено ΔP: E = 1800 GW·s за синхронна Континентална Европа. |RoCoF| = 50 × ΔP[GW] / (2 × 1800). Например 1000 MW → 0,0139 Hz/s, 300 MW → 0,0042 Hz/s. При отпадане на генерация df/dt е отрицателно; картата показва |RoCoF|. Инерцията е фиксирано учебно допускане, а RoCoF е средна зонална оценка, не измерен локален RoCoF от PMU. При отпадане само на линия без загуба на P: среден RoCoF ≈ 0.</div>'
     };
     if(key==='nadir') return {
       title:'Честотен nadir',
@@ -4085,7 +4167,7 @@ if ('serviceWorker' in navigator) {
     };
     if(key==='margin') return {
       title:'Запас по инерция',
-      html:'<span class="info-value">'+V('stabMargin')+'</span><p>Показва с колко текущата сценарна инерция е над или под E<sub>crit</sub>. Положителният запас означава, че моделният начален RoCoF е под зададената граница 0,50 Hz/s.</p><div class="info-note">Това не е универсална нормативна граница за ЕЕС, а показател в учебния модел.</div>'
+      html:'<span class="info-value">'+V('stabMargin')+'</span><p>Сравнява фиксираните 1800 GW·s с необходимата E<sub>crit</sub> за избраното ΔP. Положителният запас означава, че моделният начален RoCoF е под зададената граница 0,50 Hz/s.</p><div class="info-note">Това не е универсална нормативна граница за ЕЕС, а показател в учебния модел.</div>'
     };
     if(key==='inertia-step') return {
       title:'Инерционна реакция',
@@ -4508,7 +4590,7 @@ const hint=document.createElement('div');hint.style.cssText='font-size:10px;colo
 (function(){
 const panel=document.getElementById('stabRocofCard');if(!panel)return;
 const note=document.createElement('div');note.style.cssText='font-size:10px;color:#b9ebff;margin-top:4px';
-note.textContent='N‑1 генератор: RoCoF по европейската инерция 1800 GW·s (модел).';panel.appendChild(note);
+note.textContent='Всички сценарии: E = 1800 GW·s за синхронна Континентална Европа (модел).';panel.appendChild(note);
 })();
 </script>
 
@@ -5384,4 +5466,154 @@ html.ees-erm-open::before,html.ees-erm-open :fullscreen::before{content:"";posit
  #nationalScene .metric-row>.metric .frequency-range-status{min-height:3.45em}
 }
 </style>
+
+<dialog id="firmInfoDialog" aria-labelledby="firmInfoTitle" aria-describedby="firmInfoSubtitle">
+  <header class="fd-header">
+    <div><p class="fd-eyebrow">КОМПАНИИ В ЕНЕРГЕТИКАТА</p><h2 id="firmInfoTitle" tabindex="-1">Фирми на картата</h2><p id="firmInfoSubtitle">Избери фирма, за да прочетеш повече.</p></div>
+    <button type="button" id="firmInfoClose" class="fd-close" aria-label="Затвори информацията за фирмите" autofocus>✕</button>
+  </header>
+  <div class="fd-scroll">
+    <section id="fdDirectory" aria-label="Списък на фирмите">
+      <label class="fd-search">Търси фирма или дейност<input type="search" id="fdSearch" placeholder="Например ЦЕРБ, батерии, мрежа…" autocomplete="off"></label>
+      <div class="fd-filters">
+        <label>Град<select id="fdCity"><option value="all">Всички градове</option><option value="sofia">София</option><option value="varna">Варна</option><option value="plovdiv">Пловдив</option><option value="troyan">Троян</option></select></label>
+        <label>Дейност<select id="fdCategory"><option value="all">Всички дейности</option><option value="operators">Мрежови оператори</option><option value="industry">Производство и ремонт</option><option value="renewables">ВЕИ и съхранение</option></select></label>
+      </div>
+      <p id="fdResultCount" class="fd-result-count" role="status" aria-live="polite"></p>
+      <div id="fdCompanyList" class="fd-company-list"></div>
+    </section>
+    <section id="fdProfile" aria-label="Информация за избраната фирма" hidden></section>
+  </div>
+  <footer class="fd-footer"><button type="button" id="fdBack" hidden>← Към списъка</button><p>Схематични места на градовете. Адресът и официалните източници са в профила на всяка фирма.</p></footer>
+</dialog>
+
+<script type="application/json" id="firmDirectoryData">{"checkedOn":"2026-11-23","companies":[{"id":"erm-zapad","name":"Електроразпределителни мрежи Запад","shortName":"ЕРМ Запад","initials":"ЕРМ","cityId":"sofia","category":"operators","subtitle":"Електроразпределителна мрежа · Западна България","summary":"ЕРМ Запад управлява, поддържа и развива електроразпределителната мрежа в десет области на Западна България. Дружеството осигурява достъп и пренос на електрическа енергия до присъединените обекти и присъединява нови потребители и производители. Работата му включва експлоатация на мрежовите съоръжения, възстановяване на захранването при аварии и развитие на инфраструктурата.","activities":["Експлоатация и поддръжка на разпределителната мрежа","Присъединяване на потребители и производители","Развитие, модернизация и измерване"],"role":"Осигурява разпределението на електрическа енергия до присъединените потребители и включването на нови производители в мрежата на Западна България.","addressType":"Контактен адрес","address":"София 1113, район Изгрев, бул. „Цариградско шосе“ 28, Изток Плаза","website":"https://ermzapad.bg/","sources":[{"label":"Официални контакти","url":"https://ermzapad.bg/bg/contacts/"},{"label":"Профил на компанията","url":"https://ermzapad.bg/bg/za-nas/za-kompaniyata/profil-na-kompaniyata/"}]},{"id":"erp-sever","name":"Електроразпределение Север","shortName":"ЕРП Север","initials":"ЕРП","cityId":"varna","category":"operators","subtitle":"Електроразпределителна мрежа · Североизточна България","summary":"Електроразпределение Север управлява и поддържа електроразпределителната мрежа в девет области на Североизточна България. Дружеството разпределя електрическата енергия до присъединените клиенти, развива мрежата и извършва реконструкция и модернизация на съоръженията. Сред дейностите му са присъединяването на крайни клиенти и производители и измерването на консумираната и произведената електрическа енергия.","activities":["Управление и поддръжка на разпределителната мрежа","Присъединяване на клиенти и производители","Измерване, реконструкция и модернизация"],"role":"Осигурява мрежовата връзка на потребители и производители в Североизточна България и поддържа качеството и непрекъснатостта на снабдяването.","addressType":"Контактен адрес","address":"Варна 9009, бул. „Владислав Варненчик“ 258, Варна Тауърс","website":"https://www.erpsever.bg/","sources":[{"label":"Официални контакти","url":"https://www.erpsever.bg/bg/Kontakti"},{"label":"Профил на компанията","url":"https://www.erpsever.bg/bg/za-kompanijata/profil"}]},{"id":"cerb","name":"ЦЕРБ Груп","shortName":"ЦЕРБ","initials":"ЦЕРБ","cityId":"sofia","category":"industry","subtitle":"Енергоремонт · Диагностика · Инженеринг","summary":"ЦЕРБ Груп обединява дейности по ремонт, диагностика и инженерно обслужване на енергийни съоръжения. Те включват работа по силови трансформатори и въртящи електрически машини, високоволтови изпитвания и оценка на техническото състояние на оборудването. Групата развива и дейности по електроизграждане.","activities":["Ремонт на трансформатори и въртящи машини","Високоволтови изпитвания и диагностика","Инженеринг и електроизграждане"],"role":"Подпомага надеждната работа на енергийните съоръжения чрез ремонт, изпитване, диагностика и модернизация.","addressType":"Официален адрес","address":"София 1220, Военна рампа, ул. „Локомотив“ 1","website":"https://cerb.eu/","sources":[{"label":"ЦЕРБ Груп · дейности","url":"https://cerb.eu/cerb-group/"},{"label":"Официални контакти","url":"https://cerb.eu/contact/"}],"aliases":["CERB","Централна енергоремонтна база"]},{"id":"amonra-energy","name":"АмонРа Енерджи","shortName":"АмонРа Енерджи","initials":"АР","cityId":"sofia","category":"renewables","subtitle":"Соларно оборудване · Батерии · Инженеринг","summary":"АмонРа Енерджи доставя оборудване и решения за фотоволтаични системи и съхранение на електрическа енергия. Продуктовите направления включват соларни панели, инвертори и батерии, както и компоненти за изграждане на соларни инсталации. Компанията предлага инженеринг за фотоволтаични централи и подпомага реализирането на проекти с подходящо оборудване.","activities":["Доставка на панели и инвертори","Батерии и системи за съхранение","Инженеринг на фотоволтаични централи"],"role":"Осигурява оборудване и инженерни решения за изграждането на фотоволтаични системи и батерийно съхранение.","addressType":"Официален адрес","address":"София 1220, Военна рампа, ул. „Локомотив“ 1","website":"https://amonraenergy.bg/","sources":[{"label":"Официален сайт · решения и контакти","url":"https://amonraenergy.bg/"}],"aliases":["Амон Ра","AmonRa Energy","Amon Ra"]},{"id":"sunotec","name":"SUNOTEC България","shortName":"SUNOTEC","initials":"SUN","cityId":"sofia","category":"renewables","subtitle":"Фотоволтаични централи · BESS · Инфраструктура","summary":"SUNOTEC работи по инженеринг, доставки и изграждане на фотоволтаични централи и свързаната с тях енергийна инфраструктура. Компанията развива решения за батерийно съхранение на енергия и услуги по експлоатация и поддръжка. Българското дружество е част от групата SUNOTEC.","activities":["Инженеринг, доставки и изграждане на ФЕЦ","Батерийни системи и енергийна инфраструктура","Експлоатация и поддръжка на проекти"],"role":"Обединява инженеринг, доставки и строителство при реализацията на соларни проекти, батерийни системи и свързаната инфраструктура.","addressType":"Офис в България","address":"София 1510, ул. „Павлина Унуфриева“ 4","website":"https://sunotec-group.com/","sources":[{"label":"SUNOTEC България","url":"https://sunotec-group.com/about-us/our-entities/sunotec-bulgaria/"},{"label":"Официални контакти","url":"https://sunotec-group.com/contact/"}],"aliases":["Сънотех","Sunotec Bulgaria"]},{"id":"er-yug","name":"Електроразпределение Юг","shortName":"ЕР Юг","initials":"ЕРЮ","cityId":"plovdiv","category":"operators","subtitle":"Електроразпределителна мрежа · Югоизточна България","summary":"Електроразпределение Юг е електроразпределителното дружество от групата EVN, което обслужва девет области в Югоизточна България. Дейността му обхваща експлоатацията на електропроводите и съоръженията на ниско, средно и части от високо напрежение в неговата мрежа. Дружеството осигурява мрежовите услуги за присъединените потребители и производители и развива разпределителната инфраструктура.","activities":["Експлоатация на електроразпределителната мрежа","Присъединяване и мрежови услуги","Поддръжка и развитие на съоръженията"],"role":"Свързва потребителите и присъединените производители с електроенергийната система чрез разпределителната мрежа в Югоизточна България.","addressType":"Адрес за кореспонденция","address":"Пловдив 4000, ул. „Христо Г. Данов“ 37","website":"https://www.elyug.bg/","sources":[{"label":"За компанията","url":"https://www.elyug.bg/AboutUs/AboutEPYug.aspx"},{"label":"Официални контакти","url":"https://www.elyug.bg/getdoc/c7fb397f-27c7-4d30-bbb7-cb498e4529ac/Kontakti.aspx"}]},{"id":"eso","name":"Електроенергиен системен оператор","shortName":"ЕСО","initials":"ЕСО","cityId":"sofia","category":"operators","subtitle":"Електропреносна мрежа · Управление на ЕЕС","summary":"ЕСО е независимият електропреносен оператор на България. Дружеството координира и управлява електроенергийната система и осигурява експлоатацията, поддръжката, ремонта и надеждната работа на електропреносната мрежа. Сред отговорностите му са съвместната работа със системите от синхронната зона на Континентална Европа, управлението на междусистемните потоци и развитието на преносната инфраструктура.","activities":["Оперативно координиране и управление на ЕЕС","Експлоатация и развитие на електропреносната мрежа","Междусистемна свързаност и пазарна интеграция"],"role":"Координира баланса между производство, потребление и междусистемен обмен и управлява работата на електропреносната система.","addressType":"Централно управление","address":"София 1618, бул. „Цар Борис III“ 201","website":"https://www.eso.bg/","sources":[{"label":"Дейност и централно управление","url":"https://www.eso.bg/?did=1"}]},{"id":"elprom-troyan","name":"Електромоторен завод Елпром Троян","shortName":"Елпром Троян","initials":"ЕЛП","cityId":"troyan","category":"industry","subtitle":"Производство на асинхронни електродвигатели","summary":"Елпром Троян произвежда асинхронни електродвигатели за различни промишлени приложения. Номенклатурата включва стандартни двигатели, изпълнения с електромагнитна спирачка и специализирани машини за ходови и подемни механизми. Компанията предлага и нестандартни изпълнения със специални присъединителни размери и варианти на охлаждане според конкретното приложение.","activities":["Стандартни асинхронни електродвигатели","Електродвигатели с електромагнитна спирачка","Специални и нестандартни изпълнения"],"role":"Произвежда електрическите машини, които преобразуват електрическата енергия в механична работа за промишлени задвижвания и подемни механизми.","addressType":"Адрес на производителя","address":"Троян 5600, ул. „Академик Ангел Балевски“ 1","website":"https://www.elpromtroyan.com/","sources":[{"label":"Официални контакти","url":"https://www.elpromtroyan.com/contacts"},{"label":"Производство на електромотори","url":"https://www.elpromtroyan.com/page/proizvodstvo-na-elektromotori"}]}]}</script>
+<script id="firmDirectoryScript">
+(()=>{
+  'use strict';
+  const $=id=>document.getElementById(id);
+  const svg=$('mapSvg'),toggle=$('firmsLayerBtn'),catalog=$('firmsCatalogBtn'),dialog=$('firmInfoDialog'),source=$('firmDirectoryData');
+  if(!svg||!toggle||!catalog||!dialog||!source||$('firmDirectoryLayer'))return;
+  const data=JSON.parse(source.textContent),companies=data.companies;
+  const cities={
+    sofia:{name:'София',x:310,y:490,label:'София · 5',labelX:-16,labelY:43,labelWidth:88},
+    varna:{name:'Варна',x:1278,y:405,label:'ЕРП Север',labelX:0,labelY:43,labelWidth:94},
+    plovdiv:{name:'Пловдив',x:580,y:697,label:'ЕР Юг',labelX:0,labelY:43,labelWidth:74},
+    troyan:{name:'Троян',x:625,y:450,label:'Елпром Троян',labelX:0,labelY:-38,labelWidth:116}
+  };
+  const categories={operators:'Мрежови оператори',industry:'Производство и ремонт',renewables:'ВЕИ и съхранение'};
+  const NS='http://www.w3.org/2000/svg';
+  const elsvg=(tag,attrs)=>{const n=document.createElementNS(NS,tag);for(const [k,v]of Object.entries(attrs||{}))n.setAttribute(k,String(v));return n;};
+  const escape=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const safeUrl=value=>{try{const u=new URL(value);return u.protocol==='https:'?u.href:'';}catch{return '';}};
+  const normal=value=>String(value).normalize('NFKC').toLocaleLowerCase('bg-BG');
+  const checked=data.checkedOn.split('-').reverse().join('.')+' г.';
+  const byId=new Map(companies.map(c=>[c.id,c]));
+  let enabled=false,returnFocus=toggle,lastScale=0;
+  const layer=elsvg('g',{id:'firmDirectoryLayer',role:'group','aria-label':'Фирми в енергетиката по градове','aria-hidden':'true',hidden:''});
+  const pins=[];
+  for(const [cityId,city]of Object.entries(cities)){
+    const members=companies.filter(c=>c.cityId===cityId);
+    if(!members.length)continue;
+    const label=members.length>1?city.name+' · '+members.length:city.label;
+    const pin=elsvg('g',{class:'fd-map-pin','data-fd-city':cityId,role:'button',tabindex:'0',transform:'translate('+city.x+' '+city.y+')','aria-label':city.name+' · '+members.length+' '+(members.length===1?'фирма':'фирми')+' · отвори информация','aria-haspopup':'dialog'});
+    const title=elsvg('title');title.textContent=city.name+': '+members.map(c=>c.name).join(', ');pin.append(title);
+    pin.append(elsvg('circle',{r:24,class:'fd-map-disc'}));
+    pin.append(elsvg('path',{d:'M-11 12V-11H11V12M-15 12H15M-6-6H-4M4-6H6M-6-1H-4M4-1H6M-6 4H-4M4 4H6M-2 12V7H2V12',class:'fd-map-symbol'}));
+    const lx=city.labelX,ly=city.labelY;
+    pin.append(elsvg('rect',{x:lx-city.labelWidth/2,y:ly-15,width:city.labelWidth,height:23,rx:6,class:'fd-map-label-bg'}));
+    const labelNode=elsvg('text',{x:lx,y:ly,class:'fd-map-label'});labelNode.textContent=label;pin.append(labelNode);
+    if(members.length>1){
+      pin.append(elsvg('circle',{cx:20,cy:-18,r:11,class:'fd-map-count'}));
+      const count=elsvg('text',{x:20,y:-14,class:'fd-map-count-text'});count.textContent=String(members.length);pin.append(count);
+    }
+    for(const eventName of ['pointerdown','dblclick'])pin.addEventListener(eventName,e=>e.stopPropagation());
+    pin.addEventListener('click',e=>{e.stopPropagation();openCity(cityId,pin);});
+    pin.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();openCity(cityId,pin);}});
+    layer.append(pin);pins.push({pin,city});
+  }
+  // Reuse the existing foreground SVG so the firm pins stay above substation
+  // callouts. Its viewBox is already synchronized with the national map.
+  const pinSurface=$('namedSubstationSvg')||svg;
+  pinSurface.append(layer);
+  if(pinSurface!==svg)pinSurface.setAttribute('aria-label','Подстанции и фирми върху картата');
+
+  // Keep the four touch targets legible at the current map zoom. These callbacks
+  // run only on size/viewBox changes; the animation loop and its clock are untouched.
+  function syncPinScale(){
+    if(!enabled)return;
+    const matrix=pinSurface.getScreenCTM?.();
+    const screenScale=matrix?Math.hypot(matrix.a,matrix.b):0;
+    if(!(screenScale>0))return;
+    const scale=1/screenScale;
+    if(Math.abs(scale-lastScale)<.0001)return;
+    lastScale=scale;
+    for(const {pin,city}of pins)pin.setAttribute('transform','translate('+city.x+' '+city.y+') scale('+scale.toFixed(5)+')');
+  }
+  if(typeof ResizeObserver==='function')new ResizeObserver(syncPinScale).observe(svg);
+  else window.addEventListener('resize',syncPinScale,{passive:true});
+  if(typeof MutationObserver==='function')new MutationObserver(syncPinScale).observe(svg,{attributes:true,attributeFilter:['viewBox']});
+
+  function setEnabled(value){
+    enabled=Boolean(value);
+    layer.toggleAttribute('hidden',!enabled);layer.setAttribute('aria-hidden',String(!enabled));
+    toggle.setAttribute('aria-pressed',String(enabled));catalog.hidden=!enabled;
+    for(const {pin}of pins)pin.setAttribute('tabindex',enabled?'0':'-1');
+    if(enabled)syncPinScale();
+  }
+  const title=$('firmInfoTitle'),subtitle=$('firmInfoSubtitle'),directory=$('fdDirectory'),profile=$('fdProfile'),back=$('fdBack'),query=$('fdSearch'),citySelect=$('fdCity'),categorySelect=$('fdCategory'),list=$('fdCompanyList'),count=$('fdResultCount');
+  function renderList(){
+    const q=normal(query.value.trim());
+    const filtered=companies.filter(c=>(citySelect.value==='all'||c.cityId===citySelect.value)&&(categorySelect.value==='all'||c.category===categorySelect.value)&&(!q||normal([c.name,c.shortName,...(c.aliases||[]),c.subtitle,c.summary,...c.activities,cities[c.cityId].name].join(' ')).includes(q)));
+    count.textContent=filtered.length+' от '+companies.length+' фирми · натисни за информация';
+    list.innerHTML=filtered.length?filtered.map(c=>'<button type="button" class="fd-company" data-fd-company="'+escape(c.id)+'" aria-label="'+escape(c.name)+' — информация"><span class="fd-avatar" data-kind="'+escape(c.category)+'" aria-hidden="true">'+escape(c.initials)+'</span><span class="fd-company-copy"><strong>'+escape(c.name)+'</strong><small>'+escape(c.subtitle)+'</small><small class="fd-card-city">'+escape(cities[c.cityId].name)+'</small></span><span class="fd-arrow" aria-hidden="true">›</span></button>').join(''):'<p class="fd-empty">Няма фирми с тези условия. Опитай друго име, град или дейност.</p>';
+  }
+  function showList(){
+    profile.hidden=true;directory.hidden=false;back.hidden=true;
+    title.textContent='Фирми на картата';subtitle.textContent='Подбрани компании · официални източници · '+checked;
+    renderList();dialog.querySelector('.fd-scroll').scrollTop=0;
+    if(dialog.open)title.focus({preventScroll:true});
+  }
+  function showCompany(id){
+    const c=byId.get(id);if(!c)return;
+    title.textContent=c.name;subtitle.textContent=c.subtitle+' · '+cities[c.cityId].name;
+    const seen=new Set();
+    const links=[{label:'Официален сайт ↗',url:c.website},...c.sources].filter(link=>{const url=safeUrl(link.url);if(!url||seen.has(url))return false;seen.add(url);return true;});
+    profile.innerHTML='<div class="fd-profile-top"><span class="fd-avatar" data-kind="'+escape(c.category)+'" aria-hidden="true">'+escape(c.initials)+'</span><span class="fd-badge">'+escape(categories[c.category])+'</span></div><p class="fd-profile-summary">'+escape(c.summary)+'</p><h3>Основни дейности</h3><ul class="fd-activities">'+c.activities.map(a=>'<li>'+escape(a)+'</li>').join('')+'</ul><h3>Роля в енергийната система</h3><p class="fd-role">'+escape(c.role)+'</p><h3>Местоположение</h3><p class="fd-address"><b>'+escape(c.addressType)+'</b>'+escape(c.address)+'</p><div class="fd-links">'+links.filter(l=>safeUrl(l.url)).map(l=>'<a href="'+escape(safeUrl(l.url))+'" target="_blank" rel="noopener noreferrer">'+escape(l.label)+'</a>').join('')+'</div><p class="fd-checked">Проверено по официални източници на '+checked+' Маркерът обозначава района на града; не показва точни координати на сградата или обхват на дейността.</p>';
+    directory.hidden=true;profile.hidden=false;back.hidden=false;dialog.querySelector('.fd-scroll').scrollTop=0;
+    if(dialog.open)title.focus({preventScroll:true});
+  }
+  function openDialog(trigger){
+    returnFocus=trigger||toggle;
+    const host=document.fullscreenElement||document.body;
+    if(dialog.parentElement!==host)host.append(dialog);
+    if(!dialog.open)dialog.showModal();
+    $('firmInfoClose').focus({preventScroll:true});
+  }
+  function openCity(cityId,trigger){
+    citySelect.value=cityId;categorySelect.value='all';query.value='';showList();
+    const members=companies.filter(c=>c.cityId===cityId);
+    if(members.length===1)showCompany(members[0].id);
+    else subtitle.textContent=cities[cityId].name+' · '+members.length+' фирми · избери компания';
+    openDialog(trigger);
+  }
+  toggle.addEventListener('click',()=>setEnabled(!enabled));
+  catalog.addEventListener('click',()=>{citySelect.value='all';categorySelect.value='all';query.value='';showList();openDialog(catalog);});
+  query.addEventListener('input',renderList);citySelect.addEventListener('change',renderList);categorySelect.addEventListener('change',renderList);
+  list.addEventListener('click',e=>{const item=e.target.closest('[data-fd-company]');if(item)showCompany(item.dataset.fdCompany);});
+  back.addEventListener('click',showList);
+  $('firmInfoClose').addEventListener('click',()=>dialog.close());
+  dialog.addEventListener('click',e=>{
+    e.stopPropagation();
+    if(e.target!==dialog)return;
+    const r=dialog.getBoundingClientRect();
+    if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close();
+  });
+  dialog.addEventListener('pointerdown',e=>e.stopPropagation());
+  dialog.addEventListener('keydown',e=>e.stopPropagation());
+  dialog.addEventListener('close',()=>returnFocus?.focus?.({preventScroll:true}));
+  setEnabled(false);
+})();
+
+</script>
 </body></html>
